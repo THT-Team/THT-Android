@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "THT"
 include ':app'
+include ':domain'
+include ':data'
