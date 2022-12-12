@@ -31,16 +31,13 @@ jobs:
           
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-
-            - name: Run unit tests
-              run: ./gradlew testDebugUnitTest
+              
+            - name: Build with Gradle
+              run: ./gradlew build
               
             - name: Create android test report
               uses: asadmansr/android-test-report-action@v1.2.0
               if: ${{ always() }}
-              
-            - name: Build with Gradle
-              run: ./gradlew build
     
     lint:
         runs-on: ubuntu-latest
