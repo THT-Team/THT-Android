@@ -6,14 +6,14 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0"
+        classpath (libs.detekt.plugin)
     }
 }
 
-apply plugin: 'io.gitlab.arturbosch.detekt'
+apply (plugin = "io.gitlab.arturbosch.detekt")
 
 subprojects {
-    apply plugin: 'io.gitlab.arturbosch.detekt'
+    apply (plugin = "io.gitlab.arturbosch.detekt")
 
     tasks.withType(Detekt).configureEach {
         jvmTarget = "1.8"
@@ -25,8 +25,8 @@ configurations {
 }
 
 dependencies {
-    detekt 'io.gitlab.arturbosch.detekt:detekt-cli:1.22.0'
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0"
+    detekt (libs.detekt.cli)
+    detektPlugins (libs.detekt.formatting)
 }
 
 
@@ -87,3 +87,4 @@ tasks.register("detektAll", Detekt) {
         }
     }
 }
+
