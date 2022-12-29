@@ -32,3 +32,5 @@ include(":feature:chat")
 include(":feature:setting")
 include(":feature:signin")
 
+include(":core")
+include(":core:ui")
