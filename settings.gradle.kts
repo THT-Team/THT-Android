@@ -23,5 +23,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "THT"
 include(":app")
-include(":domain")
 include(":data")
+include(":domain")
+
+include(":feature:tohot")
+include(":feature:heart")
+include(":feature:chat")
+include(":feature:setting")
+include(":feature:signin")
+

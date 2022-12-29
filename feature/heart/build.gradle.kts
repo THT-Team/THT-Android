@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tht.tht.data"
+    namespace = "tht.feature.heart"
     compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {

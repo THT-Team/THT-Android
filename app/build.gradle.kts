@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.tht.tht"
-    compileSdk = 32
+    compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {
         applicationId = "com.tht.tht"
-        minSdk = 26
-        targetSdk = 32
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = rootProject.ext.get("minSdkVersion") as Int
+        targetSdk = rootProject.ext.get("targetSdk") as Int
+        versionCode = rootProject.ext.get("versionCode") as Int
+        versionName = rootProject.ext.get("versionName") as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,7 +36,14 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+
     implementation(project(":data"))
+
+    implementation(project(":feature:chat"))
+    implementation(project(":feature:heart"))
+    implementation(project(":feature:setting"))
+    implementation(project(":feature:signin"))
+    implementation(project(":feature:tohot"))
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
