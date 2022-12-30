@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tht.tht.data"
+    namespace = "tht.feature.tohot"
     compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {
@@ -18,10 +18,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -34,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core)

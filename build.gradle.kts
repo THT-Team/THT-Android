@@ -1,4 +1,11 @@
 buildscript {
+    extra.apply {
+        set("compileSdk", 32)
+        set("minSdkVersion", 26)
+        set("targetSdk", 32)
+        set("versionCode", 1)
+        set("versionName", "1.0")
+    }
     repositories {
         google()
         mavenCentral()
@@ -6,6 +13,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.android.gradle)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
     }
 }
 

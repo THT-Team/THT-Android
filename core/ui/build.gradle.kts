@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tht.tht.data"
+    namespace = "tht.core.ui"
     compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {
@@ -34,7 +34,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)

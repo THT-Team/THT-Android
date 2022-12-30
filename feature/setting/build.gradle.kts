@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tht.tht.data"
+    namespace = "tht.feature.setting"
     compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {
@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core)
