@@ -2,8 +2,6 @@ package com.tht.tht.data.remote.response
 
 import java.io.IOException
 
-typealias ThtResponse<T> = BaseResponse<SuccessResponse<T>, ErrorResponse>
-
 sealed class BaseResponse<out T : Any, out E : Any> {
 
     data class Success<T : Any>(
@@ -22,3 +20,5 @@ sealed class BaseResponse<out T : Any, out E : Any> {
 
     data class UnknownError(val throwable: Throwable) : BaseResponse<Nothing, Nothing>()
 }
+
+typealias ThtResponse<T> = BaseResponse<SuccessResponse<T>, ErrorResponse>
