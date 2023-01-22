@@ -4,16 +4,16 @@ import java.io.IOException
 
 typealias ThtResponse<T> = BaseResponse<SuccessResponse<T>, ErrorResponse>
 
-sealed class BaseResponse<out T : Any, out E : Any> {
+sealed class BaseResponse<T, E> {
 
-    data class Success<T : Any>(
+    data class Success<T>(
         val statusCode: Int,
         val response: T
     ) : BaseResponse<T, Nothing>()
 
     data class SuccessNoBody(val statusCode: Int) : BaseResponse<Nothing, Nothing>()
 
-    data class ApiError<E : Any>(
+    data class ApiError<E>(
         val statusCode: Int,
         val errorResponse: E,
     ) : BaseResponse<Nothing, E>()
