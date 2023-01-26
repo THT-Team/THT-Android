@@ -46,8 +46,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.coroutines.core)
+    testImplementation(libs.coroutines.test)
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
+    testImplementation(libs.assertj.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
 

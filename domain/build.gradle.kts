@@ -9,6 +9,10 @@ java {
 }
 
 dependencies {
+    implementation(libs.coroutines.core)
+    testImplementation(libs.coroutines.test)
+
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
+    testImplementation(libs.assertj.core)
 }
