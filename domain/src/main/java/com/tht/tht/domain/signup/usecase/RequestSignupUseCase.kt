@@ -21,14 +21,14 @@ class RequestSignupUseCase(
                         user.email.isBlank() ||
                         user.gender.isBlank() ||
                         user.birth.isBlank() ||
-                        user.interestKeys.size < SignupConstant.InterestRequireSize ||
+                        user.interestKeys.size < SignupConstant.INTEREST_REQUIRE_SIZE ||
                         user.lat < 0 ||
                         user.lng < 0 ||
                         user.address.isBlank() ||
                         user.preferredGender.isBlank() ||
-                        user.profileImgUrl.size < SignupConstant.ProfileImageRequireSize ||
+                        user.profileImgUrl.size < SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE ||
                         user.introduce.isBlank() ||
-                        user.idealTypeKeys.size < SignupConstant.IdealTypeRequireSize -> throw SignupException.SignupUserInfoInvalidateException()
+                        user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException()
                 }
 
                 repository.requestSignup(user).also {

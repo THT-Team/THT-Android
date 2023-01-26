@@ -14,8 +14,8 @@ class PatchSignupIdealTypeUseCase(
     suspend operator fun invoke(phone: String, idealTypeKeys: List<String>): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
-                if(idealTypeKeys.size <SignupConstant.IdealTypeRequireSize){
-                    throw SignupException.InputDataRequireSizeException("ideal", SignupConstant.IdealTypeRequireSize)
+                if(idealTypeKeys.size <SignupConstant.IDEAL_TYPE_REQUIRE_SIZE){
+                    throw SignupException.InputDataRequireSizeException("ideal", SignupConstant.IDEAL_TYPE_REQUIRE_SIZE)
                 }
                 repository.patchSignupUser(
                     phone,

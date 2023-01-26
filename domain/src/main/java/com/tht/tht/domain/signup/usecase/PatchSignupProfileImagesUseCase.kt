@@ -14,8 +14,8 @@ class PatchSignupProfileImagesUseCase(
     suspend operator fun invoke(phone: String, profileImgUrl: List<String>): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
-                if(profileImgUrl.size <SignupConstant.ProfileImageRequireSize){
-                    throw SignupException.InputDataRequireSizeException("profileImage", SignupConstant.ProfileImageRequireSize)
+                if(profileImgUrl.size <SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE){
+                    throw SignupException.InputDataRequireSizeException("profileImage", SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE)
                 }
                 repository.patchSignupUser(
                     phone,

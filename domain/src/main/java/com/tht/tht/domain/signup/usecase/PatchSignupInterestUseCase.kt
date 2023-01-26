@@ -14,8 +14,8 @@ class PatchSignupInterestUseCase(
     suspend operator fun invoke(phone: String, interestKeys: List<String>): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
-                if(interestKeys.size <SignupConstant.InterestRequireSize){
-                    throw SignupException.InputDataRequireSizeException("interest", SignupConstant.InterestRequireSize)
+                if(interestKeys.size <SignupConstant.INTEREST_REQUIRE_SIZE){
+                    throw SignupException.InputDataRequireSizeException("interest", SignupConstant.INTEREST_REQUIRE_SIZE)
                 }
                 repository.patchSignupUser(
                     phone,
