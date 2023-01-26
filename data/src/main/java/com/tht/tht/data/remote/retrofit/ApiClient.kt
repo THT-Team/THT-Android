@@ -11,11 +11,9 @@ import javax.inject.Singleton
 
 @Singleton
 class ApiClient @Inject constructor(
-    private val apiGson: Gson
+    private val apiGson: Gson,
+    private val okHttpClient: OkHttpClient
 ) {
-
-    @Inject
-    lateinit var okHttpClient: OkHttpClient
 
     private val apiAdapter: Retrofit by lazy {
         createApiAdapter("")

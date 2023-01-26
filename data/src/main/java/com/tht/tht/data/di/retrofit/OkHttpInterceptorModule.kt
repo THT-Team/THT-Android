@@ -11,7 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
 @InstallIn(SingletonComponent::class)
-class OkHttpInterceptor {
+class OkHttpInterceptorModule {
 
     // TODO Preference 추가해서 accesToken 연결작업하기
     @Provides
