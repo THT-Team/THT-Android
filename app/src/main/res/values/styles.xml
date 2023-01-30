@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customTextViewFontStyle">
+        <item name="android:fontFamily">@font/pretandard_font_family</item>
+        <item name="android:textColor">@color/white_f9fafa</item>
+    </style>
+
+    <style name="customButtonFontStyle">
+        <item name="android:fontFamily">@font/pretandard_font_family</item>
+    </style>
+
+    <style name="customEditTextFontStyle">
+        <item name="android:fontFamily">@font/pretandard_font_family</item>
+    </style>
+</resources>
