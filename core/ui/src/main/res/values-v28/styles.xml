@@ -24,13 +24,6 @@
     <!--H2Bold-->
 
     <!--H4Bold-->
-    <style name="H3BoldTextStyle">
-        <item name="android:textSize">19sp</item>
-        <item name="android:textFontWeight">600</item>
-    </style>
-    <!--H4Bold-->
-
-    <!--H4Bold-->
     <style name="H4BoldTextStyle">
         <item name="android:textSize">19sp</item>
         <item name="android:textFontWeight">700</item>
@@ -96,129 +89,6 @@
     </style>
     <!--H5Regular-->
 
-    <!--P1Medium-->
-    <style name="P1MediumTextStyle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textFontWeight">500</item>
-        <item name="android:textColor">@color/gray_8d8d8d</item>
-    </style>
-    <!--P1Medium-->
-
-    <!--P1Regular-->
-    <style name="P1RegularTextStyle">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textFontWeight">400</item>
-    </style>
-
-    <style name="P1RegularGrayTextStyle">
-        <item name="android:textColor">@color/gray_8d8d8d</item>
-    </style>
-    <!--P1Regular-->
-
-    <!--P2Bold-->
-    <style name="P2BoldTextStyle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textFontWeight">700</item>
-    </style>
-
-    <style name="P2BoldBlackTextStyle" parent="P2BoldTextStyle">
-        <item name="android:textColor">@color/black_161616</item>
-    </style>\
-    <!--P2Bold-->
-
-    <!--P2SemiBold-->
-    <style name="P2SemiBoldTextStyle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textFontWeight">600</item>
-    </style>
-
-    <style name="P2SemiBoldBlackTextStyle" parent="P2SemiBoldTextStyle">
-        <item name="android:textColor">@color/black_222222</item>
-    </style>
-
-    <style name="P2SemiBoldYellowTextStyle" parent="P2SemiBoldTextStyle">
-        <item name="android:textColor">@color/yellow_f9cc2e</item>
-    </style>
-    <!--P2SemiBold-->
-
-    <!--P2Medium-->
-    <style name="P2MediumTextStyle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textFontWeight">500</item>
-    </style>
-
-    <style name="P2MediumBlackTextStyle" parent="P2MediumTextStyle">
-        <item name="android:textColor">@color/black_161616</item>
-    </style>
-
-    <style name="P2MediumGrayTextStyle" parent="P2MediumTextStyle">
-        <item name="android:textColor">@color/gray_666666</item>
-    </style>
-    <!--P2Medium-->
-
-    <!--P2Regular-->
-    <style name="P2RegularTextStyle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textFontWeight">400</item>
-    </style>
-
-    <style name="P2RegularGrayTextStyle" parent="P2RegularTextStyle">
-        <item name="android:textColor">@color/gray_8d8d8d</item>
-    </style>
-    <!--P2Regular-->
-
-    <!--Caption1Medium-->
-    <style name="Caption1MediumTextStyle">
-        <item name="android:textSize">11sp</item>
-        <item name="android:textFontWeight">500</item>
-        <item name="android:textColor">@color/gray_666666</item>
-    </style>
-
-    <style name="Caption1MediumRedTextStyle" parent="Caption1MediumTextStyle">
-        <item name="android:textColor">@color/red_ef4444</item>
-    </style>
-
-    <style name="Caption1MediumGreenTextStyle" parent="Caption1MediumTextStyle">
-        <item name="android:textColor">@color/green_2ef95a</item>
-    </style>
-    <!--Caption1Medium-->
-
-    <!--Caption1Regular-->
-    <style name="Caption1RegularTextStyle">
-        <item name="android:textSize">11sp</item>
-        <item name="android:textFontWeight">400</item>
-    </style>
-
-    <style name="Caption1RegularGrayTextStyle" parent="Caption1RegularTextStyle">
-        <item name="android:textColor">@color/gray_8d8d8d</item>
-    </style>
-    <!--Caption1Regular-->
-
-    <!--Caption1SemiBold-->
-    <style name="Caption1SemiBoldTextStyle">
-        <item name="android:textSize">11sp</item>
-        <item name="android:textFontWeight">600</item>
-    </style>
-
-    <style name="Caption1SemiBoldBlackTextStyle" parent="Caption1SemiBoldTextStyle">
-        <item name="android:textColor">@color/black_222222</item>
-    </style>
-    <!--Caption1SemiBold-->
-
-    <!--Caption2Regular-->
-    <style name="Caption2RegularTextStyle">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textFontWeight">400</item>
-    </style>
-
-    <style name="Caption2RegularGrayTextStyle" parent="Caption2RegularTextStyle">
-        <item name="android:textColor">@color/gray_8d8d8d</item>
-    </style>
-
-    <style name="Caption2RegularRedTextStyle" parent="Caption2RegularTextStyle">
-        <item name="android:textColor">@color/red_ef4444</item>
-    </style>
-    <!--Caption2Regular-->
 
     <!--SubT1SemiBold-->
     <style name="SubT1SemiBold">
@@ -290,29 +160,144 @@
     </style>
     <!--SubT2Regular-->
 
+
+    <!--P1Medium-->
+    <style name="P1MediumTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="P1MediumGrayTextStyle" parent="P1MediumTextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--P1Medium-->
+
+    <!--P1Regular-->
+    <style name="P1RegularTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="P1RegularGrayTextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--P1Regular-->
+
+    <!--P2Bold-->
+    <style name="P2BoldTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="P2BoldBlackTextStyle" parent="P2BoldTextStyle">
+        <item name="android:textColor">@color/black_161616</item>
+    </style>
+    <!--P2Bold-->
+
+    <!--P2SemiBold-->
+    <style name="P2SemiBoldTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="P2SemiBoldBlackTextStyle" parent="P2SemiBoldTextStyle">
+        <item name="android:textColor">@color/black_222222</item>
+    </style>
+
+    <style name="P2SemiBoldYellowTextStyle" parent="P2SemiBoldTextStyle">
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+    <!--P2SemiBold-->
+
+    <!--P2Medium-->
+    <style name="P2MediumTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="P2MediumBlackTextStyle" parent="P2MediumTextStyle">
+        <item name="android:textColor">@color/black_161616</item>
+    </style>
+
+    <style name="P2MediumGrayTextStyle" parent="P2MediumTextStyle">
+        <item name="android:textColor">@color/gray_666666</item>
+    </style>
+    <!--P2Medium-->
+
+    <!--P2Regular-->
+    <style name="P2RegularTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="P2RegularGrayTextStyle" parent="P2RegularTextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--P2Regular-->
+
+
+    <!--Caption1SemiBold-->
+    <style name="Caption1SemiBoldTextStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="Caption1SemiBoldBlackTextStyle" parent="Caption1SemiBoldTextStyle">
+        <item name="android:textColor">@color/black_222222</item>
+    </style>
+    <!--Caption1SemiBold-->
+
+    <!--Caption1Medium-->
+    <style name="Caption1MediumTextStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="Caption1MediumRedTextStyle" parent="Caption1MediumTextStyle">
+        <item name="android:textColor">@color/red_ef4444</item>
+    </style>
+
+    <style name="Caption1MediumGreenTextStyle" parent="Caption1MediumTextStyle">
+        <item name="android:textColor">@color/green_2ef95a</item>
+    </style>
+
+    <style name="Caption1MediumGrayTextStyle" parent="Caption1MediumTextStyle">
+        <item name="android:textColor">@color/gray_666666</item>
+    </style>
+    <!--Caption1Medium-->
+
+    <!--Caption1Regular-->
+    <style name="Caption1RegularTextStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="Caption1RegularGrayTextStyle" parent="Caption1RegularTextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--Caption1Regular-->
+
+    <!--Caption2Regular-->
+    <style name="Caption2RegularTextStyle">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="Caption2RegularGrayTextStyle" parent="Caption2RegularTextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+
+    <style name="Caption2RegularRedTextStyle" parent="Caption2RegularTextStyle">
+        <item name="android:textColor">@color/red_ef4444</item>
+    </style>
+    <!--Caption2Regular-->
+
+
     <!--Ex1-->
     <style name="Ex1TextStyle">
         <item name="android:textSize">13sp</item>
         <item name="android:textFontWeight">600</item>
     </style>
     <!--Ex1-->
-
-    <!--첫 화면 하단 경고 글씨-->
-    <style name="Normal1">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textFontWeight">500</item>
-    </style>
-
-    <!--핸드폰 번호 굵은 글씨-->
-    <style name="Normal2">
-        <item name="android:textSize">26sp</item>
-        <item name="android:textFontWeight">600</item>
-    </style>
-
-    <!--인증 코드 입력 밑에 작은 글씨-->
-    <style name="Normal3">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textFontWeight">500</item>
-    </style>
 
 </resources>
