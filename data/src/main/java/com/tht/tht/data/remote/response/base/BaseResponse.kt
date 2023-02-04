@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.response
+package com.tht.tht.data.remote.response.base
 
 import java.io.IOException
 

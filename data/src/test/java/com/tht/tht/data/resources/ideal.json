@@ -1,0 +1,20 @@
+{
+    "status": 200,
+    "body": [
+        {
+            "name": "지적인",
+            "emojiCode": "1F9E0",
+            "idx": 1
+        },
+        {
+            "name": "귀여운",
+            "emojiCode": "1F63B",
+            "idx": 2
+        },
+        {
+            "name": "피부가 좋은",
+            "emojiCode": "2728",
+            "idx": 3
+        }
+    ]
+}
