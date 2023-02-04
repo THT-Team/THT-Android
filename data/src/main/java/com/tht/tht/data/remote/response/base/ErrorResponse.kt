@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.response
+package com.tht.tht.data.remote.response.base
 
 data class ErrorResponse(
     val status: Int,

@@ -1,6 +1,6 @@
 package com.tht.tht.data.remote.retrofit.callAdapter
 
-import com.tht.tht.data.remote.response.BaseResponse
+import com.tht.tht.data.remote.response.base.BaseResponse
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.IOException

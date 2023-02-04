@@ -1,6 +1,6 @@
 package com.tht.tht.data.remote.retrofit.callAdapter
 
-import com.tht.tht.data.remote.response.BaseResponse
+import com.tht.tht.data.remote.response.base.BaseResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
