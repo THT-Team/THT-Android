@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_tohot"
+        android:icon="@drawable/selector_icon_tohot"
+        android:title="@string/tab_tohot" />
+
+    <item
+        android:id="@+id/menu_heart"
+        android:icon="@drawable/selector_icon_heart"
+        android:title="@string/tab_heart" />
+
+    <item
+        android:id="@+id/menu_chat"
+        android:icon="@drawable/selector_icon_chat"
+        android:title="@string/tab_chat" />
+
+    <item
+        android:id="@+id/menu_my"
+        android:icon="@drawable/selector_icon_my"
+        android:title="@string/tab_my" />
+</menu>

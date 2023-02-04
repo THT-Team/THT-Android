@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">THT</string>
+    <string name="tab_tohot">투핫</string>
+    <string name="tab_heart">하트</string>
+    <string name="tab_chat">채팅</string>
+    <string name="tab_my">마이</string>
 </resources>
