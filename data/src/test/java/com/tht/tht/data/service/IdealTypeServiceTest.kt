@@ -51,7 +51,6 @@ class IdealTypeServiceTest {
         val expect = BaseResponse.Success(
             statusCode = 200,
             response = SuccessResponse(
-                status = 200,
                 body = listOf(
                     IdealTypeResponse(
                         name = "지적인",
