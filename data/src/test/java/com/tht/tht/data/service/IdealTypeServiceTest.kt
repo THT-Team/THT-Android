@@ -44,7 +44,7 @@ class IdealTypeServiceTest {
 
     @Test
     fun `이상형 정보를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal.json").readText()
+        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal/ideal.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
@@ -79,7 +79,7 @@ class IdealTypeServiceTest {
 
     @Test
     fun `이상형 정보를 가져올 수 없다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal_failure_404.json").readText()
+        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal/ideal_failure_404.json").readText()
         val response = MockResponse()
             .setResponseCode(404)
             .setBody(responseJson)
