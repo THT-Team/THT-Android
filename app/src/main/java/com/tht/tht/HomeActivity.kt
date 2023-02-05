@@ -11,6 +11,9 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.tht.tht.base.BaseActivity
+import com.tht.tht.base.FragmentNavigator
+import com.tht.tht.binding.viewBinding
 import com.tht.tht.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,23 +24,18 @@ import tht.feature.tohot.ToHotFragment
 
 @SuppressLint("CommitTransaction")
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), FragmentNavigator {
 
-    private var _binding: ActivityHomeBinding? = null
-    private val binding: ActivityHomeBinding
-        get() = requireNotNull(_binding)
-    private val vm: HomeViewModel by viewModels()
+    override val vm by viewModels<HomeViewModel>()
+    override val binding by viewBinding(ActivityHomeBinding::inflate)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        initViews()
+    override fun initViews() {
+        initNavigationBar()
     }
 
-    private fun initViews() {
-        initNavigationBar()
+    override fun initState() {
+        super.initState()
         vm.changeNavigation(MainNavigation(R.id.menu_tohot))
-        observeData()
     }
 
     private fun initNavigationBar() {
@@ -65,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeData() {
+    override  fun observeData() {
         lifecycleScope.launch {
             vm.navigationItemStateFlow.collect { navigation ->
                 navigation ?: return@collect
@@ -74,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun showFragment(tag: String) {
+    override fun showFragment(tag: String) {
         binding.root.hideSoftInput()
         val foundFragment = supportFragmentManager.findFragmentByTag(tag)
         supportFragmentManager.fragments.forEach { fm ->
@@ -92,7 +90,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun addFragmentBackStack(tag: String, bundle: Bundle?) {
+    override fun addFragmentBackStack(tag: String, bundle: Bundle?) {
         binding.root.hideSoftInput()
         with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)

@@ -3,14 +3,16 @@ package com.tht.tht
 import androidx.annotation.IdRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(): ViewModel() {
+class HomeViewModel @Inject constructor(): BaseViewModel() {
 
     private val _navigationItemStateFlow = MutableSharedFlow<MainNavigation?>()
     val navigationItemStateFlow: SharedFlow<MainNavigation?> = _navigationItemStateFlow
