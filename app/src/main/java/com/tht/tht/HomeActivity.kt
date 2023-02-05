@@ -3,12 +3,10 @@ package com.tht.tht
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.tht.tht.base.BaseActivity
@@ -63,7 +61,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
-    override  fun observeData() {
+    override fun observeData() {
         lifecycleScope.launch {
             vm.navigationItemStateFlow.collect { navigation ->
                 navigation ?: return@collect
