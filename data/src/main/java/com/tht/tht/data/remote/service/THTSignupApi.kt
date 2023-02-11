@@ -15,12 +15,12 @@ interface THTSignupApi {
     @GET(THTApiConstant.Signup.AUTHENTICATION_NUM)
     suspend fun requestAuthenticationNumber(
         @Query("phone")phone: String
-    ): BaseResponse.SuccessNoBody
+    ): ThtResponse<Boolean>
 
     suspend fun requestVerify(
         @Query("phone")phone: String,
         @Query("auth_num")authNumber: String
-    ): BaseResponse.SuccessNoBody
+    ): ThtResponse<Boolean>
 
     @GET(THTApiConstant.Signup.IDEAL_TYPE)
     suspend fun fetchIdealType(): ThtResponse<List<IdealTypeResponse>>
