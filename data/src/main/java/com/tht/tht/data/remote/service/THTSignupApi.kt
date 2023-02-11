@@ -17,6 +17,7 @@ interface THTSignupApi {
         @Query("phone")phone: String
     ): ThtResponse<Boolean>
 
+    @GET(THTApiConstant.Signup.VERIFY)
     suspend fun requestVerify(
         @Query("phone")phone: String,
         @Query("auth_num")authNumber: String
@@ -28,6 +29,7 @@ interface THTSignupApi {
     @GET(THTApiConstant.Signup.INTERESTS)
     suspend fun fetchInterestsType(): ThtResponse<List<InterestTypeResponse>>
 
+    @GET(THTApiConstant.Signup.SIGNUP)
     suspend fun requestSignup(
         @Query("user")user: SignupUserModel
     ): ThtResponse<SignupResponse>
