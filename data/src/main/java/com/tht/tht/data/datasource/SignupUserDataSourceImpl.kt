@@ -21,7 +21,7 @@ class SignupUserDataSourceImpl @Inject constructor(
     private var signupUserMap: HashMap<String, SignupUserEntity>
         get() {
             val typeToken = object : TypeToken<HashMap<String, SignupUserEntity>>() {}.type
-            return Gson().fromJson(sp.getString(SIGNUP_USER_KEY, ""), typeToken)
+            return Gson().fromJson(sp.getString(SIGNUP_USER_KEY, ""), typeToken) ?: HashMap()
         }
         set(value) {
             sp.edit { putString(SIGNUP_USER_KEY, Gson().toJson(value)) }
