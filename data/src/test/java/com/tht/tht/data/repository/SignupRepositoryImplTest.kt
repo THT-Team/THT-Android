@@ -1,6 +1,6 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.datasource.SignupApiDataSource
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.datasource.SignupUserDataSource
 import com.tht.tht.data.datasource.TermsDataSource
 import com.tht.tht.data.local.entity.SignupUserEntity

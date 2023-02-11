@@ -1,6 +1,6 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.datasource.SignupApiDataSource
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.datasource.SignupUserDataSource
 import com.tht.tht.data.datasource.TermsDataSource
 import com.tht.tht.data.di.DefaultDispatcher
@@ -13,8 +13,6 @@ import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.signup.repository.SignupRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 

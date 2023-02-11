@@ -1,4 +1,4 @@
-package com.tht.tht.data.datasource
+package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.response.base.BaseResponse

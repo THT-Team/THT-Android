@@ -1,4 +1,4 @@
-package com.tht.tht.data.datasource
+package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse

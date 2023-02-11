@@ -1,6 +1,8 @@
 package com.tht.tht.data.di
 
 import com.tht.tht.data.datasource.*
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
+import com.tht.tht.data.remote.datasource.SignupApiDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
