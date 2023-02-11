@@ -1,6 +1,9 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.data.datasource.*
+import com.tht.tht.data.local.datasource.SignupUserDataSource
+import com.tht.tht.data.local.datasource.SignupUserDataSourceImpl
+import com.tht.tht.data.local.datasource.TermsDataSource
+import com.tht.tht.data.local.datasource.TermsDataSourceImpl
 import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.datasource.SignupApiDataSourceImpl
 import dagger.Binds

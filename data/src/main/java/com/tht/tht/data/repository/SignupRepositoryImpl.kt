@@ -1,8 +1,8 @@
 package com.tht.tht.data.repository
 
 import com.tht.tht.data.remote.datasource.SignupApiDataSource
-import com.tht.tht.data.datasource.SignupUserDataSource
-import com.tht.tht.data.datasource.TermsDataSource
+import com.tht.tht.data.local.datasource.SignupUserDataSource
+import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.di.DefaultDispatcher
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel

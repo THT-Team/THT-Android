@@ -1,6 +1,7 @@
 package com.tht.tht.data.datasource
 
 import com.tht.tht.data.local.dao.TermsDao
+import com.tht.tht.data.local.datasource.TermsDataSourceImpl
 import com.tht.tht.data.local.entity.TermsEntity
 import io.mockk.coEvery
 import io.mockk.coVerify

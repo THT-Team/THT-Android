@@ -1,4 +1,4 @@
-package com.tht.tht.data.datasource
+package com.tht.tht.data.local.datasource
 
 import com.tht.tht.data.local.entity.TermsEntity
 

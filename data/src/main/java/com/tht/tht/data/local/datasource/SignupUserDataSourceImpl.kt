@@ -1,4 +1,4 @@
-package com.tht.tht.data.datasource
+package com.tht.tht.data.local.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
