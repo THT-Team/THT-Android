@@ -18,7 +18,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 internal class PatchSignupBirtheUseCaseTest {
 
-    private lateinit var useCase: PatchSignupBirtheUseCase
+    private lateinit var useCase: PatchSignupBirthUseCase
     private lateinit var repository: SignupRepository
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
@@ -26,7 +26,7 @@ internal class PatchSignupBirtheUseCaseTest {
     @Before
     fun setupTest() {
         repository = mockk(relaxed = true)
-        useCase = PatchSignupBirtheUseCase(
+        useCase = PatchSignupBirthUseCase(
             repository,
             testDispatcher
         )

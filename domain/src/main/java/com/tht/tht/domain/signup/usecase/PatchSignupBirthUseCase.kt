@@ -5,7 +5,7 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class PatchSignupBirtheUseCase(
+class PatchSignupBirthUseCase(
     private val repository: SignupRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
