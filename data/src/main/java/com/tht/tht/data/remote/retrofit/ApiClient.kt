@@ -1,6 +1,7 @@
 package com.tht.tht.data.remote.retrofit
 
 import com.google.gson.Gson
+import com.tht.tht.data.constant.THTApiConstant
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
 import com.tht.tht.data.remote.service.ThtApi
 import okhttp3.OkHttpClient
@@ -16,7 +17,7 @@ class ApiClient @Inject constructor(
 ) {
 
     private val apiAdapter: Retrofit by lazy {
-        createApiAdapter("")
+        createApiAdapter(THTApiConstant.BASE_URL)
     }
 
     private fun createApiAdapter(url: String): Retrofit {
