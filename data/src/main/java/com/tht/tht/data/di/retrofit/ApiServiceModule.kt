@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class ApiModule {
+object ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideThtApi(apiClient: ApiClient): THTSignupApi {
-        return apiClient.provideThtApi()
+    fun provideTHTSignupApiService(apiClient: ApiClient): THTSignupApi {
+        return apiClient.provideTHTSignupApi()
     }
 }

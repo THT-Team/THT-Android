@@ -29,5 +29,5 @@ class ApiClient @Inject constructor(
             .build()
     }
 
-    fun provideThtApi(): THTSignupApi = apiAdapter.create(THTSignupApi::class.java)
+    fun provideTHTSignupApi(): THTSignupApi = apiAdapter.create(THTSignupApi::class.java)
 }
