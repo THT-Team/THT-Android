@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.tht.tht.base.BaseActivity
 import com.tht.tht.base.FragmentNavigator
 import com.tht.tht.binding.viewBinding
@@ -19,6 +19,7 @@ import tht.feature.chat.ChatFragment
 import tht.feature.heart.HeartFragment
 import tht.feature.setting.MyFragment
 import tht.feature.tohot.ToHotFragment
+import tht.core.ui.extension.hideSoftInput
 
 @SuppressLint("CommitTransaction")
 @AndroidEntryPoint
@@ -63,9 +64,13 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
     override fun observeData() {
         lifecycleScope.launch {
-            vm.navigationItemStateFlow.collect { navigation ->
-                navigation ?: return@collect
-                binding.bnvHome.selectedItemId = navigation.navigationMenuId
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    vm.navigationItemStateFlow.collect { navigation ->
+                        navigation ?: return@collect
+                        binding.bnvHome.selectedItemId = navigation.navigationMenuId
+                    }
+                }
             }
         }
     }
@@ -93,10 +98,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
-                it.arguments = Bundle()
-                if (bundle != null) {
-                    it.arguments = bundle
-                }
+                it.arguments = bundle ?: Bundle()
                 beginTransaction()
                     .apply {
                         fragments.forEach { fragment ->
@@ -118,11 +120,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             MyFragment.TAG -> MyFragment.newInstance()
             else -> null
         }
-    }
-
-    private fun View.hideSoftInput() {
-        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
     companion object {

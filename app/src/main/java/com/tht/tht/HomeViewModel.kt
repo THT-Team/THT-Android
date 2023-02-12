@@ -12,8 +12,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _navigationItemStateFlow = MutableSharedFlow<MainNavigation?>()
-    val navigationItemStateFlow: SharedFlow<MainNavigation?> = _navigationItemStateFlow
+    private val _navigationItemStateFlow = MutableSharedFlow<MainNavigation>()
+    val navigationItemStateFlow: SharedFlow<MainNavigation> = _navigationItemStateFlow
 
     fun changeNavigation(mainNavigation: MainNavigation) {
         viewModelScope.launch {
