@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.local.dao.SignupUserDao
+import com.tht.tht.data.local.dao.SignupUserDaoImpl
 import com.tht.tht.data.local.dao.TermsDao
 import com.tht.tht.data.local.dao.TermsDaoImpl
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract class DaoModule {
 
     @Binds
     abstract fun bindTermsDao(impl: TermsDaoImpl): TermsDao
+
+    @Binds
+    abstract fun bindSignupUserData(impl: SignupUserDaoImpl): SignupUserDao
 }
