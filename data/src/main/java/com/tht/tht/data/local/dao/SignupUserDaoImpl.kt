@@ -6,7 +6,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tht.tht.data.local.entity.SignupUserEntity
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SignupUserDaoImpl @Inject constructor(
     private val sp: SharedPreferences,
     private val gson: Gson,
