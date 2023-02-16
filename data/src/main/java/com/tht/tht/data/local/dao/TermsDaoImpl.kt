@@ -5,7 +5,9 @@ import com.google.gson.Gson
 import com.tht.tht.data.local.entity.TermsEntity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TermsDaoImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : TermsDao {

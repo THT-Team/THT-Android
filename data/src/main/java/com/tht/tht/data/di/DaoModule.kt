@@ -15,6 +15,7 @@ import javax.inject.Singleton
 abstract class DaoModule {
 
     @Binds
+    @Singleton
     abstract fun bindTermsDao(impl: TermsDaoImpl): TermsDao
 
     @Binds
