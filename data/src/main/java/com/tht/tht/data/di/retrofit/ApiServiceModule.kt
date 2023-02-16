@@ -1,7 +1,7 @@
 package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.remote.retrofit.ApiClient
-import com.tht.tht.data.remote.service.ThtApi
+import com.tht.tht.data.remote.service.THTSignupApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal class ApiModule {
+object ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideThtApi(apiClient: ApiClient): ThtApi {
-        return apiClient.provideThtApi()
+    fun provideTHTSignupApiService(apiClient: ApiClient): THTSignupApi {
+        return apiClient.provideTHTSignupApi()
     }
 }
