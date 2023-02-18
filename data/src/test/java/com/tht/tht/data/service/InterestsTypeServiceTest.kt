@@ -6,7 +6,7 @@ import com.tht.tht.data.remote.response.base.ErrorResponse
 import com.tht.tht.data.remote.response.base.SuccessResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
-import com.tht.tht.data.remote.service.ThtApi
+import com.tht.tht.data.remote.service.THTSignupApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -23,12 +23,12 @@ import java.io.File
 class InterestsTypeServiceTest {
 
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var thtApi: ThtApi
+    private lateinit var signupApi: THTSignupApi
 
     @Before
     fun setupTest() {
         mockWebServer = MockWebServer()
-        thtApi = Retrofit.Builder()
+        signupApi = Retrofit.Builder()
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder()
@@ -71,7 +71,7 @@ class InterestsTypeServiceTest {
             )
         )
 
-        val actual = thtApi.fetchInterestsType()
+        val actual = signupApi.fetchInterestsType()
         assertThat(actual)
             .isEqualTo(expect)
     }
@@ -95,7 +95,7 @@ class InterestsTypeServiceTest {
             )
         )
 
-        val actual = thtApi.fetchInterestsType()
+        val actual = signupApi.fetchInterestsType()
         assertThat(actual)
             .isEqualTo(expect)
     }

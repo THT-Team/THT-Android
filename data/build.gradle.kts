@@ -37,6 +37,10 @@ android {
         viewBinding = true
         dataBinding = true
     }
+
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -54,6 +58,8 @@ dependencies {
     testImplementation(libs.assertj.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+    androidTestImplementation(libs.assertj.core)
+    androidTestImplementation(libs.mockk)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
@@ -71,4 +77,5 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.viewmodel.ktx)
     testImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.coroutines.test)
 }

@@ -24,16 +24,16 @@ internal class PatchSignupTermsUseCaseTest {
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
     private val validTermsAgreement = mapOf(
-        TermsModel("terms1", "content1", true) to true,
-        TermsModel("terms2", "content2", false) to true,
-        TermsModel("terms3", "content3", false) to false,
+        TermsModel("terms1", listOf(TermsModel.TermsContent("terms1_1", "content1")), true) to true,
+        TermsModel("terms2", listOf(TermsModel.TermsContent("terms1_1", "content1")), false) to true,
+        TermsModel("terms3", listOf(TermsModel.TermsContent("terms1_1", "content1")), false) to false,
     )
 
     private val invalidTermsAgreement = mapOf(
-        TermsModel("terms1", "content1", true) to true,
-        TermsModel("terms2", "content2", true) to false,
-        TermsModel("terms3", "content3", false) to true,
-        TermsModel("terms4", "content4", false) to false,
+        TermsModel("terms1", listOf(TermsModel.TermsContent("terms1_1", "content1")), true) to true,
+        TermsModel("terms2", listOf(TermsModel.TermsContent("terms1_1", "content1")), true) to false,
+        TermsModel("terms3", listOf(TermsModel.TermsContent("terms1_1", "content1")), false) to true,
+        TermsModel("terms4", listOf(TermsModel.TermsContent("terms1_1", "content1")), false) to false,
     )
 
 
