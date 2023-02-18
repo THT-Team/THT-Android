@@ -8,6 +8,9 @@ android-lifecycle-viewModel-KTX = "2.5.1"
 androidx-core = "1.7.0"
 androidx-appcompat = "1.5.1"
 androidx-constraintlayout = "2.1.4"
+androidx-activitiy-ktx = "1.2.4"
+androidx-fragment-ktx = "1.5.4"
+androidx-lifecycle-runtime-ktx = "2.4.0.-alpha01"
 
 #kotlin
 kotlin = "1.7.20"
@@ -63,7 +66,9 @@ android-material = { module = "com.google.android.material:material", version.re
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
-
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activitiy-ktx"}
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment-ktx"}
+androidx-lifecycle-runtime-ktx = {module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime-ktx"}
 #kotlin
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
