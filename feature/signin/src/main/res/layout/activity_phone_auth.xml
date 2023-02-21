@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhoneAuthActivity"
+    android:background="@color/black_1e1e1e"
+    android:id="@+id/layout_background"
+    >
+
+    <include
+        android:id="@+id/item_signup_tool_bar"
+        layout="@layout/item_signup_tool_bar" />
+
+    <TextView
+        android:layout_marginTop="90dp"
+        android:textSize="30sp"
+        android:id="@+id/tv_phone_auth"
+        android:text="@string/phone_auth"
+        android:textColor="@color/white_f9fafa"
+        android:layout_marginHorizontal="38dp"
+        app:layout_constraintTop_toBottomOf="@id/item_signup_tool_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:hintEnabled="false"
+        android:id="@+id/layout_et_phone"
+        app:layout_constraintTop_toBottomOf="@id/tv_phone_auth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="38dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:errorEnabled="true"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/ic_delete"
+        style="@style/PhoneAuthEditTextStyle"
+        android:theme="@style/PhoneAuthEditTextStyle"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:inputType="phone"
+            android:id="@+id/et_phone"
+            android:textSize="26sp"
+            android:textColor="@color/yellow_f9cc2e"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:layout_marginStart="38dp"
+        android:id="@+id/iv_error"
+        app:layout_constraintTop_toBottomOf="@id/layout_et_phone"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_error"
+        />
+
+    <TextView
+        android:textSize="11sp"
+        android:text="@string/message_phone_auth"
+        android:textColor="@color/gray_666666"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="38dp"
+        app:layout_constraintTop_toTopOf="@id/iv_error"
+        app:layout_constraintStart_toEndOf="@id/iv_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_auth"
+        android:enabled="false"
+        android:layout_marginTop="44dp"
+        android:layout_marginHorizontal="38dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/selector_btn_auth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+    <ProgressBar
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/progress"
+        android:indeterminateTint="@color/red_ef4444"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
