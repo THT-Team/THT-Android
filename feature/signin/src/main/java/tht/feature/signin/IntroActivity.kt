@@ -5,14 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.core.ui.viewBinding
 import tht.feature.signin.databinding.ActivityIntroBinding
 
-@AndroidEntryPoint
 class IntroActivity : AppCompatActivity() {
     companion object {
         fun getIntent(context: Context): Intent {
