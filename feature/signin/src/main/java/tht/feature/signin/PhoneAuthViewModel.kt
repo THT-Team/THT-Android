@@ -49,7 +49,7 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     fun authEvent(phone: String?) = viewModelScope.launch {
-        if(phone.isNullOrBlank() || checkPhoneValidation(phone)) {
+        if(phone.isNullOrBlank() || !checkPhoneValidation(phone)) {
             _uiState.emit(UiState.InputPhoneNumError)
             return@launch
         }
