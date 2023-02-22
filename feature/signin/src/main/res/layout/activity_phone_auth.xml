@@ -44,6 +44,7 @@
         android:theme="@style/PhoneAuthEditTextStyle"
         >
         <com.google.android.material.textfield.TextInputEditText
+            android:maxLines="1"
             android:inputType="phone"
             android:id="@+id/et_phone"
             android:textSize="26sp"
