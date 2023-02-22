@@ -19,7 +19,7 @@ import tht.feature.signin.databinding.ActivityPhoneAuthBinding
 @AndroidEntryPoint
 class PhoneAuthActivity : AppCompatActivity() {
     companion object {
-        fun getIntent(context: Context) : Intent {
+        fun getIntent(context: Context): Intent {
             return Intent(context, PhoneAuthActivity::class.java)
         }
     }
@@ -73,7 +73,8 @@ class PhoneAuthActivity : AppCompatActivity() {
 
                         is PhoneAuthViewModel.UiState.Back -> finish()
 
-                        is PhoneAuthViewModel.UiState.KeyboardVisible -> binding.etPhone.setSoftKeyboardVisible(it.visible)
+                        is PhoneAuthViewModel.UiState.KeyboardVisible ->
+                            binding.etPhone.setSoftKeyboardVisible(it.visible)
 
                         is PhoneAuthViewModel.UiState.InputPhoneNumCorrect -> {
                             binding.layoutEtPhone.error = null

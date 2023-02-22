@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-
 class IntroViewModel : ViewModel() {
 
     private val _uiState = MutableSharedFlow<UiState>()
@@ -25,8 +24,8 @@ class IntroViewModel : ViewModel() {
     }
 
     sealed class UiState {
-        object Signup: UiState()
-        object Login: UiState()
-        object LoginIssue: UiState()
+        object Signup : UiState()
+        object Login : UiState()
+        object LoginIssue : UiState()
     }
 }

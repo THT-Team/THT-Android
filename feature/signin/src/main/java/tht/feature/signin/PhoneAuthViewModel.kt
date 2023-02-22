@@ -24,7 +24,7 @@ class PhoneAuthViewModel @Inject constructor(
     val uiState = _uiState.asSharedFlow()
 
     fun textInputEvent(text: String?) = viewModelScope.launch {
-        if(text.isNullOrBlank()) {
+        if (text.isNullOrBlank()) {
             _uiState.emit(UiState.InputPhoneNumEmpty)
             return@launch
         }
@@ -49,7 +49,7 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     fun authEvent(phone: String?) = viewModelScope.launch {
-        if(phone.isNullOrBlank() || !checkPhoneValidation(phone)) {
+        if (phone.isNullOrBlank() || !checkPhoneValidation(phone)) {
             _uiState.emit(UiState.InputPhoneNumError)
             return@launch
         }

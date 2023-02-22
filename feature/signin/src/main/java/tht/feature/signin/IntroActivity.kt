@@ -41,12 +41,13 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeData()  {
+    private fun observeData() {
         repeatOnStarted {
             launch {
                 viewModel.uiState.collect {
-                    when(it) {
-                        is IntroViewModel.UiState.Signup -> startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
+                    when (it) {
+                        is IntroViewModel.UiState.Signup ->
+                            startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
 
                         is IntroViewModel.UiState.Login -> showToast("login click")
 
