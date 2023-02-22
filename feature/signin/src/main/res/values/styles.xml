@@ -36,6 +36,7 @@
         <item name="errorTextColor">@color/red_ef4444</item>
 
         <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="errorTextAppearance">@style/VerifyTextInputLayoutErrorTextAppearance</item>
     </style>
 
     <style name="VerifyInputEditTextStyle" parent="ThemeOverlay.Material3.TextInputEditText">
@@ -47,5 +48,10 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/TextInputEditTextBottomMinusMargin</item>
+    </style>
+
+    <style name="VerifyTextInputLayoutErrorTextAppearance">
+        <item name="android:textSize">0sp</item>
     </style>
 </resources>
