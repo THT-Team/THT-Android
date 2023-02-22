@@ -56,7 +56,7 @@ class PhoneAuthViewModel @Inject constructor(
         _dataLoading.value = true
         requestAuthenticationUseCase(phone)
             .onSuccess {
-                _uiState.emit(UiState.SuccessRequestAuth)
+                _uiState.emit(UiState.SuccessRequestAuth(phone))
             }.onFailure {
                 _uiState.emit(UiState.ShowToast(it.message ?: "$it"))
             }.also {
@@ -66,7 +66,7 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     sealed class UiState {
-        object SuccessRequestAuth : UiState()
+        data class SuccessRequestAuth(val phone: String) : UiState()
         data class ShowToast(val message: String) : UiState()
         data class KeyboardVisible(val visible: Boolean) : UiState()
         object InputPhoneNumCorrect : UiState()
