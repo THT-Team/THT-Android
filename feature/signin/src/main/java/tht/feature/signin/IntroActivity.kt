@@ -41,11 +41,11 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeData()  {
+    private fun observeData() {
         repeatOnStarted {
             launch {
                 viewModel.uiState.collect {
-                    when(it) {
+                    when (it) {
                         is IntroViewModel.UiState.Signup -> showToast("signup click")
 
                         is IntroViewModel.UiState.Login -> showToast("login click")
