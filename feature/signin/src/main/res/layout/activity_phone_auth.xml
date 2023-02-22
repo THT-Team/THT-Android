@@ -40,8 +40,8 @@
         app:errorEnabled="true"
         app:endIconMode="clear_text"
         app:endIconDrawable="@drawable/ic_delete"
-        style="@style/PhoneAuthEditTextStyle"
-        android:theme="@style/PhoneAuthEditTextStyle"
+        style="@style/PhoneAuthTextInputLayoutStyle"
+        android:theme="@style/PhoneAuthTextInputLayoutStyle"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:maxLines="1"

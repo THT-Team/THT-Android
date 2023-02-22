@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="PhoneAuthEditTextStyle" parent="Widget.Design.TextInputLayout">
+    <style name="PhoneAuthTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
         <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
         <item name="colorControlActivated">@color/yellow_f9cc2e</item>
         <item name="colorControlHighlight">@color/yellow_f9cc2e</item>
