@@ -56,7 +56,10 @@ class PhoneAuthViewModel @Inject constructor(
         _dataLoading.value = true
         requestAuthenticationUseCase(phone)
             .onSuccess {
-                _uiState.emit(UiState.SuccessRequestAuth(phone))
+                when (it) {
+                    true -> _uiState.emit(UiState.SuccessRequestAuth(phone))
+                    else -> _uiState.emit(UiState.ShowToast("fail send auth"))
+                }
             }.onFailure {
                 _uiState.emit(UiState.ShowToast(it.message ?: "$it"))
             }.also {
