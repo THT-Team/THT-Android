@@ -60,7 +60,7 @@ class PhoneAuthActivity : AppCompatActivity() {
         }
 
         binding.btnAuth.setOnClickListener {
-            viewModel.authEvent(it?.toString())
+            viewModel.authEvent(binding.etPhone.text?.toString())
         }
     }
 
