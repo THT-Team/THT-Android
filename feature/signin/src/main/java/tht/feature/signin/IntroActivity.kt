@@ -46,7 +46,7 @@ class IntroActivity : AppCompatActivity() {
             launch {
                 viewModel.uiState.collect {
                     when(it) {
-                        is IntroViewModel.UiState.Signup -> showToast("signup click")
+                        is IntroViewModel.UiState.Signup -> startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
 
                         is IntroViewModel.UiState.Login -> showToast("login click")
 
