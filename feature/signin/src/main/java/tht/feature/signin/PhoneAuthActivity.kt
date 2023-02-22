@@ -94,7 +94,7 @@ class PhoneAuthActivity : AppCompatActivity() {
                         is PhoneAuthViewModel.UiState.SuccessRequestAuth -> {
                             showToast("success")
                             //TODO 성공 custom toast
-                            //TODO 인증 코드 입력 화면 이동
+                            startActivity(VerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
                         }
                     }
                 }
