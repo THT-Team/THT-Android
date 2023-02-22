@@ -43,6 +43,7 @@ class PhoneAuthActivity : AppCompatActivity() {
                 viewModel.backEvent()
             }
         }
+        title = null
     }
 
     private fun initView() {
