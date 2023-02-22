@@ -19,4 +19,33 @@
         <item name="android:hint">@string/hint_phone_input</item>
 
     </style>
+
+    <style name="VerifyTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
+        <item name="colorControlActivated">@color/gray_8d8d8d</item>
+        <item name="colorControlHighlight">@color/gray_8d8d8d</item>
+
+        <item name="boxStrokeColor">@color/gray_8d8d8d</item> // Focus 상태일때 밑줄 색.
+
+        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색.
+
+        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
+        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
+
+        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
+        <item name="errorTextColor">@color/red_ef4444</item>
+
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+
+    <style name="VerifyInputEditTextStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:maxLength">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">number</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>
