@@ -1,5 +1,7 @@
 package tht.feature.signin
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -149,6 +151,8 @@ class VerifyActivity : AppCompatActivity() {
         when (visible) {
             true -> {
                 binding.tvVerifyError.isVisible = true
+                hapticAnimation(binding.layoutVerifyInput)
+                hapticAnimation(binding.tvVerifyError)
                 cause?.let {
                     binding.tvVerifyError.text = it.toString()
                 } ?: run {
@@ -165,5 +169,20 @@ class VerifyActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun hapticAnimation(view: View, itemDuration: Long = 50) {
+        AnimatorSet().apply {
+            playSequentially(
+                listOf(
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 10f).setDuration(itemDuration),
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 0f).setDuration(itemDuration),
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
+                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 0f).setDuration(itemDuration)
+                )
+            )
+        }.start()
     }
 }
