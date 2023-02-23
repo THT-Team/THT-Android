@@ -12,11 +12,6 @@ import tht.core.ui.viewBinding
 import tht.feature.signin.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {
-    companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, IntroActivity::class.java)
-        }
-    }
     private val viewModel: IntroViewModel by viewModels()
     private val binding: ActivityIntroBinding by viewBinding(ActivityIntroBinding::inflate)
 
@@ -55,6 +50,12 @@ class IntroActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, IntroActivity::class.java)
         }
     }
 }
