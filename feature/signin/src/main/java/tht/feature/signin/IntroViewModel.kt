@@ -5,33 +5,34 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import tht.core.ui.base.SideEffect
 
 class IntroViewModel : ViewModel() {
 
-    private val _uiState = MutableSharedFlow<UiState>()
-    val uiState = _uiState.asSharedFlow()
+    private val _sideEffectFlow = MutableSharedFlow<IntroSideEffect>()
+    val sideEffectFlow = _sideEffectFlow.asSharedFlow()
 
     fun signupEvent() {
         viewModelScope.launch {
-            _uiState.emit(UiState.Signup)
+            _sideEffectFlow.emit(IntroSideEffect.NavigateSignupView)
         }
     }
 
     fun loginEvent() {
         viewModelScope.launch {
-            _uiState.emit(UiState.Login)
+            _sideEffectFlow.emit(IntroSideEffect.NavigateLoginView)
         }
     }
 
     fun loginIssueEvent() {
         viewModelScope.launch {
-            _uiState.emit(UiState.LoginIssue)
+            _sideEffectFlow.emit(IntroSideEffect.NavigateLoginIssueView)
         }
     }
 
-    sealed class UiState {
-        object Signup : UiState()
-        object Login : UiState()
-        object LoginIssue : UiState()
+    sealed class IntroSideEffect : SideEffect {
+        object NavigateSignupView : IntroSideEffect()
+        object NavigateLoginView : IntroSideEffect()
+        object NavigateLoginIssueView : IntroSideEffect()
     }
 }

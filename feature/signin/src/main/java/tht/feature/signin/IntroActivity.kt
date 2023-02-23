@@ -39,14 +39,14 @@ class IntroActivity : AppCompatActivity() {
     private fun observeData() {
         repeatOnStarted {
             launch {
-                viewModel.uiState.collect {
+                viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is IntroViewModel.UiState.Signup ->
+                        is IntroViewModel.IntroSideEffect.NavigateSignupView ->
                             startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
 
-                        is IntroViewModel.UiState.Login -> showToast("login click")
+                        is IntroViewModel.IntroSideEffect.NavigateLoginView -> showToast("login click")
 
-                        is IntroViewModel.UiState.LoginIssue -> showToast("login issue click")
+                        is IntroViewModel.IntroSideEffect.NavigateLoginIssueView -> showToast("login issue click")
                     }
                 }
             }
