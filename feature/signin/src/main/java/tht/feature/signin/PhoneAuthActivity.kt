@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
-import tht.core.ui.viewBinding
 import tht.feature.signin.databinding.ActivityPhoneAuthBinding
 
 @AndroidEntryPoint

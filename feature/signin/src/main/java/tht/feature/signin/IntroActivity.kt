@@ -6,9 +6,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
-import tht.core.ui.viewBinding
 import tht.feature.signin.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {
