@@ -11,16 +11,22 @@ class IntroViewModel : ViewModel() {
     private val _uiState = MutableSharedFlow<UiState>()
     val uiState = _uiState.asSharedFlow()
 
-    fun signupEvent() = viewModelScope.launch {
-        _uiState.emit(UiState.Signup)
+    fun signupEvent() {
+        viewModelScope.launch {
+            _uiState.emit(UiState.Signup)
+        }
     }
 
-    fun loginEvent() = viewModelScope.launch {
-        _uiState.emit(UiState.Login)
+    fun loginEvent() {
+        viewModelScope.launch {
+            _uiState.emit(UiState.Login)
+        }
     }
 
-    fun loginIssueEvent() = viewModelScope.launch {
-        _uiState.emit(UiState.LoginIssue)
+    fun loginIssueEvent() {
+        viewModelScope.launch {
+            _uiState.emit(UiState.LoginIssue)
+        }
     }
 
     sealed class UiState {
