@@ -50,4 +50,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+
+
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.gson)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.viewmodel.ktx)
+    testImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.coroutines.test)
 }
