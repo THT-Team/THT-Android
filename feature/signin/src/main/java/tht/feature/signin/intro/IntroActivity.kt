@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.intro
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
+import tht.feature.signin.PhoneAuthActivity
+import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {

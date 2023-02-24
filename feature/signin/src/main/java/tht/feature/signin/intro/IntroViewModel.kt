@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.intro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

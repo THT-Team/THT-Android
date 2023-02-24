@@ -11,7 +11,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".IntroActivity"
+            android:name=".intro.IntroActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>
