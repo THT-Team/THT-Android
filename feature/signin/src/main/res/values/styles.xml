@@ -1,57 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="PhoneAuthTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+    <style name="PhoneAuthInputEditTextFontStyle">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+
+
+    <style name="PhoneAuthInputLayoutFontStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:textStyle">normal</item>
+
+        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
+        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
+        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
+
+        <item name="errorTextColor">@color/red_ef4444</item>
+    </style>
+
+    <style name="PhoneAuthTextInputLayoutStyle" parent="PhoneAuthInputLayoutFontStyle">
         <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
         <item name="colorControlActivated">@color/yellow_f9cc2e</item>
         <item name="colorControlHighlight">@color/yellow_f9cc2e</item>
-
-        <item name="boxStrokeColor">@color/yellow_f9cc2e</item> // Focus 상태일때 밑줄 색.
-
-        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색.
-
-        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
-        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
-
-        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
-        <item name="errorTextColor">@color/red_ef4444</item>
-
-        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색
         <item name="android:hint">@string/hint_phone_input</item>
-
-    </style>
-
-    <style name="VerifyTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
-        <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
-        <item name="colorControlActivated">@color/gray_8d8d8d</item>
-        <item name="colorControlHighlight">@color/gray_8d8d8d</item>
-
-        <item name="boxStrokeColor">@color/gray_8d8d8d</item> // Focus 상태일때 밑줄 색.
-
-        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색.
-
-        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
-        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
-
-        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
-        <item name="errorTextColor">@color/red_ef4444</item>
-
-        <item name="android:textColor">@color/yellow_f9cc2e</item>
-        <item name="errorTextAppearance">@style/VerifyTextInputLayoutErrorTextAppearance</item>
-    </style>
-
-    <style name="VerifyInputEditTextStyle" parent="ThemeOverlay.Material3.TextInputEditText">
-        <item name="android:maxLength">1</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:inputType">number</item>
-        <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/yellow_f9cc2e</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">@dimen/TextInputEditTextBottomMinusMargin</item>
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">true</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconDrawable">@drawable/ic_delete</item>
     </style>
 
     <style name="VerifyTextInputLayoutErrorTextAppearance">
         <item name="android:textSize">0sp</item>
+    </style>
+
+    <style name="VerifyTextInputLayoutFontStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
+        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
+        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
+
+        <item name="errorTextColor">@color/red_ef4444</item>
+        <item name="errorTextAppearance">@style/VerifyTextInputLayoutErrorTextAppearance</item>
+    </style>
+
+    <style name="VerifyTextInputLayoutStyle" parent="VerifyTextInputLayoutFontStyle">
+        <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
+        <item name="colorControlActivated">@color/gray_8d8d8d</item>
+        <item name="colorControlHighlight">@color/gray_8d8d8d</item>
+        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색.
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">true</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="VerifyInputEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="VerifyInputEditTextStyle" parent="VerifyInputEditTextFontStyle">
+        <item name="android:maxLength">1</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">number</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/TextInputEditTextBottomMinusMargin</item>
     </style>
 </resources>
