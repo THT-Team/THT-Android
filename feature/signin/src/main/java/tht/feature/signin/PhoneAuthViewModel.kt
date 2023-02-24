@@ -17,7 +17,8 @@ class PhoneAuthViewModel @Inject constructor(
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase
 ) : BaseStateViewModel<PhoneAuthViewModel.PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<PhoneAuthUiState> = MutableStateFlow(PhoneAuthUiState.InputPhoneNumEmpty)
+    override val _uiStateFlow: MutableStateFlow<PhoneAuthUiState> =
+        MutableStateFlow(PhoneAuthUiState.InputPhoneNumEmpty)
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
@@ -31,7 +32,6 @@ class PhoneAuthViewModel @Inject constructor(
             true -> setUiState(PhoneAuthUiState.InputPhoneNumCorrect)
             else -> setUiState(PhoneAuthUiState.InputPhoneNumError)
         }
-
     }
     private fun checkPhoneValidation(phone: String): Boolean {
         val phoneNumPattern = "^01([0|16789])(\\d{4})(\\d{4})$"
