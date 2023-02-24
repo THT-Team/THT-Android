@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.intro
 
 import android.content.Context
 import android.content.Intent
@@ -6,9 +6,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
-import tht.core.ui.viewBinding
+import tht.feature.signin.auth.PhoneAuthActivity
+import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {
@@ -39,13 +41,14 @@ class IntroActivity : AppCompatActivity() {
     private fun observeData() {
         repeatOnStarted {
             launch {
-                viewModel.uiState.collect {
+                viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is IntroViewModel.UiState.Signup -> showToast("signup click")
+                        is IntroViewModel.IntroSideEffect.NavigateSignupView ->
+                            startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
 
-                        is IntroViewModel.UiState.Login -> showToast("login click")
+                        is IntroViewModel.IntroSideEffect.NavigateLoginView -> showToast("login click")
 
-                        is IntroViewModel.UiState.LoginIssue -> showToast("login issue click")
+                        is IntroViewModel.IntroSideEffect.NavigateLoginIssueView -> showToast("login issue click")
                     }
                 }
             }

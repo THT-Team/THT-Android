@@ -3,9 +3,17 @@
 
     <application>
         <activity
-            android:screenOrientation="portrait"
-            android:name=".IntroActivity"
-            android:exported="false" />
+            android:name=".auth.VerifyActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".auth.PhoneAuthActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".intro.IntroActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

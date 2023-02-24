@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IntroActivity"
+    tools:context=".intro.IntroActivity"
     android:paddingHorizontal="40dp"
     android:paddingBottom="16dp"
     android:background="@color/black_1e1e1e"
@@ -22,6 +22,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatButton
+        style="@style/SubT1SemiBold"
         android:id="@+id/btn_signup"
         android:textColor="@color/white_f9fafa"
         android:gravity="center"
@@ -49,6 +50,7 @@
         />
 
     <TextView
+        style="@style/P2MediumTextStyle"
         android:textColor="@color/white_f9fafa"
         android:text="@string/message_login_issue"
         app:layout_constraintBottom_toBottomOf="parent"

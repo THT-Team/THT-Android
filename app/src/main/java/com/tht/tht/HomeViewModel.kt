@@ -2,7 +2,7 @@ package com.tht.tht
 
 import androidx.annotation.IdRes
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.base.BaseViewModel
+import tht.core.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
