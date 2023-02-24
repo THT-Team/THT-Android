@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
+import tht.feature.signin.StringProvider
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -19,10 +20,11 @@ import javax.inject.Inject
 class VerifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
-    private val requestVerifyUseCase: RequestVerifyUseCase
+    private val requestVerifyUseCase: RequestVerifyUseCase,
+    private val stringProvider: StringProvider
 ) : BaseStateViewModel<VerifyViewModel.VerifyUiState, VerifyViewModel.VerifySideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.ErrorView(false, null))
+    override val _uiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.ErrorViewHide)
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
 
@@ -45,7 +47,11 @@ class VerifyViewModel @Inject constructor(
 
     init {
         if (phone.value.isBlank()) {
-            postSideEffect(VerifySideEffect.FinishView("phone is blank"))
+            postSideEffect(
+                VerifySideEffect.FinishView(
+                    stringProvider.getString(StringProvider.ResId.InvalidatePhone)
+                )
+            )
         } else {
             startTimer()
         }
@@ -60,7 +66,11 @@ class VerifyViewModel @Inject constructor(
                 _time.value = _time.value - 1000
             }
             delay(1000)
-            _sideEffectFlow.emit(VerifySideEffect.ShowToast("time over"))
+            _sideEffectFlow.emit(
+                VerifySideEffect.ShowToast(
+                    stringProvider.getString(StringProvider.ResId.AuthTimeout)
+                )
+            )
             resendAuth()
         }
     }
@@ -88,7 +98,7 @@ class VerifyViewModel @Inject constructor(
             }
             when (sb.length != VERIFY_SIZE) {
                 true -> viewModelScope.launch {
-                    setUiState(VerifyUiState.ErrorView(false, null))
+                    setUiState(VerifyUiState.ErrorViewHide)
                 }
                 else -> requestVerify(sb.toString())
             }
@@ -105,10 +115,16 @@ class VerifyViewModel @Inject constructor(
                             stopTimer()
                             _sideEffectFlow.emit(VerifySideEffect.NavigateNextView(phone.value))
                         }
-                        false -> setUiState(VerifyUiState.ErrorView(true, null))
+                        false -> setUiState(
+                            VerifyUiState.ErrorViewShow(stringProvider.getString(StringProvider.ResId.VerifyFail))
+                        )
                     }
                 }.onFailure {
-                    setUiState(VerifyUiState.ErrorView(true, it))
+                    setUiState(
+                        VerifyUiState.ErrorViewShow(
+                            stringProvider.getString(StringProvider.ResId.VerifyFail) + "\n$it"
+                        )
+                    )
                 }.also {
                     _dataLoading.value = false
                 }
@@ -120,10 +136,16 @@ class VerifyViewModel @Inject constructor(
             _dataLoading.value = true
             requestAuthenticationUseCase(phone.value)
                 .onSuccess {
-                    _sideEffectFlow.emit(VerifySideEffect.ShowToast("인증 번호 재전송"))
+                    _sideEffectFlow.emit(
+                        VerifySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.ResendAuthSuccess))
+                    )
                     startTimer()
                 }.onFailure {
-                    _sideEffectFlow.emit(VerifySideEffect.FinishView(it.message ?: "$it"))
+                    _sideEffectFlow.emit(
+                        VerifySideEffect.FinishView(
+                            (stringProvider.getString(StringProvider.ResId.SendAuthFail) + it.message)
+                        )
+                    )
                 }.also {
                     _dataLoading.value = false
                 }
@@ -131,7 +153,8 @@ class VerifyViewModel @Inject constructor(
     }
 
     sealed class VerifyUiState : UiState {
-        data class ErrorView(val visible: Boolean, val cause: Throwable?) : VerifyUiState()
+        object ErrorViewHide : VerifyUiState()
+        data class ErrorViewShow(val errorMessage: String) : VerifyUiState()
     }
     sealed class VerifySideEffect : SideEffect {
         object Back : VerifySideEffect()

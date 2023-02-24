@@ -115,7 +115,9 @@ class VerifyActivity : AppCompatActivity() {
             launch {
                 viewModel.uiStateFlow.collect {
                     when (it) {
-                        is VerifyViewModel.VerifyUiState.ErrorView -> setError(it.visible, it.cause)
+                        is VerifyViewModel.VerifyUiState.ErrorViewHide -> hideErrorView()
+
+                        is VerifyViewModel.VerifyUiState.ErrorViewShow -> showErrorView(it.errorMessage)
                     }
                 }
             }
@@ -140,27 +142,19 @@ class VerifyActivity : AppCompatActivity() {
         }
     }
 
-    private fun setError(visible: Boolean, cause: Throwable?) {
-        when (visible) {
-            true -> {
-                binding.tvVerifyError.isVisible = true
-                hapticAnimation(binding.layoutVerifyInput)
-                hapticAnimation(binding.tvVerifyError)
-                cause?.let {
-                    binding.tvVerifyError.text = it.toString()
-                } ?: run {
-                    binding.tvVerifyError.text = getString(R.string.message_verify_error)
-                }
-                textInputLayouts.forEach { layout ->
-                    layout.error = " "
-                }
-            }
-            else -> {
-                binding.tvVerifyError.visibility = View.INVISIBLE
-                textInputLayouts.forEach { layout ->
-                    layout.error = null
-                }
-            }
+    private fun hideErrorView() {
+        binding.tvVerifyError.visibility = View.INVISIBLE
+        textInputLayouts.forEach { layout ->
+            layout.error = null
+        }
+    }
+    private fun showErrorView(errorMessage: String) {
+        binding.tvVerifyError.isVisible = true
+        hapticAnimation(binding.layoutVerifyInput)
+        hapticAnimation(binding.tvVerifyError)
+        binding.tvVerifyError.text = errorMessage
+        textInputLayouts.forEach { layout ->
+            layout.error = " "
         }
     }
 
