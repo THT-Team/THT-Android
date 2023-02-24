@@ -17,12 +17,6 @@ import tht.feature.signin.databinding.ActivityPhoneAuthBinding
 
 @AndroidEntryPoint
 class PhoneAuthActivity : AppCompatActivity() {
-    companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, PhoneAuthActivity::class.java)
-        }
-    }
-
     private val viewModel: PhoneAuthViewModel by viewModels()
     private val binding: ActivityPhoneAuthBinding by viewBinding(ActivityPhoneAuthBinding::inflate)
 
@@ -107,6 +101,12 @@ class PhoneAuthActivity : AppCompatActivity() {
                     binding.progress.isVisible = it
                 }
             }
+        }
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, PhoneAuthActivity::class.java)
         }
     }
 }

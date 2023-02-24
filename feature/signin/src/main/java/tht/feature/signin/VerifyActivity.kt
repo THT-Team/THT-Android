@@ -21,18 +21,6 @@ import tht.feature.signin.databinding.ActivityVerifyBinding
 
 @AndroidEntryPoint
 class VerifyActivity : AppCompatActivity() {
-
-    companion object {
-        fun getIntent(
-            context: Context,
-            phone: String
-        ): Intent {
-            return Intent(context, VerifyActivity::class.java).apply {
-                putExtra(VerifyViewModel.EXTRA_PHONE_KEY, phone)
-            }
-        }
-    }
-
     private val viewModel: VerifyViewModel by viewModels()
     private val binding: ActivityVerifyBinding by viewBinding(ActivityVerifyBinding::inflate)
 
@@ -188,5 +176,16 @@ class VerifyActivity : AppCompatActivity() {
                 )
             )
         }.start()
+    }
+
+    companion object {
+        fun getIntent(
+            context: Context,
+            phone: String
+        ): Intent {
+            return Intent(context, VerifyActivity::class.java).apply {
+                putExtra(VerifyViewModel.EXTRA_PHONE_KEY, phone)
+            }
+        }
     }
 }
