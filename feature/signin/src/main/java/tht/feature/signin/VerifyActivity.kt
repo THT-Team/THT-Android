@@ -102,27 +102,31 @@ class VerifyActivity : AppCompatActivity() {
     private fun observeData() {
         repeatOnStarted {
             launch {
-                viewModel.uiState.collect {
+                viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is VerifyViewModel.UiState.ShowToast -> showToast(it.message)
+                        is VerifyViewModel.VerifySideEffect.ShowToast -> showToast(it.message)
 
-                        is VerifyViewModel.UiState.FinishView -> {
+                        is VerifyViewModel.VerifySideEffect.FinishView -> {
                             it.message?.let { m -> showToast(m) }
                             finish()
                         }
 
-                        is VerifyViewModel.UiState.Back -> finish()
+                        is VerifyViewModel.VerifySideEffect.Back -> finish()
 
-                        is VerifyViewModel.UiState.KeyboardVisible ->
+                        is VerifyViewModel.VerifySideEffect.KeyboardVisible ->
                             binding.layoutBackground.setSoftKeyboardVisible(it.visible)
 
-                        is VerifyViewModel.UiState.FailVerify -> setError(true, it.cause)
-
-                        is VerifyViewModel.UiState.VerifyInput -> setError(false, null)
-
-                        is VerifyViewModel.UiState.SuccessVerify -> {
+                        is VerifyViewModel.VerifySideEffect.NavigateNextView -> {
                             //TODO: 다음 화면 으로 이동
                         }
+                    }
+                }
+            }
+
+            launch {
+                viewModel.uiStateFlow.collect {
+                    when (it) {
+                        is VerifyViewModel.VerifyUiState.ErrorView -> setError(it.visible, it.cause)
                     }
                 }
             }

@@ -8,6 +8,9 @@ import com.tht.tht.domain.signup.usecase.RequestVerifyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import tht.core.ui.base.BaseStateViewModel
+import tht.core.ui.base.SideEffect
+import tht.core.ui.base.UiState
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -16,10 +19,12 @@ class VerifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val requestVerifyUseCase: RequestVerifyUseCase
-) : ViewModel() {
+) : BaseStateViewModel<VerifyViewModel.VerifyUiState, VerifyViewModel.VerifySideEffect>() {
     companion object {
         const val EXTRA_PHONE_KEY = "extra_phone_key"
     }
+
+    override val _uiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.ErrorView(false, null))
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
 
@@ -37,9 +42,6 @@ class VerifyViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
-    private val _uiState = MutableSharedFlow<UiState>()
-    val uiState = _uiState.asSharedFlow()
-
     private val verifySize = 6
     private var verify = Array<Char?>(verifySize) { null }
 
@@ -48,7 +50,7 @@ class VerifyViewModel @Inject constructor(
     init {
         if (phone.value.isBlank()) {
             viewModelScope.launch {
-                _uiState.emit(UiState.FinishView("phone is blank"))
+                _sideEffectFlow.emit(VerifySideEffect.FinishView("phone is blank"))
             }
         } else {
             startTimer()
@@ -64,7 +66,7 @@ class VerifyViewModel @Inject constructor(
                 _time.value = _time.value - 1000
             }
             delay(1000)
-            _uiState.emit(UiState.ShowToast("time over"))
+            _sideEffectFlow.emit(VerifySideEffect.ShowToast("time over"))
             resendAuth()
         }
     }
@@ -75,11 +77,11 @@ class VerifyViewModel @Inject constructor(
     }
 
     fun backgroundTouchEvent() = viewModelScope.launch {
-        _uiState.emit(UiState.KeyboardVisible(false))
+        _sideEffectFlow.emit(VerifySideEffect.KeyboardVisible(false))
     }
 
     fun backEvent() = viewModelScope.launch {
-        _uiState.emit(UiState.Back)
+        _sideEffectFlow.emit(VerifySideEffect.Back)
     }
 
     fun verifyInputEvent(input: Char?, idx: Int) {
@@ -92,7 +94,7 @@ class VerifyViewModel @Inject constructor(
             }
             when (sb.length != verifySize) {
                 true -> viewModelScope.launch {
-                    _uiState.emit(UiState.VerifyInput)
+                    _uiStateFlow.emit(VerifyUiState.ErrorView(false, null))
                 }
                 else -> requestVerify(sb.toString())
             }
@@ -106,12 +108,12 @@ class VerifyViewModel @Inject constructor(
                 when (it) {
                     true -> {
                         stopTimer()
-                        _uiState.emit(UiState.SuccessVerify(phone.value))
+                        _sideEffectFlow.emit(VerifySideEffect.NavigateNextView(phone.value))
                     }
-                    false -> _uiState.emit(UiState.FailVerify())
+                    false -> _uiStateFlow.emit(VerifyUiState.ErrorView(true, null))
                 }
             }.onFailure {
-                _uiState.emit(UiState.FailVerify(it))
+                _uiStateFlow.emit(VerifyUiState.ErrorView(true, it))
             }.also {
                 _dataLoading.value = false
             }
@@ -121,22 +123,23 @@ class VerifyViewModel @Inject constructor(
         _dataLoading.value = true
         requestAuthenticationUseCase(phone.value)
             .onSuccess {
-                _uiState.emit(UiState.ShowToast("인증 번호 재전송"))
+                _sideEffectFlow.emit(VerifySideEffect.ShowToast("인증 번호 재전송"))
                 startTimer()
             }.onFailure {
-                _uiState.emit(UiState.FinishView(it.message ?: "$it"))
+                _sideEffectFlow.emit(VerifySideEffect.FinishView(it.message ?: "$it"))
             }.also {
                 _dataLoading.value = false
             }
     }
 
-    sealed class UiState {
-        object Back : UiState()
-        data class ShowToast(val message: String) : UiState()
-        data class FinishView(val message: String?) : UiState()
-        data class KeyboardVisible(val visible: Boolean) : UiState()
-        data class SuccessVerify(val phone: String) : UiState()
-        object VerifyInput : UiState()
-        data class FailVerify(val cause: Throwable? = null) : UiState()
+    sealed class VerifyUiState : UiState {
+        data class ErrorView(val visible: Boolean, val cause: Throwable?) : VerifyUiState()
+    }
+    sealed class VerifySideEffect : SideEffect {
+        object Back : VerifySideEffect()
+        data class ShowToast(val message: String) : VerifySideEffect()
+        data class FinishView(val message: String?) : VerifySideEffect()
+        data class KeyboardVisible(val visible: Boolean) : VerifySideEffect()
+        data class NavigateNextView(val phone: String) : VerifySideEffect()
     }
 }
