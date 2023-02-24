@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.auth
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope

@@ -3,11 +3,11 @@
 
     <application>
         <activity
-            android:name=".VerifyActivity"
+            android:name=".auth.VerifyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PhoneAuthActivity"
+            android:name=".auth.PhoneAuthActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

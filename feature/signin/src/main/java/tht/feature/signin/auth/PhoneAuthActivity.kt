@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.auth
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,7 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
+import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneAuthBinding
 
 @AndroidEntryPoint

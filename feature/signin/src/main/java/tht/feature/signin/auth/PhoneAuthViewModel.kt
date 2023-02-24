@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.auth
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase

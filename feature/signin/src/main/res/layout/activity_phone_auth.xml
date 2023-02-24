@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PhoneAuthActivity"
+    tools:context=".auth.PhoneAuthActivity"
     android:background="@color/black_1e1e1e"
     android:id="@+id/layout_background"
     >

@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.auth
 
 import android.view.KeyEvent
 import android.view.View

@@ -1,4 +1,4 @@
-package tht.feature.signin
+package tht.feature.signin.auth
 
 import android.text.Editable
 import android.text.TextWatcher
