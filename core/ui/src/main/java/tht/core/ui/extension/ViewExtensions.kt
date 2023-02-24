@@ -9,20 +9,6 @@ fun View.hideSoftInput() {
     inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun View.setSoftKeyboardVisible(visible: Boolean) {
-    val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    when (visible) {
-        true -> {
-            requestFocus()
-            inputMethodManager.showSoftInput(this, 0)
-        }
-        else -> {
-            clearFocus()
-            inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
-        }
-    }
-}
-
 fun View.visible() {
     visibility = View.VISIBLE
 }
