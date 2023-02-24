@@ -1,13 +1,14 @@
 package tht.feature.signin
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.signup.usecase.RequestVerifyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
@@ -25,6 +26,7 @@ class VerifyViewModel @Inject constructor(
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
 
+    private var timerJob: Job? = null
     private val defaultTimeMill: Long = 60 * 3 * 1000
     private val _time = MutableStateFlow(defaultTimeMill)
     val time = _time.map {
@@ -39,10 +41,7 @@ class VerifyViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
-    private val verifySize = 6
-    private var verify = Array<Char?>(verifySize) { null }
-
-    private var timerJob: Job? = null
+    private var verify = Array<Char?>(VERIFY_SIZE) { null }
 
     init {
         if (phone.value.isBlank()) {
@@ -80,14 +79,14 @@ class VerifyViewModel @Inject constructor(
     }
 
     fun verifyInputEvent(input: Char?, idx: Int) {
-        if (idx in 0 until verifySize)
+        if (idx in 0 until VERIFY_SIZE)
             verify[idx] = input
 
         StringBuilder().let { sb ->
             verify.forEach { v ->
                 if (v != null) sb.append(v)
             }
-            when (sb.length != verifySize) {
+            when (sb.length != VERIFY_SIZE) {
                 true -> viewModelScope.launch {
                     setUiState(VerifyUiState.ErrorView(false, null))
                 }
@@ -143,5 +142,7 @@ class VerifyViewModel @Inject constructor(
     }
     companion object {
         const val EXTRA_PHONE_KEY = "extra_phone_key"
+
+        private const val VERIFY_SIZE = 6
     }
 }
