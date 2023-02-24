@@ -14,5 +14,4 @@ interface StringProvider {
         ResendAuthSuccess,
         VerifyFail
     }
-
 }
