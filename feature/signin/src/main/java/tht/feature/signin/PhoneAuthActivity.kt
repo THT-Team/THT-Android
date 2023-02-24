@@ -66,34 +66,40 @@ class PhoneAuthActivity : AppCompatActivity() {
     private fun observeData() {
         repeatOnStarted {
             launch {
-                viewModel.uiState.collect {
+                viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is PhoneAuthViewModel.UiState.ShowToast -> showToast(it.message)
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.ShowToast -> showToast(it.message)
 
-                        is PhoneAuthViewModel.UiState.Back -> finish()
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.Back -> finish()
 
-                        is PhoneAuthViewModel.UiState.KeyboardVisible ->
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible ->
                             binding.etPhone.setSoftKeyboardVisible(it.visible)
 
-                        is PhoneAuthViewModel.UiState.InputPhoneNumCorrect -> {
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.SuccessRequestAuth -> {
+                            showToast("success")
+                            //TODO 성공 custom toast
+                            startActivity(VerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
+                        }
+                    }
+                }
+            }
+
+            launch {
+                viewModel.uiStateFlow.collect {
+                    when (it) {
+                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumCorrect -> {
                             binding.layoutEtPhone.error = null
                             binding.btnAuth.isEnabled = true
                         }
 
-                        is PhoneAuthViewModel.UiState.InputPhoneNumEmpty -> {
+                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumEmpty -> {
                             binding.layoutEtPhone.error = null
                             binding.btnAuth.isEnabled = false
                         }
 
-                        is PhoneAuthViewModel.UiState.InputPhoneNumError -> {
+                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumError -> {
                             binding.layoutEtPhone.error = getString(R.string.message_phone_input_error)
                             binding.btnAuth.isEnabled = false
-                        }
-
-                        is PhoneAuthViewModel.UiState.SuccessRequestAuth -> {
-                            showToast("success")
-                            //TODO 성공 custom toast
-                            startActivity(VerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
                         }
                     }
                 }
