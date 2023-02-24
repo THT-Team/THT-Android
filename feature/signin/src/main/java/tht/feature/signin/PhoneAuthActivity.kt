@@ -75,11 +75,8 @@ class PhoneAuthActivity : AppCompatActivity() {
                         is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible ->
                             binding.etPhone.setSoftKeyboardVisible(it.visible)
 
-                        is PhoneAuthViewModel.PhoneAuthSideEffect.SuccessRequestAuth -> {
-                            showToast("success")
-                            //TODO 성공 custom toast
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateVerifyView ->
                             startActivity(VerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
-                        }
                     }
                 }
             }
