@@ -80,8 +80,8 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // Coroutines
-    implementation(libs.coroutines.core)
     implementation(libs.viewmodel.ktx)
+    implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
 
     // kakao
