@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.THT">
         <activity
-            android:name=".HomeActivity"
-            android:exported="true">
+            android:name=".prelogin.PreloginActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,6 +23,21 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="oauth"
+                    android:scheme="@string/kakao_oauth_host" />
+            </intent-filter>
         </activity>
     </application>
 
