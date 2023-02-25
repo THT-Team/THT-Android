@@ -31,7 +31,6 @@ jobs:
 
             - name: Add Key Info into local.properties
               run: |
-#                rm -rf ./local.properties
                 touch ./local.properties
                 echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                 echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
@@ -59,7 +58,6 @@ jobs:
 
             - name: Add Key Info into local.properties
               run: |
-#                rm -rf ./local.properties
                 touch ./local.properties
                 echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                 echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
@@ -101,7 +99,6 @@ jobs:
 
             - name: Add Key Info into local.properties
               run: |
-#                rm -rf ./local.properties
                 touch ./local.properties
                 echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                 echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
