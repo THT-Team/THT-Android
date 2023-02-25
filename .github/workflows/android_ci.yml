@@ -38,6 +38,7 @@ jobs:
                 echo -e "\nKAKAO_NATIVE_APP_KEY=$KAKAO_NATIVE_APP_KEY" >> ./local.properties
                 echo -e "\nOAUTH_CLIENT_ID_NAVER=$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
                 cat ./local.properties
+              shell: bash
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                 OAUTH_CLIENT_ID_NAVER: ${{ secrets.OAUTH_CLIENT_ID_NAVER }}
@@ -65,6 +66,7 @@ jobs:
             echo -e "\nKAKAO_NATIVE_APP_KEY=$KAKAO_NATIVE_APP_KEY" >> ./local.properties
             echo -e "\nOAUTH_CLIENT_ID_NAVER=$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
             cat ./local.properties
+          shell: bash
           env:
             KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
             OAUTH_CLIENT_ID_NAVER: ${{ secrets.OAUTH_CLIENT_ID_NAVER }}
@@ -96,6 +98,7 @@ jobs:
                 echo -e "\nKAKAO_NATIVE_APP_KEY=$KAKAO_NATIVE_APP_KEY" >> ./local.properties
                 echo -e "\nOAUTH_CLIENT_ID_NAVER=$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
                 cat ./local.properties
+              shell: bash
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                 OAUTH_CLIENT_ID_NAVER: ${{ secrets.OAUTH_CLIENT_ID_NAVER }}
