@@ -25,13 +25,13 @@ jobs:
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
                 restore-keys: |
                   ${{ runner.os }}-gradle-
-          
+
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-              
+
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
-              
+
     test:
         runs-on: ubuntu-latest
         steps:
@@ -51,8 +51,8 @@ jobs:
 
         - name: Create android test report
           uses: asadmansr/android-test-report-action@v1.2.0
-          if: ${{ always() }}   
-    
+          if: ${{ always() }}
+
     lint:
         runs-on: ubuntu-latest
         steps:
@@ -64,6 +64,19 @@ jobs:
                   distribution: 'temurin'
                   cache: gradle
 
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+
+            - name: Add Key Info into local.properties
+              run: |
+                touch ./local.properties
+                echo -e "\nKAKAO_NATIVE_APP_KEY=$KAKAO_NATIVE_APP_KEY" >> ./local.properties
+                echo -e "\nOAUTH_CLIENT_ID_NAVER=$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
+                cat ./local.properties
+              env:
+                KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                OAUTH_CLIENT_ID_NAVER: ${{ secrets.OAUTH_CLIENT_ID_NAVER }}
+
             - name: Cache Gradle packages
               uses: actions/cache@v3.0.11
               with:
@@ -73,25 +86,22 @@ jobs:
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
                 restore-keys: |
                   ${{ runner.os }}-gradle-
-          
-            - name: Grant execute permission for gradlew
-              run: chmod +x gradlew
-              
+
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace
-              
+
             - name: Run detekt
               run: ./gradlew detekt
-          
+
     alert:
-        runs-on: ubuntu-latest     
+        runs-on: ubuntu-latest
         needs: [build, lint, test]
         steps:
         - name: action-slack
           uses: 8398a7/action-slack@v3.14.0
           with:
             status: ${{ job.status }}
-            author_name: THT-Android CI  
+            author_name: THT-Android CI
             fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
             custom_payload: |
               {

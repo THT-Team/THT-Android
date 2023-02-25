@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -19,6 +21,9 @@ android {
         versionName = rootProject.ext.get("versionName") as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", getApiKey("KAKAO_NATIVE_APP_KEY"))
+        buildConfigField("String", "OAUTH_CLIENT_ID_NAVER", getApiKey("OAUTH_CLIENT_ID_NAVER"))
+        resValue("string", "kakao_oauth_host", "kakao${getApiKey("KAKAO_NATIVE_APP_KEY")}")
     }
 
     buildTypes {
@@ -72,4 +77,11 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.viewmodel.ktx)
     testImplementation(libs.coroutines.test)
+
+    // kakao
+    implementation("com.kakao.sdk:v2-user:2.12.1")
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }
