@@ -11,7 +11,7 @@ import tht.core.ui.exception.isApiNotFoundException
 import javax.inject.Inject
 
 @HiltViewModel
-class PreloginViewModel @Inject constructor(): BaseStateViewModel<PreloginState, PreloginSideEffect>() {
+class PreloginViewModel @Inject constructor() : BaseStateViewModel<PreloginState, PreloginSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<PreloginState> = MutableStateFlow(PreloginState.Uninitialized)
 
