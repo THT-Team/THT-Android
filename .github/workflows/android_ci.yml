@@ -36,8 +36,8 @@ jobs:
               run: |
                 rm -rf ./local.properties
                 touch ./local.properties
-                echo -e KAKAO_NATIVE_APP_KEY="$KAKAO_NATIVE_APP_KEY" >> ./local.properties
-                echo -e OAUTH_CLIENT_ID_NAVER="$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
+                echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
                 cat ./local.properties
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
@@ -64,8 +64,8 @@ jobs:
               run: |
                 rm -rf ./local.properties
                 touch ./local.properties
-                echo -e KAKAO_NATIVE_APP_KEY="$KAKAO_NATIVE_APP_KEY" >> ./local.properties
-                echo -e OAUTH_CLIENT_ID_NAVER="$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
+                echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
                 cat ./local.properties
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
@@ -106,8 +106,8 @@ jobs:
               run: |
                 rm -rf ./local.properties
                 touch ./local.properties
-                echo -e KAKAO_NATIVE_APP_KEY="$KAKAO_NATIVE_APP_KEY" >> ./local.properties
-                echo -e OAUTH_CLIENT_ID_NAVER="$OAUTH_CLIENT_ID_NAVER" >> ./local.properties
+                echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
                 cat ./local.properties
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
