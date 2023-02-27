@@ -34,27 +34,14 @@ internal class RequestVerifyUseCaseTest {
     }
 
     @Test
-    fun `useCase는 Repository의 requestVerify가 true를 리턴하고 Repository의 fetchSignupUser가 null을 리턴하면 CreateSignupUserUseCase를 호출한다`() = runTest(testDispatcher) {
+    fun `useCase는 Repository의 requestVerify가 true를 리턴하면 CreateSignupUserUseCase를 호출한다`() = runTest(testDispatcher) {
         val phone = "test"
-        coEvery { repository.fetchSignupUser(any()) } returns null
         coEvery { repository.requestVerify(any(), any()) } returns true
 
         useCase(phone, "auth")
 
         coVerify { createSignupUserUseCase(phone) }
     }
-
-    @Test
-    fun `useCase는 Repository의 requestVerify가 true를 리턴하고 Repository의 fetchSignupUser가 null을 리턴하지 않으면 CreateSignupUserUseCase를 호출하지 않는다`() = runTest(testDispatcher) {
-        val phone = "test"
-        coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
-        coEvery { repository.requestVerify(any(), any()) } returns true
-
-        useCase(phone, "auth")
-
-        coVerify(exactly = 0) { createSignupUserUseCase(phone) }
-    }
-
 
     @Test
     fun `useCase는 Repository의 requestVerify의 결과를 Result로 래핑해서 리턴한다`() = runTest(testDispatcher) {
