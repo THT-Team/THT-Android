@@ -9,12 +9,14 @@ import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
+import tht.feature.signin.StringProvider
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class PhoneAuthViewModel @Inject constructor(
-    private val requestAuthenticationUseCase: RequestAuthenticationUseCase
+    private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
+    private val stringProvider: StringProvider
 ) : BaseStateViewModel<PhoneAuthViewModel.PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<PhoneAuthUiState> =
@@ -56,11 +58,26 @@ class PhoneAuthViewModel @Inject constructor(
             requestAuthenticationUseCase(phone)
                 .onSuccess {
                     when (it) {
-                        true -> _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone))
-                        else -> _sideEffectFlow.emit(PhoneAuthSideEffect.ShowToast("fail send auth"))
+                        true -> {
+                            _sideEffectFlow.emit(
+                                PhoneAuthSideEffect.ShowToast(
+                                    stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
+                                )
+                            )
+                            _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone))
+                        }
+                        else -> _sideEffectFlow.emit(
+                            PhoneAuthSideEffect.ShowToast(
+                                stringProvider.getString(StringProvider.ResId.SendAuthFail)
+                            )
+                        )
                     }
                 }.onFailure {
-                    _sideEffectFlow.emit(PhoneAuthSideEffect.ShowToast(it.message ?: "$it"))
+                    _sideEffectFlow.emit(
+                        PhoneAuthSideEffect.ShowToast(
+                            (stringProvider.getString(StringProvider.ResId.SendAuthFail) + it.message)
+                        )
+                    )
                 }.also {
                     _sideEffectFlow.emit(PhoneAuthSideEffect.KeyboardVisible(false))
                     _dataLoading.value = false
