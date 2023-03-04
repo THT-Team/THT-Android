@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="PhoneAuthInputEditTextFontStyle">
+    <style name="PhoneAuthInputEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/yellow_f9cc2e</item>
