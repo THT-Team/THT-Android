@@ -18,7 +18,9 @@ class StringProviderImpl @Inject constructor(
 
     private fun getResId(id: StringProvider.ResId): Int {
         return when (id) {
+            StringProvider.ResId.CustomerService -> R.string.message_customer_service
             StringProvider.ResId.InvalidatePhone -> R.string.message_invalidate_phone
+            StringProvider.ResId.InvalidateSignupProcess -> R.string.message_invalidate_signup_process
             StringProvider.ResId.SendAuthSuccess -> R.string.message_send_auth_success
             StringProvider.ResId.SendAuthFail -> R.string.message_send_auth_fail
             StringProvider.ResId.AuthTimeout -> R.string.message_auth_timeout

@@ -7,7 +7,9 @@ interface StringProvider {
     fun getString(id: ResId, vararg formatArg: Any): String
 
     enum class ResId {
+        CustomerService,
         InvalidatePhone,
+        InvalidateSignupProcess,
         SendAuthSuccess,
         SendAuthFail,
         AuthTimeout,
