@@ -70,7 +70,7 @@ class PhoneAuthActivity : AppCompatActivity() {
                         is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible ->
                             binding.etPhone.setSoftKeyboardVisible(it.visible)
 
-                        is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateVerifyView ->
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateNextView ->
                             startActivity(VerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
                     }
                 }
