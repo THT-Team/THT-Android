@@ -1,4 +1,4 @@
-package com.tht.tht.base
+package tht.core.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
