@@ -1,10 +1,7 @@
 name: Android CI
 
 on:
-    push:
-        branches: [ "develop" ]
     pull_request:
-        branches: [ "develop" ]
 
 jobs:
 
@@ -28,17 +25,16 @@ jobs:
                   key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
                   restore-keys: |
                       ${{ runner.os }}-gradle-
-
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
 
             - name: Add Key Info into local.properties
               run: |
-                touch ./local.properties
-                echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
-                cat ./local.properties
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  cat ./local.properties
               env:
-                KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
@@ -57,16 +53,16 @@ jobs:
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
 
-        - name: Add Key Info into local.properties
-            run: |
-              touch ./local.properties
-              echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
-              cat ./local.properties
-            env:
-              KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+            - name: Add Key Info into local.properties
+              run: |
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  cat ./local.properties
+              env:
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
 
-        - name: Run unit tests
-          run: ./gradlew testDebugUnitTest
+            - name: Run unit tests
+              run: ./gradlew testDebugUnitTest
 
             - name: Create android test report
               uses: asadmansr/android-test-report-action@v1.2.0
@@ -83,18 +79,6 @@ jobs:
                   distribution: 'temurin'
                   cache: gradle
 
-            - name: Grant execute permission for gradlew
-              run: chmod +x gradlew
-
-            - name: Add Key Info into local.properties
-              run: |
-                touch ./local.properties
-                echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
-                cat ./local.properties
-              shell: bash
-              env:
-                KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
-
             - name: Cache Gradle packages
               uses: actions/cache@v3.0.11
               with:
@@ -104,9 +88,16 @@ jobs:
                   key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
                   restore-keys: |
                       ${{ runner.os }}-gradle-
-
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
+
+            - name: Add Key Info into local.properties
+              run: |
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  cat ./local.properties
+              env:
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
 
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace
