@@ -1,4 +1,4 @@
-package tht.core.ui.binding
+package tht.core.ui.delegate
 
 import android.view.LayoutInflater
 import androidx.activity.ComponentActivity

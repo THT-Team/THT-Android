@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import tht.core.ui.base.BaseActivity
 import tht.core.ui.base.FragmentNavigator
-import tht.core.ui.binding.viewBinding
+import tht.core.ui.delegate.viewBinding
 import com.tht.tht.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

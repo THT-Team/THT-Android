@@ -1,3 +1,3 @@
 package tht.core.ui.base
 
-interface State
+interface UiState

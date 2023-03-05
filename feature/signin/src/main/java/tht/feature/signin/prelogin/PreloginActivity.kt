@@ -9,13 +9,12 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import tht.core.ui.binding.viewBinding
+import tht.core.ui.delegate.viewBinding
 import com.tht.tht.domain.type.SignInType
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateActivity
 import tht.core.ui.extension.gone
 import tht.core.ui.extension.visible
-import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
 
 class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBinding>() {
@@ -53,7 +52,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                             is PreloginSideEffect.ShowToast -> {
                                 Toast.makeText(this@PreloginActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
                             }
-                            is PreloginSideEffect.NavigateSignUp -> { TODO("회원가입 화면 이동 처리")}
+                            is PreloginSideEffect.NavigateSignUp -> { TODO("회원가입 화면 이동 처리") }
                             is PreloginSideEffect.NavigatePhoneAuth -> navigatePhoneAuth(sideEffect)
                         }
                     }
@@ -89,10 +88,12 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     }
 
     private fun navigatePhoneAuth(sideEffect: PreloginSideEffect.NavigatePhoneAuth) {
-        startActivity(PhoneAuthActivity.getIntent(this).apply {
-            intent.putExtra("token", sideEffect.token)
-            intent.putExtra("signInType", sideEffect.signInType.name)
-        })
+//        startActivity(
+//            PhoneAuthActivity.getIntent(this).apply {
+//                intent.putExtra("token", sideEffect.token)
+//                intent.putExtra("signInType", sideEffect.signInType.name)
+//            }
+//        )
     }
 
     private fun handleUninitialized() = with(binding) {
