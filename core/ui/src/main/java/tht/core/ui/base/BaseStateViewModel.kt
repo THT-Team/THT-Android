@@ -1,4 +1,4 @@
-package com.tht.tht.base
+package tht.core.ui.base
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow

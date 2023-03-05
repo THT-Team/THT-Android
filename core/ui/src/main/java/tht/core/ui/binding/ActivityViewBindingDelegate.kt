@@ -1,4 +1,4 @@
-package com.tht.tht.binding
+package tht.core.ui.binding
 
 import android.view.LayoutInflater
 import androidx.activity.ComponentActivity

@@ -36,11 +36,9 @@ jobs:
               run: |
                 touch ./local.properties
                 echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
-                echo -e OAUTH_CLIENT_ID_NAVER=\"$OAUTH_CLIENT_ID_NAVER\" >> ./local.properties
                 cat ./local.properties
               env:
                 KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
-                OAUTH_CLIENT_ID_NAVER: ${{ secrets.OAUTH_CLIENT_ID_NAVER }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test

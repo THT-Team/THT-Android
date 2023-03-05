@@ -1,4 +1,4 @@
-package com.tht.tht.base
+package tht.core.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
