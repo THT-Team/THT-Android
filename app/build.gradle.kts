@@ -28,7 +28,6 @@ android {
             load(FileInputStream(File(rootProject.rootDir, "local.properties")))
         }
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", prop.getProperty("KAKAO_NATIVE_APP_KEY"))
-        buildConfigField("String", "OAUTH_CLIENT_ID_NAVER", prop.getProperty("OAUTH_CLIENT_ID_NAVER"))
         resValue("string", "kakao_oauth_host", "kakao${prop.getProperty("KAKAO_NATIVE_APP_KEY")}")
     }
 

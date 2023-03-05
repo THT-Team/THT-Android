@@ -62,4 +62,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
+
+    // kakao
+    implementation("com.kakao.sdk:v2-user:2.12.1")
 }

@@ -1,4 +1,4 @@
-package com.tht.tht.prelogin
+package tht.feature.signin.prelogin
 
 import tht.core.ui.base.UiState
 
