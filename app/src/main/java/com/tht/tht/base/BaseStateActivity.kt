@@ -1,4 +1,4 @@
-package tht.core.ui.base
+package com.tht.tht.base
 
 import androidx.viewbinding.ViewBinding
 
