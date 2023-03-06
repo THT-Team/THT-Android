@@ -64,7 +64,7 @@ class PhoneAuthViewModel @Inject constructor(
                                     stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
                                 )
                             )
-                            _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateNextView(phone))
+                            _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone))
                         }
                         else -> _sideEffectFlow.emit(
                             PhoneAuthSideEffect.ShowToast(
@@ -93,7 +93,7 @@ class PhoneAuthViewModel @Inject constructor(
 
     sealed class PhoneAuthSideEffect : SideEffect {
         data class ShowToast(val message: String) : PhoneAuthSideEffect()
-        data class NavigateNextView(val phone: String) : PhoneAuthSideEffect()
+        data class NavigateVerifyView(val phone: String) : PhoneAuthSideEffect()
         data class KeyboardVisible(val visible: Boolean) : PhoneAuthSideEffect()
         object Back : PhoneAuthSideEffect()
     }
