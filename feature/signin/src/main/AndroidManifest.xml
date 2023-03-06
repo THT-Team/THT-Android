@@ -3,6 +3,10 @@
 
     <application>
         <activity
+            android:name=".email.EmailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".auth.VerifyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

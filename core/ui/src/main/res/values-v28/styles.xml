@@ -54,7 +54,15 @@
     <style name="H4MediumGrayTextStyle" parent="H4MediumTextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
+
     <!--H4Medium-->
+
+    <!--H4Regular-->
+    <style name="H4RegularTextStyle">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+    <!--H4Regular-->
 
     <!--H5Bold-->
     <style name="H5BoldTextStyle">
