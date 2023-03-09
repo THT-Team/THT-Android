@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nicknameFragment">
+
+    <fragment
+        android:id="@+id/nicknameFragment"
+        android:name="tht.feature.signin.signup.nickname.NicknameFragment"
+        android:label="NicknameFragment" >
+        <action
+            android:id="@+id/action_nicknameFragment_to_birthdayFragment"
+            app:destination="@id/birthdayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/birthdayFragment"
+        android:name="tht.feature.signin.signup.birthday.BirthdayFragment"
+        android:label="BirthdayFragment" >
+        <action
+            android:id="@+id/action_birthdayFragment_to_genderFragment"
+            app:destination="@id/genderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/genderFragment"
+        android:name="tht.feature.signin.signup.gender.GenderFragment"
+        android:label="GenderFragment" >
+        <action
+            android:id="@+id/action_genderFragment_to_pictureFragment"
+            app:destination="@id/pictureFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/idealTypeFragment"
+        android:name="tht.feature.signin.signup.idealtype.IdealTypeFragment"
+        android:label="IdealTypeFragment" >
+        <action
+            android:id="@+id/action_idealTypeFragment_to_introductionFragment"
+            app:destination="@id/introductionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/interestFragment"
+        android:name="tht.feature.signin.signup.interest.InterestFragment"
+        android:label="InterestFragment" >
+        <action
+            android:id="@+id/action_interestFragment_to_idealTypeFragment"
+            app:destination="@id/idealTypeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/introductionFragment"
+        android:name="tht.feature.signin.signup.introduction.IntroductionFragment"
+        android:label="IntroductionFragment" >
+        <action
+            android:id="@+id/action_introductionFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="tht.feature.signin.signup.location.LocationFragment"
+        android:label="LocationFragment" />
+    <fragment
+        android:id="@+id/pictureFragment"
+        android:name="tht.feature.signin.signup.picture.PictureFragment"
+        android:label="PictureFragment" >
+        <action
+            android:id="@+id/action_pictureFragment_to_interestFragment"
+            app:destination="@id/interestFragment" />
+    </fragment>
+</navigation>
