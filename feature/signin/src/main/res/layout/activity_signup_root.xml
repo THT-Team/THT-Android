@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".signup.SignupRootActivity">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/pb_signup"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:max="8"
+        android:progressBackgroundTint="@color/brown_26241f"
+        android:progressTint="@color/yellow_f9cc2e"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_left_arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pb_signup"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fc_nav_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -13,9 +36,10 @@
         android:layout_height="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/nav_graph"
+        tools:layout="@layout/fragment_nickname" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
