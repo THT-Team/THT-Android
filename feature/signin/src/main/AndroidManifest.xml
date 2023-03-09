@@ -3,6 +3,13 @@
 
     <application>
         <activity
+            android:name=".SignupRootActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".auth.VerifyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
