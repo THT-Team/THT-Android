@@ -10,7 +10,6 @@
         android:id="@+id/logoImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="188dp"
         android:contentDescription="@null"
         android:src="@drawable/ic_logo"
         app:layout_constraintBottom_toTopOf="@id/iv_number_login_button"
@@ -23,18 +22,17 @@
         android:id="@+id/iv_number_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="134dp"
         android:clickable="true"
         android:contentDescription="@null"
         android:focusable="true"
         android:src="@drawable/ic_number_login_button"
-        app:layout_constraintBottom_toBottomOf="@id/iv_kakao_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logoImageView" />
 
     <ImageView
+        android:layout_marginTop="16dp"
         android:id="@+id/iv_kakao_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,12 +41,12 @@
         android:contentDescription="@null"
         android:focusable="true"
         android:src="@drawable/ic_kakao_login_button"
-        app:layout_constraintBottom_toBottomOf="@id/iv_google_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_number_login_button" />
 
     <ImageView
+        android:layout_marginTop="16dp"
         android:id="@+id/iv_google_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,12 +55,12 @@
         android:contentDescription="@null"
         android:focusable="true"
         android:src="@drawable/ic_google_login_button"
-        app:layout_constraintBottom_toBottomOf="@id/iv_naver_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_kakao_login_button" />
 
     <ImageView
+        android:layout_marginTop="16dp"
         android:id="@+id/iv_naver_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,12 +69,13 @@
         android:contentDescription="@null"
         android:focusable="true"
         android:src="@drawable/ic_naver_login_button"
-        app:layout_constraintBottom_toTopOf="@id/tv_help_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_google_login_button" />
 
     <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:id="@+id/tv_help_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
