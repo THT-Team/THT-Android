@@ -62,7 +62,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     }
 
     private fun handleRequestKakaoLogin() {
-        val kakaoAccountFallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        val kakaoAccountCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 handleUninitialized()
             } else if (token != null) {
@@ -77,13 +77,13 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                         handleUninitialized()
                         return@loginWithKakaoTalk
                     }
-                    UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountFallback)
+                    UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountCallback)
                 } else if (token != null) {
                     vm.requestSignIn(signInType = SignInType.KAKAO, token.accessToken)
                 }
             }
         } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountFallback)
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountCallback)
         }
     }
 
