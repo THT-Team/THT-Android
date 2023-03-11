@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.tht.tht.base.BaseActivity
-import com.tht.tht.base.FragmentNavigator
-import com.tht.tht.binding.viewBinding
+import tht.core.ui.base.BaseActivity
+import tht.core.ui.base.FragmentNavigator
+import tht.core.ui.delegate.viewBinding
 import com.tht.tht.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

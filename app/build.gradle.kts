@@ -1,3 +1,7 @@
+import java.util.Properties
+import java.io.File
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -19,6 +23,12 @@ android {
         versionName = rootProject.ext.get("versionName") as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val prop = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", prop.getProperty("KAKAO_NATIVE_APP_KEY"))
+        resValue("string", "kakao_oauth_host", "kakao${prop.getProperty("KAKAO_NATIVE_APP_KEY")}")
     }
 
     buildTypes {
@@ -69,7 +79,10 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // Coroutines
-    implementation(libs.coroutines.core)
     implementation(libs.viewmodel.ktx)
+    implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
+
+    // kakao
+    implementation("com.kakao.sdk:v2-user:2.12.1")
 }

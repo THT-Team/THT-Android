@@ -13,4 +13,7 @@ object THTApiConstant {
         const val SIGNUP = "signup"
     }
 
+    object Login {
+        const val LOGIN = "/auth/login"
+    }
 }
