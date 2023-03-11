@@ -17,8 +17,7 @@ class SignupApiDataSourceImpl @Inject constructor(
 ) : SignupApiDataSource {
     override suspend fun requestAuthenticationNumber(phone: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestAuthenticationNumber(phone)
-                .let {
+            apiService.requestAuthenticationNumber(phone).let {
                 when (it) {
                     is BaseResponse.Success -> true
                     is BaseResponse.SuccessNoBody -> true
@@ -32,8 +31,7 @@ class SignupApiDataSourceImpl @Inject constructor(
 
     override suspend fun requestVerify(phone: String, authNumber: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestVerify(phone, authNumber)
-                .let {
+            apiService.requestVerify(phone, authNumber).let {
                 when (it) {
                     is BaseResponse.Success -> true
                     is BaseResponse.SuccessNoBody -> true
