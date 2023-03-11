@@ -15,7 +15,7 @@ import retrofit2.http.Query
 
 interface THTLoginApi {
 
-    @POST("/auth/login")
+    @POST(THTApiConstant.Login.LOGIN)
     suspend fun requestLogin(
         @Body loginRequest: LoginRequest
     ): ThtResponse<LoginResponse>

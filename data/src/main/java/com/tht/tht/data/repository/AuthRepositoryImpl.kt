@@ -2,8 +2,6 @@ package com.tht.tht.data.repository
 
 import com.tht.tht.data.di.DefaultDispatcher
 import com.tht.tht.data.remote.datasource.login.LoginDataSource
-import com.tht.tht.data.remote.mapper.login.toAuthTokenModel
-import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.request.login.LoginRequest
 import com.tht.tht.domain.login.model.AuthTokenModel
 import com.tht.tht.domain.login.repository.AuthRepository
@@ -15,8 +13,6 @@ class AuthRepositoryImpl(
     @DefaultDispatcher private val dispatcher: CoroutineDispatcher
 ) : AuthRepository {
     override suspend fun loginUser(signInType: SignInType): AuthTokenModel {
-        return loginDataSource.requestLogin(LoginRequest(socialType = signInType.name)).toUnwrap {
-            it.toAuthTokenModel()
-        }
+        return loginDataSource.requestLogin(LoginRequest(socialType = signInType.name))
     }
 }
