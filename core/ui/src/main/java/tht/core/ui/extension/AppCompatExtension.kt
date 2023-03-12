@@ -15,7 +15,7 @@ fun AppCompatActivity.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) 
 }
 
 fun Fragment.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
-    lifecycleScope.launch {
+    viewLifecycleOwner.lifecycleScope.launch {
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
 }
