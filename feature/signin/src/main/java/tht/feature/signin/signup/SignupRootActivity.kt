@@ -1,9 +1,10 @@
 package tht.feature.signin.signup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
@@ -36,7 +37,12 @@ class SignupRootActivity : AppCompatActivity() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is SignupRootViewModel.SignupRootSideEffect.Back -> {
-                            Navigation.findNavController(this@SignupRootActivity, R.id.fc_nav_host).popBackStack()
+                            val navController = findNavController(R.id.fc_nav_host)
+                            if(navController.currentDestination?.id == R.id.nicknameFragment) {
+                                onBackPressed()
+                            } else {
+                                navController.popBackStack()
+                            }
                         }
                     }
                 }
