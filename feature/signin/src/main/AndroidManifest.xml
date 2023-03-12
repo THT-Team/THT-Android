@@ -6,6 +6,7 @@
             android:exported="false"
             android:screenOrientation="portrait">
         </activity>
+        <activity
             android:name=".email.EmailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

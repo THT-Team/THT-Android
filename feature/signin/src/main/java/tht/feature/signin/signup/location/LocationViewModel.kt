@@ -13,7 +13,7 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupLocationUseCase: PatchSignupLocationUseCase
-) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>(){
+) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.Empty)

@@ -1,7 +1,6 @@
 package tht.feature.signin.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -38,7 +37,7 @@ class SignupRootActivity : AppCompatActivity() {
                     when (it) {
                         is SignupRootViewModel.SignupRootSideEffect.Back -> {
                             val navController = findNavController(R.id.fc_nav_host)
-                            if(navController.currentDestination?.id == R.id.nicknameFragment) {
+                            if (navController.currentDestination?.id == R.id.nicknameFragment) {
                                 onBackPressed()
                             } else {
                                 navController.popBackStack()

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class IdealTypeViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupIdealTypeUseCase: PatchSignupIdealTypeUseCase
-) : BaseStateViewModel<IdealTypeViewModel.IdealTypeUiState, IdealTypeViewModel.IdealTypeSideEffect>(){
+) : BaseStateViewModel<IdealTypeViewModel.IdealTypeUiState, IdealTypeViewModel.IdealTypeSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<IdealTypeUiState> =
         MutableStateFlow(IdealTypeUiState.Empty)

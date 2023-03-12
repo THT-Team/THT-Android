@@ -13,7 +13,7 @@ import javax.inject.Inject
 class IntroductionViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupIntroduceUseCase: PatchSignupIntroduceUseCase
-) : BaseStateViewModel<IntroductionViewModel.IntroductionUiState, IntroductionViewModel.IntroductionSideEffect>(){
+) : BaseStateViewModel<IntroductionViewModel.IntroductionUiState, IntroductionViewModel.IntroductionSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<IntroductionUiState> =
         MutableStateFlow(IntroductionUiState.Empty)

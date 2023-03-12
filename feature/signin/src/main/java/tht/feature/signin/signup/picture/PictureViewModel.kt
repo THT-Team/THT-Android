@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PictureViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupProfileImagesUseCase: PatchSignupProfileImagesUseCase
-) : BaseStateViewModel<PictureViewModel.PictureUiState, PictureViewModel.PictureSideEffect>(){
+) : BaseStateViewModel<PictureViewModel.PictureUiState, PictureViewModel.PictureSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<PictureUiState> =
         MutableStateFlow(PictureUiState.Empty)

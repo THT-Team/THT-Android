@@ -2,7 +2,6 @@ package tht.feature.signin.signup.interest
 
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupInterestUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import tht.core.ui.base.BaseStateViewModel
@@ -14,7 +13,7 @@ import javax.inject.Inject
 class InterestViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupInterestUseCase: PatchSignupInterestUseCase
-) : BaseStateViewModel<InterestViewModel.InterestUiState, InterestViewModel.InterestSideEffect>(){
+) : BaseStateViewModel<InterestViewModel.InterestUiState, InterestViewModel.InterestSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<InterestUiState> =
         MutableStateFlow(InterestUiState.Empty)

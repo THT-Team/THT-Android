@@ -25,7 +25,8 @@ class BirthdayFragment : Fragment() {
     private val rootViewModel: SignupRootViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBirthdayBinding.inflate(inflater, container, false)
@@ -52,7 +53,6 @@ class BirthdayFragment : Fragment() {
 
             launch {
                 viewModel.uiStateFlow.collect {
-
                 }
             }
 

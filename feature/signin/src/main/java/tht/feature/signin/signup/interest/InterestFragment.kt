@@ -14,7 +14,6 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentInterestBinding
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.signup.nickname.NicknameViewModel
 
 @AndroidEntryPoint
 class InterestFragment : Fragment() {
@@ -26,7 +25,8 @@ class InterestFragment : Fragment() {
     private val rootViewModel: SignupRootViewModel by activityViewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentInterestBinding.inflate(inflater, container, false)
@@ -53,7 +53,6 @@ class InterestFragment : Fragment() {
 
             launch {
                 viewModel.uiStateFlow.collect {
-
                 }
             }
 
