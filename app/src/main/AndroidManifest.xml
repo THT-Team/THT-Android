@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.THT">
         <activity
-            android:name="tht.feature.signin.signup.SignupRootActivity"
+            android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

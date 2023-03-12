@@ -1,6 +1,7 @@
 package tht.feature.signin.signup.nickname
 
-import com.tht.tht.domain.signup.usecase.PatchSignupBirthUseCase
+import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupNickNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import tht.core.ui.base.BaseStateViewModel
@@ -10,27 +11,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
-    private val patchSignupBirthUseCase: PatchSignupBirthUseCase
+    private val fetchSignupUserUseCase: FetchSignupUserUseCase,
+    private val patchSignupNickNameUseCase: PatchSignupNickNameUseCase
 ) : BaseStateViewModel<NicknameViewModel.NicknameUiState, NicknameViewModel.NicknameSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<NicknameUiState> =
         MutableStateFlow(NicknameUiState.Empty)
 
-    fun nextEvent(name: String?) {
+    fun nextEvent() {
         postSideEffect(NicknameSideEffect.NavigateNextView)
     }
 
     sealed class NicknameUiState : UiState {
-        object Correct : NicknameUiState()
         object Empty : NicknameUiState()
-        object Error : NicknameUiState()
     }
     sealed class NicknameSideEffect : SideEffect {
         object NavigateNextView : NicknameSideEffect()
-    }
-    companion object {
-        const val EXTRA_PHONE_KEY = "extra_phone_key"
-
-        private const val VERIFY_SIZE = 6
     }
 }
