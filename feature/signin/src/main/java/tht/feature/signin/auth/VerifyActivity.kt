@@ -19,6 +19,7 @@ import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityVerifyBinding
+import tht.feature.signin.email.EmailActivity
 
 @AndroidEntryPoint
 class VerifyActivity : AppCompatActivity() {
@@ -106,7 +107,7 @@ class VerifyActivity : AppCompatActivity() {
                             binding.layoutBackground.setSoftKeyboardVisible(it.visible)
 
                         is VerifyViewModel.VerifySideEffect.NavigateNextView -> {
-                            //TODO: 다음 화면 으로 이동
+                            startActivity(EmailActivity.getIntent(this@VerifyActivity, it.phone))
                         }
                     }
                 }
