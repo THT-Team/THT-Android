@@ -19,7 +19,6 @@ import tht.feature.signin.signup.SignupRootViewModel
 @AndroidEntryPoint
 class GenderFragment : Fragment() {
 
-
     private val viewModel: GenderViewModel by viewModels()
     private val rootViewModel: SignupRootViewModel by activityViewModels()
     private val binding: FragmentGenderBinding by viewBinding(FragmentGenderBinding::inflate)
