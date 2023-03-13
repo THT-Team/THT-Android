@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentLocationBinding
 import tht.feature.signin.signup.SignupRootViewModel
@@ -16,18 +17,15 @@ import tht.feature.signin.signup.SignupRootViewModel
 @AndroidEntryPoint
 class LocationFragment : Fragment() {
 
-    private var _binding: FragmentLocationBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel: LocationViewModel by viewModels()
     private val rootViewModel: SignupRootViewModel by activityViewModels()
+    private val binding: FragmentLocationBinding by viewBinding(FragmentLocationBinding::inflate)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentLocationBinding.inflate(inflater, container, false)
+    ): View {
         return binding.root
     }
 

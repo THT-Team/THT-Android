@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentIntroductionBinding
@@ -18,18 +19,15 @@ import tht.feature.signin.signup.SignupRootViewModel
 @AndroidEntryPoint
 class IntroductionFragment : Fragment() {
 
-    private var _binding: FragmentIntroductionBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel: IntroductionViewModel by viewModels()
     private val rootViewModel: SignupRootViewModel by activityViewModels()
+    private val binding: FragmentIntroductionBinding by viewBinding(FragmentIntroductionBinding::inflate)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentIntroductionBinding.inflate(inflater, container, false)
+    ): View {
         return binding.root
     }
 

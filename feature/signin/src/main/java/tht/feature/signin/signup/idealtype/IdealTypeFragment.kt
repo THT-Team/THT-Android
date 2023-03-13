@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentIdealTypeBinding
@@ -18,18 +19,15 @@ import tht.feature.signin.signup.SignupRootViewModel
 @AndroidEntryPoint
 class IdealTypeFragment : Fragment() {
 
-    private var _binding: FragmentIdealTypeBinding? = null
-    private val binding get() = _binding!!
-
     private val viewModel: IdealTypeViewModel by viewModels()
     private val rootViewModel: SignupRootViewModel by activityViewModels()
+    private val binding: FragmentIdealTypeBinding by viewBinding(FragmentIdealTypeBinding::inflate)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentIdealTypeBinding.inflate(inflater, container, false)
+    ): View {
         return binding.root
     }
 
