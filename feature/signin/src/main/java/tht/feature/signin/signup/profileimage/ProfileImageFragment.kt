@@ -1,24 +1,24 @@
-package tht.feature.signin.signup.picture
+package tht.feature.signin.signup.profileimage
 
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.extension.repeatOnStarted
-import tht.feature.signin.databinding.FragmentPictureBinding
+import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class PictureFragment : SignupRootBaseFragment<PictureViewModel, FragmentPictureBinding>(FragmentPictureBinding::inflate) {
+class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>(FragmentProfileImageBinding::inflate) {
 
-    override val viewModel by viewModels<PictureViewModel>()
+    override val viewModel by viewModels<ProfileImageViewModel>()
 
     override fun setProgress() {
-        rootViewModel.progressEvent(SignupRootViewModel.Step.PICTURE)
+        rootViewModel.progressEvent(SignupRootViewModel.Step.PROFILE_IMAGE)
     }
 
     override fun setListener() {
-        binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.PICTURE) }
+        binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.PROFILE_IMAGE) }
     }
 
     override fun observeData() {
@@ -37,8 +37,8 @@ class PictureFragment : SignupRootBaseFragment<PictureViewModel, FragmentPicture
     }
     companion object {
 
-        val TAG = PictureFragment::class.simpleName.toString()
+        val TAG = ProfileImageFragment::class.simpleName.toString()
 
-        fun newInstance() = PictureFragment()
+        fun newInstance() = ProfileImageFragment()
     }
 }

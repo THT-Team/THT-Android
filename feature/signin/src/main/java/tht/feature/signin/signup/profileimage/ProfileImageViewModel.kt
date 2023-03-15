@@ -1,4 +1,4 @@
-package tht.feature.signin.signup.picture
+package tht.feature.signin.signup.profileimage
 
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupProfileImagesUseCase
@@ -10,17 +10,17 @@ import tht.core.ui.base.UiState
 import javax.inject.Inject
 
 @HiltViewModel
-class PictureViewModel @Inject constructor(
+class ProfileImageViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupProfileImagesUseCase: PatchSignupProfileImagesUseCase
-) : BaseStateViewModel<PictureViewModel.PictureUiState, PictureViewModel.PictureSideEffect>() {
+) : BaseStateViewModel<ProfileImageViewModel.ProfileImageUiState, ProfileImageViewModel.ProfileImageSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<PictureUiState> =
-        MutableStateFlow(PictureUiState.Empty)
+    override val _uiStateFlow: MutableStateFlow<ProfileImageUiState> =
+        MutableStateFlow(ProfileImageUiState.Empty)
 
-    sealed class PictureUiState : UiState {
-        object Empty : PictureUiState()
+    sealed class ProfileImageUiState : UiState {
+        object Empty : ProfileImageUiState()
     }
-    sealed class PictureSideEffect : SideEffect {
+    sealed class ProfileImageSideEffect : SideEffect {
     }
 }

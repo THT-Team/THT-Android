@@ -33,8 +33,8 @@
         android:name="tht.feature.signin.signup.gender.GenderFragment"
         android:label="GenderFragment" >
         <action
-            android:id="@+id/action_genderFragment_to_pictureFragment"
-            app:destination="@id/pictureFragment"
+            android:id="@+id/action_genderFragment_to_profileImageFragment"
+            app:destination="@id/profileImageFragment"
             app:enterAnim="@anim/anim_from_right"
             app:exitAnim="@anim/anim_to_left"
             app:popEnterAnim="@anim/anim_from_left"
@@ -81,11 +81,11 @@
         android:name="tht.feature.signin.signup.location.LocationFragment"
         android:label="LocationFragment" />
     <fragment
-        android:id="@+id/pictureFragment"
-        android:name="tht.feature.signin.signup.picture.PictureFragment"
-        android:label="PictureFragment" >
+        android:id="@+id/profileImageFragment"
+        android:name="tht.feature.signin.signup.profileimage.ProfileImageFragment"
+        android:label="ProfileImageFragment" >
         <action
-            android:id="@+id/action_pictureFragment_to_interestFragment"
+            android:id="@+id/action_profileImageFragment_to_interestFragment"
             app:destination="@id/interestFragment"
             app:enterAnim="@anim/anim_from_right"
             app:exitAnim="@anim/anim_to_left"

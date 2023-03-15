@@ -40,7 +40,7 @@ class SignupRootViewModel @Inject constructor() :
         NICKNAME,
         BIRTHDAY,
         GENDER,
-        PICTURE,
+        PROFILE_IMAGE,
         INTEREST,
         IDEAL_TYPE,
         INTRODUCTION,
