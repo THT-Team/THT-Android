@@ -19,7 +19,6 @@ class SignupRootActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setListener()
         observeData()
     }
@@ -41,6 +40,34 @@ class SignupRootActivity : AppCompatActivity() {
                                 onBackPressed()
                             } else {
                                 navController.popBackStack()
+                            }
+                        }
+                        is SignupRootViewModel.SignupRootSideEffect.NavigateNextView -> {
+                            val navController = findNavController(R.id.fc_nav_host)
+                            when (it.step) {
+                                SignupRootViewModel.Step.EMPTY -> {}
+                                SignupRootViewModel.Step.NICKNAME -> {
+                                    navController.navigate(R.id.action_nicknameFragment_to_birthdayFragment)
+                                }
+                                SignupRootViewModel.Step.BIRTHDAY -> {
+                                    navController.navigate(R.id.action_birthdayFragment_to_genderFragment)
+                                }
+                                SignupRootViewModel.Step.GENDER -> {
+                                    navController.navigate(R.id.action_genderFragment_to_pictureFragment)
+                                }
+                                SignupRootViewModel.Step.PICTURE -> {
+                                    navController.navigate(R.id.action_pictureFragment_to_interestFragment)
+                                }
+                                SignupRootViewModel.Step.INTEREST -> {
+                                    navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)
+                                }
+                                SignupRootViewModel.Step.IDEAL_TYPE -> {
+                                    navController.navigate(R.id.action_idealTypeFragment_to_introductionFragment)
+                                }
+                                SignupRootViewModel.Step.INTRODUCTION -> {
+                                    navController.navigate(R.id.action_introductionFragment_to_locationFragment)
+                                }
+                                SignupRootViewModel.Step.LOCATION -> {}
                             }
                         }
                     }

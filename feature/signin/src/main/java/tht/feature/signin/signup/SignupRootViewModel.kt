@@ -22,12 +22,17 @@ class SignupRootViewModel @Inject constructor() :
         postSideEffect(SignupRootSideEffect.Back)
     }
 
+    fun nextEvent(step: Step) {
+        postSideEffect(SignupRootSideEffect.NavigateNextView(step))
+    }
+
     sealed class SignupRootUiState : UiState {
         data class Progress(val step: Step) : SignupRootUiState()
     }
 
     sealed class SignupRootSideEffect : SideEffect {
         object Back : SignupRootSideEffect()
+        data class NavigateNextView(val step: Step) : SignupRootSideEffect()
     }
 
     enum class Step {
