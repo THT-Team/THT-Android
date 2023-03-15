@@ -10,7 +10,6 @@ import androidx.viewbinding.ViewBinding
 import tht.core.ui.base.BaseViewModel
 import tht.core.ui.delegate.viewBinding
 
-
 abstract class SignupRootBaseFragment<VM: BaseViewModel, VB: ViewBinding>(vbFactory: (LayoutInflater) -> VB) : Fragment() {
 
     abstract val viewModel: VM

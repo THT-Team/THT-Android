@@ -78,7 +78,7 @@ class SignupRootActivity : AppCompatActivity() {
                 viewModel.uiStateFlow.collect {
                     when (it) {
                         is SignupRootViewModel.SignupRootUiState.Progress -> {
-                            binding.pbSignup.progress = it.step.ordinal
+                            binding.pbSignup.setProgress(it.step.ordinal, true)
                         }
                     }
                 }
