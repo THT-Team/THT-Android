@@ -21,6 +21,5 @@ class LocationViewModel @Inject constructor(
     sealed class LocationUiState : UiState {
         object Empty : LocationUiState()
     }
-    sealed class LocationSideEffect : SideEffect {
-    }
+    sealed class LocationSideEffect : SideEffect
 }

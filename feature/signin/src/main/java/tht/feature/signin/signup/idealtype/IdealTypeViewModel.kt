@@ -21,6 +21,5 @@ class IdealTypeViewModel @Inject constructor(
     sealed class IdealTypeUiState : UiState {
         object Empty : IdealTypeUiState()
     }
-    sealed class IdealTypeSideEffect : SideEffect {
-    }
+    sealed class IdealTypeSideEffect : SideEffect
 }

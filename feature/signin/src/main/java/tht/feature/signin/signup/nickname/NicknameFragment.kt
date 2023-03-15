@@ -9,7 +9,8 @@ import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNicknameBinding>(FragmentNicknameBinding::inflate) {
+class NicknameFragment :
+    SignupRootBaseFragment<NicknameViewModel, FragmentNicknameBinding>(FragmentNicknameBinding::inflate) {
 
     override val viewModel by viewModels<NicknameViewModel>()
 

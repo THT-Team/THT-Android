@@ -21,6 +21,5 @@ class ProfileImageViewModel @Inject constructor(
     sealed class ProfileImageUiState : UiState {
         object Empty : ProfileImageUiState()
     }
-    sealed class ProfileImageSideEffect : SideEffect {
-    }
+    sealed class ProfileImageSideEffect : SideEffect
 }

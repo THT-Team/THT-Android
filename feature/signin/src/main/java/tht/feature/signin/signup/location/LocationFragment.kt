@@ -9,7 +9,8 @@ import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>(FragmentLocationBinding::inflate) {
+class LocationFragment :
+    SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>(FragmentLocationBinding::inflate) {
 
     override val viewModel by viewModels<LocationViewModel>()
 

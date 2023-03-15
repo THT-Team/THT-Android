@@ -21,6 +21,5 @@ class NicknameViewModel @Inject constructor(
     sealed class NicknameUiState : UiState {
         object Empty : NicknameUiState()
     }
-    sealed class NicknameSideEffect : SideEffect {
-    }
+    sealed class NicknameSideEffect : SideEffect
 }

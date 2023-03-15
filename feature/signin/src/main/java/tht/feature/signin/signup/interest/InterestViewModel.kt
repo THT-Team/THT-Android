@@ -21,6 +21,5 @@ class InterestViewModel @Inject constructor(
     sealed class InterestUiState : UiState {
         object Empty : InterestUiState()
     }
-    sealed class InterestSideEffect : SideEffect {
-    }
+    sealed class InterestSideEffect : SideEffect
 }

@@ -21,6 +21,5 @@ class IntroductionViewModel @Inject constructor(
     sealed class IntroductionUiState : UiState {
         object Empty : IntroductionUiState()
     }
-    sealed class IntroductionSideEffect : SideEffect {
-    }
+    sealed class IntroductionSideEffect : SideEffect
 }

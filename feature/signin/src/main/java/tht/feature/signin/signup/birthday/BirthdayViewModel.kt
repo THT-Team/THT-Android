@@ -21,6 +21,5 @@ class BirthdayViewModel @Inject constructor(
     sealed class BirthdayUiState : UiState {
         object Empty : BirthdayUiState()
     }
-    sealed class BirthdaySideEffect : SideEffect {
-    }
+    sealed class BirthdaySideEffect : SideEffect
 }

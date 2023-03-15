@@ -22,6 +22,5 @@ class GenderViewModel @Inject constructor(
         object Empty : GenderUiState()
     }
 
-    sealed class GenderSideEffect : SideEffect {
-    }
+    sealed class GenderSideEffect : SideEffect
 }

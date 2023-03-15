@@ -9,7 +9,8 @@ import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInterestBinding>(FragmentInterestBinding::inflate) {
+class InterestFragment :
+    SignupRootBaseFragment<InterestViewModel, FragmentInterestBinding>(FragmentInterestBinding::inflate) {
 
     override val viewModel by viewModels<InterestViewModel>()
 
