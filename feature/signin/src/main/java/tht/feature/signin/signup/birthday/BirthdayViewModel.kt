@@ -18,14 +18,9 @@ class BirthdayViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<BirthdayUiState> =
         MutableStateFlow(BirthdayUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(BirthdaySideEffect.NavigateNextView)
-    }
-
     sealed class BirthdayUiState : UiState {
         object Empty : BirthdayUiState()
     }
     sealed class BirthdaySideEffect : SideEffect {
-        object NavigateNextView : BirthdaySideEffect()
     }
 }

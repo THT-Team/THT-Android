@@ -18,14 +18,9 @@ class NicknameViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<NicknameUiState> =
         MutableStateFlow(NicknameUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(NicknameSideEffect.NavigateNextView)
-    }
-
     sealed class NicknameUiState : UiState {
         object Empty : NicknameUiState()
     }
     sealed class NicknameSideEffect : SideEffect {
-        object NavigateNextView : NicknameSideEffect()
     }
 }

@@ -18,14 +18,9 @@ class LocationViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(LocationSideEffect.NavigateNextView)
-    }
-
     sealed class LocationUiState : UiState {
         object Empty : LocationUiState()
     }
     sealed class LocationSideEffect : SideEffect {
-        object NavigateNextView : LocationSideEffect()
     }
 }

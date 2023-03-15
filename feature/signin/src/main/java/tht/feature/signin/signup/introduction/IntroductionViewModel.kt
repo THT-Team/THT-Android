@@ -18,14 +18,9 @@ class IntroductionViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<IntroductionUiState> =
         MutableStateFlow(IntroductionUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(IntroductionSideEffect.NavigateNextView)
-    }
-
     sealed class IntroductionUiState : UiState {
         object Empty : IntroductionUiState()
     }
     sealed class IntroductionSideEffect : SideEffect {
-        object NavigateNextView : IntroductionSideEffect()
     }
 }

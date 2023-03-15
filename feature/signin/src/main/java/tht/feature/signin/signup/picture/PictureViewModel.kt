@@ -18,14 +18,9 @@ class PictureViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<PictureUiState> =
         MutableStateFlow(PictureUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(PictureSideEffect.NavigateNextView)
-    }
-
     sealed class PictureUiState : UiState {
         object Empty : PictureUiState()
     }
     sealed class PictureSideEffect : SideEffect {
-        object NavigateNextView : PictureSideEffect()
     }
 }

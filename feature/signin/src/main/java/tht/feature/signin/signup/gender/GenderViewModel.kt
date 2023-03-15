@@ -18,15 +18,10 @@ class GenderViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<GenderUiState> =
         MutableStateFlow(GenderUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(GenderSideEffect.NavigateNextView)
-    }
-
     sealed class GenderUiState : UiState {
         object Empty : GenderUiState()
     }
 
     sealed class GenderSideEffect : SideEffect {
-        object NavigateNextView : GenderSideEffect()
     }
 }

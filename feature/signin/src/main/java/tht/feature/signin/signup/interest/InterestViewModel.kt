@@ -18,14 +18,9 @@ class InterestViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<InterestUiState> =
         MutableStateFlow(InterestUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(InterestSideEffect.NavigateNextView)
-    }
-
     sealed class InterestUiState : UiState {
         object Empty : InterestUiState()
     }
     sealed class InterestSideEffect : SideEffect {
-        object NavigateNextView : InterestSideEffect()
     }
 }

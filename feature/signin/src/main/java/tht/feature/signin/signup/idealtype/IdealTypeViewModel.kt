@@ -18,14 +18,9 @@ class IdealTypeViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<IdealTypeUiState> =
         MutableStateFlow(IdealTypeUiState.Empty)
 
-    fun nextEvent() {
-        postSideEffect(IdealTypeSideEffect.NavigateNextView)
-    }
-
     sealed class IdealTypeUiState : UiState {
         object Empty : IdealTypeUiState()
     }
     sealed class IdealTypeSideEffect : SideEffect {
-        object NavigateNextView : IdealTypeSideEffect()
     }
 }

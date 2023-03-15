@@ -1,50 +1,27 @@
 package tht.feature.signin.signup.location
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentLocationBinding
+import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class LocationFragment : Fragment() {
+class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>(FragmentLocationBinding::inflate) {
 
-    private val viewModel: LocationViewModel by viewModels()
-    private val rootViewModel: SignupRootViewModel by activityViewModels()
-    private val binding: FragmentLocationBinding by viewBinding(FragmentLocationBinding::inflate)
+    override val viewModel by viewModels<LocationViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setProgress()
-        setListener()
-        observeData()
-    }
-
-    private fun setProgress() {
+    override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.LOCATION)
     }
 
-    private fun setListener() {
-        binding.btnNext.setOnClickListener { viewModel.nextEvent() }
+    override fun setListener() {
+        binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION) }
     }
 
-    private fun observeData() {
+    override fun observeData() {
         repeatOnStarted {
 
             launch {
@@ -54,10 +31,6 @@ class LocationFragment : Fragment() {
 
             launch {
                 viewModel.sideEffectFlow.collect {
-                    when (it) {
-                        is LocationViewModel.LocationSideEffect.NavigateNextView -> {
-                        }
-                    }
                 }
             }
         }
