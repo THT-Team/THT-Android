@@ -1,5 +1,6 @@
 package tht.feature.signin.signup
 
+import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import tht.core.ui.base.BaseStateViewModel
@@ -8,8 +9,12 @@ import tht.core.ui.base.UiState
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupRootViewModel @Inject constructor() :
+class SignupRootViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle
+) :
     BaseStateViewModel<SignupRootViewModel.SignupRootUiState, SignupRootViewModel.SignupRootSideEffect>() {
+
+    val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
 
     override val _uiStateFlow: MutableStateFlow<SignupRootUiState> =
         MutableStateFlow(SignupRootUiState.Progress(Step.EMPTY))
@@ -45,5 +50,9 @@ class SignupRootViewModel @Inject constructor() :
         IDEAL_TYPE,
         INTRODUCTION,
         LOCATION
+    }
+
+    companion object {
+        const val EXTRA_PHONE_KEY = "extra_phone_key"
     }
 }

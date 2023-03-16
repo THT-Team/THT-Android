@@ -1,5 +1,7 @@
 package tht.feature.signin.signup
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -82,6 +84,17 @@ class SignupRootActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    companion object {
+        fun getIntent(
+            context: Context,
+            phone: String
+        ): Intent {
+            return Intent(context, SignupRootActivity::class.java).apply {
+                putExtra(SignupRootViewModel.EXTRA_PHONE_KEY, phone)
             }
         }
     }
