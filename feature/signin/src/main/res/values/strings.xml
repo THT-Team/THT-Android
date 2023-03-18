@@ -27,4 +27,6 @@
     <string name="hint_email_input">welcome@falling.com</string>
     <string name="message_email_input">이메일 계정 인증으로 로그인 문제가 생길 시 이메일로\n계정 복구를 진행합니다. 따로 프로필에 표시 되지 않습니다.</string>
     <string name="message_email_input_error">올바른 이메일 주소를 입력해주세요</string>
+    <string name="message_terms_fetch_error">이용약관 데이터를 불러올 수 없습니다</string>
+    <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
 </resources>

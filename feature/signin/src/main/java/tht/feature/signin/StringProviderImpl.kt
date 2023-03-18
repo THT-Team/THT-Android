@@ -26,6 +26,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.AuthTimeout -> R.string.message_auth_timeout
             StringProvider.ResId.ResendAuthSuccess -> R.string.message_resend_auth_success
             StringProvider.ResId.VerifyFail -> R.string.message_verify_error
+            StringProvider.ResId.TermsFetchError -> R.string.message_terms_fetch_error
+            StringProvider.ResId.RequireTermsNeedSelect -> R.string.message_require_terms_need_select
         }
     }
 }
