@@ -5,6 +5,8 @@ import tht.core.ui.base.SideEffect
 
 sealed class PreloginSideEffect : SideEffect {
 
+    object RequestNaverLogin : PreloginSideEffect()
+
     object RequestKakaoLogin : PreloginSideEffect()
 
     data class ShowToast(val message: String) : PreloginSideEffect()

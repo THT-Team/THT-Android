@@ -27,6 +27,8 @@ android {
         val prop = Properties().apply {
             load(FileInputStream(File(rootProject.rootDir, "local.properties")))
         }
+        buildConfigField("String", "NAVER_CLIENT_ID", prop.getProperty("NAVER_CLIENT_ID"))
+        buildConfigField("String", "NAVER_CLIENT_SECRET", prop.getProperty("NAVER_CLIENT_SECRET"))
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", prop.getProperty("KAKAO_NATIVE_APP_KEY"))
         resValue("string", "kakao_oauth_host", "kakao${prop.getProperty("KAKAO_NATIVE_APP_KEY")}")
     }
@@ -83,6 +85,7 @@ dependencies {
     implementation(libs.coroutines.core)
     testImplementation(libs.coroutines.test)
 
-    // kakao
+    // login
     implementation("com.kakao.sdk:v2-user:2.12.1")
+    implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
 }

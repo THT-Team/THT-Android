@@ -9,6 +9,8 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import tht.core.ui.delegate.viewBinding
 import com.tht.tht.domain.type.SignInType
 import kotlinx.coroutines.launch
@@ -30,6 +32,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         ivNumberLoginButton.setOnClickListener {
             vm.requestNumberLogin()
         }
+        ivNaverLoginButton.setOnClickListener {
+            vm.requestNaverLogin()
+        }
     }
 
     override fun observeData() {
@@ -49,6 +54,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
+                            is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
                             is PreloginSideEffect.ShowToast -> {
                                 Toast.makeText(this@PreloginActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
                             }
@@ -59,6 +65,27 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                 }
             }
         }
+    }
+
+    private fun handleRequestNaverLogin() {
+        NaverIdLoginSDK.authenticate(
+            context = this,
+            callback = object : OAuthLoginCallback {
+                override fun onError(errorCode: Int, message: String) {
+                    handleUninitialized()
+                }
+
+                override fun onFailure(httpStatus: Int, message: String) {
+                    handleUninitialized()
+                }
+
+                override fun onSuccess() {
+                    NaverIdLoginSDK.getAccessToken()?.let { token ->
+                        vm.requestSignIn(signInType = SignInType.Naver, token)
+                    }
+                }
+            }
+        )
     }
 
     private fun handleRequestKakaoLogin() {

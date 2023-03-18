@@ -32,10 +32,10 @@
         app:layout_constraintTop_toBottomOf="@id/logoImageView" />
 
     <ImageView
-        android:layout_marginTop="16dp"
         android:id="@+id/iv_kakao_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@null"
@@ -46,10 +46,10 @@
         app:layout_constraintTop_toBottomOf="@id/iv_number_login_button" />
 
     <ImageView
-        android:layout_marginTop="16dp"
         android:id="@+id/iv_google_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@null"
@@ -60,10 +60,10 @@
         app:layout_constraintTop_toBottomOf="@id/iv_kakao_login_button" />
 
     <ImageView
-        android:layout_marginTop="16dp"
         android:id="@+id/iv_naver_login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@null"
@@ -74,11 +74,11 @@
         app:layout_constraintTop_toBottomOf="@id/iv_google_login_button" />
 
     <TextView
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:id="@+id/tv_help_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/help_login"
         android:textColor="@color/white_ffffff"
         app:layout_constraintBottom_toBottomOf="parent"

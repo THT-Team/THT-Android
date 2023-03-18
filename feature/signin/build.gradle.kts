@@ -63,6 +63,6 @@ dependencies {
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
 
-    // kakao
     implementation("com.kakao.sdk:v2-user:2.12.1")
+    implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
 }
