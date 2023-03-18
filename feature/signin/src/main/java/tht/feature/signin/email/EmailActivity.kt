@@ -17,6 +17,7 @@ import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityEmailBinding
+import tht.feature.signin.terms.TermsActivity
 
 @AndroidEntryPoint
 class EmailActivity : AppCompatActivity() {
@@ -107,8 +108,7 @@ class EmailActivity : AppCompatActivity() {
                             binding.etEmail.setSoftKeyboardVisible(it.visible)
 
                         is EmailViewModel.EmailSideEffect.NavigateNextView -> {
-                            showToast("Success patch email")
-                            //TODO: navigate terms view
+                            startActivity(TermsActivity.getIntent(this@EmailActivity, it.phone))
                         }
                     }
                 }
