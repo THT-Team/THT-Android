@@ -31,11 +31,15 @@ class TermsItemView @JvmOverloads constructor(
 
     init {
         binding.layoutBackground.setOnClickListener {
-            terms?.let { t -> onClickListener?.invoke(t) }
+            terms?.let { t -> checkListener?.invoke(t) }
         }
 
         binding.ivCheck.setOnClickListener {
             terms?.let { t -> checkListener?.invoke(t) }
+        }
+
+        binding.ivRightArrow.setOnClickListener {
+            terms?.let { t -> onClickListener?.invoke(t) }
         }
     }
 
