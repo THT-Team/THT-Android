@@ -49,6 +49,10 @@ class TermsActivity : AppCompatActivity() {
             viewModel.toggleAllSelect()
         }
 
+        binding.tvAllSelect.setOnClickListener {
+            viewModel.toggleAllSelect()
+        }
+
         binding.btnStart.setOnClickListener {
             viewModel.startEvent()
         }
