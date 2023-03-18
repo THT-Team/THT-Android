@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".terms.TermsActivity"
+            android:exported="false" />
+        <activity
             android:name=".email.EmailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
