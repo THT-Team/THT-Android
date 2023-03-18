@@ -98,7 +98,7 @@ internal class SignupRepositoryImplTest {
     @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
         )
         coEvery { termsDataSource.fetchSignupTerms() } returns expect
         val actual = repository.fetchTerms()
