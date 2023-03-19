@@ -4,7 +4,8 @@
     <application>
         <activity
             android:name=".terms.TermsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".email.EmailActivity"
             android:exported="false"
