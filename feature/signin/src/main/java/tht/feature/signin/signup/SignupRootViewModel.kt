@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupRootViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) :
     BaseStateViewModel<SignupRootViewModel.SignupRootUiState, SignupRootViewModel.SignupRootSideEffect>() {
 
