@@ -37,8 +37,8 @@ jobs:
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
-                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
