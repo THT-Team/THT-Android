@@ -3,14 +3,16 @@ package tht.feature.signin.signup.profileimage
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class ProfileImageFragment :
-    SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>(FragmentProfileImageBinding::inflate) {
+class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>() {
+
+    override val binding: FragmentProfileImageBinding by viewBinding(FragmentProfileImageBinding::inflate)
 
     override val viewModel by viewModels<ProfileImageViewModel>()
 

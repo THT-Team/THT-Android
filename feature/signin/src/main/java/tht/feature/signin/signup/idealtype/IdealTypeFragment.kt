@@ -3,14 +3,16 @@ package tht.feature.signin.signup.idealtype
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentIdealTypeBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class IdealTypeFragment :
-    SignupRootBaseFragment<IdealTypeViewModel, FragmentIdealTypeBinding>(FragmentIdealTypeBinding::inflate) {
+class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIdealTypeBinding>() {
+
+    override val binding: FragmentIdealTypeBinding by viewBinding(FragmentIdealTypeBinding::inflate)
 
     override val viewModel by viewModels<IdealTypeViewModel>()
 

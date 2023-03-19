@@ -8,14 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import tht.core.ui.base.BaseViewModel
-import tht.core.ui.delegate.viewBinding
 
-abstract class SignupRootBaseFragment<VM : BaseViewModel, VB : ViewBinding>(vbFactory: (LayoutInflater) -> VB) :
-    Fragment() {
+abstract class SignupRootBaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
 
     abstract val viewModel: VM
+    abstract val binding: VB
     protected val rootViewModel: SignupRootViewModel by activityViewModels()
-    protected val binding: VB by viewBinding(vbFactory)
 
     override fun onCreateView(
         inflater: LayoutInflater,

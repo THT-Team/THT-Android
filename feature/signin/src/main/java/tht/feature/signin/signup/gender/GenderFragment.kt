@@ -3,13 +3,16 @@ package tht.feature.signin.signup.gender
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentGenderBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class GenderFragment : SignupRootBaseFragment<GenderViewModel, FragmentGenderBinding>(FragmentGenderBinding::inflate) {
+class GenderFragment : SignupRootBaseFragment<GenderViewModel, FragmentGenderBinding>() {
+
+    override val binding: FragmentGenderBinding by viewBinding(FragmentGenderBinding::inflate)
 
     override val viewModel by viewModels<GenderViewModel>()
 
