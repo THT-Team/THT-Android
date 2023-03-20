@@ -92,14 +92,16 @@ class TermsActivity : AppCompatActivity() {
             }
 
             launch {
-                viewModel.termsList.collect {
-                    it.forEach { t -> addTermsView(t) }
-                }
-            }
-
-            launch {
                 viewModel.dataLoading.collect {
                     binding.progress.isVisible = it
+                }
+            }
+        }
+
+        repeatOnCreated {
+            launch {
+                viewModel.termsList.collect {
+                    it.forEach { t -> addTermsView(t) }
                 }
             }
         }
