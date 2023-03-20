@@ -20,7 +20,7 @@ class RequestSignupUseCase(
                         user.nickname.isBlank() ||
                         user.email.isBlank() ||
                         user.gender.isBlank() ||
-                        user.birth.isBlank() ||
+                        user.birthday.isBlank() ||
                         user.interestKeys.size < SignupConstant.INTEREST_REQUIRE_SIZE ||
                         user.lat < 0 ||
                         user.lng < 0 ||

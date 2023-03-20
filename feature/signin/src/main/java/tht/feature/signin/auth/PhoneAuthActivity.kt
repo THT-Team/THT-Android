@@ -31,7 +31,7 @@ class PhoneAuthActivity : AppCompatActivity() {
 
     private fun setToolbar() {
         binding.itemSignupToolBar.toolBar.apply {
-            setNavigationIcon(R.drawable.ic_right_arrow)
+            setNavigationIcon(R.drawable.ic_left_arrow)
             setSupportActionBar(this)
             setNavigationOnClickListener {
                 viewModel.backEvent()
