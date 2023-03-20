@@ -53,10 +53,10 @@ object UseCaseModule {
     )
 
     @Provides
-    fun providePatchSignupBirtheUseCase(
+    fun providePatchSignupBirthdayUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupBirthUseCase = PatchSignupBirthUseCase(
+    ): PatchSignupBirthdayUseCase = PatchSignupBirthdayUseCase(
         repository, dispatcher
     )
 

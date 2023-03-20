@@ -5,22 +5,22 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class PatchSignupBirthUseCase(
+class PatchSignupBirthdayUseCase(
     private val repository: SignupRepository,
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(phone: String, birth: String): Result<Boolean> {
+    suspend operator fun invoke(phone: String, birthday: String): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
-                if(birth.isBlank()) {
-                    throw SignupException.InputDataInvalidateException("birth")
+                if(birthday.isBlank()) {
+                    throw SignupException.InputDataInvalidateException("birthday")
                 }
                 repository.patchSignupUser(
                     phone,
                     requireNotNull(repository.fetchSignupUser(phone)){
                         throw SignupException.SignupUserInvalidateException()
-                    }.copy(birth = birth)
+                    }.copy(birthday = birthday)
                 )
             }
         }

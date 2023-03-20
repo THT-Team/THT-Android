@@ -8,7 +8,7 @@ data class SignupUserEntity(
     val nickname: String,
     val email: String,
     val gender: String,
-    val birth: String,
+    val birthday: String,
     val interestKeys: List<String>,
     val lat: Double,
     val lng: Double,

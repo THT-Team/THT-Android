@@ -3,12 +3,12 @@
     <style name="Theme.THT" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow_f9cc2e</item>
-        <item name="colorPrimaryVariant">@color/black_1e1e1e</item>
+        <item name="colorPrimaryVariant">@color/black_161616</item>
         <item name="colorOnPrimary">@color/black_111111</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/black_1e1e1e</item>
+        <item name="android:windowBackground">@color/black_161616</item>
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
         <item name="android:editTextStyle">@style/customEditTextFontStyle</item>

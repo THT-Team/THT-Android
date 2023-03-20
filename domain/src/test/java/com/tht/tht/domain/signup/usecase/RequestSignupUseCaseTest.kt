@@ -28,7 +28,7 @@ internal class RequestSignupUseCaseTest {
         nickname = "nickname",
         email = "email",
         gender = "gender",
-        birth = "birth",
+        birthday = "birthday",
         interestKeys = listOf("key1", "key2", "key3"),
         lat = 1.0,
         lng = 1.0,
@@ -87,7 +87,7 @@ internal class RequestSignupUseCaseTest {
     }
 
     @Test
-    fun `useCase는 Repository의 fetchSignupUser의 리턴 결과의 birth가 유효하지 않다면 SignupUserInfoInvalidateException를 Reuslt로 래핑해 리턴한다`() = runTest(testDispatcher) {
+    fun `useCase는 Repository의 fetchSignupUser의 리턴 결과의 birthday가 유효하지 않다면 SignupUserInfoInvalidateException를 Reuslt로 래핑해 리턴한다`() = runTest(testDispatcher) {
         val phoneInvalidSignupUser = validSignupUser.copy(gender = "")
         coEvery { repository.fetchSignupUser(any()) } returns phoneInvalidSignupUser
 
@@ -196,7 +196,7 @@ internal class RequestSignupUseCaseTest {
 
     @Test
     fun `useCase는 Repository의 fetchSignupUser의 리턴 결과의 gender이 유효하지 않다면 SignupUserInfoInvalidateException를 Reuslt로 래핑해 리턴한다`() = runTest(testDispatcher) {
-        val phoneInvalidSignupUser = validSignupUser.copy(birth = "")
+        val phoneInvalidSignupUser = validSignupUser.copy(birthday = "")
         coEvery { repository.fetchSignupUser(any()) } returns phoneInvalidSignupUser
 
         val actual = useCase("test").exceptionOrNull()
