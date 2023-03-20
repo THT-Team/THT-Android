@@ -85,7 +85,8 @@ class TermsActivity : AppCompatActivity() {
 
                         is TermsViewModel.TermsSideEffect.ShowToast -> showToast(it.message)
 
-                        is TermsViewModel.TermsSideEffect.NavigateTermsDetail -> showToast("navigate detail")
+                        is TermsViewModel.TermsSideEffect.NavigateTermsDetail ->
+                            startActivity(TermsContentActivity.getIntent(this@TermsActivity, it.terms))
 
                         is TermsViewModel.TermsSideEffect.NavigateNextView -> showToast("navigate next view")
                     }
