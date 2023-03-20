@@ -191,6 +191,13 @@
     </style>
     <!--P1Regular-->
 
+    <!-- P1SemiBold -->
+    <style name="P1SemiBoldTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <!-- P1SemiBold -->
+
     <!--P2Bold-->
     <style name="P2BoldTextStyle">
         <item name="android:textSize">12sp</item>
