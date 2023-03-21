@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
 import com.tht.tht.domain.signup.model.TermsModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -62,14 +63,14 @@ class TermsContentActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
 
-            launch {
-                viewModel.terms.collect {
-                    binding.tvTitle.text = it.title
-                    binding.tvToolBarTitle.text = it.title
-                    it.content.forEachIndexed { i, content ->
-                        addTermsContentView(content, i == it.content.size - 1)
-                    }
+        lifecycleScope.launch {
+            viewModel.terms.collect {
+                binding.tvTitle.text = it.title
+                binding.tvToolBarTitle.text = it.title
+                it.content.forEachIndexed { i, content ->
+                    addTermsContentView(content, i == it.content.size - 1)
                 }
             }
         }
