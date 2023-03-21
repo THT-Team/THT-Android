@@ -32,9 +32,13 @@ jobs:
               run: |
                   touch ./local.properties
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
@@ -57,9 +61,13 @@ jobs:
               run: |
                   touch ./local.properties
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
             - name: Run unit tests
               run: ./gradlew testDebugUnitTest
@@ -95,9 +103,13 @@ jobs:
               run: |
                   touch ./local.properties
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace

@@ -17,6 +17,11 @@ class PreloginViewModel @Inject constructor() : BaseStateViewModel<PreloginState
         postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.Normal))
     }
 
+    fun requestNaverLogin() {
+        setUiState(PreloginState.Loading)
+        postSideEffect(PreloginSideEffect.RequestNaverLogin)
+    }
+
     fun requestKakaoLogin() {
         setUiState(PreloginState.Loading)
         postSideEffect(PreloginSideEffect.RequestKakaoLogin)
