@@ -115,15 +115,17 @@ class NicknameViewModel @Inject constructor(
                 stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         }
-        if(text.isNullOrBlank()) {
+        if (text.isNullOrBlank()) {
             _inputLength.value = 0
             _uiStateFlow.value = NicknameUiState.Default
             return
         }
-        if(text != validInputValue.value) {
-            postSideEffect(NicknameSideEffect.ShowToast(
-                stringProvider.getString(StringProvider.ResId.DuplicateCheckLoading)
-            ))
+        if (text != validInputValue.value) {
+            postSideEffect(
+                NicknameSideEffect.ShowToast(
+                    stringProvider.getString(StringProvider.ResId.DuplicateCheckLoading)
+                )
+            )
             return
         }
         postSideEffect(NicknameSideEffect.KeyboardVisible(false))
