@@ -3,7 +3,7 @@ package tht.feature.signin.auth
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
-import com.tht.tht.domain.signup.usecase.RequestVerifyUseCase
+import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
-class VerifyViewModel @Inject constructor(
+class PhoneVerifyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
-    private val requestVerifyUseCase: RequestVerifyUseCase,
+    private val requestPhoneVerifyUseCase: RequestPhoneVerifyUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<VerifyViewModel.VerifyUiState, VerifyViewModel.VerifySideEffect>() {
+) : BaseStateViewModel<PhoneVerifyViewModel.VerifyUiState, PhoneVerifyViewModel.VerifySideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.ErrorViewHide)
 
@@ -106,7 +106,7 @@ class VerifyViewModel @Inject constructor(
     private fun requestVerify(verify: String) {
         viewModelScope.launch {
             _dataLoading.value = true
-            requestVerifyUseCase(phone.value, verify)
+            requestPhoneVerifyUseCase(phone.value, verify)
                 .onSuccess {
                     when (it) {
                         true -> {

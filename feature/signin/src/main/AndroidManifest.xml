@@ -18,7 +18,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".auth.VerifyActivity"
+            android:name=".auth.PhoneVerifyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

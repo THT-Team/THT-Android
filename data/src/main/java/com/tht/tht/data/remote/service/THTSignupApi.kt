@@ -1,7 +1,6 @@
 package com.tht.tht.data.remote.service
 
 import com.tht.tht.data.constant.THTApiConstant
-import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
@@ -17,8 +16,8 @@ interface THTSignupApi {
         @Query("phone")phone: String
     ): ThtResponse<Boolean>
 
-    @GET(THTApiConstant.Signup.VERIFY)
-    suspend fun requestVerify(
+    @GET(THTApiConstant.Signup.PHONE_VERIFY)
+    suspend fun requestPhoneVerify(
         @Query("phone")phone: String,
         @Query("auth_num")authNumber: String
     ): ThtResponse<Boolean>
