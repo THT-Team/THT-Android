@@ -14,6 +14,7 @@ interface StringProvider {
         SendAuthFail,
         AuthTimeout,
         ResendAuthSuccess,
-        VerifyFail
+        VerifyFail,
+        EmailPatchFail,
     }
 }
