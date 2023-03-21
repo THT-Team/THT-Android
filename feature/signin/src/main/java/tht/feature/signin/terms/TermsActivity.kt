@@ -69,19 +69,20 @@ class TermsActivity : AppCompatActivity() {
                         is TermsViewModel.TermsUiState.Select -> setTermsSelect(it.selectTermsSet, it.isRequireSelect)
 
                         is TermsViewModel.TermsUiState.SelectAll -> changeAllSelectState(true)
+
+                        is TermsViewModel.TermsUiState.InvalidatePhone -> {
+                            showToast(it.message)
+                            finish()
+                        }
                     }
                 }
             }
 
             launch {
                 viewModel.sideEffectFlow.collect {
+                    println("sideEffect debug => $it")
                     when (it) {
                         is TermsViewModel.TermsSideEffect.Back -> finish()
-
-                        is TermsViewModel.TermsSideEffect.FinishView -> {
-                            it.message?.let { m -> showToast(m) }
-                            finish()
-                        }
 
                         is TermsViewModel.TermsSideEffect.ShowToast -> showToast(it.message)
 

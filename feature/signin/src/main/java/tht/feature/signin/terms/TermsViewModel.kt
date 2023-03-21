@@ -39,10 +39,8 @@ class TermsViewModel @Inject constructor(
 
     init {
         if (phone.value.isBlank()) {
-            postSideEffect(
-                TermsSideEffect.FinishView(
-                    stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-                )
+            _uiStateFlow.value = TermsUiState.InvalidatePhone(
+                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         } else {
             viewModelScope.launch {
@@ -153,12 +151,11 @@ class TermsViewModel @Inject constructor(
             val isRequireSelect: Boolean
         ) : TermsUiState()
         object SelectAll : TermsUiState()
+        data class InvalidatePhone(val message: String) : TermsUiState()
     }
 
     sealed class TermsSideEffect : SideEffect {
         data class ShowToast(val message: String) : TermsSideEffect()
-
-        data class FinishView(val message: String?) : TermsSideEffect()
 
         data class NavigateTermsDetail(val terms: TermsModel) : TermsSideEffect()
 

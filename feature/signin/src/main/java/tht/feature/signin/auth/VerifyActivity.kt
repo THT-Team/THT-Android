@@ -119,6 +119,11 @@ class VerifyActivity : AppCompatActivity() {
                         is VerifyViewModel.VerifyUiState.ErrorViewHide -> hideErrorView()
 
                         is VerifyViewModel.VerifyUiState.ErrorViewShow -> showErrorView(it.errorMessage)
+
+                        is VerifyViewModel.VerifyUiState.InvalidatePhone -> {
+                            showToast(it.message)
+                            finish()
+                        }
                     }
                 }
             }

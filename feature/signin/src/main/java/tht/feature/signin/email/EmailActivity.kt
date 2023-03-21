@@ -88,6 +88,11 @@ class EmailActivity : AppCompatActivity() {
                             binding.layoutEtEmail.error = null
                             binding.btnAuth.isEnabled = true
                         }
+
+                        is EmailViewModel.EmailUiState.InvalidatePhone -> {
+                            showToast(it.message)
+                            finish()
+                        }
                     }
                 }
             }
@@ -96,11 +101,6 @@ class EmailActivity : AppCompatActivity() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is EmailViewModel.EmailSideEffect.ShowToast -> showToast(it.message)
-
-                        is EmailViewModel.EmailSideEffect.FinishView -> {
-                            it.message?.let { m -> showToast(m) }
-                            finish()
-                        }
 
                         is EmailViewModel.EmailSideEffect.Back -> finish()
 

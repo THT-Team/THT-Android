@@ -47,10 +47,8 @@ class VerifyViewModel @Inject constructor(
 
     init {
         if (phone.value.isBlank()) {
-            postSideEffect(
-                VerifySideEffect.FinishView(
-                    stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-                )
+            _uiStateFlow.value = VerifyUiState.InvalidatePhone(
+                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         } else {
             startTimer()
@@ -155,6 +153,8 @@ class VerifyViewModel @Inject constructor(
     sealed class VerifyUiState : UiState {
         object ErrorViewHide : VerifyUiState()
         data class ErrorViewShow(val errorMessage: String) : VerifyUiState()
+
+        data class InvalidatePhone(val message: String) : VerifyUiState()
     }
     sealed class VerifySideEffect : SideEffect {
         object Back : VerifySideEffect()
