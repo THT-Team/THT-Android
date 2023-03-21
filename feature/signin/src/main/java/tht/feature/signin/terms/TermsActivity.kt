@@ -16,7 +16,6 @@ import com.tht.tht.domain.signup.model.TermsModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.repeatOnCreated
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
