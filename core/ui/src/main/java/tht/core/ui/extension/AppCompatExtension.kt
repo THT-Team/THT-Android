@@ -12,10 +12,3 @@ fun AppCompatActivity.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) 
         lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
 }
-
-fun AppCompatActivity.repeatOnCreated(block: suspend CoroutineScope.() -> Unit) {
-    lifecycleScope.launch {
-        lifecycle.repeatOnLifecycle(Lifecycle.State.CREATED, block)
-    }
-}
-
