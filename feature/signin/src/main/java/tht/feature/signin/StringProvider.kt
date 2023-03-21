@@ -16,5 +16,9 @@ interface StringProvider {
         ResendAuthSuccess,
         VerifyFail,
         EmailPatchFail,
+        NickNamePatchFail,
+        DuplicateCheckLoading,
+        DuplicateNickname,
+        DuplicateCheckFail,
     }
 }

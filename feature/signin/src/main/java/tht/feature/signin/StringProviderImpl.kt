@@ -27,6 +27,10 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.ResendAuthSuccess -> R.string.message_resend_auth_success
             StringProvider.ResId.VerifyFail -> R.string.message_verify_error
             StringProvider.ResId.EmailPatchFail -> R.string.message_email_patch_fail
+            StringProvider.ResId.NickNamePatchFail -> R.string.message_nickname_patch_fail
+            StringProvider.ResId.DuplicateNickname -> R.string.message_nickname_duplicate
+            StringProvider.ResId.DuplicateCheckLoading -> R.string.message_nickname_duplicate_check_loading
+            StringProvider.ResId.DuplicateCheckFail -> R.string.message_nickname_duplicate_check_fail
         }
     }
 }
