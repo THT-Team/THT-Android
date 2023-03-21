@@ -308,4 +308,15 @@
     </style>
     <!--Ex1-->
 
+    <!--Pretendard-->
+    <style name="PretendardTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="PretendardGrayTextStyle" parent="PretendardTextStyle">
+        <item name="android:textColor">@color/gray_666666</item>
+    </style>
+    <!--Pretendard-->
+
 </resources>
