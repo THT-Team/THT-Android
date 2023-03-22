@@ -1,12 +1,12 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
@@ -107,6 +107,15 @@ internal class SignupRepositoryImplTest {
     }
 
     @Test
+    fun `checkNicknameDuplicate는 SignupApiDataSource의 checkNicknameDuplicate의 결과를 리턴한다`() = runTest(testDispatcher) {
+        val expect = true
+        coEvery { apiDataSource.checkNicknameDuplicate(any()) } returns expect
+        val actual = repository.checkNicknameDuplicate("nickname")
+        assertThat(actual)
+            .isEqualTo(expect)
+    }
+
+    @Test
     fun `fetchInterest는 SignupApiDataSource의 fetchInterest의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = listOf(InterestTypeResponse("name", "code", 0))
         coEvery { apiDataSource.fetchInterests() } returns expect
@@ -173,6 +182,13 @@ internal class SignupRepositoryImplTest {
     fun `fetchTerms는 TermsDataSource의 fetchTerms를 호출한다`() = runTest(testDispatcher) {
         repository.fetchTerms()
         coVerify { termsDataSource.fetchSignupTerms() }
+    }
+
+    @Test
+    fun `fetchInterest는 SignupApiDataSource의 checkNicknameDuplicate를 호출한다`() = runTest(testDispatcher) {
+        val nickname = "nickname"
+        repository.checkNicknameDuplicate(nickname)
+        coVerify { apiDataSource.checkNicknameDuplicate(nickname) }
     }
 
     @Test
