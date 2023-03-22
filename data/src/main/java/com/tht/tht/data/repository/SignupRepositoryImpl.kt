@@ -46,15 +46,9 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestAuthentication(phone: String): Boolean {
+    override suspend fun requestAuthentication(phone: String): String {
         return withContext(dispatcher) {
-            signupApiDataSource.requestAuthenticationNumber(phone)
-        }
-    }
-
-    override suspend fun requestVerify(phone: String, auth: String): Boolean {
-        return withContext(dispatcher) {
-            signupApiDataSource.requestVerify(phone, auth)
+            signupApiDataSource.requestAuthenticationNumber(phone).authNumber.toString()
         }
     }
 
