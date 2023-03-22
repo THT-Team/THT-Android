@@ -111,7 +111,7 @@ class TermsActivity : AppCompatActivity() {
     }
 
     private fun addTermsView(terms: TermsModel) {
-        val prevView = (binding.layoutBackground.children.first() as? TermsItemView) ?: binding.ivCheckAll //35
+        val prevView = (binding.layoutBackground.children.first() as? TermsItemView) ?: binding.ivCheckAll
         val termsItemView = TermsItemView(this).apply {
             id = View.generateViewId()
             onClickListener = viewModel::termsClickEvent
