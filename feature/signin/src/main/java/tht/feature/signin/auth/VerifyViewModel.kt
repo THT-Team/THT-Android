@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class VerifyViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val requestVerifyUseCase: RequestVerifyUseCase,
     private val stringProvider: StringProvider
@@ -27,10 +27,10 @@ class VerifyViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<VerifyUiState> = MutableStateFlow(VerifyUiState.ErrorViewHide)
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
+    private val authNum = savedStateHandle.getStateFlow(EXTRA_AUTH_NUM_KEY, "")
 
     private var timerJob: Job? = null
-    private val defaultTimeMill: Long = 60 * 3 * 1000
-    private val _time = MutableStateFlow(defaultTimeMill)
+    private val _time = MutableStateFlow(DEFAULT_TIME_MILL)
     val time = _time.map {
         var timeMill = it
         val min = TimeUnit.MILLISECONDS.toMinutes(timeMill)
@@ -46,7 +46,7 @@ class VerifyViewModel @Inject constructor(
     private var verify = Array<Char?>(VERIFY_SIZE) { null }
 
     init {
-        if (phone.value.isBlank()) {
+        if (phone.value.isBlank() || authNum.value.isBlank()) {
             postSideEffect(
                 VerifySideEffect.FinishView(
                     stringProvider.getString(StringProvider.ResId.InvalidatePhone)
@@ -59,7 +59,7 @@ class VerifyViewModel @Inject constructor(
 
     private fun startTimer() {
         stopTimer()
-        _time.value = defaultTimeMill
+        _time.value = DEFAULT_TIME_MILL
         timerJob = viewModelScope.launch(Dispatchers.IO) {
             while (isActive && _time.value > 0L) {
                 delay(1000)
@@ -106,9 +106,10 @@ class VerifyViewModel @Inject constructor(
     }
 
     private fun requestVerify(verify: String) {
+        require(authNum.value.isNotBlank())
         viewModelScope.launch {
             _dataLoading.value = true
-            requestVerifyUseCase(phone.value, verify)
+            requestVerifyUseCase(authNum.value, phone.value, verify)
                 .onSuccess {
                     when (it) {
                         true -> {
@@ -139,6 +140,7 @@ class VerifyViewModel @Inject constructor(
                     _sideEffectFlow.emit(
                         VerifySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.ResendAuthSuccess))
                     )
+                    savedStateHandle[EXTRA_AUTH_NUM_KEY] = it
                     startTimer()
                 }.onFailure {
                     _sideEffectFlow.emit(
@@ -166,6 +168,10 @@ class VerifyViewModel @Inject constructor(
     companion object {
         const val EXTRA_PHONE_KEY = "extra_phone_key"
 
+        const val EXTRA_AUTH_NUM_KEY = "extra_auth_num_key"
+
         private const val VERIFY_SIZE = 6
+
+        private const val DEFAULT_TIME_MILL: Long = 60 * 3 * 1000
     }
 }
