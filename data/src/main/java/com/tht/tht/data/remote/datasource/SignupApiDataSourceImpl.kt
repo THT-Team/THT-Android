@@ -1,7 +1,7 @@
 package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.di.IODispatcher
-import com.tht.tht.data.remote.response.base.BaseResponse
+import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
@@ -17,29 +17,13 @@ class SignupApiDataSourceImpl @Inject constructor(
 ) : SignupApiDataSource {
     override suspend fun requestAuthenticationNumber(phone: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestAuthenticationNumber(phone).let {
-                when (it) {
-                    is BaseResponse.Success -> true
-                    is BaseResponse.SuccessNoBody -> true
-                    is BaseResponse.ApiError -> false
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                }
-            }
+            apiService.requestAuthenticationNumber(phone).toUnwrap { it }
         }
     }
 
     override suspend fun requestVerify(phone: String, authNumber: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestVerify(phone, authNumber).let {
-                when (it) {
-                    is BaseResponse.Success -> true
-                    is BaseResponse.SuccessNoBody -> true
-                    is BaseResponse.ApiError -> false
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                }
-            }
+            apiService.requestVerify(phone, authNumber).toUnwrap { it }
         }
     }
     override suspend fun checkNicknameDuplicate(nickname: String): Boolean {
@@ -50,40 +34,19 @@ class SignupApiDataSourceImpl @Inject constructor(
 
     override suspend fun fetchInterests(): List<InterestTypeResponse> {
         return withContext(dispatcher) {
-            apiService.fetchInterestsType().let {
-                when (it) {
-                    is BaseResponse.Success -> it.response.body
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.fetchInterestsType().toUnwrap { it }
         }
     }
 
     override suspend fun fetchIdealTypes(): List<IdealTypeResponse> {
         return withContext(dispatcher) {
-            apiService.fetchIdealType().let {
-                when (it) {
-                    is BaseResponse.Success -> it.response.body
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.fetchIdealType().toUnwrap { it }
         }
     }
 
     override suspend fun requestSignup(user: SignupUserModel): SignupResponse {
         return withContext(dispatcher) {
-            apiService.requestSignup(user).let {
-                when (it) {
-                    is BaseResponse.Success -> it.response.body
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.requestSignup(user).toUnwrap { it }
         }
     }
 }
