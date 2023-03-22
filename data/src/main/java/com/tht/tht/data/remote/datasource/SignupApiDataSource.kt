@@ -10,6 +10,8 @@ interface SignupApiDataSource {
 
     suspend fun requestVerify(phone: String, authNumber: String): Boolean
 
+    suspend fun checkNicknameDuplicate(nickname: String): Boolean
+
     suspend fun fetchInterests(): List<InterestTypeResponse>
 
     suspend fun fetchIdealTypes(): List<IdealTypeResponse>

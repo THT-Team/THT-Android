@@ -42,6 +42,11 @@ class SignupApiDataSourceImpl @Inject constructor(
             }
         }
     }
+    override suspend fun checkNicknameDuplicate(nickname: String): Boolean {
+        return withContext(dispatcher) {
+            apiService.checkNicknameDuplicate(nickname).toUnwrap { it }
+        }
+    }
 
     override suspend fun fetchInterests(): List<InterestTypeResponse> {
         return withContext(dispatcher) {
