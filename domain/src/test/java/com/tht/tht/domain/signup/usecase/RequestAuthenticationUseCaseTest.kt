@@ -30,14 +30,15 @@ internal class RequestAuthenticationUseCaseTest {
     }
 
     @Test
-    fun `useCase는 Repository의 fetchIdealType의 결과를 Result로 래핑해서 리턴한다`() = runTest(testDispatcher) {
-        coEvery { repository.requestAuthentication(any()) } returns true
+    fun `useCase는 Repository의 requestAuthentication의 결과를 Result로 래핑해서 리턴한다`() = runTest(testDispatcher) {
+        val authNum = "123456"
+        coEvery { repository.requestAuthentication(any()) } returns authNum
 
-        val actual = useCase("test").getOrNull()
+        val expect = kotlin.runCatching { authNum }
+        val actual = useCase("test")
 
         assertThat(actual)
-            .isNotNull
-            .isTrue
+            .isEqualTo(expect)
     }
 
     @Test
@@ -57,7 +58,7 @@ internal class RequestAuthenticationUseCaseTest {
 
     @Test
     fun `useCase는 결과를 Result타입으로 래핑하여 리턴한다`() = runTest(testDispatcher) {
-        coEvery { repository.requestAuthentication(any()) } returns true
+        coEvery { repository.requestAuthentication(any()) } returns "123456"
         val actual = useCase("test")
 
         assertThat(actual)
