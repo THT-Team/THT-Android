@@ -16,7 +16,7 @@ class MockTHTSignupApi : THTSignupApi {
         )
     }
 
-    override suspend fun requestVerify(phone: String, authNumber: String): ThtResponse<Boolean> {
+    override suspend fun requestPhoneVerify(phone: String, authNumber: String): ThtResponse<Boolean> {
         return BaseResponse.Success(
             statusCode = 200,
             response = SuccessResponse(true)
