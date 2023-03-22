@@ -20,6 +20,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityTermsBinding
+import tht.feature.signin.signup.SignupRootActivity
 
 @AndroidEntryPoint
 class TermsActivity : AppCompatActivity() {
@@ -89,7 +90,8 @@ class TermsActivity : AppCompatActivity() {
                         is TermsViewModel.TermsSideEffect.NavigateTermsDetail ->
                             startActivity(TermsContentActivity.getIntent(this@TermsActivity, it.terms))
 
-                        is TermsViewModel.TermsSideEffect.NavigateNextView -> showToast("navigate next view")
+                        is TermsViewModel.TermsSideEffect.NavigateNextView ->
+                            startActivity(SignupRootActivity.getIntent(this@TermsActivity, it.phone))
                     }
                 }
             }
