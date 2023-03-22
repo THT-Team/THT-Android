@@ -1,7 +1,7 @@
 package com.tht.tht.data.constant
 
 object THTApiConstant {
-    const val BASE_URL = "https:www.naver.com/"
+    const val BASE_URL = "http://tht-talk.store/"
 
     object Signup {
         const val AUTHENTICATION_NUM = "auth"
