@@ -20,6 +20,17 @@ class MockTHTSignupApi : THTSignupApi {
         return BaseResponse.Success(
             statusCode = 200,
             response = SuccessResponse(true)
+
+    override suspend fun checkNicknameDuplicate(nickname: String): ThtResponse<Boolean> {
+        delay(100)
+        val res = when (nickname.lowercase()) {
+            "fail", "no", "false" -> false
+            "success", "yes", "true" -> true
+            else -> throw Throwable("nickname duplicate test exception")
+        }
+        return BaseResponse.Success(
+            statusCode = 200,
+            response = SuccessResponse(res)
         )
     }
 

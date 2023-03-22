@@ -23,6 +23,11 @@ interface THTSignupApi {
         @Query("auth_num")authNumber: String
     ): ThtResponse<Boolean>
 
+    @GET(THTApiConstant.Signup.NICKNAME_DUPLICATE_CHECK)
+    suspend fun checkNicknameDuplicate(
+        @Query("nickname")nickname: String
+    ): ThtResponse<Boolean>
+
     @GET(THTApiConstant.Signup.IDEAL_TYPE)
     suspend fun fetchIdealType(): ThtResponse<List<IdealTypeResponse>>
 
