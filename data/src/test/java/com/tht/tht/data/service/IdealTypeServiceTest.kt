@@ -3,7 +3,6 @@ package com.tht.tht.data.service
 import com.google.gson.GsonBuilder
 import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
-import com.tht.tht.data.remote.response.base.SuccessResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
 import com.tht.tht.data.remote.service.THTSignupApi
@@ -19,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.io.File
 
+@Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
 class IdealTypeServiceTest {
 
@@ -50,23 +50,21 @@ class IdealTypeServiceTest {
 
         val expect = BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(
-                body = listOf(
-                    IdealTypeResponse(
-                        name = "지적인",
-                        emojiCode = "1F9E0",
-                        idx = 1
-                    ),
-                    IdealTypeResponse(
-                        name = "귀여운",
-                        emojiCode = "1F63B",
-                        idx = 2
-                    ),
-                    IdealTypeResponse(
-                        name = "피부가 좋은",
-                        emojiCode = "2728",
-                        idx = 3
-                    )
+            response = listOf(
+                IdealTypeResponse(
+                    name = "지적인",
+                    emojiCode = "1F9E0",
+                    idx = 1
+                ),
+                IdealTypeResponse(
+                    name = "귀여운",
+                    emojiCode = "1F63B",
+                    idx = 2
+                ),
+                IdealTypeResponse(
+                    name = "피부가 좋은",
+                    emojiCode = "2728",
+                    idx = 3
                 )
             )
         )

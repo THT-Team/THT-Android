@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
-import com.tht.tht.data.remote.response.base.SuccessResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
 import com.tht.tht.data.remote.service.THTSignupApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,11 +51,9 @@ class AuthenticationNumberServiceTest {
 
         val expect = BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(
-                body = AuthenticationNumberResponse(
-                    phoneNumber = "01012345678",
-                    authNumber = 628926
-                )
+            response = AuthenticationNumberResponse(
+                phoneNumber = "01012345678",
+                authNumber = 628926
             )
         )
 
