@@ -27,7 +27,7 @@ class SignupApiDataSourceImpl @Inject constructor(
         return withContext(dispatcher) {
             apiService.fetchInterestsType().let {
                 when (it) {
-                    is BaseResponse.Success -> it.response.body
+                    is BaseResponse.Success -> it.response
                     is BaseResponse.NetworkError -> throw it.exception
                     is BaseResponse.UnknownError -> throw it.throwable
                     else -> throw Exception("Unknown Api Response")
@@ -40,7 +40,7 @@ class SignupApiDataSourceImpl @Inject constructor(
         return withContext(dispatcher) {
             apiService.fetchIdealType().let {
                 when (it) {
-                    is BaseResponse.Success -> it.response.body
+                    is BaseResponse.Success -> it.response
                     is BaseResponse.NetworkError -> throw it.exception
                     is BaseResponse.UnknownError -> throw it.throwable
                     else -> throw Exception("Unknown Api Response")
@@ -53,7 +53,7 @@ class SignupApiDataSourceImpl @Inject constructor(
         return withContext(dispatcher) {
             apiService.requestSignup(user).let {
                 when (it) {
-                    is BaseResponse.Success -> it.response.body
+                    is BaseResponse.Success -> it.response
                     is BaseResponse.NetworkError -> throw it.exception
                     is BaseResponse.UnknownError -> throw it.throwable
                     else -> throw Exception("Unknown Api Response")

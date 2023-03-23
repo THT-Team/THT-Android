@@ -2,7 +2,6 @@ package com.tht.tht.data.remote.service
 
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.BaseResponse
-import com.tht.tht.data.remote.response.base.SuccessResponse
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
@@ -22,7 +21,7 @@ class MockTHTSignupApi @Inject constructor(
         val idealTypes = listOf(IdealTypeResponse("name", "code", 0))
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(idealTypes)
+            response = idealTypes
         )
     }
 
@@ -30,14 +29,14 @@ class MockTHTSignupApi @Inject constructor(
         val interestType = listOf(InterestTypeResponse("name", "code", 0))
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(interestType)
+            response = interestType
         )
     }
 
     override suspend fun requestSignup(user: SignupUserModel): ThtResponse<SignupResponse> {
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(SignupResponse("userId"))
+            response = SignupResponse("userId")
         )
     }
 }
