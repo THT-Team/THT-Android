@@ -67,7 +67,8 @@ class TermsActivity : AppCompatActivity() {
                     when (it) {
                         is TermsViewModel.TermsUiState.SelectNone -> changeAllSelectState(false)
 
-                        is TermsViewModel.TermsUiState.Select -> setTermsSelect(it.selectTermsSet, it.isRequireSelect)
+                        is TermsViewModel.TermsUiState.Select ->
+                            setTermsSelect(it.selectTermsSet, it.isRequireTermsAllSelect)
 
                         is TermsViewModel.TermsUiState.SelectAll -> changeAllSelectState(true)
 
@@ -143,7 +144,7 @@ class TermsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTermsSelect(selectTermsSet: Set<TermsModel>, isRequireSelect: Boolean) {
+    private fun setTermsSelect(selectTermsSet: Set<TermsModel>, isRequireTermsAllSelect: Boolean) {
         var isAllSelect = true
         binding.layoutBackground.children.forEach {
             if (it !is TermsItemView) return@forEach
@@ -151,7 +152,7 @@ class TermsActivity : AppCompatActivity() {
             if (!it.isSelect)
                 isAllSelect = false
         }
-        binding.btnStart.isEnabled = isRequireSelect
+        binding.btnStart.isEnabled = isRequireTermsAllSelect
         binding.ivCheckAll.isSelected = isAllSelect
     }
 

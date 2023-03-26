@@ -148,7 +148,7 @@ class TermsViewModel @Inject constructor(
         object SelectNone : TermsUiState()
         data class Select(
             val selectTermsSet: Set<TermsModel>,
-            val isRequireSelect: Boolean
+            val isRequireTermsAllSelect: Boolean
         ) : TermsUiState()
         object SelectAll : TermsUiState()
         data class InvalidatePhone(val message: String) : TermsUiState()
