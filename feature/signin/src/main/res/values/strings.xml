@@ -37,4 +37,11 @@
     <string name="message_nickname_duplicate">이미 사용중인 닉네임입니다</string>
     <string name="message_nickname_duplicate_check_loading">중복검사 중입니다</string>
     <string name="message_nickname_duplicate_check_fail">중복검사를 실패하였습니다</string>
+
+    <string name="title_all_agreement">전체 동의</string>
+    <string name="parenthesis_require">(필수)</string>
+    <string name="parenthesis_select">(선택)</string>
+    <string name="message_terms_notify">THT는 만 18세 이상부터 이용 가능하며, 타인의 계정으로 본 서비스를 사용하는 경우 정보통신망 이용 촉진 및 정보보호 등에 관한 법률에 의거 처벌을 받을 수 있습니다.</string>
+    <string name="message_terms_fetch_error">이용약관 데이터를 불러올 수 없습니다</string>
+    <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
 </resources>

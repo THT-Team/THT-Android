@@ -8,7 +8,7 @@ import com.tht.tht.domain.signup.model.SignupUserModel
 interface SignupApiDataSource {
     suspend fun requestAuthenticationNumber(phone: String): Boolean
 
-    suspend fun requestVerify(phone: String, authNumber: String): Boolean
+    suspend fun requestPhoneVerify(phone: String, authNumber: String): Boolean
 
     suspend fun checkNicknameDuplicate(nickname: String): Boolean
 

@@ -16,7 +16,7 @@ interface SignupRepository {
 
     suspend fun requestAuthentication(phone: String): Boolean
 
-    suspend fun requestVerify(phone: String, auth: String): Boolean
+    suspend fun requestPhoneVerify(phone: String, auth: String): Boolean
 
     suspend fun fetchTerms(): List<TermsModel>
 

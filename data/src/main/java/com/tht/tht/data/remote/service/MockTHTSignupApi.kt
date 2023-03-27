@@ -18,7 +18,7 @@ class MockTHTSignupApi : THTSignupApi {
         )
     }
 
-    override suspend fun requestVerify(phone: String, authNumber: String): ThtResponse<Boolean> {
+    override suspend fun requestPhoneVerify(phone: String, authNumber: String): ThtResponse<Boolean> {
         delay(100)
         val res = when (authNumber.contains('0')) {
             true -> false

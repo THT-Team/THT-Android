@@ -21,9 +21,9 @@ class SignupApiDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestVerify(phone: String, authNumber: String): Boolean {
+    override suspend fun requestPhoneVerify(phone: String, authNumber: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestVerify(phone, authNumber).toUnwrap { it }
+            apiService.requestPhoneVerify(phone, authNumber).toUnwrap { it }
         }
     }
     override suspend fun checkNicknameDuplicate(nickname: String): Boolean {

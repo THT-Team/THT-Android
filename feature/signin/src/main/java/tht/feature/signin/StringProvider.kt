@@ -16,9 +16,11 @@ interface StringProvider {
         ResendAuthSuccess,
         VerifyFail,
         EmailPatchFail,
+        TermsFetchError,
+        RequireTermsNeedSelect,
         NickNamePatchFail,
         DuplicateCheckLoading,
         DuplicateNickname,
-        DuplicateCheckFail,
+        DuplicateCheckFail
     }
 }
