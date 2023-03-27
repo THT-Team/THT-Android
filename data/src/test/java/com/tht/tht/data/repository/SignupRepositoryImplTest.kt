@@ -8,6 +8,7 @@ import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
 import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
+import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
@@ -80,19 +81,16 @@ internal class SignupRepositoryImplTest {
     }
 
     @Test
-    fun `requestAuthentication는 SignupApiDataSource의 requestAuthentication의 결과를 리턴한다`() = runTest(testDispatcher) {
-        coEvery { apiDataSource.requestAuthenticationNumber(any()) } returns true
-        val actual = repository.requestAuthentication("phone")
+    fun `requestAuthentication는 SignupApiDataSource의 requestAuthenticationNumber의 결과의 authNumber를 String으로 가공해 리턴한다`() = runTest(testDispatcher) {
+        val authResponse = AuthenticationNumberResponse(
+            authNumber = 123456,
+            phoneNumber = "phone"
+        )
+        coEvery { apiDataSource.requestAuthenticationNumber(any()) } returns authResponse
+        val actual = repository.requestAuthentication(authResponse.phoneNumber)
+        val expect = authResponse.authNumber.toString()
         assertThat(actual)
-            .isTrue
-    }
-
-    @Test
-    fun `requestVerify는 SignupApiDataSource의 requestVerify의 결과를 리턴한다`() = runTest(testDispatcher) {
-        coEvery { apiDataSource.requestPhoneVerify(any(), any()) } returns true
-        val actual = repository.requestPhoneVerify("phone", "auth")
-        assertThat(actual)
-            .isTrue
+            .isEqualTo(expect)
     }
 
     @Test
@@ -170,12 +168,6 @@ internal class SignupRepositoryImplTest {
     fun `requestAuthentication는 SignupApiDataSource의 requestAuthenticationNumber를 호출한다`() = runTest(testDispatcher) {
         repository.requestAuthentication("phone")
         coVerify { apiDataSource.requestAuthenticationNumber(any()) }
-    }
-
-    @Test
-    fun `requestVerify는 SignupApiDataSource의 requestVerify를 호출한다`() = runTest(testDispatcher) {
-        repository.requestPhoneVerify("phone", "auth")
-        coVerify { apiDataSource.requestPhoneVerify(any(), any()) }
     }
 
     @Test

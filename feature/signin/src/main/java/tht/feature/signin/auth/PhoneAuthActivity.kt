@@ -71,7 +71,13 @@ class PhoneAuthActivity : AppCompatActivity() {
                             binding.etPhone.setSoftKeyboardVisible(it.visible)
 
                         is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateVerifyView ->
-                            startActivity(PhoneVerifyActivity.getIntent(this@PhoneAuthActivity, it.phone))
+                            startActivity(
+                                PhoneVerifyActivity.getIntent(
+                                    this@PhoneAuthActivity,
+                                    it.phone,
+                                    it.authNum
+                                )
+                            )
                     }
                 }
             }

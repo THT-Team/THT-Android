@@ -1,11 +1,11 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
+import com.tht.tht.data.di.DefaultDispatcher
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
-import com.tht.tht.data.di.DefaultDispatcher
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
@@ -46,15 +46,9 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestAuthentication(phone: String): Boolean {
+    override suspend fun requestAuthentication(phone: String): String {
         return withContext(dispatcher) {
-            signupApiDataSource.requestAuthenticationNumber(phone)
-        }
-    }
-
-    override suspend fun requestPhoneVerify(phone: String, auth: String): Boolean {
-        return withContext(dispatcher) {
-            signupApiDataSource.requestPhoneVerify(phone, auth)
+            signupApiDataSource.requestAuthenticationNumber(phone).authNumber.toString()
         }
     }
 

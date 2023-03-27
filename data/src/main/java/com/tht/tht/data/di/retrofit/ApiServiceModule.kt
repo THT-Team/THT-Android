@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -15,8 +16,10 @@ object ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideTHTSignupApiService(apiClient: ApiClient): THTSignupApi {
-        return MockTHTSignupApi()
+    fun provideTHTSignupApiService(
+        apiClient: ApiClient
+    ): THTSignupApi {
+        return MockTHTSignupApi(apiClient.provideRetrofit())
 //        return apiClient.provideTHTSignupApi()
     }
 }

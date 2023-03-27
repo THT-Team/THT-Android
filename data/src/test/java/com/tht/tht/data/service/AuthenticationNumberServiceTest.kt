@@ -1,16 +1,16 @@
 package com.tht.tht.data.service
 
 import com.google.gson.GsonBuilder
+import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
-import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
 import com.tht.tht.data.remote.service.THTSignupApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
@@ -18,9 +18,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.io.File
 
+
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-class IdealTypeServiceTest {
+class AuthenticationNumberServiceTest {
 
     private lateinit var mockWebServer: MockWebServer
     private lateinit var signupApi: THTSignupApi
@@ -43,58 +44,45 @@ class IdealTypeServiceTest {
     }
 
     @Test
-    fun `이상형 정보를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal/ideal.json").readText()
+    fun `인증번호 요청 Response값을 가져올 수 있다`() = runTest {
+        val responseJson = File("src/test/java/com/tht/tht/data/resources/authentication/authentication_number.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
         val expect = BaseResponse.Success(
             statusCode = 200,
-            response = listOf(
-                IdealTypeResponse(
-                    name = "지적인",
-                    emojiCode = "1F9E0",
-                    idx = 1
-                ),
-                IdealTypeResponse(
-                    name = "귀여운",
-                    emojiCode = "1F63B",
-                    idx = 2
-                ),
-                IdealTypeResponse(
-                    name = "피부가 좋은",
-                    emojiCode = "2728",
-                    idx = 3
-                )
+            response = AuthenticationNumberResponse(
+                phoneNumber = "01012345678",
+                authNumber = 628926
             )
         )
 
-        val actual = signupApi.fetchIdealType()
-        assertThat(actual)
+        val actual = signupApi.requestAuthenticationNumber("01012345678")
+        Assertions.assertThat(actual)
             .isEqualTo(expect)
     }
 
     @Test
-    fun `이상형 정보를 가져올 수 없다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/ideal/ideal_failure_404.json").readText()
+    fun `인증번호 요청을 실패 결과를 가져올 수 있다`() = runTest {
+        val responseJson = File("src/test/java/com/tht/tht/data/resources/authentication/authentication_number_failure_400.json").readText()
         val response = MockResponse()
-            .setResponseCode(404)
+            .setResponseCode(400)
             .setBody(responseJson)
         mockWebServer.enqueue(response)
 
         val expect = BaseResponse.ApiError(
-            statusCode = 404,
+            statusCode = 400,
             errorResponse = ErrorResponse(
-                status = 404,
-                error = "이상형 정보를 찾을 수 없습니다.",
-                message = "이상형 정보를 찾을 수 없습니다.",
+                status = 400,
+                error = "인증번호를 보낼 수 없습니다.",
+                message = "인증번호를 보낼 수 없습니다.",
                 timestamp = "123456789",
                 path = "..."
             )
         )
 
         val actual = signupApi.fetchIdealType()
-        assertThat(actual)
+        Assertions.assertThat(actual)
             .isEqualTo(expect)
     }
 }

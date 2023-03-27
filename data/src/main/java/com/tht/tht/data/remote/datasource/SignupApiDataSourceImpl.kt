@@ -2,6 +2,7 @@ package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.mapper.toUnwrap
+import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
@@ -15,17 +16,12 @@ class SignupApiDataSourceImpl @Inject constructor(
     private val apiService: THTSignupApi,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : SignupApiDataSource {
-    override suspend fun requestAuthenticationNumber(phone: String): Boolean {
+    override suspend fun requestAuthenticationNumber(phone: String): AuthenticationNumberResponse {
         return withContext(dispatcher) {
             apiService.requestAuthenticationNumber(phone).toUnwrap { it }
         }
     }
 
-    override suspend fun requestPhoneVerify(phone: String, authNumber: String): Boolean {
-        return withContext(dispatcher) {
-            apiService.requestPhoneVerify(phone, authNumber).toUnwrap { it }
-        }
-    }
     override suspend fun checkNicknameDuplicate(nickname: String): Boolean {
         return withContext(dispatcher) {
             apiService.checkNicknameDuplicate(nickname).toUnwrap { it }

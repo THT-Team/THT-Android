@@ -2,7 +2,7 @@ package com.tht.tht.data.remote.response.base
 
 import java.io.IOException
 
-typealias ThtResponse<T> = BaseResponse<SuccessResponse<T>, ErrorResponse>
+typealias ThtResponse<T> = BaseResponse<T, ErrorResponse>
 
 sealed class BaseResponse<out T : Any, out E : Any> {
 

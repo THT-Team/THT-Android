@@ -1,33 +1,21 @@
 package com.tht.tht.data.remote.service
 
+import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.BaseResponse
-import com.tht.tht.data.remote.response.base.SuccessResponse
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import com.tht.tht.domain.signup.model.SignupUserModel
 import kotlinx.coroutines.delay
+import retrofit2.Retrofit
+import javax.inject.Inject
 
-class MockTHTSignupApi : THTSignupApi {
-    override suspend fun requestAuthenticationNumber(phone: String): ThtResponse<Boolean> {
-        delay(100)
-        return BaseResponse.Success(
-            statusCode = 200,
-            response = SuccessResponse(true)
-        )
-    }
-
-    override suspend fun requestPhoneVerify(phone: String, authNumber: String): ThtResponse<Boolean> {
-        delay(100)
-        val res = when (authNumber.contains('0')) {
-            true -> false
-            else -> true
-        }
-        return BaseResponse.Success(
-            statusCode = 200,
-            response = SuccessResponse(res)
-        )
+class MockTHTSignupApi @Inject constructor(
+    private val retrofit: Retrofit
+) : THTSignupApi {
+    override suspend fun requestAuthenticationNumber(phone: String): ThtResponse<AuthenticationNumberResponse> {
+        return retrofit.create(THTSignupApi::class.java).requestAuthenticationNumber(phone)
     }
 
     override suspend fun checkNicknameDuplicate(nickname: String): ThtResponse<Boolean> {
@@ -39,7 +27,7 @@ class MockTHTSignupApi : THTSignupApi {
         }
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(res)
+            response = res
         )
     }
 
@@ -48,7 +36,7 @@ class MockTHTSignupApi : THTSignupApi {
         val idealTypes = listOf(IdealTypeResponse("name", "code", 0))
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(idealTypes)
+            response = idealTypes
         )
     }
 
@@ -57,7 +45,7 @@ class MockTHTSignupApi : THTSignupApi {
         val interestType = listOf(InterestTypeResponse("name", "code", 0))
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(interestType)
+            response = interestType
         )
     }
 
@@ -65,7 +53,7 @@ class MockTHTSignupApi : THTSignupApi {
         delay(100)
         return BaseResponse.Success(
             statusCode = 200,
-            response = SuccessResponse(SignupResponse("userId"))
+            response = SignupResponse("userId")
         )
     }
 }
