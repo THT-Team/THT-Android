@@ -182,10 +182,12 @@ class PhoneVerifyActivity : AppCompatActivity() {
     companion object {
         fun getIntent(
             context: Context,
-            phone: String
+            phone: String,
+            authNum: String
         ): Intent {
             return Intent(context, PhoneVerifyActivity::class.java).apply {
                 putExtra(PhoneVerifyViewModel.EXTRA_PHONE_KEY, phone)
+                putExtra(PhoneVerifyViewModel.EXTRA_AUTH_NUM_KEY, authNum)
             }
         }
     }

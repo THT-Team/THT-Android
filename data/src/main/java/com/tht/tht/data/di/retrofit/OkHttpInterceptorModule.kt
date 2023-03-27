@@ -1,6 +1,6 @@
 package com.tht.tht.data.di.retrofit
 
-import androidx.viewbinding.BuildConfig
+import com.tht.tht.data.BuildConfig
 import com.tht.tht.data.remote.retrofit.header.HttpHeaderKey
 import dagger.Module
 import dagger.Provides
