@@ -2,7 +2,11 @@ package tht.feature.signin.signup.nickname
 
 import android.os.Bundle
 import android.text.InputFilter
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -54,6 +58,18 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
             InputFilter.LengthFilter(NicknameViewModel.MAX_LENGTH)
         )
         viewModel.fetchSavedData(rootViewModel.phone.value)
+        setWhiteTextColor(binding.tvNicknameTitle, 0 until 3)
+    }
+
+    private fun setWhiteTextColor(textView: TextView, range: IntRange) {
+        textView.text = SpannableStringBuilder(textView.text).apply {
+            setSpan(
+                ForegroundColorSpan(resources.getColor(tht.core.ui.R.color.white_f9fafa, null)),
+                range.first,
+                range.last + 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
     }
 
     override fun observeData() {
