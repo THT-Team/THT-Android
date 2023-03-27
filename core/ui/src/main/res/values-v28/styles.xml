@@ -315,15 +315,15 @@
     </style>
     <!--Ex1-->
 
-    <!--Pretendard-->
-    <style name="PretendardTextStyle">
+    <!--Pretendard 14-->
+    <style name="Pretendard14TextStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">700</item>
     </style>
 
-    <style name="PretendardGrayTextStyle" parent="PretendardTextStyle">
+    <style name="Pretendard14GrayTextStyle" parent="Pretendard14TextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
-    <!--Pretendard-->
+    <!--Pretendard 14-->
 
 </resources>
