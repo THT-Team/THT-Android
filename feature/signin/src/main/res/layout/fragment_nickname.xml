@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/H1BoldTextStyle"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="@dimen/SignupProcessFragmentTopPadding"
         android:id="@+id/tv_nickname_title"
         android:text="@string/title_nickname"
         android:textColor="@color/white_f9fafa"

@@ -6,4 +6,6 @@
     <dimen name="AuthTextInputEditLayoutHorizontalMargin">36dp</dimen>
     <!-- 본래 38dp 이지만, InputEditLayout 자체 padding(abc_edit_text_inset_horizontal_material)을 제거 하는 방법을 찾지 못해, 임시로 margin 조절  -->
     <dimen name="VerifyTextInputEditLayoutHorizontalMargin">34dp</dimen>
+
+    <dimen name="SignupProcessFragmentTopPadding">65dp</dimen>
 </resources>
