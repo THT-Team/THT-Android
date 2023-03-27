@@ -13,7 +13,9 @@ data class TermsEntity(
         @SerializedName("require")
         val require: Boolean,
         @SerializedName("title")
-        val title: String
+        val title: String,
+        @SerializedName("description")
+        val description: String
     ) {
         data class Content(
             @SerializedName("content")

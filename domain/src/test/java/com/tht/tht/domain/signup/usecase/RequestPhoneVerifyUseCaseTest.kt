@@ -15,9 +15,9 @@ import org.junit.Test
 
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-internal class RequestVerifyUseCaseTest {
+internal class RequestPhoneVerifyUseCaseTest {
 
-    private lateinit var useCase: RequestVerifyUseCase
+    private lateinit var useCase: RequestPhoneVerifyUseCase
     private lateinit var createSignupUserUseCase: CreateSignupUserUseCase
     private lateinit var repository: SignupRepository
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
@@ -26,7 +26,7 @@ internal class RequestVerifyUseCaseTest {
     fun setupTest() {
         repository = mockk(relaxed = true)
         createSignupUserUseCase = mockk(relaxed = true)
-        useCase = RequestVerifyUseCase(
+        useCase = RequestPhoneVerifyUseCase(
             repository,
             createSignupUserUseCase,
             testDispatcher
@@ -88,5 +88,4 @@ internal class RequestVerifyUseCaseTest {
         assertThat(actual.getOrNull())
             .isNotNull
     }
-
 }

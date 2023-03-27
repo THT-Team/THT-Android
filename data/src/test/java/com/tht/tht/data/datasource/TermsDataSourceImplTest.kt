@@ -34,7 +34,7 @@ internal class TermsDataSourceImplTest {
     @Test
     fun `fetchSignupTerms는 TermsDao의 fetchSignupTerms의 결과를 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
         )
         coEvery { dao.fetchTerms() } returns expect
         val actual = dataSource.fetchSignupTerms()

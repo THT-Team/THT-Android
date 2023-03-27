@@ -1,12 +1,12 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
@@ -96,7 +96,7 @@ internal class SignupRepositoryImplTest {
     @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
         )
         coEvery { termsDataSource.fetchSignupTerms() } returns expect
         val actual = repository.fetchTerms()

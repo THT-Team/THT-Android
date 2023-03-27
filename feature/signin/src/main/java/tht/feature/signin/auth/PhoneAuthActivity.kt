@@ -72,7 +72,7 @@ class PhoneAuthActivity : AppCompatActivity() {
 
                         is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateVerifyView ->
                             startActivity(
-                                VerifyActivity.getIntent(
+                                PhoneVerifyActivity.getIntent(
                                     this@PhoneAuthActivity,
                                     it.phone,
                                     it.authNum

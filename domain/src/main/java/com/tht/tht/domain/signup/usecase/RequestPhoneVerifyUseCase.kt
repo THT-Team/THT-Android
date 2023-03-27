@@ -4,7 +4,7 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class RequestVerifyUseCase(
+class RequestPhoneVerifyUseCase(
     private val repository: SignupRepository,
     private val createSignupUserUseCase: CreateSignupUserUseCase,
     private val dispatcher: CoroutineDispatcher

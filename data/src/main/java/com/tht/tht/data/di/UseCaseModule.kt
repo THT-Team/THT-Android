@@ -170,7 +170,7 @@ object UseCaseModule {
         repository: SignupRepository,
         createSignupUserUseCase: CreateSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): RequestVerifyUseCase = RequestVerifyUseCase(
+    ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
         repository, createSignupUserUseCase, dispatcher
     )
 }
