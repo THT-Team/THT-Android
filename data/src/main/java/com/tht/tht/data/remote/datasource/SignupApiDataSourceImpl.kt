@@ -29,9 +29,9 @@ class SignupApiDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestVerify(phone: String, authNumber: String): Boolean {
+    override suspend fun requestPhoneVerify(phone: String, authNumber: String): Boolean {
         return withContext(dispatcher) {
-            apiService.requestVerify(phone, authNumber).let {
+            apiService.requestPhoneVerify(phone, authNumber).let {
                 when (it) {
                     is BaseResponse.Success -> true
                     is BaseResponse.SuccessNoBody -> true

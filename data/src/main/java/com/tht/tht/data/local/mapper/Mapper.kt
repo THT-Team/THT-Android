@@ -9,6 +9,7 @@ import com.tht.tht.domain.signup.model.TermsModel
 fun TermsEntity.Body.toModel(): TermsModel {
     return TermsModel(
         title = title,
+        description = description,
         content = content.map {
             TermsModel.TermsContent(
                 title = it.title,
@@ -20,9 +21,13 @@ fun TermsEntity.Body.toModel(): TermsModel {
 }
 
 fun SignupUserEntity.toModel(): SignupUserModel {
+    val map = mutableMapOf<TermsModel, Boolean>()
+    termsAgreement.forEach {
+        map[it.value.first] = it.value.second
+    }
     return SignupUserModel(
         phone = phone,
-        termsAgreement = termsAgreement,
+        termsAgreement = map,
         nickname = nickname,
         email = email,
         gender = gender,
@@ -39,9 +44,13 @@ fun SignupUserEntity.toModel(): SignupUserModel {
 }
 
 fun SignupUserModel.toEntity(): SignupUserEntity {
+    val map = mutableMapOf<String, Pair<TermsModel, Boolean>>()
+    termsAgreement.forEach {
+        map[it.key.title] = it.key to it.value
+    }
     return SignupUserEntity(
         phone = phone,
-        termsAgreement = termsAgreement,
+        termsAgreement = map,
         nickname = nickname,
         email = email,
         gender = gender,

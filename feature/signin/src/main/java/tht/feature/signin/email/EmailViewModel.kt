@@ -57,11 +57,10 @@ class EmailViewModel @Inject constructor(
 
     init {
         if (phone.value.isBlank()) {
-            postSideEffect(
-                EmailSideEffect.FinishView(
+            _uiStateFlow.value =
+                EmailUiState.InvalidatePhone(
                     stringProvider.getString(StringProvider.ResId.InvalidatePhone)
                 )
-            )
         } else {
             viewModelScope.launch {
                 _dataLoading.value = true
@@ -146,12 +145,12 @@ class EmailViewModel @Inject constructor(
         object InputEmailError : EmailUiState()
 
         object InputEmailCorrect : EmailUiState()
+
+        data class InvalidatePhone(val message: String) : EmailUiState()
     }
 
     sealed class EmailSideEffect : SideEffect {
         data class ShowToast(val message: String) : EmailSideEffect()
-
-        data class FinishView(val message: String?) : EmailSideEffect()
 
         data class NavigateNextView(val phone: String) : EmailSideEffect()
 

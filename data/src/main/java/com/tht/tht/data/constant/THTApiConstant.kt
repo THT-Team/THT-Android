@@ -5,7 +5,7 @@ object THTApiConstant {
 
     object Signup {
         const val AUTHENTICATION_NUM = "auth"
-        const val VERIFY = "verify"
+        const val PHONE_VERIFY = "verify"
 
         const val INTERESTS = "ideal-types"
         const val IDEAL_TYPE = "ideal-types"

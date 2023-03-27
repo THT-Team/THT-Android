@@ -89,8 +89,8 @@ internal class SignupRepositoryImplTest {
 
     @Test
     fun `requestVerify는 SignupApiDataSource의 requestVerify의 결과를 리턴한다`() = runTest(testDispatcher) {
-        coEvery { apiDataSource.requestVerify(any(), any()) } returns true
-        val actual = repository.requestVerify("phone", "auth")
+        coEvery { apiDataSource.requestPhoneVerify(any(), any()) } returns true
+        val actual = repository.requestPhoneVerify("phone", "auth")
         assertThat(actual)
             .isTrue
     }
@@ -98,7 +98,7 @@ internal class SignupRepositoryImplTest {
     @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
         )
         coEvery { termsDataSource.fetchSignupTerms() } returns expect
         val actual = repository.fetchTerms()
@@ -165,8 +165,8 @@ internal class SignupRepositoryImplTest {
 
     @Test
     fun `requestVerify는 SignupApiDataSource의 requestVerify를 호출한다`() = runTest(testDispatcher) {
-        repository.requestVerify("phone", "auth")
-        coVerify { apiDataSource.requestVerify(any(), any()) }
+        repository.requestPhoneVerify("phone", "auth")
+        coVerify { apiDataSource.requestPhoneVerify(any(), any()) }
     }
 
     @Test

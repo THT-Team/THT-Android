@@ -18,13 +18,13 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
-import tht.feature.signin.databinding.ActivityVerifyBinding
+import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
 
 @AndroidEntryPoint
-class VerifyActivity : AppCompatActivity() {
-    private val viewModel: VerifyViewModel by viewModels()
-    private val binding: ActivityVerifyBinding by viewBinding(ActivityVerifyBinding::inflate)
+class PhoneVerifyActivity : AppCompatActivity() {
+    private val viewModel: PhoneVerifyViewModel by viewModels()
+    private val binding: ActivityPhoneVerifyBinding by viewBinding(ActivityPhoneVerifyBinding::inflate)
 
     private val textInputLayouts = mutableListOf<TextInputLayout>()
     private val textInputEditTexts = mutableListOf<TextInputEditText>()
@@ -94,20 +94,20 @@ class VerifyActivity : AppCompatActivity() {
             launch {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is VerifyViewModel.VerifySideEffect.ShowToast -> showToast(it.message)
+                        is PhoneVerifyViewModel.VerifySideEffect.ShowToast -> showToast(it.message)
 
-                        is VerifyViewModel.VerifySideEffect.FinishView -> {
+                        is PhoneVerifyViewModel.VerifySideEffect.FinishView -> {
                             it.message?.let { m -> showToast(m) }
                             finish()
                         }
 
-                        is VerifyViewModel.VerifySideEffect.Back -> finish()
+                        is PhoneVerifyViewModel.VerifySideEffect.Back -> finish()
 
-                        is VerifyViewModel.VerifySideEffect.KeyboardVisible ->
+                        is PhoneVerifyViewModel.VerifySideEffect.KeyboardVisible ->
                             binding.layoutBackground.setSoftKeyboardVisible(it.visible)
 
-                        is VerifyViewModel.VerifySideEffect.NavigateNextView -> {
-                            startActivity(EmailActivity.getIntent(this@VerifyActivity, it.phone))
+                        is PhoneVerifyViewModel.VerifySideEffect.NavigateNextView -> {
+                            startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
                         }
                     }
                 }
@@ -116,9 +116,14 @@ class VerifyActivity : AppCompatActivity() {
             launch {
                 viewModel.uiStateFlow.collect {
                     when (it) {
-                        is VerifyViewModel.VerifyUiState.ErrorViewHide -> hideErrorView()
+                        is PhoneVerifyViewModel.VerifyUiState.ErrorViewHide -> hideErrorView()
 
-                        is VerifyViewModel.VerifyUiState.ErrorViewShow -> showErrorView(it.errorMessage)
+                        is PhoneVerifyViewModel.VerifyUiState.ErrorViewShow -> showErrorView(it.errorMessage)
+
+                        is PhoneVerifyViewModel.VerifyUiState.InvalidatePhone -> {
+                            showToast(it.message)
+                            finish()
+                        }
                     }
                 }
             }
@@ -179,8 +184,8 @@ class VerifyActivity : AppCompatActivity() {
             context: Context,
             phone: String
         ): Intent {
-            return Intent(context, VerifyActivity::class.java).apply {
-                putExtra(VerifyViewModel.EXTRA_PHONE_KEY, phone)
+            return Intent(context, PhoneVerifyActivity::class.java).apply {
+                putExtra(PhoneVerifyViewModel.EXTRA_PHONE_KEY, phone)
             }
         }
     }
