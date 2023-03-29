@@ -55,12 +55,7 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
             InputFilter.LengthFilter(NicknameViewModel.MAX_LENGTH)
         )
         viewModel.fetchSavedData(rootViewModel.phone.value)
-        binding.tvNicknameTitle.text =
-            StringUtil.setTextColor(
-                binding.tvNicknameTitle.text.toString(),
-                0 until 3,
-                resources.getColor(tht.core.ui.R.color.white_f9fafa, null)
-            )
+        StringUtil.setWhiteTextColor(binding.tvNicknameTitle, 0 until 3)
     }
 
     override fun observeData() {
