@@ -1,20 +1,20 @@
-package tht.feature.signin.signup.gender
+package tht.feature.signin.signup.preferredgender
 
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
-import tht.feature.signin.databinding.FragmentGenderBinding
+import tht.feature.signin.databinding.FragmentPreferredGenderBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class GenderFragment : SignupRootBaseFragment<GenderViewModel, FragmentGenderBinding>() {
+class PreferredGenderFragment : SignupRootBaseFragment<PreferredGenderViewModel, FragmentPreferredGenderBinding>() {
 
-    override val binding: FragmentGenderBinding by viewBinding(FragmentGenderBinding::inflate)
+    override val binding: FragmentPreferredGenderBinding by viewBinding(FragmentPreferredGenderBinding::inflate)
 
-    override val viewModel by viewModels<GenderViewModel>()
+    override val viewModel by viewModels<PreferredGenderViewModel>()
 
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.GENDER)
@@ -41,8 +41,8 @@ class GenderFragment : SignupRootBaseFragment<GenderViewModel, FragmentGenderBin
 
     companion object {
 
-        val TAG = GenderFragment::class.simpleName.toString()
+        val TAG = PreferredGenderFragment::class.simpleName.toString()
 
-        fun newInstance() = GenderFragment()
+        fun newInstance() = PreferredGenderFragment()
     }
 }

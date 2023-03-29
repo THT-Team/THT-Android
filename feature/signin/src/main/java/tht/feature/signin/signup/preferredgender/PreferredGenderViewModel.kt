@@ -1,4 +1,4 @@
-package tht.feature.signin.signup.gender
+package tht.feature.signin.signup.preferredgender
 
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupGenderUseCase
@@ -10,10 +10,10 @@ import tht.core.ui.base.UiState
 import javax.inject.Inject
 
 @HiltViewModel
-class GenderViewModel @Inject constructor(
+class PreferredGenderViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupGenderUseCase: PatchSignupGenderUseCase
-) : BaseStateViewModel<GenderViewModel.GenderUiState, GenderViewModel.GenderSideEffect>() {
+) : BaseStateViewModel<PreferredGenderViewModel.GenderUiState, PreferredGenderViewModel.GenderSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<GenderUiState> =
         MutableStateFlow(GenderUiState.Empty)
