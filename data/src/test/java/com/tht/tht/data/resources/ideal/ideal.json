@@ -1,19 +1,17 @@
-{
-    "body": [
-        {
-            "name": "지적인",
-            "emojiCode": "1F9E0",
-            "idx": 1
-        },
-        {
-            "name": "귀여운",
-            "emojiCode": "1F63B",
-            "idx": 2
-        },
-        {
-            "name": "피부가 좋은",
-            "emojiCode": "2728",
-            "idx": 3
-        }
-    ]
-}
+[
+    {
+        "name": "지적인",
+        "idx": 1,
+        "emojiCode": "1F9E0"
+    },
+    {
+        "name": "귀여운",
+        "idx": 2,
+        "emojiCode": "1F63B"
+    },
+    {
+        "name": "피부가 좋은",
+        "idx": 3,
+        "emojiCode": "2728"
+    }
+]

@@ -14,11 +14,11 @@ interface SignupRepository {
 
     suspend fun removeSignupUser(phone: String): Boolean
 
-    suspend fun requestAuthentication(phone: String): Boolean
-
-    suspend fun requestVerify(phone: String, auth: String): Boolean
+    suspend fun requestAuthentication(phone: String): String
 
     suspend fun fetchTerms(): List<TermsModel>
+
+    suspend fun checkNicknameDuplicate(nickname: String): Boolean
 
     suspend fun fetchInterest(): List<InterestModel>
 

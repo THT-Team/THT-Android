@@ -1,11 +1,13 @@
 package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.remote.retrofit.ApiClient
+import com.tht.tht.data.remote.service.MockTHTSignupApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -14,7 +16,10 @@ object ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideTHTSignupApiService(apiClient: ApiClient): THTSignupApi {
-        return apiClient.provideTHTSignupApi()
+    fun provideTHTSignupApiService(
+        apiClient: ApiClient
+    ): THTSignupApi {
+        return MockTHTSignupApi(apiClient.provideRetrofit())
+//        return apiClient.provideTHTSignupApi()
     }
 }

@@ -1,19 +1,17 @@
-{
-    "body": [
-        {
-            "name": "게임",
-            "emojiCode": "1F3AE",
-            "idx": 1
-        },
-        {
-            "name": "독서",
-            "emojiCode": "1F4DA",
-            "idx": 2
-        },
-        {
-            "name": "영화/드라마",
-            "emojiCode": "1F3AC",
-            "idx": 3
-        }
-    ]
-}
+[
+    {
+        "name": "게임",
+        "idx": 1,
+        "emojiCode": "1F3AE"
+    },
+    {
+        "name": "독서",
+        "idx": 2,
+        "emojiCode": "1F4DA"
+    },
+    {
+        "name": "영화/드라마",
+        "idx": 3,
+        "emojiCode": "1F3AC"
+    }
+]

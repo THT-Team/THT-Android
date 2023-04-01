@@ -54,7 +54,15 @@
     <style name="H4MediumGrayTextStyle" parent="H4MediumTextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
+
     <!--H4Medium-->
+
+    <!--H4Regular-->
+    <style name="H4RegularTextStyle">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+    <!--H4Regular-->
 
     <!--H5Bold-->
     <style name="H5BoldTextStyle">
@@ -183,6 +191,13 @@
     </style>
     <!--P1Regular-->
 
+    <!-- P1SemiBold -->
+    <style name="P1SemiBoldTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <!-- P1SemiBold -->
+
     <!--P2Bold-->
     <style name="P2BoldTextStyle">
         <item name="android:textSize">12sp</item>
@@ -299,5 +314,16 @@
         <item name="android:textFontWeight">600</item>
     </style>
     <!--Ex1-->
+
+    <!--Pretendard 14-->
+    <style name="Pretendard14TextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">700</item>
+    </style>
+
+    <style name="Pretendard14GrayTextStyle" parent="Pretendard14TextStyle">
+        <item name="android:textColor">@color/gray_666666</item>
+    </style>
+    <!--Pretendard 14-->
 
 </resources>

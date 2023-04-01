@@ -67,7 +67,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     vm.navigationItemStateFlow.collect { navigation ->
-                        navigation ?: return@collect
                         binding.bnvHome.selectedItemId = navigation.navigationMenuId
                     }
                 }

@@ -53,10 +53,10 @@ object UseCaseModule {
     )
 
     @Provides
-    fun providePatchSignupBirtheUseCase(
+    fun providePatchSignupBirthdayUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupBirthUseCase = PatchSignupBirthUseCase(
+    ): PatchSignupBirthdayUseCase = PatchSignupBirthdayUseCase(
         repository, dispatcher
     )
 
@@ -170,7 +170,14 @@ object UseCaseModule {
         repository: SignupRepository,
         createSignupUserUseCase: CreateSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): RequestVerifyUseCase = RequestVerifyUseCase(
+    ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
         repository, createSignupUserUseCase, dispatcher
     )
+
+    @Provides
+    fun checkNicknameDuplicateUseCase(
+        repository: SignupRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): CheckNicknameDuplicateUseCase =
+        CheckNicknameDuplicateUseCase(repository, dispatcher)
 }

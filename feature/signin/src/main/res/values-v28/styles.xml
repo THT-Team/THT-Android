@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PhoneAuthInputEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+
+    <style name="PhoneAuthInputLayoutFontStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:fontWeight">600</item>
+
+        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
+        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
+        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
+
+        <item name="errorTextColor">@color/red_ef4444</item>
+    </style>
+
+    <style name="VerifyTextInputLayoutFontStyle" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColorHint">@color/brown_26241f</item>  // hint 색
+        <item name="hintTextColor">@color/yellow_f9cc2e</item>   // floating hint 색
+        <item name="helperTextTextColor">@color/yellow_f9cc2e</item>
+
+        <item name="errorTextColor">@color/red_ef4444</item>
+        <item name="errorTextAppearance">@style/VerifyTextInputLayoutErrorTextAppearance</item>
+    </style>
+
+    <style name="VerifyInputEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+        <item name="android:fontWeight">700</item>
+    </style>
+</resources>

@@ -1,13 +1,14 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
+import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
+import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
@@ -80,30 +81,36 @@ internal class SignupRepositoryImplTest {
     }
 
     @Test
-    fun `requestAuthentication는 SignupApiDataSource의 requestAuthentication의 결과를 리턴한다`() = runTest(testDispatcher) {
-        coEvery { apiDataSource.requestAuthenticationNumber(any()) } returns true
-        val actual = repository.requestAuthentication("phone")
+    fun `requestAuthentication는 SignupApiDataSource의 requestAuthenticationNumber의 결과의 authNumber를 String으로 가공해 리턴한다`() = runTest(testDispatcher) {
+        val authResponse = AuthenticationNumberResponse(
+            authNumber = 123456,
+            phoneNumber = "phone"
+        )
+        coEvery { apiDataSource.requestAuthenticationNumber(any()) } returns authResponse
+        val actual = repository.requestAuthentication(authResponse.phoneNumber)
+        val expect = authResponse.authNumber.toString()
         assertThat(actual)
-            .isTrue
-    }
-
-    @Test
-    fun `requestVerify는 SignupApiDataSource의 requestVerify의 결과를 리턴한다`() = runTest(testDispatcher) {
-        coEvery { apiDataSource.requestVerify(any(), any()) } returns true
-        val actual = repository.requestVerify("phone", "auth")
-        assertThat(actual)
-            .isTrue
+            .isEqualTo(expect)
     }
 
     @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
         )
         coEvery { termsDataSource.fetchSignupTerms() } returns expect
         val actual = repository.fetchTerms()
         assertThat(actual)
             .isEqualTo(expect.body.map { it.toModel() })
+    }
+
+    @Test
+    fun `checkNicknameDuplicate는 SignupApiDataSource의 checkNicknameDuplicate의 결과를 리턴한다`() = runTest(testDispatcher) {
+        val expect = true
+        coEvery { apiDataSource.checkNicknameDuplicate(any()) } returns expect
+        val actual = repository.checkNicknameDuplicate("nickname")
+        assertThat(actual)
+            .isEqualTo(expect)
     }
 
     @Test
@@ -164,15 +171,16 @@ internal class SignupRepositoryImplTest {
     }
 
     @Test
-    fun `requestVerify는 SignupApiDataSource의 requestVerify를 호출한다`() = runTest(testDispatcher) {
-        repository.requestVerify("phone", "auth")
-        coVerify { apiDataSource.requestVerify(any(), any()) }
-    }
-
-    @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms를 호출한다`() = runTest(testDispatcher) {
         repository.fetchTerms()
         coVerify { termsDataSource.fetchSignupTerms() }
+    }
+
+    @Test
+    fun `fetchInterest는 SignupApiDataSource의 checkNicknameDuplicate를 호출한다`() = runTest(testDispatcher) {
+        val nickname = "nickname"
+        repository.checkNicknameDuplicate(nickname)
+        coVerify { apiDataSource.checkNicknameDuplicate(nickname) }
     }
 
     @Test
