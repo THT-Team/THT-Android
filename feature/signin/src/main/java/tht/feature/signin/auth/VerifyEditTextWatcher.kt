@@ -3,7 +3,7 @@ package tht.feature.signin.auth
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-
+// merge remove solve
 class VerifyEditTextWatcher internal constructor(
     private val nextView: View?,
     private val currentIdx: Int,

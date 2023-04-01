@@ -12,7 +12,7 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityIntroBinding
-
+// merge remove solve
 class IntroActivity : AppCompatActivity() {
     private val viewModel: IntroViewModel by viewModels()
     private val binding: ActivityIntroBinding by viewBinding(ActivityIntroBinding::inflate)
