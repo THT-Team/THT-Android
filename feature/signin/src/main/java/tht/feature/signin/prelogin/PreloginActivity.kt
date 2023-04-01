@@ -1,6 +1,7 @@
 package tht.feature.signin.prelogin
 
-import android.widget.Toast
+import android.content.Context
+import android.content.Intent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,11 +12,12 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.OAuthLoginCallback
-import tht.core.ui.delegate.viewBinding
 import com.tht.tht.domain.type.SignInType
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateActivity
+import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.gone
+import tht.core.ui.extension.showToast
 import tht.core.ui.extension.visible
 import tht.feature.signin.databinding.ActivityPreloginBinding
 
@@ -55,9 +57,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                         when (sideEffect) {
                             is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
                             is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
-                            is PreloginSideEffect.ShowToast -> {
-                                Toast.makeText(this@PreloginActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
-                            }
+                            is PreloginSideEffect.ShowToast -> showToast(sideEffect.message)
                             is PreloginSideEffect.NavigateSignUp -> { TODO("회원가입 화면 이동 처리") }
                             is PreloginSideEffect.NavigatePhoneAuth -> navigatePhoneAuth(sideEffect)
                         }
@@ -158,5 +158,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     companion object {
 
         const val TAG = "PreloginActivity"
+
+        fun getIntent(context: Context): Intent {
+            return Intent(context, PreloginActivity::class.java)
+        }
     }
 }
