@@ -132,7 +132,11 @@ class EmailViewModel @Inject constructor(
                 .onSuccess {
                     _sideEffectFlow.emit(EmailSideEffect.NavigateNextView(phone.value))
                 }.onFailure {
-                    _sideEffectFlow.emit(EmailSideEffect.ShowToast(it.toString()))
+                    _sideEffectFlow.emit(
+                        EmailSideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.EmailPatchFail)
+                        )
+                    )
                 }.also {
                     _dataLoading.value = false
                 }

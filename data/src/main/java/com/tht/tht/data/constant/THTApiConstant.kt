@@ -6,6 +6,8 @@ object THTApiConstant {
     object Signup {
         const val AUTHENTICATION_NUM = "user/certification/phone-number"
 
+        const val NICKNAME_DUPLICATE_CHECK = "check"
+
         const val INTERESTS = "ideal-types"
         const val IDEAL_TYPE = "ideal-types"
 

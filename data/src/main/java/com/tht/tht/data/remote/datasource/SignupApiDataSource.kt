@@ -9,6 +9,8 @@ import com.tht.tht.domain.signup.model.SignupUserModel
 interface SignupApiDataSource {
     suspend fun requestAuthenticationNumber(phone: String): AuthenticationNumberResponse
 
+    suspend fun checkNicknameDuplicate(nickname: String): Boolean
+
     suspend fun fetchInterests(): List<InterestTypeResponse>
 
     suspend fun fetchIdealTypes(): List<IdealTypeResponse>

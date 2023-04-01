@@ -105,6 +105,15 @@ internal class SignupRepositoryImplTest {
     }
 
     @Test
+    fun `checkNicknameDuplicate는 SignupApiDataSource의 checkNicknameDuplicate의 결과를 리턴한다`() = runTest(testDispatcher) {
+        val expect = true
+        coEvery { apiDataSource.checkNicknameDuplicate(any()) } returns expect
+        val actual = repository.checkNicknameDuplicate("nickname")
+        assertThat(actual)
+            .isEqualTo(expect)
+    }
+
+    @Test
     fun `fetchInterest는 SignupApiDataSource의 fetchInterest의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = listOf(InterestTypeResponse("name", "code", 0))
         coEvery { apiDataSource.fetchInterests() } returns expect
@@ -165,6 +174,13 @@ internal class SignupRepositoryImplTest {
     fun `fetchTerms는 TermsDataSource의 fetchTerms를 호출한다`() = runTest(testDispatcher) {
         repository.fetchTerms()
         coVerify { termsDataSource.fetchSignupTerms() }
+    }
+
+    @Test
+    fun `fetchInterest는 SignupApiDataSource의 checkNicknameDuplicate를 호출한다`() = runTest(testDispatcher) {
+        val nickname = "nickname"
+        repository.checkNicknameDuplicate(nickname)
+        coVerify { apiDataSource.checkNicknameDuplicate(nickname) }
     }
 
     @Test

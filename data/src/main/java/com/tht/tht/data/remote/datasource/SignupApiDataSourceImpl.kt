@@ -3,7 +3,6 @@ package com.tht.tht.data.remote.datasource
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
-import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
@@ -23,42 +22,27 @@ class SignupApiDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun checkNicknameDuplicate(nickname: String): Boolean {
+        return withContext(dispatcher) {
+            apiService.checkNicknameDuplicate(nickname).toUnwrap { it }
+        }
+    }
+
     override suspend fun fetchInterests(): List<InterestTypeResponse> {
         return withContext(dispatcher) {
-            apiService.fetchInterestsType().let {
-                when (it) {
-                    is BaseResponse.Success -> it.response
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.fetchInterestsType().toUnwrap { it }
         }
     }
 
     override suspend fun fetchIdealTypes(): List<IdealTypeResponse> {
         return withContext(dispatcher) {
-            apiService.fetchIdealType().let {
-                when (it) {
-                    is BaseResponse.Success -> it.response
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.fetchIdealType().toUnwrap { it }
         }
     }
 
     override suspend fun requestSignup(user: SignupUserModel): SignupResponse {
         return withContext(dispatcher) {
-            apiService.requestSignup(user).let {
-                when (it) {
-                    is BaseResponse.Success -> it.response
-                    is BaseResponse.NetworkError -> throw it.exception
-                    is BaseResponse.UnknownError -> throw it.throwable
-                    else -> throw Exception("Unknown Api Response")
-                }
-            }
+            apiService.requestSignup(user).toUnwrap { it }
         }
     }
 }

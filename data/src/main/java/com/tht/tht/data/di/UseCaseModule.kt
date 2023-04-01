@@ -173,4 +173,11 @@ object UseCaseModule {
     ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
         repository, createSignupUserUseCase, dispatcher
     )
+
+    @Provides
+    fun checkNicknameDuplicateUseCase(
+        repository: SignupRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): CheckNicknameDuplicateUseCase =
+        CheckNicknameDuplicateUseCase(repository, dispatcher)
 }

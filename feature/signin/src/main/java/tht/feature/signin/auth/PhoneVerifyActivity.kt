@@ -1,7 +1,5 @@
 package tht.feature.signin.auth
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +18,7 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
+import tht.feature.signin.util.AnimatorUtil
 
 @AndroidEntryPoint
 class PhoneVerifyActivity : AppCompatActivity() {
@@ -156,27 +155,12 @@ class PhoneVerifyActivity : AppCompatActivity() {
     }
     private fun showErrorView(errorMessage: String) {
         binding.tvVerifyError.isVisible = true
-        hapticAnimation(binding.layoutVerifyInput)
-        hapticAnimation(binding.tvVerifyError)
+        AnimatorUtil.hapticAnimation(binding.layoutVerifyInput)
+        AnimatorUtil.hapticAnimation(binding.tvVerifyError)
         binding.tvVerifyError.text = errorMessage
         textInputLayouts.forEach { layout ->
             layout.error = " "
         }
-    }
-
-    private fun hapticAnimation(view: View, itemDuration: Long = 50) {
-        AnimatorSet().apply {
-            playSequentially(
-                listOf(
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 10f).setDuration(itemDuration),
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 0f).setDuration(itemDuration),
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, -10f).setDuration(itemDuration),
-                    ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 0f).setDuration(itemDuration)
-                )
-            )
-        }.start()
     }
 
     companion object {

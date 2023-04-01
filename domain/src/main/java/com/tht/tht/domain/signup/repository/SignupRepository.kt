@@ -18,6 +18,8 @@ interface SignupRepository {
 
     suspend fun fetchTerms(): List<TermsModel>
 
+    suspend fun checkNicknameDuplicate(nickname: String): Boolean
+
     suspend fun fetchInterest(): List<InterestModel>
 
     suspend fun fetchIdealType(): List<IdealTypeModel>
