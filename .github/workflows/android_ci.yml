@@ -19,40 +19,63 @@ jobs:
             - name: Cache Gradle packages
               uses: actions/cache@v3.0.11
               with:
-                path: |
-                  ~/.gradle/caches
-                  ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
-                restore-keys: |
-                  ${{ runner.os }}-gradle-
-          
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-              
+
+            - name: Add Key Info into local.properties
+              run: |
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  cat ./local.properties
+              env:
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
-              
+
     test:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v3
-        - name: set up JDK 11
-          uses: actions/setup-java@v3
-          with:
-            java-version: '11'
-            distribution: 'temurin'
-            cache: gradle
+            - uses: actions/checkout@v3
+            - name: set up JDK 11
+              uses: actions/setup-java@v3
+              with:
+                  java-version: '11'
+                  distribution: 'temurin'
+                  cache: gradle
 
-        - name: Grant execute permission for gradlew
-          run: chmod +x gradlew
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
 
-        - name: Run unit tests
-          run: ./gradlew testDebugUnitTest
+            - name: Add Key Info into local.properties
+              run: |
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  cat ./local.properties
+              env:
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
-        - name: Create android test report
-          uses: asadmansr/android-test-report-action@v1.2.0
-          if: ${{ always() }}   
-    
+            - name: Run unit tests
+              run: ./gradlew testDebugUnitTest
+
+            - name: Create android test report
+              uses: asadmansr/android-test-report-action@v1.2.0
+              if: ${{ always() }}
+
     lint:
         runs-on: ubuntu-latest
         steps:
@@ -67,39 +90,50 @@ jobs:
             - name: Cache Gradle packages
               uses: actions/cache@v3.0.11
               with:
-                path: |
-                  ~/.gradle/caches
-                  ~/.gradle/wrapper
-                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
-                restore-keys: |
-                  ${{ runner.os }}-gradle-
-          
+                  path: |
+                      ~/.gradle/caches
+                      ~/.gradle/wrapper
+                  key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
+                  restore-keys: |
+                      ${{ runner.os }}-gradle-
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-              
+
+            - name: Add Key Info into local.properties
+              run: |
+                  touch ./local.properties
+                  echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
+                  echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
+                  echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  cat ./local.properties
+              env:
+                  KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
+                  NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+                  NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace
-              
+
             - name: Run detekt
               run: ./gradlew detekt
-          
+
     alert:
-        runs-on: ubuntu-latest     
+        runs-on: ubuntu-latest
         needs: [build, lint, test]
         steps:
-        - name: action-slack
-          uses: 8398a7/action-slack@v3.14.0
-          with:
-            status: ${{ job.status }}
-            author_name: THT-Android CI  
-            fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-            custom_payload: |
-              {
-                attachments: [{
-                  color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                  text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-                }]
-              }
-          env:
-            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-          if: always() # Pick up events even if the job fails or is canceled.
+            - name: action-slack
+              uses: 8398a7/action-slack@v3.14.0
+              with:
+                  status: ${{ job.status }}
+                  author_name: THT-Android CI
+                  fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+                  custom_payload: |
+                      {
+                        attachments: [{
+                          color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+                          text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
+                        }]
+                      }
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+              if: always() # Pick up events even if the job fails or is canceled.

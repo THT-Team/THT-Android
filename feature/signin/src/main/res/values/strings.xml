@@ -1,4 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="help_login"><u>로그인에 어려움이 있으신가요?</u></string>
+
     <string name="signup">회원가입</string>
     <string name="login">로그인</string>
     <string name="next">다음</string>
