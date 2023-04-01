@@ -27,7 +27,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.ResendAuthSuccess -> R.string.message_resend_auth_success
             StringProvider.ResId.VerifyFail -> R.string.message_verify_error
             StringProvider.ResId.EmailPatchFail -> R.string.message_email_patch_fail
-            StringProvider.ResId.TermsFetchError -> R.string.message_terms_fetch_error
+            StringProvider.ResId.TermsFetchFail -> R.string.message_terms_fetch_error
+            StringProvider.ResId.TermsPatchFail -> R.string.message_terms_patch_error
             StringProvider.ResId.RequireTermsNeedSelect -> R.string.message_require_terms_need_select
             StringProvider.ResId.NickNamePatchFail -> R.string.message_nickname_patch_fail
             StringProvider.ResId.DuplicateNickname -> R.string.message_nickname_duplicate

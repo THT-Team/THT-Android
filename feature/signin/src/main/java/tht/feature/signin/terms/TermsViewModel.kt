@@ -54,7 +54,7 @@ class TermsViewModel @Inject constructor(
                     }.onFailure {
                         _sideEffectFlow.emit(
                             TermsSideEffect.ShowToast(
-                                stringProvider.getString(StringProvider.ResId.TermsFetchError)
+                                stringProvider.getString(StringProvider.ResId.TermsFetchFail)
                             )
                         )
                     }
@@ -133,7 +133,11 @@ class TermsViewModel @Inject constructor(
                     _sideEffectFlow.emit(TermsSideEffect.NavigateNextView(phone.value))
                 }.onFailure {
                     it.printStackTrace()
-                    _sideEffectFlow.emit(TermsSideEffect.ShowToast(it.toString()))
+                    _sideEffectFlow.emit(
+                        TermsSideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.TermsPatchFail)
+                        )
+                    )
                 }.also {
                     _dataLoading.value = false
                 }
