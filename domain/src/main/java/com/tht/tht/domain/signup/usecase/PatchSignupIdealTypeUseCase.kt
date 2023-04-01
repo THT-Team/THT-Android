@@ -11,7 +11,7 @@ class PatchSignupIdealTypeUseCase(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(phone: String, idealTypeKeys: List<String>): Result<Boolean> {
+    suspend operator fun invoke(phone: String, idealTypeKeys: List<Long>): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
                 if(idealTypeKeys.size <SignupConstant.IDEAL_TYPE_REQUIRE_SIZE){
