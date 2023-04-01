@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import tht.core.ui.base.SideEffect
-// merge remove solve
+
 class IntroViewModel : ViewModel() {
 
     private val _sideEffectFlow = MutableSharedFlow<IntroSideEffect>()
