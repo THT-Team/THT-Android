@@ -64,4 +64,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
+
+    implementation("com.kakao.sdk:v2-user:2.12.1")
+    implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
 }

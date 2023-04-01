@@ -12,6 +12,7 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityIntroBinding
+import tht.feature.signin.prelogin.PreloginActivity
 
 class IntroActivity : AppCompatActivity() {
     private val viewModel: IntroViewModel by viewModels()
@@ -46,7 +47,8 @@ class IntroActivity : AppCompatActivity() {
                         is IntroViewModel.IntroSideEffect.NavigateSignupView ->
                             startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
 
-                        is IntroViewModel.IntroSideEffect.NavigateLoginView -> showToast("login click")
+                        is IntroViewModel.IntroSideEffect.NavigateLoginView ->
+                            startActivity(PreloginActivity.getIntent(this@IntroActivity))
 
                         is IntroViewModel.IntroSideEffect.NavigateLoginIssueView -> showToast("login issue click")
                     }

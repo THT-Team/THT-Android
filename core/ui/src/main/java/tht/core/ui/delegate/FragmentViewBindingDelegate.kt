@@ -9,7 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
+/**
+ * reference : https://zhuinden.medium.com/simple-one-liner-viewbinding-in-fragments-and-activities-with-kotlin-961430c6c07c
+ */
 inline fun <A : Fragment, T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (LayoutInflater) -> T,
     crossinline inflaterProvider: (A) -> LayoutInflater = Fragment::getLayoutInflater,

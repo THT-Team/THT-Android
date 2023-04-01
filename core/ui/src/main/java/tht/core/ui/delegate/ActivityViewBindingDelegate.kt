@@ -9,7 +9,6 @@ import kotlin.reflect.KProperty
 /**
  * reference : https://zhuinden.medium.com/simple-one-liner-viewbinding-in-fragments-and-activities-with-kotlin-961430c6c07c
  */
-
 inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (LayoutInflater) -> T,
     crossinline inflaterProvider: (A) -> LayoutInflater = ComponentActivity::getLayoutInflater,
