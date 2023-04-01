@@ -21,6 +21,8 @@ interface StringProvider {
         NickNamePatchFail,
         DuplicateCheckLoading,
         DuplicateNickname,
-        DuplicateCheckFail
+        DuplicateCheckFail,
+        IdealFetchFail,
+        IdealPatchFail
     }
 }

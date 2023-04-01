@@ -33,6 +33,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.DuplicateNickname -> R.string.message_nickname_duplicate
             StringProvider.ResId.DuplicateCheckLoading -> R.string.message_nickname_duplicate_check_loading
             StringProvider.ResId.DuplicateCheckFail -> R.string.message_nickname_duplicate_check_fail
+            StringProvider.ResId.IdealFetchFail -> R.string.message_ideal_fetch_fail
+            StringProvider.ResId.IdealPatchFail -> R.string.message_ideal_patch_fail
         }
     }
 }
