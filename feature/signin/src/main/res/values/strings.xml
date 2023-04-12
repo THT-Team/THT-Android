@@ -57,4 +57,7 @@
     <string name="message_ideal_type">내 이상형 %1d개를 선택해주세요</string>
     <string name="message_ideal_fetch_fail">이상형 목록을 불러올 수 없습니다</string>
     <string name="message_ideal_patch_fail">이상형 입력을 실패하였습니다</string>
+
+    <string name="title_profile_image">사진을 추가해주세요.</string>
+    <string name="message_profile_image_input">얼굴 사진이 잘 나온 사진 2장을 필수로 넣어주세요</string>
 </resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp"
+                android:color="@color/yellow_f9cc2e"/>
+            <corners android:radius="10dp"/>
+            <solid android:color="@color/transparent"/>
+        </shape>
+    </item>
+
+    <item android:drawable="@drawable/selector_btn_add"
+        android:width="50dp"
+        android:height="25dp"
+        android:gravity="center"/>
+</layer-list>
