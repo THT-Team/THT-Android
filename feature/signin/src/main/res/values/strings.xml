@@ -49,6 +49,10 @@
     <string name="message_terms_patch_error">이용약관 데이터를 입력할 수 없습니다</string>
     <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
 
+    <string name="title_preferred_gender">선호 성별을 알려주세요</string>
+    <string name="message_preferred_gender_input">마이페이지에서 변경 가능합니다</string>
+    <string name="message_preferred_gender_patch_fail">선호 성별 입력을 실패했습니다</string>
+
     <string name="title_ideal_type">이상형을 알려주세요</string>
     <string name="message_ideal_type">내 이상형 %1d개를 선택해주세요</string>
     <string name="message_ideal_fetch_fail">이상형 목록을 불러올 수 없습니다</string>

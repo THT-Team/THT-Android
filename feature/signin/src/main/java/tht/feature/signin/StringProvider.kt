@@ -23,6 +23,7 @@ interface StringProvider {
         DuplicateCheckLoading,
         DuplicateNickname,
         DuplicateCheckFail,
+        PreferredGenderPatchFail,
         IdealFetchFail,
         IdealPatchFail
     }
