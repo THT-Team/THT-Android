@@ -92,7 +92,8 @@ class NicknameViewModel @Inject constructor(
                 }.onFailure {
                     _sideEffectFlow.emit(
                         NicknameSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateSignupProcess)
+                            stringProvider.getString(StringProvider.ResId.InvalidateSignupProcess) +
+                                stringProvider.getString(StringProvider.ResId.CustomerService)
                         )
                     )
                 }.also {

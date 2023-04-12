@@ -28,6 +28,10 @@
         <item name="android:textSize">19sp</item>
         <item name="android:textFontWeight">700</item>
     </style>
+
+    <style name="H4BoldGrayTextStyle" parent="H4BoldTextStyle">
+        <item name="android:textColor">@color/gray_666666</item>
+    </style>
     <!--H4Bold-->
 
     <!--H4SemiBold-->
