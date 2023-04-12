@@ -32,12 +32,7 @@ class MockTHTSignupApi @Inject constructor(
     }
 
     override suspend fun fetchIdealType(): ThtResponse<List<IdealTypeResponse>> {
-        delay(100)
-        val idealTypes = listOf(IdealTypeResponse("name", "code", 0))
-        return BaseResponse.Success(
-            statusCode = 200,
-            response = idealTypes
-        )
+        return retrofit.create(THTSignupApi::class.java).fetchIdealType()
     }
 
     override suspend fun fetchInterestsType(): ThtResponse<List<InterestTypeResponse>> {

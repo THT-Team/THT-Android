@@ -94,4 +94,8 @@
         <item name="endIconMode">clear_text</item>
         <item name="endIconDrawable">@drawable/ic_delete</item>
     </style>
+
+    <style name="THT_ProgressStyle" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/red_ef4444</item>
+    </style>
 </resources>
