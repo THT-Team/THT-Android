@@ -37,7 +37,6 @@ class PreferredGenderViewModel @Inject constructor(
             _dataLoading.value = true
             fetchSignupUserUseCase(phone)
                 .onSuccess {
-                    println("saved data => ${it.preferredGender}")
                     val selectIdx = when (it.preferredGender) {
                         female.first -> female.second
                         male.first -> male.second
@@ -65,7 +64,6 @@ class PreferredGenderViewModel @Inject constructor(
             _dataLoading.value = true
             patchSignupPreferredGenderUseCase(phone, gender)
                 .onSuccess {
-                    println("patch data => $it")
                     when (it) {
                         true -> postSideEffect(PreferredGenderSideEffect.NavigateNextView)
                         else ->

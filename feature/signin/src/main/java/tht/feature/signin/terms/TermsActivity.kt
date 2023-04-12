@@ -82,7 +82,6 @@ class TermsActivity : AppCompatActivity() {
 
             launch {
                 viewModel.sideEffectFlow.collect {
-                    println("sideEffect debug => $it")
                     when (it) {
                         is TermsViewModel.TermsSideEffect.Back -> finish()
 
