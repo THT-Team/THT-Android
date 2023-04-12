@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -78,4 +79,8 @@ dependencies {
     implementation(libs.viewmodel.ktx)
     testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.coroutines.test)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-storage-ktx")
 }

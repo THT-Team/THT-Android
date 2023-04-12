@@ -43,6 +43,11 @@ retrofit = "2.9.0"
 gson = "2.8.9"
 mockwebserver = "4.9.0"
 
+#Firebase
+gms-google-services = "4.3.15"
+firebase-bom = "31.3.0"
+firebase-crashlytics-gradle = "2.9.4"
+
 [plugins]
 #android
 application = { id = "com.android.application", version.ref = "android.gradle" }
@@ -73,8 +78,9 @@ androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtim
 androidx-navigation = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "androidx-navigation" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
+
 #kotlin
-kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin  = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 #test
 junit = { module = "junit:junit", version.ref = "junit" }
@@ -107,3 +113,8 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 mock-webserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+#firebase
+gms-google-services = { module = "com.google.gms:google-services", version.ref = "gms-google-services" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebase-crashlytics-gradle" }

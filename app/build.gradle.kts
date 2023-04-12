@@ -91,7 +91,9 @@ dependencies {
     implementation("com.kakao.sdk:v2-user:2.12.1")
     implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:31.3.0"))
+    // firebase
+    implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
 }
