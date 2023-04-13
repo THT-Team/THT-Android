@@ -3,14 +3,9 @@
     <item>
         <shape android:shape="rectangle">
             <stroke android:width="2dp"
-                android:color="@color/gray_666666"/>
+                android:color="@color/yellow_f9cc2e"/>
             <corners android:radius="10dp"/>
             <solid android:color="@color/transparent"/>
         </shape>
     </item>
-
-    <item android:drawable="@drawable/selector_btn_add"
-        android:width="50dp"
-        android:height="25dp"
-        android:gravity="center"/>
 </layer-list>

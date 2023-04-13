@@ -4,110 +4,133 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black_1e1e1e"
+    android:paddingHorizontal="38dp"
     >
 
-    <ScrollView
+    <TextView
+        style="@style/H1BoldGrayTextStyle"
+        android:layout_marginTop="@dimen/SignupProcessFragmentTopPadding"
+        android:id="@+id/tv_profile_image_title"
+        android:text="@string/title_profile_image"
+        android:textColor="@color/gray_666666"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/transparent"
+        android:elevation="1dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintHorizontal_weight="3"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
+        android:id="@+id/cv_1"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/tv_profile_image_title"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cv_2">
+
+        <ImageView
+            android:background="@drawable/bg_image_select_btn"
+            android:foreground="@drawable/fg_image_select_yellow"
+            android:scaleType="centerCrop"
+            android:id="@+id/iv_image_add_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="38dp"
-            >
-            <TextView
-                style="@style/H1BoldGrayTextStyle"
-                android:layout_marginTop="@dimen/SignupProcessFragmentTopPadding"
-                android:id="@+id/tv_profile_image_title"
-                android:text="@string/title_profile_image"
-                android:textColor="@color/gray_666666"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                />
-
-            <ImageView
-                app:layout_constraintHorizontal_weight="3"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_image_select_yellow"
-                android:id="@+id/iv_image_add_1"
-                android:layout_width="0dp"
-                android:layout_height="350dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_profile_image_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_image_add_2"
-                />
-
-            <ImageView
-                app:layout_constraintHorizontal_weight="2"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/bg_image_select_yellow"
-                android:id="@+id/iv_image_add_2"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="@id/iv_image_add_1"
-                app:layout_constraintStart_toEndOf="@id/iv_image_add_1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/iv_image_add_3"
-                />
-
-            <ImageView
-                android:layout_marginTop="14dp"
-                android:background="@drawable/bg_image_select_gray"
-                android:id="@+id/iv_image_add_3"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/iv_image_add_2"
-                app:layout_constraintStart_toStartOf="@id/iv_image_add_2"
-                app:layout_constraintEnd_toEndOf="@id/iv_image_add_2"
-                app:layout_constraintBottom_toBottomOf="@id/iv_image_add_1"
-                />
-
-            <ImageView
-                android:layout_marginTop="16dp"
-                android:id="@+id/iv_error"
-                app:layout_constraintTop_toBottomOf="@id/iv_image_add_1"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_error"
-                />
-
-            <TextView
-                style="@style/Caption1MediumGrayTextStyle"
-                android:textColor="@color/gray_666666"
-                android:id="@+id/tv_profile_image_input_message"
-                android:text="@string/message_profile_image_input"
-                android:layout_marginStart="7dp"
-                app:layout_constraintTop_toTopOf="@id/iv_error"
-                app:layout_constraintStart_toEndOf="@id/iv_error"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:enabled="false"
-                android:layout_marginBottom="100dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/selector_btn_right_arrow"
-                android:id="@+id/btn_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/iv_error"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_height="match_parent"
+            />
+    </androidx.cardview.widget.CardView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/transparent"
+        android:elevation="1dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintHorizontal_weight="2"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/fg_image_select_yellow"
+        android:id="@+id/cv_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/cv_1"
+        app:layout_constraintStart_toEndOf="@id/cv_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cv_3"
+        >
+        <ImageView
+            android:background="@drawable/bg_image_select_btn"
+            android:foreground="@drawable/fg_image_select_yellow"
+            android:scaleType="centerCrop"
+            android:id="@+id/iv_image_add_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/transparent"
+        android:elevation="1dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/fg_image_select_gray"
+        android:id="@+id/cv_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/cv_2"
+        app:layout_constraintStart_toStartOf="@id/cv_2"
+        app:layout_constraintEnd_toEndOf="@id/cv_2"
+        app:layout_constraintBottom_toBottomOf="@id/cv_1"
+        >
+        <ImageView
+            android:background="@drawable/bg_image_select_btn"
+            android:foreground="@drawable/fg_image_select_gray"
+            android:scaleType="centerCrop"
+            android:id="@+id/iv_image_add_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/iv_error"
+        app:layout_constraintTop_toBottomOf="@id/cv_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_next"
+        app:layout_constraintVertical_bias="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_error"
+        />
+
+    <TextView
+        style="@style/Caption1MediumGrayTextStyle"
+        android:textColor="@color/gray_666666"
+        android:id="@+id/tv_profile_image_input_message"
+        android:text="@string/message_profile_image_input"
+        android:layout_marginStart="7dp"
+        app:layout_constraintTop_toTopOf="@id/iv_error"
+        app:layout_constraintStart_toEndOf="@id/iv_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:enabled="false"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/selector_btn_right_arrow"
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <ProgressBar
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
@@ -119,5 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
