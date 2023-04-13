@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/black_1e1e1e"
+    android:background="@color/black_161616"
     android:paddingHorizontal="38dp"
     >
 
@@ -22,8 +22,8 @@
 
     <androidx.cardview.widget.CardView
         app:cardBackgroundColor="@color/transparent"
-        android:elevation="1dp"
         app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         app:layout_constraintHorizontal_weight="3"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="100dp"
@@ -49,8 +49,8 @@
 
     <androidx.cardview.widget.CardView
         app:cardBackgroundColor="@color/transparent"
-        android:elevation="1dp"
         app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         app:layout_constraintHorizontal_weight="2"
         android:layout_marginStart="16dp"
         android:background="@drawable/fg_image_select_yellow"
@@ -74,8 +74,8 @@
 
     <androidx.cardview.widget.CardView
         app:cardBackgroundColor="@color/transparent"
-        android:elevation="1dp"
         app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
         android:layout_marginTop="14dp"
         android:background="@drawable/fg_image_select_gray"
         android:id="@+id/cv_3"
