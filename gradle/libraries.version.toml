@@ -8,14 +8,14 @@ android-lifecycle-viewModel-KTX = "2.5.1"
 androidx-core = "1.7.0"
 androidx-appcompat = "1.5.1"
 androidx-constraintlayout = "2.1.4"
-androidx-activitiy-ktx = "1.2.4"
+androidx-activity-ktx = "1.7.0"
 androidx-fragment-ktx = "1.5.4"
 androidx-lifecycle-runtime-ktx = "2.4.0.-alpha01"
 androidx-navigation = "2.5.3"
 
 #kotlin
-kotlin = "1.7.20"
-kotlin-jvm = "1.7.10"
+kotlin = "1.8.10"
+kotlin-jvm = "1.8.10"
 
 #test
 junit = "4.13.2"
@@ -72,7 +72,7 @@ android-material = { module = "com.google.android.material:material", version.re
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
-androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activitiy-ktx"}
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity-ktx"}
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment-ktx"}
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime-ktx"}
 androidx-navigation = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "androidx-navigation" }
