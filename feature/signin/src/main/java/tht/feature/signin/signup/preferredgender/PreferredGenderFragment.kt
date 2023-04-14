@@ -20,15 +20,10 @@ class PreferredGenderFragment : SignupRootBaseFragment<PreferredGenderViewModel,
     override val binding: FragmentPreferredGenderBinding by viewBinding(FragmentPreferredGenderBinding::inflate)
 
     override val viewModel by viewModels<PreferredGenderViewModel>()
-    private val genderBtnList: List<AppCompatButton> by lazy {
-        listOf(
-            binding.btnMale,
-            binding.btnFemale,
-            binding.btnAllGender
-        )
-    }
+    private lateinit var genderBtnList: List<AppCompatButton>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        genderBtnList = listOf(binding.btnMale, binding.btnFemale, binding.btnAllGender)
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
