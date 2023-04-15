@@ -60,7 +60,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
     androidTestImplementation(libs.assertj.core)
-    androidTestImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
