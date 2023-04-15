@@ -6,6 +6,7 @@ import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupProfileImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,9 +17,7 @@ import tht.feature.signin.StringProvider
 import javax.inject.Inject
 
 /**
- * TODO: Local에서 불러온 Image와 새로 Gallery에서 선택한 이미지가 둘 다 있을 경우 처리
- * TODO: URL, URI 가 모두 있을 경우에 대한 처리
- * TODO: Image Domain, Data Test Code
+ * https://full-growth-4d2.notion.site/Signup-Profile-Image-977abc7b8bdd4f0d9767e442ecd6cd1d
  */
 @HiltViewModel
 class ProfileImageViewModel @Inject constructor(
@@ -31,11 +30,8 @@ class ProfileImageViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<ProfileImageUiState> =
         MutableStateFlow(ProfileImageUiState.Empty)
 
-    private val _imageUrlList = MutableStateFlow<List<String>>(emptyList())
-    val imageUrlList = _imageUrlList.asStateFlow()
-
-    private val _imageUriList = MutableStateFlow(Array(IMAGE_MAX_SIZE){ "" })
-    val imageUriList = _imageUriList.asStateFlow()
+    private val _imageList = MutableStateFlow(Array(IMAGE_MAX_SIZE){ ImageUri(null, null) })
+    val imageList = _imageList.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
@@ -46,11 +42,21 @@ class ProfileImageViewModel @Inject constructor(
                 stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         }
-        viewModelScope.launch {
+        // Local에 저장된 이미지를 불러와 size가 IMAGE_MAX_SIZE인 _imageList에 저장
+        viewModelScope.launch(Dispatchers.Default) {
             _dataLoading.value = true
             fetchSignupUserUseCase(phone)
                 .onSuccess {
-                    _imageUrlList.value = it.profileImgUrl
+                    it.profileImgUrl
+                        .map { u ->
+                            ImageUri(null, u)
+                        }.take(3)
+                        .forEachIndexed { idx, imageUri ->
+                            _imageList.value = _imageList.value.also { arr ->
+                                arr[idx] = imageUri
+                            }.copyOf()
+                        }
+                    checkRequireImageSelect()
                 }.onFailure {
                     emitMessage(stringProvider.getString(StringProvider.ResId.InvalidateSignupProcess))
                 }.also {
@@ -64,31 +70,46 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     fun imageSelectEvent(uri: String, idx: Int) {
-        _imageUriList.value = _imageUriList.value.let {
-            it[idx] = uri
+        _imageList.value = _imageList.value.let {
+            it[idx] = ImageUri(uri, it[idx].url)
             it.copyOf()
         }
-        _uiStateFlow.value = when (_imageUriList.value.count { it.isNotBlank() } >= IMAGE_REQUIRE_SIZE) {
+        checkRequireImageSelect()
+    }
+
+    private fun checkRequireImageSelect() {
+        val currentSelectImageCount = _imageList.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }
+        _uiStateFlow.value = when (currentSelectImageCount >= IMAGE_REQUIRE_SIZE) {
             true -> ProfileImageUiState.Accept
             else -> ProfileImageUiState.Empty
         }
     }
 
-    private fun uploadProfileImageUris(phone: String, uriList: List<String>) {
-        viewModelScope.launch {
+    private fun uploadProfileImageUris(phone: String, uriList: List<String?>, urlArray: Array<String?>) {
+        viewModelScope.launch(Dispatchers.Default) {
             _dataLoading.value = true
-            uploadImageUseCase(uriList)
-                .onSuccess {
-                    Log.d("TAG", "upload image => $it")
-                    if (uriList.size != it.size) {
+            val uploadTryImages = uriList.mapIndexed { idx, uri ->
+                uri to idx
+            }.filter {
+                !it.first.isNullOrBlank()
+            }.map {
+                it.first!! to it.second
+            }
+            uploadImageUseCase(uploadTryImages)
+                .onSuccess { uploadUrlList ->
+                    if (uploadTryImages.size != uploadUrlList.size) {
                         postSideEffect(ProfileImageSideEffect.ShowToast(
-                            "${uriList.size - it.size}장 업로드 실패")
+                            "${uriList.size - uploadUrlList.size}장 업로드 실패")
                         )
                     }
-                    patchProfileImage(phone, it)
+                    uploadUrlList.forEach { urlPair ->
+                        if (urlPair.second !in uriList.indices) return@forEach
+                        urlArray[urlPair.second] = urlPair.first
+                    }
+                    patchProfileImage(phone, urlArray.filter { !it.isNullOrBlank() }.map{ it!! })
                 }.onFailure {
                     it.printStackTrace()
-                    Log.d("TAG", "image upload debug fail at viewModel => $it")
+                    Log.e("TAG", "image upload debug fail at viewModel => $it")
                     postSideEffect(ProfileImageSideEffect.ShowToast(it.toString()))
                 }.also {
                     _dataLoading.value = false
@@ -117,14 +138,18 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     private fun doPatchInputTask(phone: String) {
-        if (_dataLoading.value) {
-            return
-        }
-        if (_imageUriList.value.count() < IMAGE_REQUIRE_SIZE) {
-            return
+        if (_dataLoading.value) return
+        _imageList.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
+            if (it < IMAGE_REQUIRE_SIZE) return
         }
         uploadProfileImageUris(
-            phone, _imageUriList.value.filter { it.isNotBlank() }
+            phone,
+            _imageList.value.map {
+                it.uri
+            },
+            _imageList.value.map {
+                it.url
+            }.toTypedArray()
         )
     }
 

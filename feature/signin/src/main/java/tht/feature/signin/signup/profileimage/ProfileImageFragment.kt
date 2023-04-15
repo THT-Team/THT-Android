@@ -2,6 +2,7 @@ package tht.feature.signin.signup.profileimage
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
@@ -48,8 +49,8 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
     }
 
     override fun setListener() {
-        imageViews.forEachIndexed { index, imageView ->
-            imageView.setOnClickListener { viewModel.imageClickEvent(index) }
+        imageViews.forEachIndexed { idx, imageView ->
+            imageView.setOnClickListener { viewModel.imageClickEvent(idx) }
         }
 
         binding.btnNext.setOnClickListener {
@@ -102,19 +103,22 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             }
 
             launch {
-                viewModel.imageUrlList.collect {
-                    it.forEachIndexed { idx, url ->
-                        loadUrl(imageViews[idx], url)
-                    }
-                }
-            }
-
-            launch {
-                viewModel.imageUriList.collect {
-                    it.forEachIndexed { idx, uri ->
-                        if (uri.isBlank()) return@forEachIndexed
+                viewModel.imageList.collect {
+                    it.forEachIndexed { idx, imageUri ->
                         if (idx !in imageViews.indices) return@collect
-                        imageViews[idx].setImageURI(Uri.parse(uri))
+                        when {
+                            !imageUri.uri.isNullOrBlank() -> {
+                                Log.d("TAG", "try to set image => idx[$idx], uri[${imageUri.url}]")
+                                imageViews[idx].setImageURI(Uri.parse(imageUri.uri))
+                                return@forEachIndexed
+                            }
+                            !imageUri.url.isNullOrBlank() -> {
+                                Log.d("TAG", "try to load image => idx[$idx], url[${imageUri.url}]")
+                                loadUrl(imageViews[idx], imageUri.url)
+                                return@forEachIndexed
+                            }
+                        }
+
                     }
                 }
             }
