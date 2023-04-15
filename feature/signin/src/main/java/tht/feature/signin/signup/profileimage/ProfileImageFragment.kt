@@ -3,14 +3,19 @@ package tht.feature.signin.signup.profileimage
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
+import tht.core.ui.extension.showToast
+import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
@@ -26,15 +31,14 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
     private val imageSelectCallback = ImageSelectCallbackWrapper<Uri?>()
 
     private val photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia(), imageSelectCallback)
-    private val imageViews by lazy {
-        listOf(
+    private lateinit var imageViews: List<ImageView>
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        imageViews = listOf(
             binding.ivImageAdd1,
             binding.ivImageAdd2,
             binding.ivImageAdd3
         )
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
@@ -49,12 +53,13 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
         }
 
         binding.btnNext.setOnClickListener {
-            viewModel.nextEvent()
+            viewModel.nextEvent(rootViewModel.phone.value)
         }
     }
 
     private fun initView() {
         StringUtil.setWhiteTextColor(binding.tvProfileImageTitle, 0 until 2)
+        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     override fun observeData() {
@@ -62,6 +67,10 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             launch {
                 viewModel.uiStateFlow.collect {
                     when (it) {
+                        is ProfileImageUiState.InvalidPhoneNumber -> {
+                            context?.showToast(it.message)
+                            rootViewModel.backEvent()
+                        }
                         is ProfileImageUiState.Empty -> {
                             binding.btnNext.isEnabled = false
                         }
@@ -86,22 +95,46 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
 
                         is ProfileImageSideEffect.NavigateNextView ->
                             rootViewModel.nextEvent(SignupRootViewModel.Step.PROFILE_IMAGE)
+
+                        is ProfileImageSideEffect.ShowToast -> requireContext().showToast(it.message)
                     }
                 }
             }
 
             launch {
                 viewModel.imageUrlList.collect {
-                    it.forEachIndexed { index, url ->
-                        if (url.isBlank()) return@forEachIndexed
-                        if (index !in imageViews.indices) return@collect
-                        imageViews[index].setImageURI(Uri.parse(url))
+                    it.forEachIndexed { idx, url ->
+                        loadUrl(imageViews[idx], url)
                     }
+                }
+            }
+
+            launch {
+                viewModel.imageUriList.collect {
+                    it.forEachIndexed { idx, uri ->
+                        if (uri.isBlank()) return@forEachIndexed
+                        if (idx !in imageViews.indices) return@collect
+                        imageViews[idx].setImageURI(Uri.parse(uri))
+                    }
+                }
+            }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
                 }
             }
         }
     }
 
+    private fun loadUrl(imageView: ImageView, url: String) {
+        Glide.with(imageView)
+            .load(url)
+            .error(R.drawable.bg_image_error)
+            .dontTransform()
+            .override(imageView.layoutParams.width, imageView.layoutParams.height)
+            .into(imageView)
+    }
 
     companion object {
 
