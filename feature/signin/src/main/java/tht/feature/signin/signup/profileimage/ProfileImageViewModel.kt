@@ -30,8 +30,8 @@ class ProfileImageViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<ProfileImageUiState> =
         MutableStateFlow(ProfileImageUiState.Empty)
 
-    private val _imageList = MutableStateFlow(Array(IMAGE_MAX_SIZE) { ImageUri(null, null) })
-    val imageList = _imageList.asStateFlow()
+    private val _imageArray = MutableStateFlow(Array(IMAGE_MAX_SIZE) { ImageUri(null, null) })
+    val imageArray = _imageArray.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
@@ -52,7 +52,7 @@ class ProfileImageViewModel @Inject constructor(
                             ImageUri(null, u)
                         }.take(3)
                         .forEachIndexed { idx, imageUri ->
-                            _imageList.value = _imageList.value.also { arr ->
+                            _imageArray.value = _imageArray.value.also { arr ->
                                 arr[idx] = imageUri
                             }.copyOf()
                         }
@@ -70,21 +70,25 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     fun imageSelectEvent(uri: String, idx: Int) {
-        _imageList.value = _imageList.value.let {
+        _imageArray.value = _imageArray.value.let {
             it[idx] = ImageUri(uri, it[idx].url)
             it.copyOf()
         }
         checkRequireImageSelect()
     }
 
+    // 현재 선택된 이미지 개수에 따라 UiState 를 변경
     private fun checkRequireImageSelect() {
-        val currentSelectImageCount = _imageList.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }
+        val currentSelectImageCount = _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }
         _uiStateFlow.value = when (currentSelectImageCount >= IMAGE_REQUIRE_SIZE) {
             true -> ProfileImageUiState.Accept
             else -> ProfileImageUiState.Empty
         }
     }
 
+    // 이미지 업로드 Process. 완료되면 Patch Process 실행
+    // uri가 존재 한다면 upload 후 리턴된 url를 url array에 적용
+    // 이미 업로드된 url은 그대로 유지
     private fun uploadProfileImageUris(phone: String, uriList: List<String?>, urlArray: Array<String?>) {
         viewModelScope.launch(Dispatchers.Default) {
             _dataLoading.value = true
@@ -119,6 +123,8 @@ class ProfileImageViewModel @Inject constructor(
         }
     }
 
+    // Patch Process
+    // 이미지 Url Array를 Local에 있는 SignupUserModel에 적용
     private suspend fun patchProfileImage(phone: String, profileImageUrls: List<String>) {
         _dataLoading.value = true
         patchSignupProfileImagesUseCase(phone, profileImageUrls)
@@ -141,15 +147,15 @@ class ProfileImageViewModel @Inject constructor(
 
     private fun doPatchInputTask(phone: String) {
         if (_dataLoading.value) return
-        _imageList.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
+        _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
             if (it < IMAGE_REQUIRE_SIZE) return
         }
         uploadProfileImageUris(
             phone,
-            _imageList.value.map {
+            _imageArray.value.map {
                 it.uri
             },
-            _imageList.value.map {
+            _imageArray.value.map {
                 it.url
             }.toTypedArray()
         )

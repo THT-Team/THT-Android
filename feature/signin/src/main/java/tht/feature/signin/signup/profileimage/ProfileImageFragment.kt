@@ -105,7 +105,7 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             }
 
             launch {
-                viewModel.imageList.collect {
+                viewModel.imageArray.collect {
                     it.forEachIndexed { idx, imageUri ->
                         if (idx !in imageViews.indices) return@collect
                         when {
