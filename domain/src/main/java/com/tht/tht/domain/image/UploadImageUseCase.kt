@@ -7,18 +7,21 @@ import kotlinx.coroutines.coroutineScope
 class UploadImageUseCase(
     private val imageRepository: ImageRepository
 ) {
-    suspend operator fun invoke(uriList: List<String>, ): Result<List<String>> {
+    suspend operator fun invoke(uriList: List<Pair<String, Int>>): Result<List<Pair<String, Int>>> {
         return kotlin.runCatching {
             coroutineScope {
-                uriList.mapIndexed { idx, uri ->
+                uriList.map { uriInfo ->
                     async {
                         kotlin.runCatching {
-                            imageRepository.uploadImage(uri, "${System.currentTimeMillis()}_$idx")
+                            imageRepository.uploadImageWithIndex(
+                                uriInfo.first,
+                                "${System.currentTimeMillis()}_${uriInfo.second}",
+                                uriInfo.second
+                            )
                         }
                     }
                 }.awaitAll()
-                    .filter { it.isSuccess }
-                    .map { it.getOrThrow() }
+                    .mapNotNull { it.getOrNull() }
             }
         }
     }

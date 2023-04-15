@@ -9,8 +9,12 @@ class ImageRepositoryImpl @Inject constructor(
     private val imageDataSource: ImageDataSource
 ) : ImageRepository {
 
-    override suspend fun uploadImage(uri: String, saveFileName: String): String {
-        return imageDataSource.uploadImage(Uri.parse(uri), saveFileName)
+    override suspend fun uploadImageWithIndex(
+        uri: String,
+        saveFileName: String,
+        idx: Int
+    ): Pair<String, Int> {
+        return imageDataSource.uploadImage(Uri.parse(uri), saveFileName) to idx
     }
 
 }
