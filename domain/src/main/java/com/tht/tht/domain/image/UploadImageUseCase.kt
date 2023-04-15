@@ -21,7 +21,7 @@ class UploadImageUseCase(
                         }
                     }
                 }.awaitAll()
-                    .mapNotNull { it.getOrNull() }
+                    .map { it.getOrThrow() }
             }
         }
     }
