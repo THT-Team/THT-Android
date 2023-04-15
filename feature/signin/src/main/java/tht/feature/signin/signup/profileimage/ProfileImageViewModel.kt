@@ -30,7 +30,7 @@ class ProfileImageViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<ProfileImageUiState> =
         MutableStateFlow(ProfileImageUiState.Empty)
 
-    private val _imageList = MutableStateFlow(Array(IMAGE_MAX_SIZE){ ImageUri(null, null) })
+    private val _imageList = MutableStateFlow(Array(IMAGE_MAX_SIZE) { ImageUri(null, null) })
     val imageList = _imageList.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)
@@ -98,15 +98,17 @@ class ProfileImageViewModel @Inject constructor(
             uploadImageUseCase(uploadTryImages)
                 .onSuccess { uploadUrlList ->
                     if (uploadTryImages.size != uploadUrlList.size) {
-                        postSideEffect(ProfileImageSideEffect.ShowToast(
-                            "${uriList.size - uploadUrlList.size}장 업로드 실패")
+                        postSideEffect(
+                            ProfileImageSideEffect.ShowToast(
+                                "${uriList.size - uploadUrlList.size}장 업로드 실패"
+                            )
                         )
                     }
                     uploadUrlList.forEach { urlPair ->
                         if (urlPair.second !in uriList.indices) return@forEach
                         urlArray[urlPair.second] = urlPair.first
                     }
-                    patchProfileImage(phone, urlArray.filter { !it.isNullOrBlank() }.map{ it!! })
+                    patchProfileImage(phone, urlArray.filter { !it.isNullOrBlank() }.map { it!! })
                 }.onFailure {
                     it.printStackTrace()
                     Log.e("TAG", "image upload debug fail at viewModel => $it")
@@ -169,7 +171,7 @@ sealed class ProfileImageUiState : UiState {
     object Accept : ProfileImageUiState()
 }
 sealed class ProfileImageSideEffect : SideEffect {
-    data class ShowToast(val message: String) :ProfileImageSideEffect()
+    data class ShowToast(val message: String) : ProfileImageSideEffect()
     data class RequestImageFromGallery(
         val idx: Int
     ) : ProfileImageSideEffect()

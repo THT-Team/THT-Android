@@ -86,12 +86,14 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is ProfileImageSideEffect.RequestImageFromGallery -> {
-                            imageSelectCallback.callback = ActivityResultCallback  { uri ->
+                            imageSelectCallback.callback = ActivityResultCallback { uri ->
                                 if (uri != null) {
                                     viewModel.imageSelectEvent(uri.toString(), it.idx)
                                 }
                             }
-                            photoPicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            photoPicker.launch(
+                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            )
                         }
 
                         is ProfileImageSideEffect.NavigateNextView ->
@@ -118,7 +120,6 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                                 return@forEachIndexed
                             }
                         }
-
                     }
                 }
             }
