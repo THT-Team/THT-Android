@@ -102,9 +102,10 @@ class ProfileImageViewModel @Inject constructor(
             uploadImageUseCase(uploadTryImages)
                 .onSuccess { uploadUrlList ->
                     if (uploadTryImages.size != uploadUrlList.size) {
-                        postSideEffect(
-                            ProfileImageSideEffect.ShowToast(
-                                "${uriList.size - uploadUrlList.size}장 업로드 실패"
+                        emitMessage(
+                            stringProvider.getString(
+                                StringProvider.ResId.ProfileImagePartialUploadFail,
+                                uriList.size - uploadUrlList.size
                             )
                         )
                     }
@@ -116,7 +117,10 @@ class ProfileImageViewModel @Inject constructor(
                 }.onFailure {
                     it.printStackTrace()
                     Log.e("TAG", "image upload debug fail at viewModel => $it")
-                    postSideEffect(ProfileImageSideEffect.ShowToast(it.toString()))
+                    emitMessage(
+                        stringProvider.getString(StringProvider.ResId.ProfileImageUploadFail) +
+                            it.toString()
+                    )
                 }.also {
                     _dataLoading.value = false
                 }
@@ -131,11 +135,16 @@ class ProfileImageViewModel @Inject constructor(
             .onSuccess {
                 when (it) {
                     true -> postSideEffect(ProfileImageSideEffect.NavigateNextView)
-                    else -> emitMessage("fail patch")
+                    else -> emitMessage(
+                        stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
+                    )
                 }
             }.onFailure {
                 it.printStackTrace()
-                postSideEffect(ProfileImageSideEffect.ShowToast(it.toString()))
+                emitMessage(
+                    stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail) +
+                        it.toString()
+                )
             }.also {
                 _dataLoading.value = false
             }
@@ -146,7 +155,11 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     private fun doPatchInputTask(phone: String) {
-        if (_dataLoading.value) return
+        if (_dataLoading.value) {
+            emitMessage(
+                stringProvider.getString(StringProvider.ResId.Loading)
+            )
+        }
         _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
             if (it < IMAGE_REQUIRE_SIZE) return
         }
@@ -161,8 +174,8 @@ class ProfileImageViewModel @Inject constructor(
         )
     }
 
-    private suspend fun emitMessage(message: String) {
-        _sideEffectFlow.emit(ProfileImageSideEffect.ShowToast(message))
+    private fun emitMessage(message: String) {
+        postSideEffect(ProfileImageSideEffect.ShowToast(message))
     }
 
     companion object {
