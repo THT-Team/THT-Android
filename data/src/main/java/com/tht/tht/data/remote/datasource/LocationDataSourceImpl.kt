@@ -45,10 +45,16 @@ class LocationDataSourceImpl @Inject constructor(
 
     private fun getAddress(mContext: Context?, lat: Double, lng: Double): String {
         val geocoder = Geocoder(mContext, Locale.KOREA)
-        val address = geocoder.getFromLocation(lat, lng, 1)
-        if (address == null || address.size == 0)
+        val location = geocoder.getFromLocation(lat, lng, 1)
+        if (location == null || location.size == 0)
             throw IOException("Can not find location")
+        val address = StringBuilder()
+        location[0].getAddressLine(0).split(" ").forEachIndexed { index, name ->
+            if(index == 0) return@forEachIndexed
+            if(index == 1 && name.last() == '도') return@forEachIndexed
+            address.append(name).append(" ")
+        }
 
-        return address[0].getAddressLine(0).toString()
+        return address.toString()
     }
 }

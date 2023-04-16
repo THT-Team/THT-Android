@@ -48,7 +48,8 @@
                 style="@style/H5MediumTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="21dp"
+                android:paddingHorizontal="16dp"
+                android:maxLines="1"
                 android:hint="@string/hint_location"
                 android:textColorHint="@color/brown_26241f" />
         </LinearLayout>
