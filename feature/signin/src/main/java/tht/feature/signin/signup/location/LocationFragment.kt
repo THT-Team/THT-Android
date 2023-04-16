@@ -7,6 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
+import tht.core.ui.extension.showToast
 import tht.feature.signin.databinding.FragmentLocationBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
@@ -47,12 +48,24 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
             launch {
                 viewModel.uiStateFlow.collect {
+                    when (it) {
+                        is LocationViewModel.LocationUiState.CurrentLocation -> {
+                            binding.cvLocation.strokeColor = requireContext().getColor(tht.core.ui.R.color.yellow_f9cc2e)
+                            binding.tvLocationDetail.text = it.location
+                        }
+                        LocationViewModel.LocationUiState.Default -> {
+
+                        }
+                    }
                 }
             }
 
             launch {
                 viewModel.sideEffectFlow.collect {
                     when(it) {
+                        is LocationViewModel.LocationSideEffect.ShowToast -> {
+                            context?.showToast(it.message)
+                        }
                         LocationViewModel.LocationSideEffect.CheckPermission -> {
                             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
