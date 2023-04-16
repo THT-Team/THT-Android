@@ -18,8 +18,24 @@ class LocationViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.Empty)
 
+    fun checkPermissionEvent() {
+        postSideEffect(LocationSideEffect.CheckPermission)
+    }
+
+    fun getCurrentLocation() {
+
+    }
+
+    fun showLocationDialog() {
+
+    }
+
     sealed class LocationUiState : UiState {
         object Empty : LocationUiState()
     }
-    sealed class LocationSideEffect : SideEffect
+    sealed class LocationSideEffect : SideEffect {
+        object CheckPermission : LocationSideEffect()
+        object GetCurrentLocation : LocationSideEffect()
+        object ShowLocationDialog : LocationSideEffect()
+    }
 }
