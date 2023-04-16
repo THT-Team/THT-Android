@@ -2,6 +2,8 @@ package com.tht.tht.data.local.mapper
 
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
+import com.tht.tht.data.remote.response.location.LocationResponse
+import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
 
@@ -65,3 +67,10 @@ fun SignupUserModel.toEntity(): SignupUserEntity {
         idealTypeKeys = idealTypeKeys
     )
 }
+
+fun LocationResponse.toModel(): LocationModel =
+    LocationModel(
+        lat = lat,
+        lng = lng,
+        address = address
+    )
