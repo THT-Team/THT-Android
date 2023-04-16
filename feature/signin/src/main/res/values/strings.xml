@@ -69,4 +69,8 @@
     <string name="title_introduce">나를 알려 주세요.</string>
     <string name="hint_introduce">제 MBTI는요 :)</string>
     <string name="message_introduce_input">자유롭게 자기소개를 해주세요.</string>
+
+    <string name="title_location">현재 위치를 알려주세요.</string>
+    <string name="hint_location">서울시 강남구 대치동</string>
+    <string name="message_caption_location">내 주변의 친구들과 더 많은 대화를 나눌 수 있어요.</string>
 </resources>

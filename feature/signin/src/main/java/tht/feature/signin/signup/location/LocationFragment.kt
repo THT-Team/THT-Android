@@ -8,6 +8,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentLocationBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
+import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>() {
@@ -25,7 +26,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
     }
 
     override fun initView() {
-
+        StringUtil.setWhiteTextColor(binding.tvLocationTitle, 0 until 6)
     }
 
     override fun observeData() {
