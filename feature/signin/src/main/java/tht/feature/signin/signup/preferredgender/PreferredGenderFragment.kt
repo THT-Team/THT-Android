@@ -25,7 +25,6 @@ class PreferredGenderFragment : SignupRootBaseFragment<PreferredGenderViewModel,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         genderBtnList = listOf(binding.btnMale, binding.btnFemale, binding.btnAllGender)
         super.onViewCreated(view, savedInstanceState)
-        initView()
     }
 
     override fun setProgress() {
@@ -44,7 +43,7 @@ class PreferredGenderFragment : SignupRootBaseFragment<PreferredGenderViewModel,
         }
     }
 
-    private fun initView() {
+    override fun initView() {
         StringUtil.setWhiteTextColor(binding.tvPreferredGenderTitle, 0 until 5)
         viewModel.fetchSavedData(rootViewModel.phone.value)
     }

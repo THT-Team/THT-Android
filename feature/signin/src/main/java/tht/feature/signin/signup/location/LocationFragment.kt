@@ -24,6 +24,10 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
         binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION) }
     }
 
+    override fun initView() {
+
+    }
+
     override fun observeData() {
         repeatOnStarted {
 

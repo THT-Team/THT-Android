@@ -51,6 +51,10 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
         StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 4)
     }
 
+    override fun initView() {
+
+    }
+
     override fun observeData() {
         repeatOnStarted {
             launch {

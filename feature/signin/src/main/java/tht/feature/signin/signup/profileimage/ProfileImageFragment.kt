@@ -63,6 +63,10 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
         viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
+    override fun initView() {
+
+    }
+
     override fun observeData() {
         repeatOnStarted {
             launch {
