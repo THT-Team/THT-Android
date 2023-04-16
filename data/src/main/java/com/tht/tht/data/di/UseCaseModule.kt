@@ -1,5 +1,6 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.repository.SignupRepository
@@ -187,4 +188,10 @@ object UseCaseModule {
     fun provideUploadImageUseCase(
         repository: ImageRepository
     ) : UploadImageUseCase = UploadImageUseCase(repository)
+
+    @Provides
+    fun provideFetchLocationUseCase(
+        repository: LocationRepository
+    ): FetchLocationUseCase =
+        FetchLocationUseCase(repository)
 }
