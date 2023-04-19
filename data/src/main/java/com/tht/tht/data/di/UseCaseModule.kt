@@ -190,8 +190,14 @@ object UseCaseModule {
     ) : UploadImageUseCase = UploadImageUseCase(repository)
 
     @Provides
-    fun provideFetchLocationUseCase(
+    fun provideFetchCurrentLocationUseCase(
         repository: LocationRepository
-    ): FetchLocationUseCase =
-        FetchLocationUseCase(repository)
+    ): FetchCurrentLocationUseCase =
+        FetchCurrentLocationUseCase(repository)
+
+    @Provides
+    fun provideFetchLocationByAddressUseCase(
+        repository: LocationRepository
+    ): FetchLocationByAddressUseCase =
+        FetchLocationByAddressUseCase(repository)
 }

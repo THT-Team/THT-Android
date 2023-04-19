@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.R
@@ -29,7 +28,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
     private val locationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                viewModel.getCurrentLocation()
+                viewModel.fetchCurrentLocation()
             } else {
                 viewModel.dialogEvent()
             }
@@ -37,12 +36,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getLocation()
-    }
-
-    private fun getLocation() {
-        val args: LocationFragmentArgs by navArgs()
-        args.location?.let { viewModel.setLocation(it) }
+        observeNavigationCallBack()
     }
 
     override fun setProgress() {
@@ -104,6 +98,13 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                 }
             }
         }
+    }
+
+    private fun observeNavigationCallBack() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("address")
+            ?.observe(viewLifecycleOwner) {
+                viewModel.fetchLocationByAddress(it)
+            }
     }
 
     companion object {

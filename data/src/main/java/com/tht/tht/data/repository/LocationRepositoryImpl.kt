@@ -9,6 +9,10 @@ import javax.inject.Inject
 class LocationRepositoryImpl @Inject constructor(
     private val locationDataSource: LocationDataSource
 ) : LocationRepository {
+
     override suspend fun fetchCurrentLocation(): LocationModel =
         locationDataSource.fetchCurrentLocation().toModel()
+
+    override suspend fun fetchLocationByAddress(address: String): LocationModel =
+        locationDataSource.fetchLocationByAddress(address).toModel()
 }

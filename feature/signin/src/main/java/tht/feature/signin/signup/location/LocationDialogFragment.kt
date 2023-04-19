@@ -62,11 +62,12 @@ class LocationDialogFragment : DialogFragment() {
         }
     }
 
-    inner class LocationBridge {
+    private inner class LocationBridge {
         @JavascriptInterface
-        fun processDATA(data: String?) {
+        fun processDATA(address: String?) {
             lifecycleScope.launch {
-                navController.navigate(LocationDialogFragmentDirections.actionLocationDialogFragmentToLocationFragment(data))
+                navController.previousBackStackEntry?.savedStateHandle?.set("address", address)
+                navController.popBackStack()
             }
         }
     }

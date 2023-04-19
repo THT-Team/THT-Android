@@ -33,21 +33,29 @@ class LocationServiceImpl @Inject constructor(
         val lat = location.latitude
         val lng = location.longitude
 
-        return LocationResponse(lat, lng, getAddress(context, lat, lng))
+        return LocationResponse(lat, lng, getAddress(lat, lng))
     }
 
-    private fun getAddress(mContext: Context?, lat: Double, lng: Double): String {
-        val geocoder = Geocoder(mContext, Locale.KOREA)
+    override suspend fun fetchLocationByAddress(address: String): LocationResponse {
+        val coordinate = getCoordinate(address)
+        return LocationResponse(coordinate.first, coordinate.second, address)
+    }
+
+    private fun getAddress(lat: Double, lng: Double): String {
+        val geocoder = Geocoder(context, Locale.KOREA)
         val location = geocoder.getFromLocation(lat, lng, 1)
         if (location == null || location.size == 0)
             throw IOException("Can not find location")
-        val address = StringBuilder()
-        location[0].getAddressLine(0).split(" ").forEachIndexed { index, name ->
-            if (index == 0) return@forEachIndexed
-            if (index == 1 && name.last() == '도') return@forEachIndexed
-            address.append(name).append(" ")
-        }
 
-        return address.toString()
+        return location[0].getAddressLine(0)
+    }
+
+    private fun getCoordinate(locationName: String): Pair<Double, Double> {
+        val geocoder = Geocoder(context, Locale.KOREA)
+        val location = geocoder.getFromLocationName(locationName, 1)
+        if (location == null || location.size == 0)
+            throw IOException("Can not find location")
+
+        return Pair(location[0].latitude, location[0].longitude)
     }
 }

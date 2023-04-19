@@ -18,4 +18,10 @@ class LocationDataSourceImpl @Inject constructor(
             locationService.fetchCurrentLocation()
         }
     }
+
+    override suspend fun fetchLocationByAddress(address: String): LocationResponse {
+        return withContext(dispatcher) {
+            locationService.fetchLocationByAddress(address)
+        }
+    }
 }

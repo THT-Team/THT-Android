@@ -1,7 +1,8 @@
 package tht.feature.signin.signup.location
 
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.domain.signup.usecase.FetchLocationUseCase
+import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
+import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupLocationUseCase: PatchSignupLocationUseCase,
-    private val fetchLocationUseCase: FetchLocationUseCase,
+    private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
+    private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
@@ -35,9 +37,20 @@ class LocationViewModel @Inject constructor(
             postSideEffect(LocationSideEffect.ShowLocationDialog)
     }
 
-    fun getCurrentLocation() {
+    fun fetchCurrentLocation() {
         viewModelScope.launch {
-            fetchLocationUseCase()
+            fetchCurrentLocationUseCase()
+                .onSuccess { location ->
+                    _location.value = location.address
+                }.onFailure {
+                    postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
+                }
+        }
+    }
+
+    fun fetchLocationByAddress(address: String) {
+        viewModelScope.launch {
+            fetchLocationByAddressUseCase(address)
                 .onSuccess { location ->
                     _location.value = location.address
                 }.onFailure {
@@ -55,10 +68,6 @@ class LocationViewModel @Inject constructor(
             setUiState(LocationUiState.InvalidInput)
         else
             setUiState(LocationUiState.ValidInput)
-    }
-
-    fun setLocation(location: String) {
-        _location.value = location
     }
 
     sealed class LocationUiState : UiState {
