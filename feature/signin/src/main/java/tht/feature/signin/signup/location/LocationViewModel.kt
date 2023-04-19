@@ -6,6 +6,7 @@ import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -22,39 +23,53 @@ class LocationViewModel @Inject constructor(
 ) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
-        MutableStateFlow(LocationUiState.Default)
+        MutableStateFlow(LocationUiState.InvalidInput)
 
-    fun checkPermissionEvent() {
-        postSideEffect(LocationSideEffect.CheckPermission)
+    private val _location = MutableStateFlow("")
+    val location = _location.asStateFlow()
+
+    fun checkLocationEvent() {
+        if(_location.value.isEmpty())
+            postSideEffect(LocationSideEffect.CheckPermission)
+        else
+            postSideEffect(LocationSideEffect.ShowLocationDialog)
     }
 
     fun getCurrentLocation() {
         viewModelScope.launch {
             fetchLocationUseCase()
                 .onSuccess { location ->
-                    setUiState(LocationUiState.CurrentLocation(location.address))
+                    _location.value = location.address
                 }.onFailure {
-                    emitMessage(stringProvider.getString(StringProvider.ResId.InvalidateLocation))
+                    postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
                 }
         }
     }
 
-    fun showLocationDialog() {
-
+    fun dialogEvent() {
+        postSideEffect(LocationSideEffect.ShowLocationDialog)
     }
 
-    private suspend fun emitMessage(message: String) {
-        _sideEffectFlow.emit(LocationSideEffect.ShowToast(message))
+    fun checkValidInput(location: String) {
+        if(location.isEmpty())
+            setUiState(LocationUiState.InvalidInput)
+        else
+            setUiState(LocationUiState.ValidInput)
+    }
+
+    fun setLocation(location: String) {
+        _location.value = location
     }
 
     sealed class LocationUiState : UiState {
-        data class CurrentLocation(val location: String) : LocationUiState()
-        object Default : LocationUiState()
+        object ValidInput : LocationUiState()
+        object InvalidInput : LocationUiState()
     }
+
     sealed class LocationSideEffect : SideEffect {
         data class ShowToast(val message: String) : LocationSideEffect()
         object CheckPermission : LocationSideEffect()
-        object GetCurrentLocation : LocationSideEffect()
         object ShowLocationDialog : LocationSideEffect()
+        object NextEvent : LocationSideEffect()
     }
 }
