@@ -1,9 +1,9 @@
 package tht.feature.signin.signup.location
 
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
-import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupLocationUseCase: PatchSignupLocationUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
@@ -27,11 +26,14 @@ class LocationViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.InvalidInput)
 
-    private val _location = MutableStateFlow("")
+    private val _location = MutableStateFlow(LocationModel(0.0, 0.0, ""))
     val location = _location.asStateFlow()
 
+    private val _dataLoading = MutableStateFlow(false)
+    val dataLoading = _dataLoading.asStateFlow()
+
     fun checkLocationEvent() {
-        if(_location.value.isEmpty())
+        if (_location.value.address.isEmpty())
             postSideEffect(LocationSideEffect.CheckPermission)
         else
             postSideEffect(LocationSideEffect.ShowLocationDialog)
@@ -39,22 +41,28 @@ class LocationViewModel @Inject constructor(
 
     fun fetchCurrentLocation() {
         viewModelScope.launch {
+            _dataLoading.value = true
             fetchCurrentLocationUseCase()
                 .onSuccess { location ->
-                    _location.value = location.address
+                    _location.value = location
                 }.onFailure {
                     postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
+                }.also {
+                    _dataLoading.value = false
                 }
         }
     }
 
     fun fetchLocationByAddress(address: String) {
         viewModelScope.launch {
+            _dataLoading.value = true
             fetchLocationByAddressUseCase(address)
                 .onSuccess { location ->
-                    _location.value = location.address
+                    _location.value = location
                 }.onFailure {
                     postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
+                }.also {
+                    _dataLoading.value = false
                 }
         }
     }
@@ -63,8 +71,30 @@ class LocationViewModel @Inject constructor(
         postSideEffect(LocationSideEffect.ShowLocationDialog)
     }
 
+    fun nextEvent(phone: String) {
+        viewModelScope.launch {
+            _dataLoading.value = true
+            patchSignupLocationUseCase(
+                phone,
+                location.value.lat,
+                location.value.lng,
+                location.value.address
+            ).onSuccess {
+                _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    LocationSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.LocationPatchFail)
+                    )
+                )
+            }.also {
+                _dataLoading.value = false
+            }
+        }
+    }
+
     fun checkValidInput(location: String) {
-        if(location.isEmpty())
+        if (location.isEmpty())
             setUiState(LocationUiState.InvalidInput)
         else
             setUiState(LocationUiState.ValidInput)
@@ -79,6 +109,6 @@ class LocationViewModel @Inject constructor(
         data class ShowToast(val message: String) : LocationSideEffect()
         object CheckPermission : LocationSideEffect()
         object ShowLocationDialog : LocationSideEffect()
-        object NextEvent : LocationSideEffect()
+        object NavigateNextView : LocationSideEffect()
     }
 }

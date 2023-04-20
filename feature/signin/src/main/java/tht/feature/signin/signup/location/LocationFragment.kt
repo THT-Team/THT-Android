@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,7 +85,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                         LocationViewModel.LocationSideEffect.ShowLocationDialog -> {
                             findNavController().navigate(LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment())
                         }
-                        LocationViewModel.LocationSideEffect.NextEvent -> {
+                        LocationViewModel.LocationSideEffect.NavigateNextView -> {
 
                         }
                     }
@@ -93,8 +94,14 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
             launch {
                 viewModel.location.collect {
-                    binding.tvLocationDetail.text = it
-                    viewModel.checkValidInput(it)
+                    binding.tvLocationDetail.text = it.address
+                    viewModel.checkValidInput(it.address)
+                }
+            }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
                 }
             }
         }
