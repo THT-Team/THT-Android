@@ -86,7 +86,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                             findNavController().navigate(LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment())
                         }
                         LocationViewModel.LocationSideEffect.NavigateNextView -> {
-
+                            rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION)
                         }
                     }
                 }

@@ -46,7 +46,7 @@ class LocationViewModel @Inject constructor(
                 .onSuccess { location ->
                     _location.value = location
                 }.onFailure {
-                    postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
+                    _sideEffectFlow.emit(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
                 }.also {
                     _dataLoading.value = false
                 }
@@ -60,7 +60,7 @@ class LocationViewModel @Inject constructor(
                 .onSuccess { location ->
                     _location.value = location
                 }.onFailure {
-                    postSideEffect(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
+                    _sideEffectFlow.emit(LocationSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.InvalidateLocation)))
                 }.also {
                     _dataLoading.value = false
                 }
