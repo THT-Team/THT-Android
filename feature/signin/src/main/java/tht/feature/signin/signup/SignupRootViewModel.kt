@@ -42,7 +42,11 @@ class SignupRootViewModel @Inject constructor(
             requestSignupUseCase(phone.value).onSuccess {
                 _sideEffectFlow.emit(SignupRootSideEffect.FinishSignup)
             }.onFailure {
-                _sideEffectFlow.emit(SignupRootSideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.SignupFail)))
+                _sideEffectFlow.emit(
+                    SignupRootSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.SignupFail)
+                    )
+                )
             }
         }
     }
@@ -53,7 +57,7 @@ class SignupRootViewModel @Inject constructor(
 
     sealed class SignupRootSideEffect : SideEffect {
         object Back : SignupRootSideEffect()
-        object FinishSignup: SignupRootSideEffect()
+        object FinishSignup : SignupRootSideEffect()
         data class ShowToast(val message: String) : SignupRootSideEffect()
         data class NavigateNextView(val step: Step) : SignupRootSideEffect()
     }

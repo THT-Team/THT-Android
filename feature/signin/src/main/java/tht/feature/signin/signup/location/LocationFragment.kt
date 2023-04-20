@@ -18,7 +18,6 @@ import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 import tht.feature.signin.util.StringUtil
 
-
 @AndroidEntryPoint
 class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>() {
 
@@ -83,7 +82,9 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                             locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
                         LocationViewModel.LocationSideEffect.ShowLocationDialog -> {
-                            findNavController().navigate(LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment())
+                            findNavController().navigate(
+                                LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment()
+                            )
                         }
                         LocationViewModel.LocationSideEffect.NavigateNextView -> {
                             rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION)

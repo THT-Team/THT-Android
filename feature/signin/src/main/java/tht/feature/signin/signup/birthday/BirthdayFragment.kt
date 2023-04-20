@@ -25,7 +25,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
     }
 
     override fun initView() {
-
     }
 
     override fun observeData() {

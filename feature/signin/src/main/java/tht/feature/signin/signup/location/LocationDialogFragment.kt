@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.databinding.DialogLocationBinding
 
-
 @AndroidEntryPoint
 class LocationDialogFragment : DialogFragment() {
     private val binding: DialogLocationBinding by viewBinding(DialogLocationBinding::inflate)

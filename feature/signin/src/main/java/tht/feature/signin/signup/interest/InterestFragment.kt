@@ -25,7 +25,6 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
     }
 
     override fun initView() {
-
     }
 
     override fun observeData() {

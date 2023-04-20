@@ -52,7 +52,6 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
     }
 
     override fun initView() {
-
     }
 
     override fun observeData() {

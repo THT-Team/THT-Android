@@ -64,7 +64,6 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
     }
 
     override fun initView() {
-
     }
 
     override fun observeData() {
