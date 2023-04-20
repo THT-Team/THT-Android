@@ -191,13 +191,15 @@ object UseCaseModule {
 
     @Provides
     fun provideFetchCurrentLocationUseCase(
-        repository: LocationRepository
+        repository: LocationRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchCurrentLocationUseCase =
-        FetchCurrentLocationUseCase(repository)
+        FetchCurrentLocationUseCase(repository, dispatcher)
 
     @Provides
     fun provideFetchLocationByAddressUseCase(
-        repository: LocationRepository
+        repository: LocationRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchLocationByAddressUseCase =
-        FetchLocationByAddressUseCase(repository)
+        FetchLocationByAddressUseCase(repository, dispatcher)
 }

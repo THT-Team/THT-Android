@@ -2,13 +2,18 @@ package com.tht.tht.domain.signup.usecase
 
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.repository.LocationRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 class FetchLocationByAddressUseCase(
-    private val repository: LocationRepository
+    private val repository: LocationRepository,
+    private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(address: String): Result<LocationModel> {
         return kotlin.runCatching {
-            repository.fetchLocationByAddress(address)
+            withContext(dispatcher){
+                repository.fetchLocationByAddress(address)
+            }
         }
     }
 }
