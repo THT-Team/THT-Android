@@ -25,7 +25,6 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
 
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.INTRODUCTION)
-        initView()
     }
 
     override fun setListener() {
@@ -42,16 +41,13 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
         }
     }
 
-    private fun initView() {
+    override fun initView() {
         binding.layoutEtIntroduce.setEndIconTintList(null)
         binding.etIntroduce.filters = arrayOf(
             InputFilter.LengthFilter(IntroductionViewModel.MAX_LENGTH)
         )
         viewModel.fetchSavedData(rootViewModel.phone.value)
         StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 4)
-    }
-
-    override fun initView() {
     }
 
     override fun observeData() {
