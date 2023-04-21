@@ -109,7 +109,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
     }
 
     private fun observeNavigationCallBack() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("address")
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(LocationConstant.KEY)
             ?.observe(viewLifecycleOwner) {
                 viewModel.fetchLocationByAddress(it)
             }

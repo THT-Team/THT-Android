@@ -43,9 +43,9 @@ class LocationDialogFragment : DialogFragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
-        binding.daumWebview.apply {
+        binding.webview.apply {
             settings.javaScriptEnabled = true
-            addJavascriptInterface(LocationBridge(), "THTApp")
+            addJavascriptInterface(LocationBridge(), LocationConstant.APP_NAME)
             webViewClient = object : WebViewClient() {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
@@ -54,10 +54,10 @@ class LocationDialogFragment : DialogFragment() {
 
                 override fun onPageFinished(view: WebView, url: String) {
                     binding.webProgress.visibility = View.GONE
-                    binding.daumWebview.loadUrl("javascript:sample2_execDaumPostcode();")
+                    loadUrl(LocationConstant.FINISHED_URL)
                 }
             }
-            loadUrl("https://tht-android-a954a.web.app")
+            loadUrl(LocationConstant.LOCATION_SEARCH_URL)
         }
     }
 
@@ -65,7 +65,7 @@ class LocationDialogFragment : DialogFragment() {
         @JavascriptInterface
         fun processDATA(address: String?) {
             lifecycleScope.launch {
-                navController.previousBackStackEntry?.savedStateHandle?.set("address", address)
+                navController.previousBackStackEntry?.savedStateHandle?.set(LocationConstant.KEY, address)
                 navController.popBackStack()
             }
         }
