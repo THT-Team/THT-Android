@@ -24,7 +24,7 @@ class SignupApiDataSourceImpl @Inject constructor(
 
     override suspend fun checkNicknameDuplicate(nickname: String): Boolean {
         return withContext(dispatcher) {
-            apiService.checkNicknameDuplicate(nickname).toUnwrap { it }
+            apiService.checkNicknameDuplicate(nickname).toUnwrap { it.isDuplicate }
         }
     }
 
