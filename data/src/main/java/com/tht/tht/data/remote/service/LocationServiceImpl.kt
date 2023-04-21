@@ -5,11 +5,14 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.LocationManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.tht.tht.data.remote.response.location.LocationResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.*
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 class LocationServiceImpl @Inject constructor(
     @ApplicationContext private val context: Context
@@ -40,15 +43,39 @@ class LocationServiceImpl @Inject constructor(
         return LocationResponse(coordinate.first, coordinate.second, address)
     }
 
-    private fun getAddress(lat: Double, lng: Double): String {
+    private suspend fun getAddress(lat: Double, lng: Double): String {
         val geocoder = Geocoder(context, Locale.KOREA)
-        val location = geocoder.getFromLocation(lat, lng, 1)
+
+        val location = if (Build.VERSION.SDK_INT >= 33) {
+            suspendCancellableCoroutine { cancellableContinuation ->
+                geocoder.getFromLocation(
+                    lat, lng, 1
+                ) { list ->
+                    cancellableContinuation.resume(list)
+                }
+            }
+        } else {
+            geocoder.getFromLocation(lat, lng, 1)!!
+        }
+
         return location[0].getAddressLine(0)
     }
 
-    private fun getCoordinate(locationName: String): Pair<Double, Double> {
+    private suspend fun getCoordinate(locationName: String): Pair<Double, Double> {
         val geocoder = Geocoder(context, Locale.KOREA)
-        val location = geocoder.getFromLocationName(locationName, 1)
+
+        val location = if (Build.VERSION.SDK_INT >= 33) {
+            suspendCancellableCoroutine { cancellableContinuation ->
+                geocoder.getFromLocationName(
+                    locationName, 1
+                ) { list ->
+                    cancellableContinuation.resume(list)
+                }
+            }
+        } else {
+            geocoder.getFromLocationName(locationName, 1)!!
+        }
+
         return Pair(location[0].latitude, location[0].longitude)
     }
 }

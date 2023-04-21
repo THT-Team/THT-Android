@@ -41,7 +41,6 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             binding.ivImageAdd3
         )
         super.onViewCreated(view, savedInstanceState)
-        initView()
     }
 
     override fun setProgress() {
@@ -58,12 +57,9 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
         }
     }
 
-    private fun initView() {
+    override fun initView() {
         StringUtil.setWhiteTextColor(binding.tvProfileImageTitle, 0 until 2)
         viewModel.fetchSavedData(rootViewModel.phone.value)
-    }
-
-    override fun initView() {
     }
 
     override fun observeData() {
