@@ -110,7 +110,7 @@ class ProfileImageViewModel @Inject constructor(
                         )
                     }
                     uploadUrlList.forEach { urlPair ->
-                        if (urlPair.second !in uriList.indices) return@forEach
+                        if (urlPair.second !in urlArray.indices) return@forEach
                         urlArray[urlPair.second] = urlPair.first
                     }
                     patchProfileImage(phone, urlArray.filter { !it.isNullOrBlank() }.map { it!! })
