@@ -30,7 +30,6 @@ class NicknameViewModel @Inject constructor(
     val dataLoading = _dataLoading.asStateFlow()
 
     private val _inputValue = MutableStateFlow("") // 입력한 값. 검증을 위한 용도
-    val inputValue = _inputValue.asStateFlow()
 
     private val validInputValue = MutableStateFlow("") // 중복 체크를 통과한 유효 데이터
 
