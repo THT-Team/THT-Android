@@ -8,4 +8,6 @@
     <dimen name="VerifyTextInputEditLayoutHorizontalMargin">34dp</dimen>
 
     <dimen name="SignupProcessFragmentTopPadding">65dp</dimen>
+
+    <dimen name="btn_radius">10dp</dimen>
 </resources>

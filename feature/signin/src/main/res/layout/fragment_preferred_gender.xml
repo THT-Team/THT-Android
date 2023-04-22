@@ -1,97 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black_1e1e1e"
-    android:paddingHorizontal="38dp"
-    >
+    android:paddingHorizontal="38dp">
 
     <TextView
-        style="@style/H1BoldGrayTextStyle"
-        android:layout_marginTop="@dimen/SignupProcessFragmentTopPadding"
         android:id="@+id/tv_preferred_gender_title"
+        style="@style/H1BoldGrayTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/SignupProcessFragmentTopPadding"
         android:text="@string/title_preferred_gender"
         android:textColor="@color/gray_666666"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_female"
+        style="@style/GenderButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
         android:layout_marginTop="64dp"
-        android:background="@drawable/selector_btn_female"
-        app:layout_constraintTop_toBottomOf="@id/tv_preferred_gender_title"
+        android:text="@string/text_female"
+        app:layout_constraintEnd_toStartOf="@id/btn_male"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        app:layout_constraintTop_toBottomOf="@id/tv_preferred_gender_title" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_marginStart="16dp"
         android:id="@+id/btn_male"
-        android:background="@drawable/selector_btn_male"
-        app:layout_constraintTop_toTopOf="@id/btn_female"
+        style="@style/GenderButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_male"
+        app:layout_constraintEnd_toStartOf="@id/btn_all_gender"
         app:layout_constraintStart_toEndOf="@id/btn_female"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        app:layout_constraintTop_toTopOf="@id/btn_female" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_marginStart="16dp"
         android:id="@+id/btn_all_gender"
-        android:background="@drawable/selector_btn_gender_all"
-        app:layout_constraintTop_toTopOf="@id/btn_female"
+        style="@style/GenderButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/text_all"
+        app:layout_constraintEnd_toEndOf="@id/tv_preferred_gender_title"
         app:layout_constraintStart_toEndOf="@id/btn_male"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        app:layout_constraintTop_toTopOf="@id/btn_female" />
 
     <ImageView
-        android:layout_marginTop="16dp"
         android:id="@+id/iv_error"
-        app:layout_constraintTop_toBottomOf="@id/btn_female"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:src="@drawable/ic_error"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_female" />
 
     <TextView
-        style="@style/Caption1MediumGrayTextStyle"
-        android:textColor="@color/gray_666666"
         android:id="@+id/tv_preferred_gender_input_message"
-        android:text="@string/message_preferred_gender_input"
-        android:layout_marginStart="7dp"
-        app:layout_constraintTop_toTopOf="@id/iv_error"
-        app:layout_constraintStart_toEndOf="@id/iv_error"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Caption1MediumGrayTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginStart="7dp"
+        android:text="@string/message_can_change_in_my_page"
+        android:textColor="@color/gray_666666"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_error"
+        app:layout_constraintTop_toTopOf="@id/iv_error" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_marginTop="130dp"
-        android:background="@drawable/selector_btn_right_arrow"
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/selector_btn_right_arrow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_female"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_female" />
 
     <ProgressBar
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/progress"
-        android:indeterminateTint="@color/red_ef4444"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:indeterminateTint="@color/red_ef4444"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

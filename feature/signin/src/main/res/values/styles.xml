@@ -107,6 +107,11 @@
         <item name="endIconDrawable">@drawable/ic_delete</item>
     </style>
 
+    <style name="GenderButtonStyle" parent="H4SemiBoldBlackTextStyle">
+        <item name="android:background">@drawable/selector_btn_gender</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="THT_ProgressStyle" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminateTint">@color/red_ef4444</item>
     </style>

@@ -51,8 +51,11 @@
     <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
 
     <string name="title_preferred_gender">선호 성별을 알려주세요</string>
-    <string name="message_preferred_gender_input">마이페이지에서 변경 가능합니다</string>
     <string name="message_preferred_gender_patch_fail">선호 성별 입력을 실패했습니다</string>
+
+    <string name="text_male">남성</string>
+    <string name="text_female">여성</string>
+    <string name="text_all">모두</string>
 
     <string name="title_ideal_type">이상형을 알려주세요</string>
     <string name="message_ideal_type">내 이상형 %1d개를 선택해주세요</string>
@@ -69,4 +72,9 @@
     <string name="title_introduce">나를 알려 주세요.</string>
     <string name="hint_introduce">제 MBTI는요 :)</string>
     <string name="message_introduce_input">자유롭게 자기소개를 해주세요.</string>
+
+    <string name="title_birthday">성별, 생일을 알려주세요.</string>
+
+    <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
+
 </resources>
