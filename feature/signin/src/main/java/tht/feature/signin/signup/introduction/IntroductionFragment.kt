@@ -66,6 +66,9 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
                         }
 
                         is IntroductionViewModel.IntroductionUiState.ValidInput -> {
+                            if (it.introduce != binding.etIntroduce.text?.toString()) {
+                                binding.etIntroduce.setText(it.introduce)
+                            }
                             binding.btnNext.isEnabled = true
                         }
                     }
