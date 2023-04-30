@@ -1,7 +1,6 @@
 package tht.feature.signin.signup.idealtype
 
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -18,6 +17,7 @@ import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentIdealTypeBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
+import tht.feature.signin.util.SizeUtil
 import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
@@ -110,7 +110,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     private fun getIdealChip(): Chip = Chip(requireContext()).apply {
         setTextColor(resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
         setChipBackgroundColorResource(R.color.selector_ideal_chip_color)
-        chipStrokeWidth = getPxFromDp(1)
+        chipStrokeWidth = SizeUtil.getPxFromDp(requireContext(), 1)
         setChipStrokeColorResource(tht.core.ui.R.color.gray_8d8d8d)
     }
 
@@ -127,11 +127,6 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
                 }
             }
         )
-    }
-
-    private fun getPxFromDp(dp: Int): Float {
-        val displayMetrics = resources.displayMetrics
-        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     companion object {

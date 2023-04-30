@@ -3,7 +3,6 @@ package tht.feature.signin.terms
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +17,7 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityTermsContentBinding
+import tht.feature.signin.util.SizeUtil
 
 @AndroidEntryPoint
 class TermsContentActivity : AppCompatActivity() {
@@ -93,20 +93,15 @@ class TermsContentActivity : AppCompatActivity() {
             endToEnd = parent.id
             topToBottom = prevView.id
             topMargin = if (prevView !is TermsContentItemView)
-                getPxFromDp(32).toInt()
+                SizeUtil.getPxFromDp(this@TermsContentActivity, 32).toInt()
             else
-                getPxFromDp(24).toInt()
+                SizeUtil.getPxFromDp(this@TermsContentActivity, 24).toInt()
 
             if (isLast) {
                 bottomToBottom = parent.id
-                bottomMargin = getPxFromDp(24).toInt()
+                bottomMargin = SizeUtil.getPxFromDp(this@TermsContentActivity, 24).toInt()
             }
         }
-    }
-
-    private fun getPxFromDp(dp: Int): Float {
-        val displayMetrics = resources.displayMetrics
-        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     companion object {
