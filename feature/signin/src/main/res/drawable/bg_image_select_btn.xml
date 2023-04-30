@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/selector_btn_add"
-        android:width="50dp"
-        android:height="25dp"
-        android:gravity="center"/>
-</layer-list>

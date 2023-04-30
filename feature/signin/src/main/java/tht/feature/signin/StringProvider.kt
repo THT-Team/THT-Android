@@ -7,7 +7,6 @@ interface StringProvider {
     fun getString(id: ResId, vararg formatArg: Any): String
 
     enum class ResId {
-        Loading,
         CustomerService,
         InvalidatePhone,
         InvalidateSignupProcess,
@@ -17,18 +16,11 @@ interface StringProvider {
         ResendAuthSuccess,
         VerifyFail,
         EmailPatchFail,
-        TermsFetchFail,
-        TermsPatchFail,
+        TermsFetchError,
         RequireTermsNeedSelect,
         NickNamePatchFail,
         DuplicateCheckLoading,
         DuplicateNickname,
-        DuplicateCheckFail,
-        PreferredGenderPatchFail,
-        IdealFetchFail,
-        IdealPatchFail,
-        ProfileImagePartialUploadFail,
-        ProfileImageUploadFail,
-        ProfileImagePatchFail
+        DuplicateCheckFail
     }
 }

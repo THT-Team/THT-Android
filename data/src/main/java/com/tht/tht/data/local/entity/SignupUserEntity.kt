@@ -16,5 +16,5 @@ data class SignupUserEntity(
     val preferredGender: String,
     val profileImgUrl: List<String>,
     val introduce: String,
-    val idealTypeKeys: List<Long>
+    val idealTypeKeys: List<String>
 ) : java.io.Serializable

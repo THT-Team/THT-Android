@@ -5,7 +5,6 @@ import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumbe
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
-import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import com.tht.tht.domain.signup.model.SignupUserModel
 import retrofit2.http.GET
@@ -19,10 +18,10 @@ interface THTSignupApi {
         @Path("phone")phone: String
     ): ThtResponse<AuthenticationNumberResponse>
 
-    @GET("${THTApiConstant.Signup.NICKNAME_DUPLICATE_CHECK}/{nickname}")
+    @GET(THTApiConstant.Signup.NICKNAME_DUPLICATE_CHECK)
     suspend fun checkNicknameDuplicate(
-        @Path("nickname")nickname: String
-    ): ThtResponse<NicknameDuplicateCheckResponse>
+        @Query("nickname")nickname: String
+    ): ThtResponse<Boolean>
 
     @GET(THTApiConstant.Signup.IDEAL_TYPE)
     suspend fun fetchIdealType(): ThtResponse<List<IdealTypeResponse>>

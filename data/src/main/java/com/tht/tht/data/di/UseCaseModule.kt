@@ -1,7 +1,5 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.domain.image.ImageRepository
-import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import dagger.Module
@@ -177,14 +175,9 @@ object UseCaseModule {
     )
 
     @Provides
-    fun provideCheckNicknameDuplicateUseCase(
+    fun checkNicknameDuplicateUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): CheckNicknameDuplicateUseCase =
         CheckNicknameDuplicateUseCase(repository, dispatcher)
-
-    @Provides
-    fun provideUploadImageUseCase(
-        repository: ImageRepository
-    ) : UploadImageUseCase = UploadImageUseCase(repository)
 }
