@@ -18,7 +18,6 @@ class StringProviderImpl @Inject constructor(
 
     private fun getResId(id: StringProvider.ResId): Int {
         return when (id) {
-            StringProvider.ResId.Loading -> R.string.loading
             StringProvider.ResId.CustomerService -> R.string.message_customer_service
             StringProvider.ResId.InvalidatePhone -> R.string.message_invalidate_phone
             StringProvider.ResId.InvalidateSignupProcess -> R.string.message_invalidate_signup_process
@@ -28,19 +27,12 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.ResendAuthSuccess -> R.string.message_resend_auth_success
             StringProvider.ResId.VerifyFail -> R.string.message_verify_error
             StringProvider.ResId.EmailPatchFail -> R.string.message_email_patch_fail
-            StringProvider.ResId.TermsFetchFail -> R.string.message_terms_fetch_error
-            StringProvider.ResId.TermsPatchFail -> R.string.message_terms_patch_error
+            StringProvider.ResId.TermsFetchError -> R.string.message_terms_fetch_error
             StringProvider.ResId.RequireTermsNeedSelect -> R.string.message_require_terms_need_select
             StringProvider.ResId.NickNamePatchFail -> R.string.message_nickname_patch_fail
             StringProvider.ResId.DuplicateNickname -> R.string.message_nickname_duplicate
             StringProvider.ResId.DuplicateCheckLoading -> R.string.message_nickname_duplicate_check_loading
             StringProvider.ResId.DuplicateCheckFail -> R.string.message_nickname_duplicate_check_fail
-            StringProvider.ResId.PreferredGenderPatchFail -> R.string.message_preferred_gender_patch_fail
-            StringProvider.ResId.IdealFetchFail -> R.string.message_ideal_fetch_fail
-            StringProvider.ResId.IdealPatchFail -> R.string.message_ideal_patch_fail
-            StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
-            StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
-            StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail
         }
     }
 }

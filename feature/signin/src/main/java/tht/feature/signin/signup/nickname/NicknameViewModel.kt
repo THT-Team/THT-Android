@@ -40,8 +40,8 @@ class NicknameViewModel @Inject constructor(
             .onEach {
                 _dataLoading.value = true
                 checkNicknameDuplicateUseCase(it)
-                    .onSuccess { isDuplicate ->
-                        if (!isDuplicate) {
+                    .onSuccess { success ->
+                        if (success) {
                             _uiStateFlow.value = NicknameUiState.ValidInput
                             validInputValue.value = it
                         } else {
@@ -92,8 +92,7 @@ class NicknameViewModel @Inject constructor(
                 }.onFailure {
                     _sideEffectFlow.emit(
                         NicknameSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateSignupProcess) +
-                                stringProvider.getString(StringProvider.ResId.CustomerService)
+                            stringProvider.getString(StringProvider.ResId.InvalidateSignupProcess)
                         )
                     )
                 }.also {

@@ -36,7 +36,7 @@ internal class RequestSignupUseCaseTest {
         preferredGender = "preferredGender",
         profileImgUrl = listOf("image1", "image2"),
         introduce = "introduce",
-        idealTypeKeys = listOf(0L, 1L, 2L)
+        idealTypeKeys = listOf("key1", "key2", "key3")
     )
 
     @Before

@@ -9,6 +9,6 @@ import kotlinx.coroutines.launch
 
 fun Fragment.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
     viewLifecycleOwner.lifecycleScope.launch {
-        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED, block)
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
     }
 }

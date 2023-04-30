@@ -22,8 +22,8 @@ internal class PatchSignupIdealTypeUseCaseTest {
     private lateinit var repository: SignupRepository
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
-    private val validIdealTypeKey = listOf(0L, 1L, 2L)
-    private val invalidIdealTypeKey = emptyList<Long>()
+    private val validIdealTypeKey = listOf("key1", "key2", "key3")
+    private val invalidIdealTypeKey = emptyList<String>()
 
 
     @Before
