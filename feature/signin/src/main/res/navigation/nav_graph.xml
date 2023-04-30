@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/genderFragment"
-        android:name="tht.feature.signin.signup.gender.GenderFragment"
+        android:name="tht.feature.signin.signup.preferredgender.PreferredGenderFragment"
         android:label="GenderFragment" >
         <action
             android:id="@+id/action_genderFragment_to_profileImageFragment"

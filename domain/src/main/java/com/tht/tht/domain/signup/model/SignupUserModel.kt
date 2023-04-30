@@ -14,7 +14,7 @@ data class SignupUserModel(
     val preferredGender: String,
     val profileImgUrl: List<String>,
     val introduce: String,
-    val idealTypeKeys: List<String>
+    val idealTypeKeys: List<Long>
 ) {
     companion object {
         fun getFromDefaultArgument(
@@ -31,7 +31,7 @@ data class SignupUserModel(
             preferredGender: String = "",
             profileImgUrl: List<String> = emptyList(),
             introduce: String = "",
-            idealTypeKeys: List<String> = emptyList()
+            idealTypeKeys: List<Long> = emptyList()
         ): SignupUserModel = SignupUserModel(
             phone = phone,
             termsAgreement = termsAgreement,

@@ -9,6 +9,8 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -88,4 +90,10 @@ dependencies {
     // login
     implementation("com.kakao.sdk:v2-user:2.12.1")
     implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
 }
