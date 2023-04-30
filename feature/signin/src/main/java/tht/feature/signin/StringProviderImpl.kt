@@ -38,6 +38,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.PreferredGenderPatchFail -> R.string.message_preferred_gender_patch_fail
             StringProvider.ResId.IdealFetchFail -> R.string.message_ideal_fetch_fail
             StringProvider.ResId.IdealPatchFail -> R.string.message_ideal_patch_fail
+            StringProvider.ResId.InterestPatchFail -> R.string.message_interest_patch_fail
+            StringProvider.ResId.InterestFetchFail -> R.string.message_interest_fetch_fail
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
             StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
             StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail
