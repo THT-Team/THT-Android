@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="8dp"
-        android:text="년"
+        android:text="@string/year"
         app:layout_constraintBottom_toBottomOf="@id/np_year"
         app:layout_constraintStart_toEndOf="@id/np_year"
         app:layout_constraintTop_toTopOf="@id/np_year" />
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="8dp"
-        android:text="월"
+        android:text="@string/month"
         app:layout_constraintBottom_toBottomOf="@id/np_month"
         app:layout_constraintStart_toEndOf="@id/np_month"
         app:layout_constraintTop_toTopOf="@id/np_month" />
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="일"
+        android:text="@string/day"
         app:layout_constraintBottom_toBottomOf="@id/np_day"
         app:layout_constraintStart_toEndOf="@id/np_day"
         app:layout_constraintTop_toTopOf="@id/np_day" />
