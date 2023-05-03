@@ -14,6 +14,10 @@
     <style name="H1BoldGrayTextStyle" parent="H1BoldTextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
+
+    <style name="H1BoldDisabledTextStyle" parent="H1BoldTextStyle">
+        <item name="android:textColor">@color/brown_26241f</item>
+    </style>
     <!--H1Bold-->
 
     <!--H2Bold-->

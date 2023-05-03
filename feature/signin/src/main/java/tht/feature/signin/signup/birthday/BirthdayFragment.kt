@@ -1,5 +1,7 @@
 package tht.feature.signin.signup.birthday
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -8,6 +10,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.databinding.FragmentBirthdayBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
+import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirthdayBinding>() {
@@ -15,6 +18,15 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
     override val binding: FragmentBirthdayBinding by viewBinding(FragmentBirthdayBinding::inflate)
 
     override val viewModel by viewModels<BirthdayViewModel>()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        StringUtil.setWhiteTextColor(binding.tvBirthdayTitle, 0 until 6)
+    }
 
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.BIRTHDAY)

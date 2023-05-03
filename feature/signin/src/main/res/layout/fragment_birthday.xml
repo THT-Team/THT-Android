@@ -53,7 +53,7 @@
 
     <TextView
         android:id="@+id/tv_date"
-        style="@style/H1BoldYellowTextStyle"
+        style="@style/H1BoldDisabledTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
