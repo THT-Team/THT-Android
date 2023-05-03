@@ -16,10 +16,16 @@ class BirthdayViewModel @Inject constructor(
 ) : BaseStateViewModel<BirthdayViewModel.BirthdayUiState, BirthdayViewModel.BirthdaySideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<BirthdayUiState> =
-        MutableStateFlow(BirthdayUiState.Empty)
+        MutableStateFlow(BirthdayUiState.Default)
+
+    fun datePickerEvent() {
+        postSideEffect(BirthdaySideEffect.ShowDatePicker)
+    }
 
     sealed class BirthdayUiState : UiState {
-        object Empty : BirthdayUiState()
+        object Default : BirthdayUiState()
     }
-    sealed class BirthdaySideEffect : SideEffect
+    sealed class BirthdaySideEffect : SideEffect {
+        object ShowDatePicker : BirthdaySideEffect()
+    }
 }

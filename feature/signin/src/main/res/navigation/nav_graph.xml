@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nicknameFragment">
+    app:startDestination="@id/birthdayFragment">
 
     <fragment
         android:id="@+id/nicknameFragment"
@@ -27,6 +27,9 @@
             app:exitAnim="@anim/anim_to_left"
             app:popEnterAnim="@anim/anim_from_left"
             app:popExitAnim="@anim/anim_to_right" />
+        <action
+            android:id="@+id/action_birthdayFragment_to_birthdayDialogFragment"
+            app:destination="@id/birthdayDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/genderFragment"
@@ -92,4 +95,13 @@
             app:popEnterAnim="@anim/anim_from_left"
             app:popExitAnim="@anim/anim_to_right" />
     </fragment>
+    <dialog
+        android:id="@+id/birthdayDialogFragment"
+        android:name="tht.feature.signin.signup.birthday.BirthdayDialogFragment"
+        android:label="BirthdayDialogFragment" >
+        <argument
+            android:name="date"
+            app:argType="string"
+            android:defaultValue="2004.01.01" />
+    </dialog>
 </navigation>
