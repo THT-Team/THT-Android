@@ -44,6 +44,10 @@
         <item name="android:textFontWeight">600</item>
     </style>
 
+    <style name="H4SemiBoldYellowTextStyle" parent="H4SemiBoldTextStyle">
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+
     <style name="H4SemiBoldBlackTextStyle" parent="H4SemiBoldTextStyle">
         <item name="android:textColor">@color/black_111111</item>
     </style>
