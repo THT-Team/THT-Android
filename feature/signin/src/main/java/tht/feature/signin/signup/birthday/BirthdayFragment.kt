@@ -44,7 +44,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
 
             launch {
                 viewModel.uiStateFlow.collect {
-                    when(it) {
+                    when (it) {
                         BirthdayViewModel.BirthdayUiState.Default -> {
                             binding.tvDate.text = getString(R.string.date_default)
                             binding.tvDate.context.resources.getColor(
@@ -59,14 +59,20 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         BirthdayViewModel.BirthdaySideEffect.ShowDatePicker -> {
-                            findNavController().navigate(BirthdayFragmentDirections.actionBirthdayFragmentToBirthdayDialogFragment(
-                                binding.tvDate.text.toString()
-                            ))
+                            findNavController().navigate(
+                                BirthdayFragmentDirections.actionBirthdayFragmentToBirthdayDialogFragment(
+                                    binding.tvDate.text.toString()
+                                )
+                            )
                         }
                     }
                 }
             }
         }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
+            ?.observe(viewLifecycleOwner) {
+
+            }
     }
 
     companion object {

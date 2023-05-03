@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.databinding.DialogBirthdayBinding
@@ -19,10 +20,11 @@ class BirthdayDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initNumberPicker()
+        setListener()
     }
 
     private fun initNumberPicker() {
-        val args : BirthdayDialogFragmentArgs by navArgs()
+        val args: BirthdayDialogFragmentArgs by navArgs()
         val date = args.date.split(". ").map { it.toInt() }
         binding.apply {
             npYear.apply {
@@ -40,6 +42,15 @@ class BirthdayDialogFragment : DialogFragment() {
                 maxValue = 31
                 value = date[2]
             }
+        }
+    }
+
+    private fun setListener() {
+        binding.btnConfirm.setOnClickListener {
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(BirthdayConstant.KEY, binding.run {
+                "${npYear.value}. ${npMonth.value}. ${npDay.value}"
+            })
+            findNavController().popBackStack()
         }
     }
 }
