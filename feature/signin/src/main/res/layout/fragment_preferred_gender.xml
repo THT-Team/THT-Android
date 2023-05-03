@@ -19,7 +19,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_female"
-        style="@style/GenderButtonStyle"
+        style="@style/PreferredGenderButtonStyle"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="64dp"
@@ -30,7 +30,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_male"
-        style="@style/GenderButtonStyle"
+        style="@style/PreferredGenderButtonStyle"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
@@ -41,7 +41,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_all_gender"
-        style="@style/GenderButtonStyle"
+        style="@style/PreferredGenderButtonStyle"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"

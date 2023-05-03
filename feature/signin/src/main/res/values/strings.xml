@@ -76,5 +76,6 @@
     <string name="title_birthday">성별, 생일을 알려주세요.</string>
 
     <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
+    <string name="date_default">2004. 01. 01</string>
 
 </resources>

@@ -330,4 +330,24 @@
     </style>
     <!--Pretendard 14-->
 
+    <!--Button-->
+    <style name="PreferredGenderButtonStyle" parent="H4SemiBoldBlackTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_preferred_gender</item>
+    </style>
+
+    <style name="GenderButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_gender</item>
+        <item name="android:textAppearance">@style/RadioButtonTextAppearance</item>
+    </style>
+
+    <style name="RadioButtonTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/black_111111</item>
+    </style>
+
+    <!--Button-->
+
 </resources>
