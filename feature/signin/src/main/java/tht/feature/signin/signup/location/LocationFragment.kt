@@ -36,6 +36,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         observeNavigationCallBack()
     }
 
@@ -48,7 +49,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
         binding.cvLocation.setOnClickListener { viewModel.checkLocationEvent() }
     }
 
-    override fun initView() {
+    private fun initView() {
         StringUtil.setWhiteTextColor(binding.tvLocationTitle, 0 until 6)
     }
 

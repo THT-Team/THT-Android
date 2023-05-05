@@ -24,9 +24,6 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
         binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.INTEREST) }
     }
 
-    override fun initView() {
-    }
-
     override fun observeData() {
         repeatOnStarted {
 

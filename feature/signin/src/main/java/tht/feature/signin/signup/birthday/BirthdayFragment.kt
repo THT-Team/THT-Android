@@ -24,8 +24,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
         binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.BIRTHDAY) }
     }
 
-    override fun initView() {
-    }
 
     override fun observeData() {
         repeatOnStarted {

@@ -1,6 +1,8 @@
 package tht.feature.signin.signup.introduction
 
+import android.os.Bundle
 import android.text.InputFilter
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -23,6 +25,11 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
 
     override val viewModel by viewModels<IntroductionViewModel>()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.INTRODUCTION)
     }
@@ -41,7 +48,7 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         binding.layoutEtIntroduce.setEndIconTintList(null)
         binding.etIntroduce.filters = arrayOf(
             InputFilter.LengthFilter(IntroductionViewModel.MAX_LENGTH)

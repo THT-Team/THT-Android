@@ -1,6 +1,8 @@
 package tht.feature.signin.signup.idealtype
 
+import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.View
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -25,6 +27,11 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
 
     override val viewModel by viewModels<IdealTypeViewModel>()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.IDEAL_TYPE)
     }
@@ -35,7 +42,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         binding.tvIdealDescription.text =
             getString(R.string.message_ideal_type, IdealTypeViewModel.MAX_REQUIRE_SELECT_COUNT)
         StringUtil.setWhiteTextColor(binding.tvIdealTitle, 0 until 5)

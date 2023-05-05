@@ -1,6 +1,8 @@
 package tht.feature.signin.signup.nickname
 
+import android.os.Bundle
 import android.text.InputFilter
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -24,6 +26,11 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
 
     override val viewModel by viewModels<NicknameViewModel>()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.NICKNAME)
     }
@@ -42,7 +49,7 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
         }
     }
 
-    override fun initView() {
+    private fun initView() {
         binding.layoutEtNickname.setEndIconTintList(null)
         binding.etNickname.filters = arrayOf(
             InputFilter.LengthFilter(NicknameViewModel.MAX_LENGTH)

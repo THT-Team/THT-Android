@@ -28,11 +28,9 @@ abstract class SignupRootBaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fr
         setProgress()
         setListener()
         observeData()
-        initView()
     }
 
     abstract fun setProgress()
     abstract fun setListener()
     abstract fun observeData()
-    abstract fun initView()
 }
