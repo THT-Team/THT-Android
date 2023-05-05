@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
@@ -163,11 +163,6 @@ class PhoneAuthActivity : AppCompatActivity() {
                     })
             }
         }, 1000)
-    }
-
-    private fun getPxFromDp(dp: Int): Float {
-        val displayMetrics = resources.displayMetrics
-        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     companion object {
