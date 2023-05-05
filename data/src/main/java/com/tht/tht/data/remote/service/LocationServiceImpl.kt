@@ -29,8 +29,8 @@ class LocationServiceImpl @Inject constructor(
             throw SecurityException("Location permission not granted")
         }
 
-        val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
+        val location = requireNotNull(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER))
 
         val lat = location.latitude
         val lng = location.longitude
