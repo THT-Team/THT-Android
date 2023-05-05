@@ -114,6 +114,14 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
                     binding.progress.isVisible = it
                 }
             }
+
+            launch {
+                viewModel.inputValue.collect {
+                    if (it != binding.etNickname.text.toString()) {
+                        binding.etNickname.setText(it)
+                    }
+                }
+            }
         }
     }
 
