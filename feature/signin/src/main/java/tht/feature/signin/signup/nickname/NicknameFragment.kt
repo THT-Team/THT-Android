@@ -117,8 +117,9 @@ class NicknameFragment : SignupRootBaseFragment<NicknameViewModel, FragmentNickn
 
             launch {
                 viewModel.inputValue.collect {
-                    binding.etNickname.setText(it)
-                    binding.etNickname.setSelection((binding.etNickname.text?.length ?: 0))
+                    if (it != binding.etNickname.text.toString()) {
+                        binding.etNickname.setText(it)
+                    }
                 }
             }
         }

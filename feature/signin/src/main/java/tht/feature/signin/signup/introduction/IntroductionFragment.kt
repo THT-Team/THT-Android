@@ -48,7 +48,7 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
             InputFilter.LengthFilter(IntroductionViewModel.MAX_LENGTH)
         )
         viewModel.fetchSavedData(rootViewModel.phone.value)
-        StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 4)
+        StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 5)
     }
 
     override fun observeData() {
@@ -66,7 +66,9 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
                         }
 
                         is IntroductionViewModel.IntroductionUiState.ValidInput -> {
-                            binding.etIntroduce.setText(it.introduce)
+                            if (it.introduce != binding.etIntroduce.text?.toString()) {
+                                binding.etIntroduce.setText(it.introduce)
+                            }
                             binding.btnNext.isEnabled = true
                         }
                     }
