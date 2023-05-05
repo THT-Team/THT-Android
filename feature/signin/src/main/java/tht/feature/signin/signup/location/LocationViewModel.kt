@@ -8,6 +8,8 @@ import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -26,7 +28,11 @@ class LocationViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.InvalidInput)
 
-    private val _location = MutableStateFlow(LocationModel(0.0, 0.0, ""))
+    private val _location = MutableStateFlow(LocationModel(0.0, 0.0, "")).also { flow ->
+        flow.onEach {
+            checkValidInput(it.address)
+        }.launchIn(viewModelScope)
+    }
     val location = _location.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)

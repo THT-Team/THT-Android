@@ -25,7 +25,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
     override val viewModel by viewModels<LocationViewModel>()
 
-    private val locationPermissionLauncher =
+    private val locationPermissionGrantEvent =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 viewModel.fetchCurrentLocation()
@@ -80,7 +80,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                             context?.showToast(it.message)
                         }
                         LocationViewModel.LocationSideEffect.CheckPermission -> {
-                            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                            locationPermissionGrantEvent.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
                         LocationViewModel.LocationSideEffect.ShowLocationDialog -> {
                             findNavController().navigate(
@@ -97,7 +97,6 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
             launch {
                 viewModel.location.collect {
                     binding.tvLocationDetail.text = it.address
-                    viewModel.checkValidInput(it.address)
                 }
             }
 
