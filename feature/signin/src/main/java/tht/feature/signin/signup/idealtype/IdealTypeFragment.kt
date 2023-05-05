@@ -30,7 +30,6 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     override fun setProgress() {
@@ -48,6 +47,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
             getString(R.string.message_ideal_type, IdealTypeViewModel.MAX_REQUIRE_SELECT_COUNT)
         StringUtil.setWhiteTextColor(binding.tvIdealTitle, 0 until 5)
         StringUtil.setWhiteTextColor(binding.tvIdealDescription, 0 until 5)
+        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     override fun observeData() {
