@@ -66,7 +66,30 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     fun imageClickEvent(idx: Int) {
+        when (_imageArray.value[idx].uri.isNullOrBlank() && imageArray.value[idx].url.isNullOrBlank()) {
+            true -> postSideEffect(ProfileImageSideEffect.RequestImageFromGallery(idx))
+            else -> postSideEffect(ProfileImageSideEffect.ShowModifyDialog(idx))
+        }
+    }
+
+    fun imageModifyEvent(idx: Int) {
         postSideEffect(ProfileImageSideEffect.RequestImageFromGallery(idx))
+    }
+
+    fun imageRemoveEvent(idx: Int) {
+        var newImageInfo = _imageArray.value[idx]
+        if (_imageArray.value[idx].uri != null) {
+            newImageInfo = newImageInfo.copy(uri = null)
+        }
+        if (_imageArray.value[idx].url != null) {
+            newImageInfo = newImageInfo.copy(url = null)
+            //TODO: Remove from bucket
+        }
+        _imageArray.value = _imageArray.value.let {
+            it[idx] = newImageInfo
+            it.copyOf()
+        }
+        checkRequireImageSelect()
     }
 
     fun imageSelectEvent(uri: String, idx: Int) {
@@ -194,5 +217,6 @@ sealed class ProfileImageSideEffect : SideEffect {
     data class RequestImageFromGallery(
         val idx: Int
     ) : ProfileImageSideEffect()
+    data class ShowModifyDialog(val idx: Int) : ProfileImageSideEffect()
     object NavigateNextView : ProfileImageSideEffect()
 }

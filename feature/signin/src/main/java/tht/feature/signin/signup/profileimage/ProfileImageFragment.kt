@@ -1,5 +1,6 @@
 package tht.feature.signin.signup.profileimage
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -96,6 +98,10 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                             )
                         }
 
+                        is ProfileImageSideEffect.ShowModifyDialog -> {
+                            showImageModifyDialog(it.idx)
+                        }
+
                         is ProfileImageSideEffect.NavigateNextView ->
                             rootViewModel.nextEvent(SignupRootViewModel.Step.PROFILE_IMAGE)
 
@@ -106,6 +112,7 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
 
             launch {
                 viewModel.imageArray.collect {
+                    Log.d("TAG", "imageArray collect")
                     it.forEachIndexed { idx, imageUri ->
                         if (idx !in imageViews.indices) return@collect
                         when {
@@ -118,6 +125,21 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                                 Log.d("TAG", "try to load image => idx[$idx], url[${imageUri.url}]")
                                 loadUrl(imageViews[idx], imageUri.url)
                                 return@forEachIndexed
+                            }
+                            else -> {
+                                imageViews[idx].background = null
+                                imageViews[idx].setImageBitmap(null)
+
+                                imageViews[idx].background = ResourcesCompat.getDrawable(
+                                    requireContext().resources,
+                                    R.drawable.bg_image_select_btn,
+                                    null
+                                )
+                                imageViews[idx].foreground = ResourcesCompat.getDrawable(
+                                    requireContext().resources,
+                                    R.drawable.fg_image_select_yellow,
+                                    null
+                                )
                             }
                         }
                     }
@@ -139,6 +161,23 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             .dontTransform()
             .override(imageView.layoutParams.width, imageView.layoutParams.height)
             .into(imageView)
+    }
+
+    private fun showImageModifyDialog(idx: Int) {
+        //TODO: Dialog Theme 설정해 색상 변경
+        val menus = arrayOf(
+            "수정",
+            "삭제"
+        )
+
+        AlertDialog.Builder(requireContext())
+            .setItems(menus) { dialog, which ->
+                when (which) {
+                    0 -> viewModel.imageModifyEvent(idx)
+                    1 -> viewModel.imageRemoveEvent(idx)
+                }
+                dialog.dismiss()
+            }.show()
     }
 
     companion object {
