@@ -2,6 +2,7 @@ package tht.feature.signin.signup.profileimage
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupProfileImagesUseCase
@@ -24,6 +25,7 @@ class ProfileImageViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupProfileImagesUseCase: PatchSignupProfileImagesUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
+    private val removeImageUrlUseCase: RemoveImageUrlUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<ProfileImageUiState, ProfileImageSideEffect>() {
 
@@ -36,20 +38,30 @@ class ProfileImageViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
+    private val removeCachingUrl = mutableListOf<String>()
+
     fun fetchSavedData(phone: String) {
         if (phone.isBlank()) {
             _uiStateFlow.value = ProfileImageUiState.InvalidPhoneNumber(
                 stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         }
+        // clear image info
+        _imageArray.value = _imageArray.value.let { array ->
+            repeat(array.size) { idx ->
+                array[idx] = ImageUri(uri = null, url = null)
+            }
+            array.copyOf()
+        }
         // Local에 저장된 이미지를 불러와 size가 IMAGE_MAX_SIZE인 _imageList에 저장
         viewModelScope.launch(Dispatchers.Default) {
             _dataLoading.value = true
             fetchSignupUserUseCase(phone)
                 .onSuccess {
+                    Log.d("TAG", "fetch user => ${it.profileImgUrl}")
                     it.profileImgUrl
-                        .map { u ->
-                            ImageUri(null, u)
+                        .map { url ->
+                            ImageUri(null, url)
                         }.take(3)
                         .forEachIndexed { idx, imageUri ->
                             _imageArray.value = _imageArray.value.also { arr ->
@@ -78,12 +90,12 @@ class ProfileImageViewModel @Inject constructor(
 
     fun imageRemoveEvent(idx: Int) {
         var newImageInfo = _imageArray.value[idx]
-        if (_imageArray.value[idx].uri != null) {
+        if (newImageInfo.uri != null) {
             newImageInfo = newImageInfo.copy(uri = null)
         }
-        if (_imageArray.value[idx].url != null) {
+        if (newImageInfo.url != null) {
+            removeCachingUrl.add(newImageInfo.url!!)
             newImageInfo = newImageInfo.copy(url = null)
-            //TODO: Remove from bucket
         }
         _imageArray.value = _imageArray.value.let {
             it[idx] = newImageInfo
@@ -100,6 +112,17 @@ class ProfileImageViewModel @Inject constructor(
         checkRequireImageSelect()
     }
 
+    fun nextEvent(phone: String) {
+        if (_dataLoading.value) {
+            emitMessage(
+                stringProvider.getString(StringProvider.ResId.Loading)
+            )
+        }
+        removeCachingUrl {
+            doPatchInputTask(phone)
+        }
+    }
+
     // 현재 선택된 이미지 개수에 따라 UiState 를 변경
     private fun checkRequireImageSelect() {
         val currentSelectImageCount = _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }
@@ -107,6 +130,41 @@ class ProfileImageViewModel @Inject constructor(
             true -> ProfileImageUiState.Accept
             else -> ProfileImageUiState.Empty
         }
+    }
+
+    // 캐싱된 제거할 Url들을 제거
+    private fun removeCachingUrl(completion: () -> Unit) {
+        if (removeCachingUrl.isEmpty()) {
+            completion()
+            return
+        }
+        viewModelScope.launch {
+            _dataLoading.value = true
+            removeImageUrlUseCase(removeCachingUrl)
+                .onSuccess {
+                    removeCachingUrl.clear()
+                }.onFailure {
+                    it.printStackTrace()
+                }.also {
+                    _dataLoading.value = false
+                    completion()
+                }
+        }
+    }
+
+    private fun doPatchInputTask(phone: String) {
+        _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
+            if (it < IMAGE_REQUIRE_SIZE) return
+        }
+        uploadProfileImageUris(
+            phone,
+            _imageArray.value.map {
+                it.uri
+            },
+            _imageArray.value.map {
+                it.url
+            }.toTypedArray()
+        )
     }
 
     // 이미지 업로드 Process. 완료되면 Patch Process 실행
@@ -157,7 +215,9 @@ class ProfileImageViewModel @Inject constructor(
         patchSignupProfileImagesUseCase(phone, profileImageUrls)
             .onSuccess {
                 when (it) {
-                    true -> postSideEffect(ProfileImageSideEffect.NavigateNextView)
+                    true -> {
+                        postSideEffect(ProfileImageSideEffect.NavigateNextView)
+                    }
                     else -> emitMessage(
                         stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
                     )
@@ -171,30 +231,6 @@ class ProfileImageViewModel @Inject constructor(
             }.also {
                 _dataLoading.value = false
             }
-    }
-
-    fun nextEvent(phone: String) {
-        doPatchInputTask(phone)
-    }
-
-    private fun doPatchInputTask(phone: String) {
-        if (_dataLoading.value) {
-            emitMessage(
-                stringProvider.getString(StringProvider.ResId.Loading)
-            )
-        }
-        _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
-            if (it < IMAGE_REQUIRE_SIZE) return
-        }
-        uploadProfileImageUris(
-            phone,
-            _imageArray.value.map {
-                it.uri
-            },
-            _imageArray.value.map {
-                it.url
-            }.toTypedArray()
-        )
     }
 
     private fun emitMessage(message: String) {
