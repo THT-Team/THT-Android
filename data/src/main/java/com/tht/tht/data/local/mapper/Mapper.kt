@@ -11,6 +11,7 @@ import com.tht.tht.domain.signup.model.TermsModel
 fun TermsEntity.Body.toModel(): TermsModel {
     return TermsModel(
         title = title,
+        key = key,
         description = description,
         content = content.map {
             TermsModel.TermsContent(
