@@ -1,8 +1,10 @@
 package com.tht.tht.data.di
 
 import com.tht.tht.data.repository.ImageRepositoryImpl
+import com.tht.tht.data.repository.LocationRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.domain.image.ImageRepository
+import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +17,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindSignupRepository(impl: SignupRepositoryImpl): SignupRepository
+
+    @Binds
+    abstract fun bindLocationRepository(impl: LocationRepositoryImpl): LocationRepository
 
     @Binds
     abstract fun bindImageRepository(impl: ImageRepositoryImpl): ImageRepository

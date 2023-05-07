@@ -1,5 +1,6 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
@@ -193,4 +194,18 @@ object UseCaseModule {
     fun provideRemoveImageUrlUseCase(
         repository: ImageRepository
     ) : RemoveImageUrlUseCase = RemoveImageUrlUseCase(repository)
+
+    @Provides
+    fun provideFetchCurrentLocationUseCase(
+        repository: LocationRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): FetchCurrentLocationUseCase =
+        FetchCurrentLocationUseCase(repository, dispatcher)
+
+    @Provides
+    fun provideFetchLocationByAddressUseCase(
+        repository: LocationRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): FetchLocationByAddressUseCase =
+        FetchLocationByAddressUseCase(repository, dispatcher)
 }
