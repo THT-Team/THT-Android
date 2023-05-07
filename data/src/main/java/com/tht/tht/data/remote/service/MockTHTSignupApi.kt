@@ -1,5 +1,6 @@
 package com.tht.tht.data.remote.service
 
+import com.tht.tht.data.remote.request.signup.SignupRequest
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ThtResponse
@@ -36,11 +37,22 @@ class MockTHTSignupApi @Inject constructor(
         )
     }
 
-    override suspend fun requestSignup(user: SignupUserModel): ThtResponse<SignupResponse> {
-        delay(100)
-        return BaseResponse.Success(
-            statusCode = 200,
-            response = SignupResponse("token", 0L)
-        )
+    override suspend fun requestSignup(
+        user: SignupRequest,
+        agreement: SignupRequest.Agreement,
+        birthDay: String,
+        deviceKey: String,
+        email: String,
+        gender: String,
+        idealTypeList: List<Long>,
+        interestList: List<Long>,
+        introduction: String,
+        locationRequest: SignupRequest.LocationRequest,
+        phoneNumber: String,
+        photoList: List<String>,
+        preferGender: String,
+        username: String
+    ): ThtResponse<SignupResponse> {
+        return retrofit.create(THTSignupApi::class.java).requestSignup(user)
     }
 }
