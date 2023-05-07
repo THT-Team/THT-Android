@@ -8,7 +8,6 @@ import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
-import com.tht.tht.domain.signup.model.SignupUserModel
 import kotlinx.coroutines.delay
 import retrofit2.Retrofit
 import javax.inject.Inject
@@ -38,21 +37,8 @@ class MockTHTSignupApi @Inject constructor(
     }
 
     override suspend fun requestSignup(
-        user: SignupRequest,
-        agreement: SignupRequest.Agreement,
-        birthDay: String,
-        deviceKey: String,
-        email: String,
-        gender: String,
-        idealTypeList: List<Long>,
-        interestList: List<Long>,
-        introduction: String,
-        locationRequest: SignupRequest.LocationRequest,
-        phoneNumber: String,
-        photoList: List<String>,
-        preferGender: String,
-        username: String
+        body: SignupRequest
     ): ThtResponse<SignupResponse> {
-        return retrofit.create(THTSignupApi::class.java).requestSignup(user)
+        return retrofit.create(THTSignupApi::class.java).requestSignup(body)
     }
 }
