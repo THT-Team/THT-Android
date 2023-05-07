@@ -78,7 +78,7 @@ class SignupRepositoryImpl @Inject constructor(
 
     override suspend fun requestSignup(user: SignupUserModel): Boolean {
         return withContext(dispatcher) {
-            signupApiDataSource.requestSignup(user).userId.isNotBlank()
+            signupApiDataSource.requestSignup(user).accessToken.isNotBlank()
         }
     }
 }

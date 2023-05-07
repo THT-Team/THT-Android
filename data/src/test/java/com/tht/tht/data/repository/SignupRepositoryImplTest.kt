@@ -133,11 +133,11 @@ internal class SignupRepositoryImplTest {
 
     @Test
     fun `requestSignup는 SignupApiDataSource의 requestSignup 결과의 userId의 유효성을 리턴한다`() = runTest(testDispatcher) {
-        val expect = SignupResponse("userId")
+        val expect = SignupResponse("token", 0L)
         coEvery { apiDataSource.requestSignup(any()) } returns expect
         val actual = repository.requestSignup(mockk(relaxed = true))
         assertThat(actual)
-            .isEqualTo(expect.userId.isNotBlank())
+            .isEqualTo(expect.accessToken.isNotBlank())
     }
 
     @Test
