@@ -1,10 +1,13 @@
 package tht.feature.signin.signup.profileimage
 
 import android.app.AlertDialog
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -23,6 +26,7 @@ import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 import tht.feature.signin.util.StringUtil
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>() {
@@ -115,6 +119,7 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                     Log.d("TAG", "imageArray collect")
                     it.forEachIndexed { idx, imageUri ->
                         if (idx !in imageViews.indices) return@collect
+                        Log.d("TAG", "collect $idx image => $imageUri")
                         when {
                             !imageUri.uri.isNullOrBlank() -> {
                                 Log.d("TAG", "try to set image => idx[$idx], uri[${imageUri.url}]")
@@ -164,20 +169,39 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
     }
 
     private fun showImageModifyDialog(idx: Int) {
-        //TODO: Dialog Theme 설정해 색상 변경
         val menus = arrayOf(
-            "수정",
-            "삭제"
+            "사진 변경",
+            "사진 삭제"
         )
 
-        AlertDialog.Builder(requireContext())
-            .setItems(menus) { dialog, which ->
+        AlertDialog.Builder(requireContext(), R.style.ProfileImageModifyDialogStyle)
+            .setAdapter(
+                ArrayAdapter(
+                    requireContext(),
+                    R.layout.item_profile_image_dialog_item,
+                    menus
+                )
+            ) { dialog, which ->
                 when (which) {
                     0 -> viewModel.imageModifyEvent(idx)
                     1 -> viewModel.imageRemoveEvent(idx)
                 }
                 dialog.dismiss()
+            }
+            .create()
+            .apply {
+                listView.divider = ColorDrawable(
+                    resources.getColor(tht.core.ui.R.color.gray_666666, null)
+                )
+                listView.dividerHeight = getPxFromDp(1.5f).roundToInt()
+                listView.setFooterDividersEnabled(false)
+                listView.addFooterView(View(requireContext()))
             }.show()
+    }
+
+    private fun getPxFromDp(dp: Float): Float {
+        val displayMetrics = resources.displayMetrics
+        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     companion object {
