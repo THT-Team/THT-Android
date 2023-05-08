@@ -75,7 +75,8 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
             launch {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is InterestViewModel.InterestTypeSideEffect.ShowToast -> {}
+                        is InterestViewModel.InterestTypeSideEffect.ShowToast ->
+                            requireContext().showToast(it.message)
 
                         is InterestViewModel.InterestTypeSideEffect.NavigateNextView ->
                             rootViewModel.nextEvent(SignupRootViewModel.Step.INTEREST)
