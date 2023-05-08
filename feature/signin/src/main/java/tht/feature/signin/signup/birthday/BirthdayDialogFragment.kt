@@ -49,7 +49,8 @@ class BirthdayDialogFragment : BottomSheetDialogFragment() {
     private fun setListener() {
         binding.btnConfirm.setOnClickListener {
             findNavController().previousBackStackEntry?.savedStateHandle?.set(BirthdayConstant.KEY, binding.run {
-                "${npYear.value}. ${npMonth.value}. ${npDay.value}"
+                "${npYear.value}. ${if (npMonth.value / 10 == 0) 0 else ""}${npMonth.value}. " +
+                    "${if (npDay.value / 10 == 0) 0 else ""}${npDay.value}"
             })
             findNavController().popBackStack()
         }

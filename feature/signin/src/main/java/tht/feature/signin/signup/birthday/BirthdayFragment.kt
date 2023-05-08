@@ -1,6 +1,7 @@
 package tht.feature.signin.signup.birthday
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -23,6 +24,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("Testtt", "hawaiian")
         initView()
     }
 
@@ -47,10 +49,19 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                     when (it) {
                         BirthdayViewModel.BirthdayUiState.Default -> {
                             binding.tvDate.text = getString(R.string.date_default)
-                            binding.tvDate.context.resources.getColor(
+                            binding.tvDate.setTextColor(requireContext().resources.getColor(
                                 tht.core.ui.R.color.brown_26241f, null
-                            )
+                            ))
                         }
+
+                        is BirthdayViewModel.BirthdayUiState.ValidBirthday -> {
+                            binding.tvDate.text = it.birthday
+                            binding.tvDate.setTextColor(requireContext().resources.getColor(
+                                tht.core.ui.R.color.yellow_f9cc2e, null
+                            ))
+                        }
+
+                        BirthdayViewModel.BirthdayUiState.InvalidBirthday -> TODO()
                     }
                 }
             }
@@ -71,7 +82,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
             ?.observe(viewLifecycleOwner) {
-
+                viewModel.setBirthdayEvent(it)
             }
     }
 
