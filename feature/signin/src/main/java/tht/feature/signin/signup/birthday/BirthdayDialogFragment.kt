@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.databinding.DialogBirthdayBinding
 
-class BirthdayDialogFragment : DialogFragment() {
+class BirthdayDialogFragment : BottomSheetDialogFragment() {
     private val binding: DialogBirthdayBinding by viewBinding(DialogBirthdayBinding::inflate)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

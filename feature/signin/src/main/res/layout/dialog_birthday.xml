@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black_222222"
     android:padding="16dp">
@@ -11,6 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/NumberPickerStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_year"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tv_year"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,6 +25,7 @@
         android:paddingHorizontal="8dp"
         android:text="@string/year"
         app:layout_constraintBottom_toBottomOf="@id/np_year"
+        app:layout_constraintEnd_toStartOf="@id/np_month"
         app:layout_constraintStart_toEndOf="@id/np_year"
         app:layout_constraintTop_toTopOf="@id/np_year" />
 
@@ -30,6 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/NumberPickerStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_month"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@id/tv_year"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,6 +47,7 @@
         android:paddingHorizontal="8dp"
         android:text="@string/month"
         app:layout_constraintBottom_toBottomOf="@id/np_month"
+        app:layout_constraintEnd_toStartOf="@id/np_day"
         app:layout_constraintStart_toEndOf="@id/np_month"
         app:layout_constraintTop_toTopOf="@id/np_month" />
 
@@ -49,6 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="@style/NumberPickerStyle"
+        app:layout_constraintEnd_toStartOf="@id/tv_day"
         app:layout_constraintStart_toEndOf="@id/tv_month"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,6 +69,7 @@
         android:text="@string/day"
         app:layout_constraintBottom_toBottomOf="@id/np_day"
         app:layout_constraintStart_toEndOf="@id/np_day"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/np_day" />
 
     <Button
@@ -68,9 +77,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="@color/yellow_f9cc2e"
+        android:textColor="@color/white_ffffff"
         android:text="확인"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/np_year"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/np_year" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
