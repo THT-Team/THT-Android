@@ -17,7 +17,6 @@ import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentInterestBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.signup.idealtype.IdealTypeViewModel
 import tht.feature.signin.util.SizeUtil
 import tht.feature.signin.util.StringUtil
 
@@ -46,7 +45,7 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
 
     private fun initView() {
         binding.tvInterestDescription.text =
-            getString(R.string.message_interest, IdealTypeViewModel.MAX_REQUIRE_SELECT_COUNT)
+            getString(R.string.message_interest, InterestViewModel.MAX_REQUIRE_SELECT_COUNT)
         StringUtil.setWhiteTextColor(binding.tvInterestTitle, 0 until 5)
         StringUtil.setWhiteTextColor(binding.tvInterestDescription, 0 until 5)
     }
@@ -89,8 +88,8 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
                     binding.groupChip.children.forEachIndexed { idx, view ->
                         if (idx !in 0 until viewModel.interestList.value.size)
                             return@forEachIndexed
-                        val ideal = viewModel.interestList.value[idx]
-                        (view as? Chip)?.isSelected = set.contains(ideal)
+                        val interest = viewModel.interestList.value[idx]
+                        (view as? Chip)?.isSelected = set.contains(interest)
                     }
                 }
             }
@@ -104,7 +103,7 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
 
         lifecycleScope.launch {
             viewModel.interestList.collect {
-                it.forEachIndexed { idx, ideal -> addChip(ideal, idx) }
+                it.forEachIndexed { idx, interest -> addChip(interest, idx) }
             }
         }
     }
@@ -116,16 +115,16 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
         setChipStrokeColorResource(tht.core.ui.R.color.gray_8d8d8d)
     }
 
-    private fun addChip(ideal: InterestModel, idx: Int) {
-        val code = Integer.decode("0x${ideal.emojiCode}")
+    private fun addChip(interest: InterestModel, idx: Int) {
+        val code = Integer.decode("0x${interest.emojiCode}")
         val emoji = String(Character.toChars(code))
         binding.groupChip.addView(
             getInterestChip().apply {
-                "$emoji ${ideal.title}".let {
+                "$emoji ${interest.title}".let {
                     text = it
                 }
                 setOnClickListener {
-                    viewModel.idealChipClickEvent(idx)
+                    viewModel.interestChipClickEvent(idx)
                 }
             }
         )

@@ -54,7 +54,7 @@ class InterestViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
-    private var fetchIdealListJob: Job = viewModelScope.launch {
+    private var fetchInterestListJob: Job = viewModelScope.launch {
         _dataLoading.value = true
         fetchInterestUseCase()
             .onSuccess {
@@ -70,7 +70,7 @@ class InterestViewModel @Inject constructor(
 
     fun fetchSavedData(phone: String) {
         viewModelScope.launch {
-            fetchIdealListJob.join()
+            fetchInterestListJob.join()
             fetchSignupUser(phone)
         }
     }
@@ -102,19 +102,19 @@ class InterestViewModel @Inject constructor(
             }
     }
 
-    fun idealChipClickEvent(idx: Int) {
-        val selectIdeal = _interestList.value[idx]
+    fun interestChipClickEvent(idx: Int) {
+        val selectInterest = _interestList.value[idx]
         _selectInterest.value = _selectInterest.value.let {
-            when (it.contains(selectIdeal)) {
+            when (it.contains(selectInterest)) {
                 true -> it.toMutableSet().apply {
-                    remove(selectIdeal)
+                    remove(selectInterest)
                 }
 
                 else -> it.toMutableSet().apply {
                     if (it.size == MAX_REQUIRE_SELECT_COUNT) {
                         remove(it.iterator().next())
                     }
-                    add(selectIdeal)
+                    add(selectInterest)
                 }
             }
         }
