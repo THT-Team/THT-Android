@@ -17,8 +17,8 @@
     <string name="hint_phone_input">01012345678</string>
     <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다.\n핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
     <string name="message_phone_input_error">핸드폰 번호를 다시 확인해 주세요</string>
-    <string name="message_send_auth_success">인증번호 전송을 완료했습니다</string>
-    <string name="message_send_auth_fail">인증번호 전송을 실패하였습니다</string>
+    <string name="message_send_auth_success">인증 코드 전송 완료</string>
+    <string name="message_send_auth_fail">인증 코드 전송 실패</string>
 
     <string name="title_verify">인증 코드 입력</string>
     <string name="message_verify">%1s 으로\n전송된 코드를 입력해주세요</string>
@@ -58,6 +58,11 @@
     <string name="message_ideal_type">내 이상형 %1d개를 선택해주세요</string>
     <string name="message_ideal_fetch_fail">이상형 목록을 불러올 수 없습니다</string>
     <string name="message_ideal_patch_fail">이상형 입력을 실패하였습니다</string>
+
+    <string name="title_interest">관심사를 알려주세요</string>
+    <string name="message_interest">내 관심사 %1d개를 선택해주세요</string>
+    <string name="message_interest_fetch_fail">관심사 목록을 불러올 수 없습니다</string>
+    <string name="message_interest_patch_fail">관심사 입력을 실패하였습니다</string>
 
     <string name="title_profile_image">사진을 추가해주세요.</string>
     <string name="message_profile_image_input">얼굴 사진이 잘 나온 사진 2장을 필수로 넣어주세요</string>

@@ -10,6 +10,7 @@ import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import kotlinx.coroutines.delay
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Inject
 
 class MockTHTSignupApi @Inject constructor(
@@ -28,12 +29,7 @@ class MockTHTSignupApi @Inject constructor(
     }
 
     override suspend fun fetchInterestsType(): ThtResponse<List<InterestTypeResponse>> {
-        delay(100)
-        val interestType = listOf(InterestTypeResponse("name", "code", 0))
-        return BaseResponse.Success(
-            statusCode = 200,
-            response = interestType
-        )
+        return retrofit.create(THTSignupApi::class.java).fetchInterestsType()
     }
 
     override suspend fun requestSignup(
