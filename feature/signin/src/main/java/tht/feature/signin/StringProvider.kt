@@ -31,6 +31,9 @@ interface StringProvider {
         InterestPatchFail,
         ProfileImagePartialUploadFail,
         ProfileImageUploadFail,
-        ProfileImagePatchFail
+        ProfileImagePatchFail,
+        InvalidateLocation,
+        LocationPatchFail,
+        SignupFail
     }
 }

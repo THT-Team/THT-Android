@@ -4,6 +4,8 @@ import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSourceImpl
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.datasource.TermsDataSourceImpl
+import com.tht.tht.data.remote.datasource.LocationDataSource
+import com.tht.tht.data.remote.datasource.LocationDataSourceImpl
 import com.tht.tht.data.remote.datasource.ImageDataSource
 import com.tht.tht.data.remote.datasource.ImageDataSourceImpl
 import com.tht.tht.data.remote.datasource.SignupApiDataSource
@@ -28,4 +30,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindSignupApiSource(impl: SignupApiDataSourceImpl): SignupApiDataSource
+
+    @Binds
+    abstract fun bindLocationDataSource(impl: LocationDataSourceImpl): LocationDataSource
 }

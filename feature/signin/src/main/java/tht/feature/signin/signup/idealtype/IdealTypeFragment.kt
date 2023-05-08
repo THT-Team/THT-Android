@@ -11,6 +11,7 @@ import com.tht.tht.domain.signup.model.IdealTypeModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
@@ -30,7 +31,6 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     override fun setProgress() {
@@ -48,6 +48,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
             getString(R.string.message_ideal_type, IdealTypeViewModel.MAX_REQUIRE_SELECT_COUNT)
         StringUtil.setWhiteTextColor(binding.tvIdealTitle, 0 until 5)
         StringUtil.setWhiteTextColor(binding.tvIdealDescription, 0 until 5)
+        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     override fun observeData() {
@@ -110,7 +111,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     private fun getIdealChip(): Chip = Chip(requireContext()).apply {
         setTextColor(resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
         setChipBackgroundColorResource(R.color.selector_ideal_chip_color)
-        chipStrokeWidth = SizeUtil.getPxFromDp(requireContext(), 1)
+        chipStrokeWidth = requireContext().getPxFromDp(1)
         setChipStrokeColorResource(tht.core.ui.R.color.gray_8d8d8d)
     }
 

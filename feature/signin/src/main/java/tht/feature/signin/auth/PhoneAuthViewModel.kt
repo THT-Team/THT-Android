@@ -58,11 +58,14 @@ class PhoneAuthViewModel @Inject constructor(
             requestAuthenticationUseCase(phone)
                 .onSuccess {
                     _sideEffectFlow.emit(
-                        PhoneAuthSideEffect.ShowToast(
+                        PhoneAuthSideEffect.ShowSuccessToast(
                             stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
-                        )
+                        ) {
+                            viewModelScope.launch {
+                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it))
+                            }
+                        }
                     )
-                    _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it))
                 }.onFailure {
                     _sideEffectFlow.emit(
                         PhoneAuthSideEffect.ShowToast(
@@ -83,6 +86,10 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     sealed class PhoneAuthSideEffect : SideEffect {
+        data class ShowSuccessToast(
+            val message: String,
+            val closeListener: () -> Unit
+        ) : PhoneAuthSideEffect()
         data class ShowToast(val message: String) : PhoneAuthSideEffect()
         data class NavigateVerifyView(
             val phone: String,
