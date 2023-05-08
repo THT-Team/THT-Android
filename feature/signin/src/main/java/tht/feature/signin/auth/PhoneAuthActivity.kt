@@ -1,20 +1,27 @@
 package tht.feature.signin.auth
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneAuthBinding
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class PhoneAuthActivity : AppCompatActivity() {
@@ -65,6 +72,9 @@ class PhoneAuthActivity : AppCompatActivity() {
                     when (it) {
                         is PhoneAuthViewModel.PhoneAuthSideEffect.ShowToast -> showToast(it.message)
 
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.ShowSuccessToast ->
+                            showSuccessToast(it.message, it.closeListener)
+
                         is PhoneAuthViewModel.PhoneAuthSideEffect.Back -> finish()
 
                         is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible ->
@@ -109,6 +119,50 @@ class PhoneAuthActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showSuccessToast(message: String, closeListener: () -> Unit = { }) {
+        val shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+        val customToastView = layoutInflater.inflate(
+            R.layout.item_signup_custom_toast,
+            binding.layoutBackground,
+            false
+        ).apply {
+            alpha = 0f
+        }
+        customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
+        binding.layoutBackground.addView(customToastView)
+
+        customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            width = 0
+            height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+            startToStart = binding.layoutBackground.id
+            endToEnd = binding.layoutBackground.id
+            topToTop = binding.layoutBackground.id
+            bottomToBottom = binding.layoutBackground.id
+            marginStart = getPxFromDp(40).roundToInt()
+            marginEnd = getPxFromDp(40).roundToInt()
+            topMargin = getPxFromDp(70).roundToInt()
+            bottomMargin = getPxFromDp(70).roundToInt()
+        }
+
+        customToastView.animate()
+            .alpha(1f)
+            .duration = shortAnimationDuration.toLong()
+
+        customToastView.postDelayed({
+            customToastView.apply {
+                animate()
+                    .alpha(0f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            binding.layoutBackground.removeView(customToastView)
+                            closeListener()
+                        }
+                    })
+            }
+        }, 1000)
     }
 
     companion object {
