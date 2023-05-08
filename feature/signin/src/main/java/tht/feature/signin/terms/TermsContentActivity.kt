@@ -18,7 +18,6 @@ import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityTermsContentBinding
-import tht.feature.signin.util.SizeUtil
 
 @AndroidEntryPoint
 class TermsContentActivity : AppCompatActivity() {
@@ -94,13 +93,13 @@ class TermsContentActivity : AppCompatActivity() {
             endToEnd = parent.id
             topToBottom = prevView.id
             topMargin = if (prevView !is TermsContentItemView)
-                SizeUtil.getPxFromDp(this@TermsContentActivity, 32).toInt()
+                getPxFromDp(32).toInt()
             else
-                SizeUtil.getPxFromDp(this@TermsContentActivity, 24).toInt()
+                getPxFromDp(24).toInt()
 
             if (isLast) {
                 bottomToBottom = parent.id
-                bottomMargin = SizeUtil.getPxFromDp(this@TermsContentActivity, 24).toInt()
+                bottomMargin = getPxFromDp(24).toInt()
             }
         }
     }

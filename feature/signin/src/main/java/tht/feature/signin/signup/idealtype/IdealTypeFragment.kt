@@ -18,7 +18,6 @@ import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentIdealTypeBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.SizeUtil
 import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint

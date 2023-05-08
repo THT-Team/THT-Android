@@ -21,7 +21,6 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityTermsBinding
 import tht.feature.signin.signup.SignupRootActivity
-import tht.feature.signin.util.SizeUtil
 
 @AndroidEntryPoint
 class TermsActivity : AppCompatActivity() {
@@ -130,7 +129,7 @@ class TermsActivity : AppCompatActivity() {
             endToEnd = parent.id
             topToBottom = prevView.id
             if (prevView !is TermsItemView)
-                topMargin = SizeUtil.getPxFromDp(this@TermsActivity, 35).toInt()
+                topMargin = getPxFromDp(35).toInt()
         }
     }
 

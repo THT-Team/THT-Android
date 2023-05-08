@@ -11,13 +11,13 @@ import com.tht.tht.domain.signup.model.InterestModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentInterestBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.SizeUtil
 import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
@@ -111,7 +111,7 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
     private fun getInterestChip(): Chip = Chip(requireContext()).apply {
         setTextColor(resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
         setChipBackgroundColorResource(R.color.selector_ideal_chip_color)
-        chipStrokeWidth = SizeUtil.getPxFromDp(requireContext(), 1)
+        chipStrokeWidth = requireContext().getPxFromDp(1)
         setChipStrokeColorResource(tht.core.ui.R.color.gray_8d8d8d)
     }
 
