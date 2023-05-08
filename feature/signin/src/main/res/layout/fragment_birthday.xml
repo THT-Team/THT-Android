@@ -35,6 +35,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:button="@null"
+            android:checked="true"
             android:text="@string/text_female" />
 
         <RadioButton

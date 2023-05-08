@@ -1,7 +1,6 @@
 package tht.feature.signin.signup.birthday
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.viewModels
@@ -10,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
+import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentBirthdayBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
@@ -26,6 +26,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        viewModel.fetchSavedData(rootViewModel.phone.value)
     }
 
     private fun initView() {
@@ -37,7 +38,13 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
     }
 
     override fun setListener() {
-        binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.BIRTHDAY) }
+        binding.btnNext.setOnClickListener {
+            viewModel.nextEvent(
+                rootViewModel.phone.value,
+                getCheckedIndex(),
+                binding.tvDate.text.toString()
+            )
+        }
         binding.tvDate.setOnClickListener { viewModel.datePickerEvent() }
     }
 
@@ -63,6 +70,8 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                                     tht.core.ui.R.color.yellow_f9cc2e, null
                                 )
                             )
+                            binding.rbFemale.isChecked = it.gender == 0
+                            binding.rbMale.isChecked = it.gender == 1
                         }
 
                         is BirthdayViewModel.BirthdayUiState.InvalidBirthday -> {
@@ -87,28 +96,31 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                             )
                         }
 
-                        is BirthdayViewModel.BirthdaySideEffect.NavigateNextView -> TODO()
-                        is BirthdayViewModel.BirthdaySideEffect.ShowToast -> TODO()
+                        is BirthdayViewModel.BirthdaySideEffect.NavigateNextView -> {
+                            rootViewModel.nextEvent(SignupRootViewModel.Step.BIRTHDAY)
+                        }
+
+                        is BirthdayViewModel.BirthdaySideEffect.ShowToast -> {
+                            requireContext().showToast(it.message)
+                        }
                     }
                 }
             }
         }
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
             ?.observe(viewLifecycleOwner) { birthday ->
-                viewModel.setBirthdayEvent(
-                     binding.rgBirthday.run {
-                         var checkedIndex = -1
-                        forEachIndexed { index, view ->
-                            Log.d("Testtt", "${view.id}  ${checkedRadioButtonId}")
-                            if(view.id == checkedRadioButtonId) {
-                                checkedIndex = index
-                            }
-                        }
-                        checkedIndex
-                     },
-                    birthday
-                )
+                viewModel.setBirthdayEvent(getCheckedIndex(), birthday)
             }
+    }
+
+    private fun getCheckedIndex(): Int = binding.rgBirthday.run {
+        var checkedIndex = -1
+        forEachIndexed { index, view ->
+            if (view.id == checkedRadioButtonId) {
+                checkedIndex = index
+            }
+        }
+        checkedIndex
     }
 
     companion object {

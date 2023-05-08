@@ -40,7 +40,7 @@ class BirthdayViewModel @Inject constructor(
                 .onSuccess {
                     setUiState(
                         BirthdayUiState.ValidBirthday(
-                            if (it.gender == "MALE") "남자" else "여자",
+                            if (it.gender == "FEMALE") 0 else 1,
                             if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                         )
                     )
@@ -57,12 +57,12 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun nextEvent(phone: String, gender: String, birthday: String) {
+    fun nextEvent(phone: String, gender: Int, birthday: String) {
         viewModelScope.launch {
             _dataLoading.value = true
             patchSignupBirthdayUseCase(
                 phone,
-                gender,
+                if(gender == 0) "FEMALE" else "MALE",
                 removeSpaceAfterPeriod(birthday)
             ).onSuccess {
                 _sideEffectFlow.emit(BirthdaySideEffect.NavigateNextView)
@@ -83,7 +83,7 @@ class BirthdayViewModel @Inject constructor(
     fun setBirthdayEvent(gender: Int, birthday: String) {
         setUiState(
             BirthdayUiState.ValidBirthday(
-                if (gender == 0) "MALE" else "FEMALE",
+                gender,
                 if (birthday.length < 12) addSpaceAfterPeriod(birthday) else birthday
             )
         )
@@ -93,13 +93,13 @@ class BirthdayViewModel @Inject constructor(
         StringBuilder(str).insert(5, ' ').insert(9, ' ').toString()
 
     private fun removeSpaceAfterPeriod(str: String): String =
-        StringBuilder(str).deleteCharAt(0).deleteCharAt(8).toString()
+        StringBuilder(str).deleteCharAt(5).deleteCharAt(8).toString()
 
 
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
         object InvalidBirthday : BirthdayUiState()
-        data class ValidBirthday(val gender: String, val birthday: String) : BirthdayUiState()
+        data class ValidBirthday(val gender: Int, val birthday: String) : BirthdayUiState()
         data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
 
