@@ -41,6 +41,7 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
             StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
             StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail
+            StringProvider.ResId.BirthdayPatchFail -> R.string.message_birthday_patch_fail
         }
     }
 }
