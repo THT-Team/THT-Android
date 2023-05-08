@@ -40,6 +40,7 @@ class BirthdayViewModel @Inject constructor(
                 .onSuccess {
                     setUiState(
                         BirthdayUiState.ValidBirthday(
+                            if (it.gender == "MALE") "남자" else "여자",
                             if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                         )
                     )
@@ -56,11 +57,12 @@ class BirthdayViewModel @Inject constructor(
         }
     }
 
-    fun nextEvent(phone: String, birthday: String) {
+    fun nextEvent(phone: String, gender: String, birthday: String) {
         viewModelScope.launch {
             _dataLoading.value = true
             patchSignupBirthdayUseCase(
                 phone,
+                gender,
                 removeSpaceAfterPeriod(birthday)
             ).onSuccess {
                 _sideEffectFlow.emit(BirthdaySideEffect.NavigateNextView)
@@ -78,9 +80,10 @@ class BirthdayViewModel @Inject constructor(
         postSideEffect(BirthdaySideEffect.ShowDatePicker)
     }
 
-    fun setBirthdayEvent(birthday: String) {
+    fun setBirthdayEvent(gender: Int, birthday: String) {
         setUiState(
             BirthdayUiState.ValidBirthday(
+                if (gender == 0) "MALE" else "FEMALE",
                 if (birthday.length < 12) addSpaceAfterPeriod(birthday) else birthday
             )
         )
@@ -94,10 +97,10 @@ class BirthdayViewModel @Inject constructor(
 
 
     sealed class BirthdayUiState : UiState {
-        data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
         object Default : BirthdayUiState()
         object InvalidBirthday : BirthdayUiState()
-        data class ValidBirthday(val birthday: String) : BirthdayUiState()
+        data class ValidBirthday(val gender: String, val birthday: String) : BirthdayUiState()
+        data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
 
     sealed class BirthdaySideEffect : SideEffect {

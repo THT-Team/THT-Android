@@ -37,15 +37,12 @@
             android:button="@null"
             android:text="@string/text_female" />
 
-        <View
-            android:layout_width="22dp"
-            android:layout_height="0dp" />
-
         <RadioButton
             android:id="@+id/rb_male"
             style="@style/GenderButtonStyle"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_marginStart="22dp"
             android:layout_weight="1"
             android:button="@null"
             android:text="@string/text_male" />
