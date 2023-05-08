@@ -74,12 +74,9 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                             binding.rbMale.isChecked = it.gender == 1
                         }
 
-                        is BirthdayViewModel.BirthdayUiState.InvalidBirthday -> {
-
-                        }
-
                         is BirthdayViewModel.BirthdayUiState.InvalidPhoneNumber -> {
-
+                            context?.showToast(it.message)
+                            rootViewModel.backEvent()
                         }
                     }
                 }

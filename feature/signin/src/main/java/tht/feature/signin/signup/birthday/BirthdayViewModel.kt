@@ -39,7 +39,8 @@ class BirthdayViewModel @Inject constructor(
             fetchSignupUserUseCase(phone)
                 .onSuccess {
                     setUiState(
-                        BirthdayUiState.ValidBirthday(
+                        if(it.birthday.isEmpty()) BirthdayUiState.Default
+                        else BirthdayUiState.ValidBirthday(
                             if (it.gender == "FEMALE") 0 else 1,
                             if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                         )
@@ -98,7 +99,6 @@ class BirthdayViewModel @Inject constructor(
 
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
-        object InvalidBirthday : BirthdayUiState()
         data class ValidBirthday(val gender: Int, val birthday: String) : BirthdayUiState()
         data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
