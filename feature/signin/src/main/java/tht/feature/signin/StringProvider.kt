@@ -33,6 +33,7 @@ interface StringProvider {
         ProfileImageUploadFail,
         ProfileImagePatchFail,
         InvalidateLocation,
+        AutoLocationFetchFail,
         LocationPatchFail,
         SignupFail
     }
