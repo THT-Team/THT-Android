@@ -2,6 +2,7 @@ package tht.feature.signin.signup
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.usecase.RequestSignupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,12 +41,16 @@ class SignupRootViewModel @Inject constructor(
     fun signUpEvent() {
         viewModelScope.launch {
             requestSignupUseCase(phone.value).onSuccess {
-                _sideEffectFlow.emit(SignupRootSideEffect.FinishSignup)
-            }.onFailure {
-                _sideEffectFlow.emit(
-                    SignupRootSideEffect.ShowToast(
+                when (it) {
+                    true -> _sideEffectFlow.emit(SignupRootSideEffect.FinishSignup)
+                    else -> SignupRootSideEffect.ShowToast(
                         stringProvider.getString(StringProvider.ResId.SignupFail)
                     )
+                }
+            }.onFailure {
+                it.printStackTrace()
+                SignupRootSideEffect.ShowToast(
+                    stringProvider.getString(StringProvider.ResId.SignupFail) + it.message
                 )
             }
         }
