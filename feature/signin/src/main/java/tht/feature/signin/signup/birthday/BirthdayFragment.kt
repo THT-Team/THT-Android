@@ -70,8 +70,8 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                                     tht.core.ui.R.color.yellow_f9cc2e, null
                                 )
                             )
-                            binding.rbFemale.isChecked = it.gender == 0
-                            binding.rbMale.isChecked = it.gender == 1
+                            binding.rbFemale.isChecked = it.gender == BirthdayViewModel.female.second
+                            binding.rbMale.isChecked = it.gender == BirthdayViewModel.male.second
                         }
 
                         is BirthdayViewModel.BirthdayUiState.InvalidPhoneNumber -> {

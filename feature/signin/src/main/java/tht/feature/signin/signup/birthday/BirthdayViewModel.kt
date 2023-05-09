@@ -11,6 +11,7 @@ import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
+import tht.feature.signin.constant.GenderConstant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,9 +40,9 @@ class BirthdayViewModel @Inject constructor(
             fetchSignupUserUseCase(phone)
                 .onSuccess {
                     setUiState(
-                        if(it.birthday.isEmpty()) BirthdayUiState.Default
+                        if (it.birthday.isEmpty()) BirthdayUiState.Default
                         else BirthdayUiState.ValidBirthday(
-                            if (it.gender == "FEMALE") 0 else 1,
+                            if (it.gender == female.first) female.second else male.second,
                             if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                         )
                     )
@@ -63,7 +64,7 @@ class BirthdayViewModel @Inject constructor(
             _dataLoading.value = true
             patchSignupBirthdayUseCase(
                 phone,
-                if(gender == 0) "FEMALE" else "MALE",
+                if (gender == female.second) female.first else male.first,
                 removeSpaceAfterPeriod(birthday)
             ).onSuccess {
                 _sideEffectFlow.emit(BirthdaySideEffect.NavigateNextView)
@@ -107,5 +108,10 @@ class BirthdayViewModel @Inject constructor(
         object ShowDatePicker : BirthdaySideEffect()
         object NavigateNextView : BirthdaySideEffect()
         data class ShowToast(val message: String) : BirthdaySideEffect()
+    }
+
+    companion object {
+        val female = GenderConstant.FEMALE_KEY to 0
+        val male = GenderConstant.MALE_KEY to 1
     }
 }
