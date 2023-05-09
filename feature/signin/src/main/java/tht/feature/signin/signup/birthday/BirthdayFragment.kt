@@ -3,6 +3,7 @@ package tht.feature.signin.signup.birthday
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.forEachIndexed
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -103,7 +104,14 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                     }
                 }
             }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
+                }
+            }
         }
+
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
             ?.observe(viewLifecycleOwner) { birthday ->
                 viewModel.setBirthdayEvent(getCheckedIndex(), birthday)
