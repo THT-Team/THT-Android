@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/birthdayFragment">
+    app:startDestination="@id/nicknameFragment">
 
     <fragment
         android:id="@+id/nicknameFragment"
@@ -82,7 +82,16 @@
     <fragment
         android:id="@+id/locationFragment"
         android:name="tht.feature.signin.signup.location.LocationFragment"
-        android:label="LocationFragment" />
+        android:label="LocationFragment" >
+        <action
+            android:id="@+id/action_locationFragment_to_locationDialogFragment"
+            app:destination="@id/locationDialogFragment" />
+        <argument
+            android:name="location"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/profileImageFragment"
         android:name="tht.feature.signin.signup.profileimage.ProfileImageFragment"
@@ -103,5 +112,13 @@
             android:name="date"
             app:argType="string"
             android:defaultValue="2004.01.01" />
+    </dialog>
+    <dialog
+        android:id="@+id/locationDialogFragment"
+        android:name="tht.feature.signin.signup.location.LocationDialogFragment"
+        android:label="LocationDialogFragment" >
+        <action
+            android:id="@+id/action_locationDialogFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
     </dialog>
 </navigation>

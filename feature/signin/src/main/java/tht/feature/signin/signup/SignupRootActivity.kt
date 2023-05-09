@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
+import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
 
@@ -69,8 +70,16 @@ class SignupRootActivity : AppCompatActivity() {
                                 SignupRootViewModel.Step.INTRODUCTION -> {
                                     navController.navigate(R.id.action_introductionFragment_to_locationFragment)
                                 }
-                                SignupRootViewModel.Step.LOCATION -> {}
+                                SignupRootViewModel.Step.LOCATION -> {
+                                    viewModel.signUpEvent()
+                                }
                             }
+                        }
+                        is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
+                            // TODO HomeActivity로 이동
+                        }
+                        is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
+                            showToast(it.message)
                         }
                     }
                 }

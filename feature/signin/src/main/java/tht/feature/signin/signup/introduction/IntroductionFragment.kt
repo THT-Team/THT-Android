@@ -1,6 +1,8 @@
 package tht.feature.signin.signup.introduction
 
+import android.os.Bundle
 import android.text.InputFilter
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -23,9 +25,13 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
 
     override val viewModel by viewModels<IntroductionViewModel>()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
     override fun setProgress() {
         rootViewModel.progressEvent(SignupRootViewModel.Step.INTRODUCTION)
-        initView()
     }
 
     override fun setListener() {
@@ -48,7 +54,7 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
             InputFilter.LengthFilter(IntroductionViewModel.MAX_LENGTH)
         )
         viewModel.fetchSavedData(rootViewModel.phone.value)
-        StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 4)
+        StringUtil.setWhiteTextColor(binding.tvIntroduceTitle, 0 until 5)
     }
 
     override fun observeData() {
@@ -66,7 +72,9 @@ class IntroductionFragment : SignupRootBaseFragment<IntroductionViewModel, Fragm
                         }
 
                         is IntroductionViewModel.IntroductionUiState.ValidInput -> {
-                            binding.etIntroduce.setText(it.introduce)
+                            if (it.introduce != binding.etIntroduce.text?.toString()) {
+                                binding.etIntroduce.setText(it.introduce)
+                            }
                             binding.btnNext.isEnabled = true
                         }
                     }

@@ -11,6 +11,7 @@ import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
+import tht.feature.signin.constant.GenderConstant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -102,8 +103,8 @@ class PreferredGenderViewModel @Inject constructor(
     }
 
     companion object {
-        private val female = "female" to 0
-        private val male = "male" to 1
-        private val all = "all" to 2
+        private val female = GenderConstant.FEMALE_KEY to 0
+        private val male = GenderConstant.MALE_KEY to 1
+        private val all = GenderConstant.BISEXUAL_KEY to 2
     }
 }

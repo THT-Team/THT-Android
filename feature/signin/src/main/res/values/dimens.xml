@@ -9,5 +9,7 @@
 
     <dimen name="SignupProcessFragmentTopPadding">65dp</dimen>
 
+    <dimen name="LocationCardViewRadius">6dp</dimen>
+
     <dimen name="btn_radius">10dp</dimen>
 </resources>

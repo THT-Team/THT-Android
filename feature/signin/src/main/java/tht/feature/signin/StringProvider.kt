@@ -27,9 +27,14 @@ interface StringProvider {
         PreferredGenderPatchFail,
         IdealFetchFail,
         IdealPatchFail,
+        InterestFetchFail,
+        InterestPatchFail,
         ProfileImagePartialUploadFail,
         ProfileImageUploadFail,
         ProfileImagePatchFail,
-        BirthdayPatchFail
+        BirthdayPatchFail,
+        InvalidateLocation,
+        LocationPatchFail,
+        SignupFail
     }
 }
