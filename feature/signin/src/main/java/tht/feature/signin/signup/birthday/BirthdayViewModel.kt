@@ -97,7 +97,6 @@ class BirthdayViewModel @Inject constructor(
     private fun removeSpaceAfterPeriod(str: String): String =
         StringBuilder(str).deleteCharAt(5).deleteCharAt(8).toString()
 
-
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
         data class ValidBirthday(val gender: Int, val birthday: String) : BirthdayUiState()

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -48,10 +47,13 @@ class BirthdayDialogFragment : BottomSheetDialogFragment() {
 
     private fun setListener() {
         binding.btnConfirm.setOnClickListener {
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(BirthdayConstant.KEY, binding.run {
-                "${npYear.value}. ${if (npMonth.value / 10 == 0) 0 else ""}${npMonth.value}. " +
-                    "${if (npDay.value / 10 == 0) 0 else ""}${npDay.value}"
-            })
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                BirthdayConstant.KEY,
+                binding.run {
+                    "${npYear.value}. ${if (npMonth.value / 10 == 0) 0 else ""}${npMonth.value}. " +
+                        "${if (npDay.value / 10 == 0) 0 else ""}${npDay.value}"
+                }
+            )
             findNavController().popBackStack()
         }
     }
