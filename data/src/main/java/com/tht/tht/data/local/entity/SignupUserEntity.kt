@@ -9,12 +9,12 @@ data class SignupUserEntity(
     val email: String,
     val gender: String,
     val birthday: String,
-    val interestKeys: List<String>,
+    val interestKeys: List<Long>,
     val lat: Double,
     val lng: Double,
     val address: String,
     val preferredGender: String,
     val profileImgUrl: List<String>,
     val introduce: String,
-    val idealTypeKeys: List<String>
+    val idealTypeKeys: List<Long>
 ) : java.io.Serializable

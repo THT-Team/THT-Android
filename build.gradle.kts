@@ -1,8 +1,8 @@
 buildscript {
     extra.apply {
-        set("compileSdk", 32)
+        set("compileSdk", 33)
         set("minSdkVersion", 26)
-        set("targetSdk", 32)
+        set("targetSdk", 33)
         set("versionCode", 1)
         set("versionName", "1.0")
     }
@@ -13,9 +13,11 @@ buildscript {
     }
     dependencies {
         classpath(libs.android.gradle)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
+        classpath(libs.kotlin.gradle.plugin)
         classpath(libs.hilt.android.gradle)
         classpath(libs.androidx.navigation)
+        classpath(libs.gms.google.services)
+        classpath(libs.firebase.crashlytics.gradle)
     }
 }
 

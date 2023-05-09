@@ -7,14 +7,14 @@ data class SignupUserModel(
     val email: String,
     val gender: String,
     val birthday: String,
-    val interestKeys: List<String>,
+    val interestKeys: List<Long>,
     val lat: Double,
     val lng: Double,
     val address: String,
     val preferredGender: String,
     val profileImgUrl: List<String>,
     val introduce: String,
-    val idealTypeKeys: List<String>
+    val idealTypeKeys: List<Long>
 ) {
     companion object {
         fun getFromDefaultArgument(
@@ -24,14 +24,14 @@ data class SignupUserModel(
             email: String = "",
             gender: String = "",
             birthday : String = "",
-            interestKeys: List<String> = emptyList(),
+            interestKeys: List<Long> = emptyList(),
             lat: Double = -1.0,
             lng: Double = -1.0,
             address: String = "",
             preferredGender: String = "",
             profileImgUrl: List<String> = emptyList(),
             introduce: String = "",
-            idealTypeKeys: List<String> = emptyList()
+            idealTypeKeys: List<Long> = emptyList()
         ): SignupUserModel = SignupUserModel(
             phone = phone,
             termsAgreement = termsAgreement,

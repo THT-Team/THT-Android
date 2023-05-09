@@ -11,7 +11,7 @@ class PatchSignupInterestUseCase(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(phone: String, interestKeys: List<String>): Result<Boolean> {
+    suspend operator fun invoke(phone: String, interestKeys: List<Long>): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
                 if(interestKeys.size <SignupConstant.INTEREST_REQUIRE_SIZE){

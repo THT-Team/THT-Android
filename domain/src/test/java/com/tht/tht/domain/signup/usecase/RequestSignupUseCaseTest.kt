@@ -29,14 +29,14 @@ internal class RequestSignupUseCaseTest {
         email = "email",
         gender = "gender",
         birthday = "birthday",
-        interestKeys = listOf("key1", "key2", "key3"),
+        interestKeys = listOf(0L, 1L, 2L),
         lat = 1.0,
         lng = 1.0,
         address = "address",
         preferredGender = "preferredGender",
         profileImgUrl = listOf("image1", "image2"),
         introduce = "introduce",
-        idealTypeKeys = listOf("key1", "key2", "key3")
+        idealTypeKeys = listOf(0L, 1L, 2L)
     )
 
     @Before

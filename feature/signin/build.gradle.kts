@@ -5,6 +5,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -64,6 +65,9 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.glide)
+    kapt(libs.glideComplier)
 
     implementation("com.kakao.sdk:v2-user:2.12.1")
     implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
