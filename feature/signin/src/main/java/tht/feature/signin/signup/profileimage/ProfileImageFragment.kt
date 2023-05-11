@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
@@ -19,6 +18,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
@@ -193,19 +193,13 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                 listView.divider = ColorDrawable(
                     resources.getColor(tht.core.ui.R.color.gray_666666, null)
                 )
-                listView.dividerHeight = getPxFromDp(1.5f).roundToInt()
+                listView.dividerHeight = requireContext().getPxFromDp(1.5f).roundToInt()
                 listView.setFooterDividersEnabled(false)
                 listView.addFooterView(View(requireContext()))
             }.show()
     }
 
-    private fun getPxFromDp(dp: Float): Float {
-        val displayMetrics = resources.displayMetrics
-        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-
     companion object {
-
         val TAG = ProfileImageFragment::class.simpleName.toString()
 
         fun newInstance() = ProfileImageFragment()
