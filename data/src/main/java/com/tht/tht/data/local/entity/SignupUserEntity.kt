@@ -9,7 +9,7 @@ data class SignupUserEntity(
     val email: String,
     val gender: String,
     val birthday: String,
-    val interestKeys: List<String>,
+    val interestKeys: List<Long>,
     val lat: Double,
     val lng: Double,
     val address: String,

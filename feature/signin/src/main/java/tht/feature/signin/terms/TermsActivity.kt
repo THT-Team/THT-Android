@@ -3,7 +3,6 @@ package tht.feature.signin.terms
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,7 @@ import com.tht.tht.domain.signup.model.TermsModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
@@ -153,11 +153,6 @@ class TermsActivity : AppCompatActivity() {
         }
         binding.btnStart.isEnabled = isRequireTermsAllSelect
         binding.ivCheckAll.isSelected = isAllSelect
-    }
-
-    private fun getPxFromDp(dp: Int): Float {
-        val displayMetrics = resources.displayMetrics
-        return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
 
     companion object {
