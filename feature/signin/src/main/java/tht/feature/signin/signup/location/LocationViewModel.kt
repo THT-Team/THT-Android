@@ -54,9 +54,10 @@ class LocationViewModel @Inject constructor(
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            stringProvider.getString(StringProvider.ResId.AutoLocationFetchFail)
                         )
                     )
+                    postSideEffect(LocationSideEffect.ShowLocationDialog)
                 }.also {
                     _dataLoading.value = false
                 }
@@ -107,7 +108,7 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun checkValidInput(location: String) {
+    private fun checkValidInput(location: String) {
         if (location.isEmpty())
             setUiState(LocationUiState.InvalidInput)
         else

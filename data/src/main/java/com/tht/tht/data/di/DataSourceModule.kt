@@ -18,10 +18,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataSourceModule {
-
-    @Binds
-    abstract fun bindImageDataSource(impl: ImageDataSourceImpl): ImageDataSource
-
     @Binds
     abstract fun bindTermsDataSource(impl: TermsDataSourceImpl): TermsDataSource
 
@@ -33,4 +29,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindLocationDataSource(impl: LocationDataSourceImpl): LocationDataSource
+
+    @Binds
+    abstract fun bindImageDataSource(impl: ImageDataSourceImpl): ImageDataSource
 }
