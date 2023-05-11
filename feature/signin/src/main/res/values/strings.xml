@@ -66,6 +66,9 @@
     <string name="message_profile_image_upload_fail">프로필 이미지 업로드를 실패하였습니다</string>
     <string name="message_profile_image_patch_fail">프로필 이미지 입력을 실패하였습니다</string>
 
+    <string name="menu_profile_image_modify">사진 변경</string>
+    <string name="menu_profile_image_remove">사진 삭제</string>
+
     <string name="title_introduce">나를 알려 주세요.</string>
     <string name="hint_introduce">제 MBTI는요 :)</string>
     <string name="message_introduce_input">자유롭게 자기소개를 해주세요.</string>

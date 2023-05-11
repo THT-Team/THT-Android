@@ -170,8 +170,8 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
 
     private fun showImageModifyDialog(idx: Int) {
         val menus = arrayOf(
-            "사진 변경",
-            "사진 삭제"
+            requireContext().getString(R.string.menu_profile_image_modify),
+            requireContext().getString(R.string.menu_profile_image_remove)
         )
 
         AlertDialog.Builder(requireContext(), R.style.ProfileImageModifyDialogStyle)
