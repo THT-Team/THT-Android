@@ -125,6 +125,12 @@ jobs:
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
 
+            - name: Access APP_GOOGLE_SERVICES_JSON
+              run: echo '${{ secrets.APP_GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
+              
+            - name: Access DATA_GOOGLE_SERVICES_JSON
+              run: echo '${{ secrets.DATA_GOOGLE_SERVICES_JSON }}' > ./data/google-services.json
+
             - name: Gradel Release Build
               run: ./gradlew assembleRelease
 
