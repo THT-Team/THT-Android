@@ -2,6 +2,7 @@ package com.tht.tht.data.di
 
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.image.ImageRepository
+import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
@@ -188,6 +189,11 @@ object UseCaseModule {
     fun provideUploadImageUseCase(
         repository: ImageRepository
     ) : UploadImageUseCase = UploadImageUseCase(repository)
+
+    @Provides
+    fun provideRemoveImageUrlUseCase(
+        repository: ImageRepository
+    ) : RemoveImageUrlUseCase = RemoveImageUrlUseCase(repository)
 
     @Provides
     fun provideFetchCurrentLocationUseCase(

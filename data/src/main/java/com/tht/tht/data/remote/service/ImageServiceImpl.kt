@@ -39,4 +39,18 @@ class ImageServiceImpl @Inject constructor() : ImageService {
                 }
         }
     }
+
+    override suspend fun removeImage(fileName: String): Boolean {
+        val baseUrl = "gs://tht-android-a954a.appspot.com/"
+        val removeUrl = Firebase.storage.getReferenceFromUrl(baseUrl + fileName)
+        return suspendCancellableCoroutine { continuation ->
+            removeUrl.delete().addOnCompleteListener {
+                it.exception?.let { e ->
+                    Log.e("TAG", "image upload => onFailureListener")
+                    e.printStackTrace()
+                    continuation.resumeWithException(e)
+                } ?: continuation.resume(it.isSuccessful)
+            }
+        }
+    }
 }
