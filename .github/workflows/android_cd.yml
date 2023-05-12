@@ -2,7 +2,7 @@ name: Android CD
 
 on:
     push:
-      branches: [main, qa]
+      branches: [main, qa, feature/TOP-48_cd]
 
 jobs:
 
@@ -151,6 +151,7 @@ jobs:
                 serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
                 groups: android-developer
                 file: app/build/outputs/apk/release/app-release-unsigned-signed.apk
+                releaseNotesFile: app/release_note.md
 
     alert:
         runs-on: ubuntu-latest
