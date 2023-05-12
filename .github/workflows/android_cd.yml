@@ -145,7 +145,7 @@ jobs:
                 keyPassword: ${{ secrets.KEY_PASSWORD }}
 
             - name: Firebase App Distribution
-              uses: wzieba/Firebase-Distribution-Github-Action@v1.4.0
+              uses: wzieba/Firebase-Distribution-Github-Action@v1
               with:
                 appId: ${{secrets.FIREBASE_APP_ID}}
                 serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
