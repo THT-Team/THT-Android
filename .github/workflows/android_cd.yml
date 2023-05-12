@@ -2,7 +2,7 @@ name: Android CD
 
 on:
     push:
-      branches: [main, feature/TOP-48_cd]
+      branches: [main, qa]
 
 jobs:
 
