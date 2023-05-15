@@ -46,6 +46,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                 binding.tvDate.text.toString()
             )
         }
+        binding.rgBirthday.setOnCheckedChangeListener { _, _ -> viewModel.setGender(getCheckedIndex()) }
         binding.tvDate.setOnClickListener { viewModel.datePickerEvent() }
     }
 
@@ -57,22 +58,21 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                     when (it) {
                         is BirthdayViewModel.BirthdayUiState.Default -> {
                             binding.tvDate.text = getString(R.string.date_default)
-                            binding.tvDate.setTextColor(
-                                requireContext().resources.getColor(
-                                    tht.core.ui.R.color.brown_26241f, null
-                                )
-                            )
+                            setDateTextColor(tht.core.ui.R.color.brown_26241f)
+                            binding.btnNext.isEnabled = false
                         }
 
                         is BirthdayViewModel.BirthdayUiState.ValidBirthday -> {
                             binding.tvDate.text = it.birthday
-                            binding.tvDate.setTextColor(
-                                requireContext().resources.getColor(
-                                    tht.core.ui.R.color.yellow_f9cc2e, null
-                                )
-                            )
+                            setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
+                        }
+
+                        is BirthdayViewModel.BirthdayUiState.ValidGenderAndBirthday -> {
+                            binding.tvDate.text = it.birthday
+                            setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
                             binding.rbFemale.isChecked = it.gender == BirthdayViewModel.female.second
                             binding.rbMale.isChecked = it.gender == BirthdayViewModel.male.second
+                            binding.btnNext.isEnabled = true
                         }
 
                         is BirthdayViewModel.BirthdayUiState.InvalidPhoneNumber -> {
@@ -114,8 +114,16 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
             ?.observe(viewLifecycleOwner) { birthday ->
-                viewModel.setBirthdayEvent(getCheckedIndex(), birthday)
+                viewModel.setBirthday(birthday)
             }
+    }
+
+    private fun setDateTextColor(colorId: Int) {
+        binding.tvDate.setTextColor(
+            requireContext().resources.getColor(
+                colorId, null
+            )
+        )
     }
 
     private fun getCheckedIndex(): Int = binding.rgBirthday.run {

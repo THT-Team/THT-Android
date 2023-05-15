@@ -6,6 +6,7 @@ import com.tht.tht.domain.signup.usecase.PatchSignupBirthdayUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -30,6 +31,21 @@ class BirthdayViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
+    private val _birthday = MutableStateFlow("")
+    private val _gender = MutableStateFlow(-1)
+
+    init {
+        viewModelScope.launch {
+            _gender.combine(_birthday) { idx, date ->
+                idx to date
+            }.collect {
+                if (it.first in 0..1 && checkValidDate(it.second)) {
+                    setUiState(BirthdayUiState.ValidGenderAndBirthday(it.first, it.second))
+                }
+            }
+        }
+    }
+
     fun fetchSavedData(phone: String) {
         if (phone.isBlank()) {
             _uiStateFlow.value = BirthdayUiState.InvalidPhoneNumber(
@@ -43,9 +59,9 @@ class BirthdayViewModel @Inject constructor(
             fetchSignupUserUseCase(phone)
                 .onSuccess {
                     setUiState(
-                        when (it.birthday.isEmpty()) {
+                        when (it.birthday.isEmpty() || it.gender.isEmpty()) {
                             true -> BirthdayUiState.Default
-                            else -> BirthdayUiState.ValidBirthday(
+                            else -> BirthdayUiState.ValidGenderAndBirthday(
                                 if (it.gender == female.first) female.second else male.second,
                                 if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                             )
@@ -87,12 +103,11 @@ class BirthdayViewModel @Inject constructor(
         postSideEffect(BirthdaySideEffect.ShowDatePicker)
     }
 
-    fun setBirthdayEvent(gender: Int, birthday: String) {
-        when(checkValidDate(birthday)) {
+    fun setBirthday(birthday: String) {
+        when (checkValidDate(birthday)) {
             true -> {
-                setUiState(
-                    BirthdayUiState.ValidBirthday(gender, birthday)
-                )
+                _birthday.value = birthday
+                setUiState(BirthdayUiState.ValidBirthday(birthday))
             }
             false -> {
                 postSideEffect(
@@ -102,6 +117,10 @@ class BirthdayViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun setGender(index: Int) {
+        _gender.value = index
     }
 
     private fun checkValidDate(date: String): Boolean {
@@ -123,7 +142,8 @@ class BirthdayViewModel @Inject constructor(
 
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
-        data class ValidBirthday(val gender: Int, val birthday: String) : BirthdayUiState()
+        data class ValidBirthday(val birthday: String) : BirthdayUiState()
+        data class ValidGenderAndBirthday(val gender: Int, val birthday: String) : BirthdayUiState()
         data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
 
