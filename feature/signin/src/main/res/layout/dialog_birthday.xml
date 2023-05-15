@@ -79,7 +79,7 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/yellow_f9cc2e"
         android:textColor="@color/white_ffffff"
-        android:text="확인"
+        android:text="@string/confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/np_year" />

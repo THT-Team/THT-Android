@@ -10,6 +10,7 @@
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="day">일</string>
+    <string name="confirm">확인</string>
 
     <string name="message_login_issue"><u>로그인에 어려움이 있으신가요?</u></string>
 
