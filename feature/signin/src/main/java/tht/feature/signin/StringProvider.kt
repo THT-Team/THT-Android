@@ -35,6 +35,7 @@ interface StringProvider {
         BirthdayPatchFail,
         InvalidateLocation,
         LocationPatchFail,
-        SignupFail
+        SignupFail,
+        InvalidDate
     }
 }

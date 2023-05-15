@@ -86,6 +86,7 @@
 
     <string name="title_birthday">성별, 생일을 알려주세요.</string>
     <string name="message_birthday_patch_fail">생일, 성별 입력을 실패하였습니다.</string>
+    <string name="message_invalidate_date">올바른 날짜를 입력해주세요.</string>
 
     <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
     <string name="date_default">2004. 01. 01</string>

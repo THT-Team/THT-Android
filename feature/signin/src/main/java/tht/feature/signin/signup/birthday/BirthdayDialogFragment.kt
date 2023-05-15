@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.databinding.DialogBirthdayBinding
+import java.time.LocalDate
 
 class BirthdayDialogFragment : BottomSheetDialogFragment() {
     private val binding: DialogBirthdayBinding by viewBinding(DialogBirthdayBinding::inflate)
@@ -29,7 +30,7 @@ class BirthdayDialogFragment : BottomSheetDialogFragment() {
         binding.apply {
             npYear.apply {
                 minValue = 1900
-                maxValue = 2023
+                maxValue = LocalDate.now().year
                 value = date[0]
             }
             npMonth.apply {

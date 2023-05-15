@@ -12,6 +12,9 @@ import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
 import tht.feature.signin.constant.GenderConstant
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +45,7 @@ class BirthdayViewModel @Inject constructor(
                     setUiState(
                         when (it.birthday.isEmpty()) {
                             true -> BirthdayUiState.Default
-                            else ->  BirthdayUiState.ValidBirthday(
+                            else -> BirthdayUiState.ValidBirthday(
                                 if (it.gender == female.first) female.second else male.second,
                                 if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
                             )
@@ -85,12 +88,31 @@ class BirthdayViewModel @Inject constructor(
     }
 
     fun setBirthdayEvent(gender: Int, birthday: String) {
-        setUiState(
-            BirthdayUiState.ValidBirthday(
-                gender,
-                if (birthday.length < 12) addSpaceAfterPeriod(birthday) else birthday
-            )
-        )
+        when(checkValidDate(birthday)) {
+            true -> {
+                setUiState(
+                    BirthdayUiState.ValidBirthday(gender, birthday)
+                )
+            }
+            false -> {
+                postSideEffect(
+                    BirthdaySideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.InvalidDate)
+                    )
+                )
+            }
+        }
+    }
+
+    private fun checkValidDate(date: String): Boolean {
+        try {
+            val dateFormat = SimpleDateFormat("yyyy. MM. dd", Locale.getDefault())
+            dateFormat.isLenient = false
+            dateFormat.parse(date)
+        } catch (e: ParseException) {
+            return false
+        }
+        return true
     }
 
     private fun addSpaceAfterPeriod(str: String): String =
