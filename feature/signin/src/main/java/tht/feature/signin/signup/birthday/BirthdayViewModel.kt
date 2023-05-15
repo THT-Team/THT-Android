@@ -40,11 +40,13 @@ class BirthdayViewModel @Inject constructor(
             fetchSignupUserUseCase(phone)
                 .onSuccess {
                     setUiState(
-                        if (it.birthday.isEmpty()) BirthdayUiState.Default
-                        else BirthdayUiState.ValidBirthday(
-                            if (it.gender == female.first) female.second else male.second,
-                            if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
-                        )
+                        when (it.birthday.isEmpty()) {
+                            true -> BirthdayUiState.Default
+                            else ->  BirthdayUiState.ValidBirthday(
+                                if (it.gender == female.first) female.second else male.second,
+                                if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
+                            )
+                        }
                     )
                 }.onFailure {
                     _sideEffectFlow.emit(
