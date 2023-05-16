@@ -107,6 +107,11 @@
         <item name="endIconDrawable">@drawable/ic_delete</item>
     </style>
 
+    <style name="NumberPickerStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white_d7d7d7</item>
+    </style>
+
     <style name="THT_ProgressStyle" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminateTint">@color/red_ef4444</item>
     </style>

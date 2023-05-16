@@ -10,7 +10,7 @@ class PatchSignupBirthdayUseCase(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(phone: String, birthday: String): Result<Boolean> {
+    suspend operator fun invoke(phone: String, gender: String, birthday: String): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
                 if(birthday.isBlank()) {
@@ -20,7 +20,7 @@ class PatchSignupBirthdayUseCase(
                     phone,
                     requireNotNull(repository.fetchSignupUser(phone)){
                         throw SignupException.SignupUserInvalidateException()
-                    }.copy(birthday = birthday)
+                    }.copy(gender = gender, birthday = birthday)
                 )
             }
         }
