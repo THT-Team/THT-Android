@@ -14,6 +14,10 @@
     <style name="H1BoldGrayTextStyle" parent="H1BoldTextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
+
+    <style name="H1BoldDisabledTextStyle" parent="H1BoldTextStyle">
+        <item name="android:textColor">@color/brown_26241f</item>
+    </style>
     <!--H1Bold-->
 
     <!--H2Bold-->
@@ -38,6 +42,10 @@
     <style name="H4SemiBoldTextStyle">
         <item name="android:textSize">19sp</item>
         <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="H4SemiBoldYellowTextStyle" parent="H4SemiBoldTextStyle">
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
     </style>
 
     <style name="H4SemiBoldBlackTextStyle" parent="H4SemiBoldTextStyle">
