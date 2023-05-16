@@ -112,10 +112,13 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
             }
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(BirthdayConstant.KEY)
-            ?.observe(viewLifecycleOwner) { birthday ->
-                viewModel.setBirthday(birthday)
-            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.let { stateHandle ->
+            stateHandle.getLiveData<String>(BirthdayConstant.KEY)
+                .observe(viewLifecycleOwner) { birthday ->
+                    viewModel.setBirthday(birthday)
+                    stateHandle.remove<String>(BirthdayConstant.KEY)
+                }
+        }
     }
 
     private fun setDateTextColor(colorId: Int) {
