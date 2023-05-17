@@ -36,7 +36,7 @@ class MockTHTSignupApi @Inject constructor(
         delay(100)
         return BaseResponse.Success(
             statusCode = 200,
-            response = SignupResponse("userId")
+            response = SignupResponse("token", 0)
         )
     }
 }
