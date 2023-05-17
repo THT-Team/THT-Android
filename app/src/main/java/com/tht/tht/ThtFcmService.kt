@@ -2,7 +2,7 @@ package com.tht.tht
 
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
-import com.tht.tht.domain.token.usecase.UpdateFcmTokenUseCase
+import com.tht.tht.domain.token.usecase.RequestFcmTokenLoginUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ThtFcmService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var updateFcmTokenUseCase: UpdateFcmTokenUseCase
+    lateinit var requestFcmTokenLoginUseCase: RequestFcmTokenLoginUseCase
 
     private val job = SupervisorJob()
     private val serviceScope = CoroutineScope(job)
@@ -23,7 +23,7 @@ class ThtFcmService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.d("TAG", "onNewToken => $token")
         serviceScope.launch {
-            updateFcmTokenUseCase(token)
+            requestFcmTokenLoginUseCase(token)
                 .onFailure {
                     it.printStackTrace()
                 }
