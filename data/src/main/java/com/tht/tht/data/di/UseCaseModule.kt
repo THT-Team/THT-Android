@@ -208,4 +208,10 @@ object UseCaseModule {
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchLocationByAddressUseCase =
         FetchLocationByAddressUseCase(repository, dispatcher)
+
+    @Provides
+    fun provideUpdateFcmTokenUseCase(
+        repository: TokenRepository,
+    ): UpdateFcmTokenUseCase =
+        UpdateFcmTokenUseCase(repository)
 }

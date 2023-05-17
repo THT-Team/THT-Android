@@ -23,4 +23,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindImageRepository(impl: ImageRepositoryImpl): ImageRepository
+    @Binds
+    abstract fun bindTokenRepository(impl: TokenRepositoryImpl): TokenRepository
 }

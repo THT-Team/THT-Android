@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.local.datasource.TokenDataSource
+import com.tht.tht.data.local.datasource.TokenDataSourceImpl
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSourceImpl
 import com.tht.tht.data.local.datasource.TermsDataSource
@@ -32,4 +34,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindImageDataSource(impl: ImageDataSourceImpl): ImageDataSource
+
+    @Binds
+    abstract fun bindTokenDataSource(impl: TokenDataSourceImpl): TokenDataSource
 }
