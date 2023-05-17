@@ -3,6 +3,8 @@ package com.tht.tht.data.remote.response.signup
 import com.google.gson.annotations.SerializedName
 
 data class SignupResponse(
-    @SerializedName("user_id")
-    val userId : String
+    @SerializedName("accessToken")
+    val accessToken: String,
+    @SerializedName("accessTokenExpiresIn")
+    val accessTokenExpiresIn: Int
 )
