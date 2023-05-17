@@ -23,7 +23,8 @@ sealed interface SignupException {
     ): SignupException, Exception()
 
     data class SignupUserInfoInvalidateException(
-        override val message: String? = "user info is invalidate"
+        val data: String,
+        override val message: String? = "user info($data) is invalidate"
     ): SignupException, Exception()
 
 }
