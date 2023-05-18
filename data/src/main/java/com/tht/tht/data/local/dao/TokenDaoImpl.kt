@@ -23,6 +23,7 @@ class TokenDaoImpl @Inject constructor(
                 .addOnCompleteListener { task ->
                     if (!task.isSuccessful || task.exception != null) {
                         continuation.resumeWithException(task.exception ?: Exception("fail fetch fcm token"))
+                        return@addOnCompleteListener
                     }
                     task.result.let { token ->
                         updateFcmToken(token) // save at local
