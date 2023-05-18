@@ -58,11 +58,12 @@ internal class PatchSignupBirthdayUseCaseTest {
     @Test
     fun `useCase는 Repository의 fetchSignupUser결과의 birthday를 변경하여 patchSignupUser의 매개변수로 호출한다`() = runTest(testDispatcher) {
         val birthdayData = "birthday"
+        val genderData = "gender"
         val signupUser = SignupUserModel.getFromDefaultArgument()
         coEvery { repository.fetchSignupUser(any()) } returns signupUser
-        val expect = signupUser.copy(birthday = birthdayData)
+        val expect = signupUser.copy(birthday = birthdayData, gender = genderData)
 
-        useCase("phone", "gender", birthdayData)
+        useCase("phone", genderData, birthdayData)
         coVerify(exactly = 1) { repository.patchSignupUser(any(), expect) }
     }
 
