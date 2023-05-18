@@ -55,7 +55,7 @@ class RequestSignupUseCase(
                     )
                 ).let {
                     removeSignupUserUseCase(phone)
-                    tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn)
+                    tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone)
                     it.accessToken.isNotBlank()
                 }
             }
