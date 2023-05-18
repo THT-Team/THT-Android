@@ -15,11 +15,15 @@ class TokenRepositoryImpl @Inject constructor(
         tokenDataSource.updateFcmToken(token)
     }
 
-    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Int) {
-        tokenDataSource.updateThtToken(token, accessTokenExpiresIn)
+    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String) {
+        tokenDataSource.updateThtToken(token, accessTokenExpiresIn, phone)
     }
 
     override suspend fun fetchThtToken(): String? {
         return tokenDataSource.fetchThtToken()
+    }
+
+    override suspend fun fetchPhone(): String? {
+        return tokenDataSource.fetchPhone()
     }
 }
