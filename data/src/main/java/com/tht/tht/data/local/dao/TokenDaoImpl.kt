@@ -2,6 +2,7 @@ package com.tht.tht.data.local.dao
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
@@ -12,13 +13,13 @@ import kotlin.coroutines.resumeWithException
 @Singleton
 class TokenDaoImpl @Inject constructor(
     private val sp: SharedPreferences,
+    private val firebaseMessaging: FirebaseMessaging
 ) : TokenDao {
 
     // local 에 저장된 token 이 없다면 FirebaseInstance 에서 token 을 가져 오고, local 에 저장
     override suspend fun fetchFcmToken(): String? {
         return sp.getString(FCM_TOKEN_KEY, null) ?: suspendCancellableCoroutine { continuation ->
-            FirebaseMessaging
-                .getInstance()
+            firebaseMessaging
                 .token
                 .addOnCompleteListener { task ->
                     if (!task.isSuccessful || task.exception != null) {
