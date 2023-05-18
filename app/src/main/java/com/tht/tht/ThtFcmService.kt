@@ -2,7 +2,7 @@ package com.tht.tht
 
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
-import com.tht.tht.domain.token.usecase.RequestFcmTokenLoginUseCase
+import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

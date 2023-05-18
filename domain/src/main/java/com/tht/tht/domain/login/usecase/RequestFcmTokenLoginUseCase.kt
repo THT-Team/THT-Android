@@ -1,4 +1,4 @@
-package com.tht.tht.domain.token.usecase
+package com.tht.tht.domain.login.usecase
 
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.token.repository.TokenRepository
