@@ -36,13 +36,18 @@ class TokenDaoImpl @Inject constructor(
         sp.edit { putString(FCM_TOKEN_KEY, token) }
     }
 
-    override fun updateThtToken(token: String, accessTokenExpiresIn: Int) {
+    override fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String) {
         sp.edit { putString(THT_TOKEN_KEY, token) }
         sp.edit { putInt(THT_TOKEN_EXPIRES_KEY, accessTokenExpiresIn) }
+        sp.edit { putString(THT_PHONE_KEY, phone) }
     }
 
     override fun fetchThtToken(): String? {
         return sp.getString(THT_TOKEN_KEY, null)
+    }
+
+    override fun fetchPhone(): String? {
+        return sp.getString(THT_PHONE_KEY, null)
     }
 
     companion object {
@@ -51,5 +56,7 @@ class TokenDaoImpl @Inject constructor(
         private const val THT_TOKEN_KEY = "tht_token_key"
 
         private const val THT_TOKEN_EXPIRES_KEY = "tht_token_expires_key"
+
+        private const val THT_PHONE_KEY = "tht_phone_key"
     }
 }
