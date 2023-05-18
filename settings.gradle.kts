@@ -35,3 +35,4 @@ include(":feature:signin")
 
 include(":core")
 include(":core:ui")
+include(":core:compose-ui")
