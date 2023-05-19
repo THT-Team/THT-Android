@@ -68,10 +68,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                         }
 
                         is BirthdayViewModel.BirthdayUiState.ValidGenderAndBirthday -> {
-                            binding.tvDate.text = it.birthday
-                            setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
-                            binding.rbFemale.isChecked = it.gender == BirthdayViewModel.female.second
-                            binding.rbMale.isChecked = it.gender == BirthdayViewModel.male.second
                             binding.btnNext.isEnabled = true
                         }
 
@@ -106,6 +102,13 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
             }
 
             launch {
+                viewModel.gender.collect {
+                    binding.rbFemale.isChecked = it == BirthdayViewModel.female.second
+                    binding.rbMale.isChecked = it == BirthdayViewModel.male.second
+                }
+            }
+
+            launch {
                 viewModel.dataLoading.collect {
                     binding.progress.isVisible = it
                 }
@@ -115,8 +118,9 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
         findNavController().currentBackStackEntry?.savedStateHandle?.let { stateHandle ->
             stateHandle.getLiveData<String>(BirthdayConstant.KEY)
                 .observe(viewLifecycleOwner) { birthday ->
-                    viewModel.setBirthday(birthday)
-                    stateHandle.remove<String>(BirthdayConstant.KEY)
+                    if (birthday != viewModel.lastObservedDate)
+                        viewModel.setBirthday(birthday)
+                    viewModel.lastObservedDate = birthday
                 }
         }
     }

@@ -3,6 +3,7 @@ package tht.feature.signin.signup.birthday
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupBirthdayUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupGenderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class BirthdayViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupBirthdayUseCase: PatchSignupBirthdayUseCase,
+    private val patchSignupGenderUseCase: PatchSignupGenderUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<BirthdayViewModel.BirthdayUiState, BirthdayViewModel.BirthdaySideEffect>() {
 
@@ -32,7 +34,11 @@ class BirthdayViewModel @Inject constructor(
     val dataLoading = _dataLoading.asStateFlow()
 
     private val _birthday = MutableStateFlow("")
+
     private val _gender = MutableStateFlow(-1)
+    val gender = _gender.asStateFlow()
+
+    var lastObservedDate = ""
 
     init {
         viewModelScope.launch {
@@ -40,7 +46,7 @@ class BirthdayViewModel @Inject constructor(
                 idx to date
             }.collect {
                 if (it.first in 0..1 && checkValidDate(it.second)) {
-                    setUiState(BirthdayUiState.ValidGenderAndBirthday(it.first, it.second))
+                    setUiState(BirthdayUiState.ValidGenderAndBirthday)
                 }
             }
         }
@@ -58,15 +64,19 @@ class BirthdayViewModel @Inject constructor(
             _dataLoading.value = true
             fetchSignupUserUseCase(phone)
                 .onSuccess {
-                    setUiState(
-                        when (it.birthday.isEmpty() || it.gender.isEmpty()) {
-                            true -> BirthdayUiState.Default
-                            else -> BirthdayUiState.ValidGenderAndBirthday(
-                                if (it.gender == female.first) female.second else male.second,
-                                if (it.birthday.length < 12) addSpaceAfterPeriod(it.birthday) else it.birthday
-                            )
-                        }
-                    )
+                    val date = when (it.birthday.length) {
+                        10 -> addSpaceAfterPeriod(it.birthday)
+                        else -> it.birthday
+                    }
+                    if (checkValidDate(date)) {
+                        _birthday.value = date
+                        setUiState(BirthdayUiState.ValidBirthday(date))
+                    }
+                    _gender.value = when (it.gender) {
+                        female.first -> female.second
+                        male.first -> male.second
+                        else -> -1
+                    }
                 }.onFailure {
                     _sideEffectFlow.emit(
                         BirthdaySideEffect.ShowToast(
@@ -85,14 +95,18 @@ class BirthdayViewModel @Inject constructor(
             _dataLoading.value = true
             patchSignupBirthdayUseCase(
                 phone,
-                if (gender == female.second) female.first else male.first,
                 removeSpaceAfterPeriod(birthday)
             ).onSuccess {
-                _sideEffectFlow.emit(BirthdaySideEffect.NavigateNextView)
+                patchSignupGenderUseCase(
+                    phone,
+                    if (gender == female.second) female.first else male.first
+                ).onSuccess {
+                    postSideEffect(BirthdaySideEffect.NavigateNextView)
+                }.onFailure {
+                    BirthdaySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.BirthdayPatchFail))
+                }
             }.onFailure {
-                BirthdaySideEffect.ShowToast(
-                    stringProvider.getString(StringProvider.ResId.BirthdayPatchFail)
-                )
+                BirthdaySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.BirthdayPatchFail))
             }.also {
                 _dataLoading.value = false
             }
@@ -109,6 +123,7 @@ class BirthdayViewModel @Inject constructor(
                 _birthday.value = birthday
                 setUiState(BirthdayUiState.ValidBirthday(birthday))
             }
+
             false -> {
                 postSideEffect(
                     BirthdaySideEffect.ShowToast(
@@ -143,7 +158,7 @@ class BirthdayViewModel @Inject constructor(
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
         data class ValidBirthday(val birthday: String) : BirthdayUiState()
-        data class ValidGenderAndBirthday(val gender: Int, val birthday: String) : BirthdayUiState()
+        object ValidGenderAndBirthday : BirthdayUiState()
         data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
 
