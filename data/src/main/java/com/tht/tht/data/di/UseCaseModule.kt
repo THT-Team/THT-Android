@@ -1,11 +1,14 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
+import com.tht.tht.domain.login.repository.LoginRepository
+import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -163,10 +166,11 @@ object UseCaseModule {
     @Provides
     fun provideRequestSignupUseCase(
         repository: SignupRepository,
+        tokenRepository: TokenRepository,
         removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
-        repository, removeSignupUserUseCase, dispatcher
+        repository, tokenRepository, removeSignupUserUseCase, dispatcher
     )
 
     @Provides
@@ -208,4 +212,11 @@ object UseCaseModule {
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchLocationByAddressUseCase =
         FetchLocationByAddressUseCase(repository, dispatcher)
+
+    @Provides
+    fun provideRequestFcmTokenLoginUseCase(
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): RequestFcmTokenLoginUseCase =
+        RequestFcmTokenLoginUseCase(tokenRepository, loginRepository)
 }

@@ -3,6 +3,7 @@ package com.tht.tht.data.remote.retrofit
 import com.google.gson.Gson
 import com.tht.tht.data.constant.THTApiConstant
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
+import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -30,6 +31,8 @@ class ApiClient @Inject constructor(
     }
 
     fun provideTHTSignupApi(): THTSignupApi = apiAdapter.create(THTSignupApi::class.java)
+
+    fun provideTHTLoginApi(): THTLoginApi = apiAdapter.create(THTLoginApi::class.java)
 
     fun provideRetrofit(): Retrofit = apiAdapter
 

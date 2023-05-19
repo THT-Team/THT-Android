@@ -5,6 +5,7 @@ import com.tht.tht.data.remote.retrofit.ApiClient
 import com.tht.tht.data.remote.service.ImageService
 import com.tht.tht.data.remote.service.ImageServiceImpl
 import com.tht.tht.data.remote.service.MockTHTSignupApi
+import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import dagger.Module
 import dagger.Provides
@@ -25,6 +26,14 @@ object ApiServiceModule {
     ): THTSignupApi {
         return MockTHTSignupApi(apiClient.provideRetrofit())
 //        return apiClient.provideTHTSignupApi()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTHTLoginApiService(
+        apiClient: ApiClient
+    ): THTLoginApi {
+        return apiClient.provideTHTLoginApi()
     }
 
     @Provides

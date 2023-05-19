@@ -36,7 +36,7 @@ internal class PatchSignupBirthdayUseCaseTest {
     fun `useCase는 매개변수 birthday가 유효하지 않으면 InputDataInvalidateException를 Result로 래핑하여 리턴한다`() = runTest(testDispatcher) {
         coEvery { repository.fetchSignupUser(any()) } returns mockk()
 
-        val actual = useCase("phone", "")
+        val actual = useCase("phone", "", "")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -51,18 +51,19 @@ internal class PatchSignupBirthdayUseCaseTest {
         val phone = "phone"
         coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
 
-        useCase(phone, "birthday")
+        useCase(phone, "gender", "birthday")
         coVerify(exactly = 1) { repository.patchSignupUser(phone, any()) }
     }
 
     @Test
     fun `useCase는 Repository의 fetchSignupUser결과의 birthday를 변경하여 patchSignupUser의 매개변수로 호출한다`() = runTest(testDispatcher) {
         val birthdayData = "birthday"
+        val genderData = "gender"
         val signupUser = SignupUserModel.getFromDefaultArgument()
         coEvery { repository.fetchSignupUser(any()) } returns signupUser
-        val expect = signupUser.copy(birthday = birthdayData)
+        val expect = signupUser.copy(birthday = birthdayData, gender = genderData)
 
-        useCase("phone", birthdayData)
+        useCase("phone", genderData, birthdayData)
         coVerify(exactly = 1) { repository.patchSignupUser(any(), expect) }
     }
 
@@ -71,7 +72,7 @@ internal class PatchSignupBirthdayUseCaseTest {
         coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
         coEvery { repository.patchSignupUser(any(), any()) } returns true
 
-        val actual = useCase("test", "birthday").getOrNull()
+        val actual = useCase("test", "gender", "birthday").getOrNull()
 
         assertThat(actual)
             .isNotNull
@@ -81,9 +82,9 @@ internal class PatchSignupBirthdayUseCaseTest {
     @Test
     fun `useCase는 Repository의 fetchSignupUser결과가 null이면 SignupUserInvalidateException를 Result로 래핑하여 리턴한다`() = runTest(testDispatcher) {
         coEvery { repository.fetchSignupUser(any()) } returns null
-        useCase("test", "birthday")
+        useCase("test", "gender","birthday")
 
-        val actual = useCase("test", "birthday")
+        val actual = useCase("test", "gender","birthday")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -99,7 +100,7 @@ internal class PatchSignupBirthdayUseCaseTest {
         val expect = Exception("unit test exception")
         coEvery { repository.patchSignupUser(any(), any()) } throws expect
 
-        val actual = useCase("test", "birthday")
+        val actual = useCase("test", "gender","birthday")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -114,7 +115,7 @@ internal class PatchSignupBirthdayUseCaseTest {
         val expect = Exception("unit test exception")
         coEvery { repository.fetchSignupUser(any()) } throws expect
 
-        val actual = useCase("test", "birthday")
+        val actual = useCase("test", "gender","birthday")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -128,7 +129,7 @@ internal class PatchSignupBirthdayUseCaseTest {
     fun `useCase는 결과를 Result타입으로 래핑하여 리턴한다`() = runTest(testDispatcher) {
         coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
         coEvery { repository.patchSignupUser(any(), any()) } returns true
-        val actual = useCase("test", "birthday")
+        val actual = useCase("test", "gender","birthday")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -140,13 +141,13 @@ internal class PatchSignupBirthdayUseCaseTest {
     @Test
     fun `useCase는 Repository의 fetchSignupUser결과가 null이 아니면 patchSignupUser를 호출한다`() = runTest(testDispatcher) {
         coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
-        useCase("test", "birthday")
+        useCase("test", "gender","birthday")
         coVerify(exactly = 1) { repository.patchSignupUser(any(), any()) }
     }
 
     @Test
     fun `useCase는 Repository의 fetchSignupUser를 호출한다`() = runTest(testDispatcher) {
-        useCase("test", "birthday")
+        useCase("test", "gender","birthday")
         coVerify(exactly = 1) { repository.fetchSignupUser(any()) }
     }
 
