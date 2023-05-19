@@ -29,7 +29,13 @@ data class SignupRequest(
     @SerializedName("preferGender")
     val preferGender: String,
     @SerializedName("username")
-    val username: String
+    val username: String,
+    @SerializedName("deviceKey")
+    val fcmToken: String,
+    @SerializedName("snsType")
+    val snsType: String,
+    @SerializedName("snsUniqueId")
+    val snsUniqueId: String
 ) {
     data class Agreement(
         @SerializedName("locationServiceAgree")

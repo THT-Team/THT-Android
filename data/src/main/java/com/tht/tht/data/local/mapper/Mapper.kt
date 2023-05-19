@@ -42,7 +42,10 @@ fun SignupUserEntity.toModel(): SignupUserModel {
         preferredGender = preferredGender,
         profileImgUrl = profileImgUrl,
         introduce = introduce,
-        idealTypeKeys = idealTypeKeys
+        idealTypeKeys = idealTypeKeys,
+        fcmToken = fcmToken,
+        snsType = snsType,
+        snsUniqueId = snsUniqueId
     )
 }
 
@@ -65,7 +68,10 @@ fun SignupUserModel.toEntity(): SignupUserEntity {
         preferredGender = preferredGender,
         profileImgUrl = profileImgUrl,
         introduce = introduce,
-        idealTypeKeys = idealTypeKeys
+        idealTypeKeys = idealTypeKeys,
+        fcmToken = fcmToken,
+        snsType = snsType,
+        snsUniqueId = snsUniqueId
     )
 }
 

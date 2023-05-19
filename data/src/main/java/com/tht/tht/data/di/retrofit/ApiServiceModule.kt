@@ -3,6 +3,7 @@ package com.tht.tht.data.di.retrofit
 import com.tht.tht.data.remote.retrofit.ApiClient
 import com.tht.tht.data.remote.service.ImageService
 import com.tht.tht.data.remote.service.ImageServiceImpl
+import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,14 @@ object ApiServiceModule {
         apiClient: ApiClient
     ): THTSignupApi {
         return apiClient.provideTHTSignupApi()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTHTLoginApiService(
+        apiClient: ApiClient
+    ): THTLoginApi {
+        return apiClient.provideTHTLoginApi()
     }
 
     @Provides

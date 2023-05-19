@@ -137,7 +137,7 @@ internal class SignupRepositoryImplTest {
         coEvery { apiDataSource.requestSignup(any()) } returns expect
         val actual = repository.requestSignup(mockk(relaxed = true))
         assertThat(actual)
-            .isEqualTo(expect.accessToken.isNotBlank())
+            .isEqualTo(expect.toModel())
     }
 
     @Test
