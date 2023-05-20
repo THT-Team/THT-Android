@@ -33,7 +33,4 @@ class ApiClient @Inject constructor(
     fun provideTHTSignupApi(): THTSignupApi = apiAdapter.create(THTSignupApi::class.java)
 
     fun provideTHTLoginApi(): THTLoginApi = apiAdapter.create(THTLoginApi::class.java)
-
-    fun provideRetrofit(): Retrofit = apiAdapter
-
 }

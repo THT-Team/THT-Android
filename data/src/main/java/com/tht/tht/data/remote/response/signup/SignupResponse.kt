@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SignupResponse(
     @SerializedName("accessToken")
-    val accessToken: String,
+    val accessToken : String,
     @SerializedName("accessTokenExpiresIn")
-    val accessTokenExpiresIn: Int
+    val accessTokenExpiresIn : Long
 )

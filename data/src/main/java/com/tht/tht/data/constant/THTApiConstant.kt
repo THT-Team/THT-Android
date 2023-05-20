@@ -11,7 +11,7 @@ object THTApiConstant {
         const val INTERESTS = "ideal-types"
         const val IDEAL_TYPE = "ideal-types"
 
-        const val SIGNUP = "signup"
+        const val SIGNUP = "users/join/signup"
     }
 
     object Login {

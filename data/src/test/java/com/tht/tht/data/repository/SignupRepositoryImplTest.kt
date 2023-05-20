@@ -96,7 +96,7 @@ internal class SignupRepositoryImplTest {
     @Test
     fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
         val expect = TermsEntity(
-            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "description1"))
+            listOf(TermsEntity.Body(listOf(TermsEntity.Body.Content("content", "title")), true, "title", "key", "description1"))
         )
         coEvery { termsDataSource.fetchSignupTerms() } returns expect
         val actual = repository.fetchTerms()
@@ -133,7 +133,7 @@ internal class SignupRepositoryImplTest {
 
     @Test
     fun `requestSignup는 SignupApiDataSource의 requestSignup 결과의 userId의 유효성을 리턴한다`() = runTest(testDispatcher) {
-        val expect = SignupResponse("token", 1)
+        val expect = SignupResponse("token", 0L)
         coEvery { apiDataSource.requestSignup(any()) } returns expect
         val actual = repository.requestSignup(mockk(relaxed = true))
         assertThat(actual)

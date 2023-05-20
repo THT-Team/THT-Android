@@ -24,16 +24,16 @@ internal class PatchSignupTermsUseCaseTest {
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
     private val validTermsAgreement = mapOf(
-        TermsModel("terms1", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", true) to true,
-        TermsModel("terms2", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", false) to true,
-        TermsModel("terms3", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", false) to false,
+        TermsModel("terms1", "key1", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", true) to true,
+        TermsModel("terms2", "key2", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", false) to true,
+        TermsModel("terms3", "key3", listOf(TermsModel.TermsContent("terms1_1", "content1")), "description1", false) to false,
     )
 
     private val invalidTermsAgreement = mapOf(
-        TermsModel("terms1", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", true) to true,
-        TermsModel("terms2", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", true) to false,
-        TermsModel("terms3", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", false) to true,
-        TermsModel("terms4", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", false) to false,
+        TermsModel("terms1", "key1", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", true) to true,
+        TermsModel("terms2", "key2", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", true) to false,
+        TermsModel("terms3", "key3", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", false) to true,
+        TermsModel("terms4", "key4", listOf(TermsModel.TermsContent("terms1_1", "content1")),"description1", false) to false,
     )
 
 

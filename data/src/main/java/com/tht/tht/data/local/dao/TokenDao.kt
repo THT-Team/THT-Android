@@ -6,7 +6,7 @@ interface TokenDao {
 
     fun updateFcmToken(token: String)
 
-    fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String)
+    fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String)
 
     fun fetchThtToken(): String?
 

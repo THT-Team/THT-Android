@@ -107,7 +107,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
     fun `useCase는 phone과 loginRepository의 requestFcmTokenLogin의 리턴값을 tokenRepository의 updateThtToken에 전달한다`() = runTest {
         val phone = "phone"
         val token = "token"
-        val tokenExpires = 1
+        val tokenExpires = 1L
         coEvery { tokenRepository.fetchPhone() } returns phone
         coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
             token, tokenExpires

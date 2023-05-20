@@ -2,7 +2,6 @@ package com.tht.tht.data.local.dao
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
@@ -38,9 +37,9 @@ class TokenDaoImpl @Inject constructor(
         sp.edit { putString(FCM_TOKEN_KEY, token) }
     }
 
-    override fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String) {
+    override fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String) {
         sp.edit { putString(THT_TOKEN_KEY, token) }
-        sp.edit { putInt(THT_TOKEN_EXPIRES_KEY, accessTokenExpiresIn) }
+        sp.edit { putLong(THT_TOKEN_EXPIRES_KEY, accessTokenExpiresIn) }
         sp.edit { putString(THT_PHONE_KEY, phone) }
     }
 

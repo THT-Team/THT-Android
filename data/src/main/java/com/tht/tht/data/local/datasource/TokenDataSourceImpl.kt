@@ -23,7 +23,7 @@ class TokenDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String) {
+    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String) {
         withContext(dispatcher) {
             tokenDao.updateThtToken(token, accessTokenExpiresIn, phone)
         }

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -92,6 +93,12 @@ class SignupRootActivity : AppCompatActivity() {
                             binding.pbSignup.setProgress(it.step.ordinal, true)
                         }
                     }
+                }
+            }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
                 }
             }
         }

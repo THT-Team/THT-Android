@@ -15,7 +15,7 @@ class TokenRepositoryImpl @Inject constructor(
         tokenDataSource.updateFcmToken(token)
     }
 
-    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Int, phone: String) {
+    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String) {
         tokenDataSource.updateThtToken(token, accessTokenExpiresIn, phone)
     }
 

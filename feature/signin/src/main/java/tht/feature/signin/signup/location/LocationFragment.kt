@@ -45,7 +45,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
     }
 
     override fun setListener() {
-        binding.btnNext.setOnClickListener { rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION) }
+        binding.btnNext.setOnClickListener { viewModel.nextEvent(rootViewModel.phone.value) }
         binding.cvLocation.setOnClickListener { viewModel.checkLocationEvent() }
     }
 
