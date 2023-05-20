@@ -57,14 +57,23 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                 viewModel.uiStateFlow.collect {
                     when (it) {
                         is BirthdayViewModel.BirthdayUiState.Default -> {
-                            binding.tvDate.text = getString(R.string.date_default)
                             setDateTextColor(tht.core.ui.R.color.brown_26241f)
-                            binding.btnNext.isEnabled = false
+                            binding.apply {
+                                tvDate.text = getString(R.string.date_default)
+                                btnNext.isEnabled = false
+                                rbFemale.isChecked = false
+                                rbMale.isChecked = false
+                            }
                         }
 
                         is BirthdayViewModel.BirthdayUiState.ValidBirthday -> {
                             binding.tvDate.text = it.birthday
                             setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
+                        }
+
+                        is BirthdayViewModel.BirthdayUiState.ValidGender -> {
+                            binding.rbFemale.isChecked = it.gender == BirthdayViewModel.female.second
+                            binding.rbMale.isChecked = it.gender == BirthdayViewModel.male.second
                         }
 
                         is BirthdayViewModel.BirthdayUiState.ValidGenderAndBirthday -> {
@@ -102,13 +111,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
             }
 
             launch {
-                viewModel.gender.collect {
-                    binding.rbFemale.isChecked = it == BirthdayViewModel.female.second
-                    binding.rbMale.isChecked = it == BirthdayViewModel.male.second
-                }
-            }
-
-            launch {
                 viewModel.dataLoading.collect {
                     binding.progress.isVisible = it
                 }
@@ -118,9 +120,7 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
         findNavController().currentBackStackEntry?.savedStateHandle?.let { stateHandle ->
             stateHandle.getLiveData<String>(BirthdayConstant.KEY)
                 .observe(viewLifecycleOwner) { birthday ->
-                    if (birthday != viewModel.lastObservedDate)
-                        viewModel.setBirthday(birthday)
-                    viewModel.lastObservedDate = birthday
+                    viewModel.setBirthday(birthday)
                 }
         }
     }

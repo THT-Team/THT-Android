@@ -33,19 +33,17 @@ class BirthdayViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
-    private val _birthday = MutableStateFlow("")
+    private val birthday = MutableStateFlow("")
+    private val gender = MutableStateFlow(-1)
 
-    private val _gender = MutableStateFlow(-1)
-    val gender = _gender.asStateFlow()
-
-    var lastObservedDate = ""
+    private var lastObservedDate = ""
 
     init {
         viewModelScope.launch {
-            _gender.combine(_birthday) { idx, date ->
+            gender.combine(birthday) { idx, date ->
                 idx to date
             }.collect {
-                if (it.first in 0..1 && checkValidDate(it.second)) {
+                if (checkValidGenderIndex(it.first) && checkValidDate(it.second)) {
                     setUiState(BirthdayUiState.ValidGenderAndBirthday)
                 }
             }
@@ -69,13 +67,17 @@ class BirthdayViewModel @Inject constructor(
                         else -> it.birthday
                     }
                     if (checkValidDate(date)) {
-                        _birthday.value = date
+                        birthday.value = date
                         setUiState(BirthdayUiState.ValidBirthday(date))
                     }
-                    _gender.value = when (it.gender) {
+                    val genderIndex = when (it.gender) {
                         female.first -> female.second
                         male.first -> male.second
                         else -> -1
+                    }
+                    if (checkValidGenderIndex(genderIndex)) {
+                        gender.value = genderIndex
+                        setUiState(BirthdayUiState.ValidGender(genderIndex))
                     }
                 }.onFailure {
                     _sideEffectFlow.emit(
@@ -117,25 +119,28 @@ class BirthdayViewModel @Inject constructor(
         postSideEffect(BirthdaySideEffect.ShowDatePicker)
     }
 
-    fun setBirthday(birthday: String) {
-        when (checkValidDate(birthday)) {
-            true -> {
-                _birthday.value = birthday
-                setUiState(BirthdayUiState.ValidBirthday(birthday))
-            }
+    fun setBirthday(date: String) {
+        if (date != lastObservedDate) {
+            when (checkValidDate(date)) {
+                true -> {
+                    birthday.value = date
+                    setUiState(BirthdayUiState.ValidBirthday(date))
+                }
 
-            false -> {
-                postSideEffect(
-                    BirthdaySideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.InvalidDate)
+                false -> {
+                    postSideEffect(
+                        BirthdaySideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.InvalidDate)
+                        )
                     )
-                )
+                }
             }
         }
+        lastObservedDate = date
     }
 
     fun setGender(index: Int) {
-        _gender.value = index
+        gender.value = index
     }
 
     private fun checkValidDate(date: String): Boolean {
@@ -149,6 +154,8 @@ class BirthdayViewModel @Inject constructor(
         return true
     }
 
+    private fun checkValidGenderIndex(idx: Int): Boolean = idx in 0..1
+
     private fun addSpaceAfterPeriod(str: String): String =
         StringBuilder(str).insert(5, ' ').insert(9, ' ').toString()
 
@@ -158,6 +165,7 @@ class BirthdayViewModel @Inject constructor(
     sealed class BirthdayUiState : UiState {
         object Default : BirthdayUiState()
         data class ValidBirthday(val birthday: String) : BirthdayUiState()
+        data class ValidGender(val gender: Int) : BirthdayUiState()
         object ValidGenderAndBirthday : BirthdayUiState()
         data class InvalidPhoneNumber(val message: String) : BirthdayUiState()
     }
