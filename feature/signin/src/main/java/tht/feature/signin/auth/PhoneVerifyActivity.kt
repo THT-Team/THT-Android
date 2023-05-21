@@ -169,12 +169,12 @@ class PhoneVerifyActivity : AppCompatActivity() {
             context: Context,
             phone: String,
             authNum: String,
-            loginType: SignInType
+            signInType: SignInType
         ): Intent {
             return Intent(context, PhoneVerifyActivity::class.java).apply {
                 putExtra(PhoneVerifyViewModel.EXTRA_PHONE_KEY, phone)
                 putExtra(PhoneVerifyViewModel.EXTRA_AUTH_NUM_KEY, authNum)
-                putExtra(PhoneVerifyViewModel.EXTRA_LOGIN_TYPE_KEY, loginType)
+                putExtra(PhoneVerifyViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
             }
         }
     }

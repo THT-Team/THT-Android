@@ -87,7 +87,7 @@ class PhoneAuthActivity : AppCompatActivity() {
                                     this@PhoneAuthActivity,
                                     it.phone,
                                     it.authNum,
-                                    it.loginType
+                                    it.signInType
                                 )
                             )
                     }
@@ -168,9 +168,9 @@ class PhoneAuthActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun getIntent(context: Context, loginType: SignInType): Intent {
+        fun getIntent(context: Context, signInType: SignInType): Intent {
             return Intent(context, PhoneAuthActivity::class.java).apply {
-                putExtra(PhoneAuthViewModel.EXTRA_LOGIN_TYPE_KEY, loginType)
+                putExtra(PhoneAuthViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
             }
         }
     }

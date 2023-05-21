@@ -13,13 +13,13 @@ class CreateSignupUserUseCase(
 ) {
     internal suspend operator fun invoke(
         phone: String,
-        loginType: SignInType
+        signInType: SignInType
     ): SignupUserModel {
         return withContext(dispatcher) {
             repository.saveSignupUser(
                 getFromDefaultArgument(
                     phone = phone,
-                    snsType = loginType.key
+                    snsType = signInType.key
                 )
             )
         }

@@ -28,7 +28,7 @@ class PhoneAuthViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
-    private val loginType: SignInType = savedStateHandle[EXTRA_LOGIN_TYPE_KEY] ?: SignInType.NORMAL
+    private val signInType: SignInType = savedStateHandle[EXTRA_SIGN_IN_TYPE_KEY] ?: SignInType.NORMAL
 
     fun textInputEvent(text: String?) {
         if (text.isNullOrBlank()) {
@@ -67,7 +67,7 @@ class PhoneAuthViewModel @Inject constructor(
                             stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
                         ) {
                             viewModelScope.launch {
-                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it, loginType))
+                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it, signInType))
                             }
                         }
                     )
@@ -99,13 +99,13 @@ class PhoneAuthViewModel @Inject constructor(
         data class NavigateVerifyView(
             val phone: String,
             val authNum: String,
-            val loginType: SignInType
+            val signInType: SignInType
         ) : PhoneAuthSideEffect()
         data class KeyboardVisible(val visible: Boolean) : PhoneAuthSideEffect()
         object Back : PhoneAuthSideEffect()
     }
 
     companion object {
-        const val EXTRA_LOGIN_TYPE_KEY = "extra_login_type_key"
+        const val EXTRA_SIGN_IN_TYPE_KEY = "extra_sign_in_type_key"
     }
 }
