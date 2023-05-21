@@ -3,7 +3,9 @@ package com.tht.tht.data.local.mapper
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.remote.response.location.LocationResponse
+import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
 import com.tht.tht.domain.signup.model.LocationModel
+import com.tht.tht.domain.signup.model.RegionCodeModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
 
@@ -103,5 +105,11 @@ fun LocationResponse.toModel(): LocationModel {
         lat = lat,
         lng = lng,
         address = simpleAddress.toString()
+    )
+}
+
+fun RegionCodeResponse.toModel(): RegionCodeModel {
+    return RegionCodeModel(
+        stanReginCd[0].row[0].regionCode
     )
 }

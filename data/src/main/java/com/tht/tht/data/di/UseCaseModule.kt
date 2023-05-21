@@ -6,6 +6,7 @@ import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
+import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.token.repository.TokenRepository
@@ -139,4 +140,11 @@ object UseCaseModule {
         loginRepository: LoginRepository
     ): RequestFcmTokenLoginUseCase =
         RequestFcmTokenLoginUseCase(tokenRepository, loginRepository)
+
+    @Provides
+    fun provideFetchRegionCodeUseCase(
+        repository: RegionCodeRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): FetchRegionCodeUseCase =
+        FetchRegionCodeUseCase(repository, dispatcher)
 }

@@ -4,6 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
+import com.tht.tht.domain.signup.usecase.FetchRegionCodeUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +24,7 @@ class LocationViewModel @Inject constructor(
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
+    private val fetchRegionCodeUseCase: FetchRegionCodeUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
