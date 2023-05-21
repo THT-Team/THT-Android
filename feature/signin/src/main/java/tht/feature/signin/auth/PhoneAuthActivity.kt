@@ -133,7 +133,7 @@ class PhoneAuthActivity : AppCompatActivity() {
         }
         customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
         customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
-            .setBackgroundResource(R.drawable.ic_send_success)
+            .setBackgroundResource(R.drawable.ic_toast_send_success)
         binding.layoutBackground.addView(customToastView)
 
         customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
