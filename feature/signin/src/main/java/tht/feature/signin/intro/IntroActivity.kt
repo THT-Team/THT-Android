@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.tht.tht.domain.type.SignInType
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
@@ -45,7 +46,7 @@ class IntroActivity : AppCompatActivity() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is IntroViewModel.IntroSideEffect.NavigateSignupView ->
-                            startActivity(PhoneAuthActivity.getIntent(this@IntroActivity))
+                            startActivity(PhoneAuthActivity.getIntent(this@IntroActivity, SignInType.NORMAL))
 
                         is IntroViewModel.IntroSideEffect.NavigateLoginView ->
                             startActivity(PreloginActivity.getIntent(this@IntroActivity))

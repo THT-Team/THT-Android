@@ -1,7 +1,9 @@
 package tht.feature.signin.auth
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PhoneAuthViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<PhoneAuthViewModel.PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect>() {
@@ -24,6 +27,8 @@ class PhoneAuthViewModel @Inject constructor(
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
+
+    private val loginType: SignInType = savedStateHandle[EXTRA_LOGIN_TYPE_KEY] ?: SignInType.NORMAL
 
     fun textInputEvent(text: String?) {
         if (text.isNullOrBlank()) {
@@ -62,7 +67,7 @@ class PhoneAuthViewModel @Inject constructor(
                             stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
                         ) {
                             viewModelScope.launch {
-                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it))
+                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it, loginType))
                             }
                         }
                     )
@@ -93,9 +98,14 @@ class PhoneAuthViewModel @Inject constructor(
         data class ShowToast(val message: String) : PhoneAuthSideEffect()
         data class NavigateVerifyView(
             val phone: String,
-            val authNum: String
+            val authNum: String,
+            val loginType: SignInType
         ) : PhoneAuthSideEffect()
         data class KeyboardVisible(val visible: Boolean) : PhoneAuthSideEffect()
         object Back : PhoneAuthSideEffect()
+    }
+
+    companion object {
+        const val EXTRA_LOGIN_TYPE_KEY = "extra_login_type_key"
     }
 }
