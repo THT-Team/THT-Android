@@ -2,8 +2,7 @@ package tht.feature.signin.signup.birthday
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupBirthdayUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupGenderUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BirthdayViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupBirthdayUseCase: PatchSignupBirthdayUseCase,
-    private val patchSignupGenderUseCase: PatchSignupGenderUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<BirthdayViewModel.BirthdayUiState, BirthdayViewModel.BirthdaySideEffect>() {
 
@@ -95,20 +93,21 @@ class BirthdayViewModel @Inject constructor(
     fun nextEvent(phone: String, gender: Int, birthday: String) {
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupBirthdayUseCase(
-                phone,
-                removeSpaceAfterPeriod(birthday)
-            ).onSuccess {
-                patchSignupGenderUseCase(
-                    phone,
-                    if (gender == female.second) female.first else male.first
-                ).onSuccess {
+            patchSignupDataUseCase(phone) {
+                it.copy(
+                    birthday = birthday,
+                    gender = if (gender == female.second) female.first else male.first
+                )
+            }.onSuccess {
+                if (it) {
                     postSideEffect(BirthdaySideEffect.NavigateNextView)
-                }.onFailure {
+                } else {
                     BirthdaySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.BirthdayPatchFail))
                 }
             }.onFailure {
-                BirthdaySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.BirthdayPatchFail))
+                BirthdaySideEffect.ShowToast(
+                    stringProvider.getString(StringProvider.ResId.BirthdayPatchFail) + it
+                )
             }.also {
                 _dataLoading.value = false
             }
