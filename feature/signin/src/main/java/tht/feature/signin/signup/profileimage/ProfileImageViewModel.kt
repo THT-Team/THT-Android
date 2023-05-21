@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
+import com.tht.tht.domain.signup.constant.SignupConstant
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -238,7 +239,7 @@ class ProfileImageViewModel @Inject constructor(
 
     companion object {
         private const val IMAGE_MAX_SIZE = 3
-        private const val IMAGE_REQUIRE_SIZE = 2
+        private const val IMAGE_REQUIRE_SIZE = SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE
     }
 }
 
