@@ -92,14 +92,6 @@ object UseCaseModule {
     )
 
     @Provides
-    fun providePatchSignupPreferredGenderUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupPreferredGenderUseCase = PatchSignupPreferredGenderUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
     fun providePatchSignupProfileImagesUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
