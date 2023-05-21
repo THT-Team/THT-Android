@@ -90,8 +90,10 @@ class LocationViewModel @Inject constructor(
         viewModelScope.launch {
             location.value.run {
                 if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
-                    LocationSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                    _sideEffectFlow.emit(
+                        LocationSideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                        )
                     )
                     return@launch
                 }
