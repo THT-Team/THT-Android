@@ -95,7 +95,7 @@ class BirthdayViewModel @Inject constructor(
             _dataLoading.value = true
             patchSignupDataUseCase(phone) {
                 it.copy(
-                    birthday = birthday,
+                    birthday = removeSpaceAfterPeriod(birthday),
                     gender = if (gender == female.second) female.first else male.first
                 )
             }.onSuccess {
