@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.FetchTermsUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupTermsUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +21,7 @@ class TermsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val fetchTermsUseCase: FetchTermsUseCase,
-    private val patchSignupTermsUseCase: PatchSignupTermsUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<TermsViewModel.TermsUiState, TermsViewModel.TermsSideEffect>() {
 
@@ -128,19 +128,25 @@ class TermsViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupTermsUseCase(phone.value, termsAgreement)
-                .onSuccess {
-                    _sideEffectFlow.emit(TermsSideEffect.NavigateNextView(phone.value))
-                }.onFailure {
-                    it.printStackTrace()
-                    _sideEffectFlow.emit(
-                        TermsSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.TermsPatchFail)
-                        )
+            patchSignupDataUseCase(phone.value) {
+                it.copy(termsAgreement = termsAgreement)
+            }.onSuccess {
+                when (it) {
+                    true -> _sideEffectFlow.emit(TermsSideEffect.NavigateNextView(phone.value))
+                    else -> TermsSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.TermsPatchFail)
                     )
-                }.also {
-                    _dataLoading.value = false
                 }
+            }.onFailure {
+                it.printStackTrace()
+                _sideEffectFlow.emit(
+                    TermsSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.TermsPatchFail) + it
+                    )
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 

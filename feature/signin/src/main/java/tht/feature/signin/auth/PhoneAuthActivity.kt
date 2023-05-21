@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
@@ -85,7 +86,8 @@ class PhoneAuthActivity : AppCompatActivity() {
                                 PhoneVerifyActivity.getIntent(
                                     this@PhoneAuthActivity,
                                     it.phone,
-                                    it.authNum
+                                    it.authNum,
+                                    it.signInType
                                 )
                             )
                     }
@@ -166,8 +168,10 @@ class PhoneAuthActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, PhoneAuthActivity::class.java)
+        fun getIntent(context: Context, signInType: SignInType): Intent {
+            return Intent(context, PhoneAuthActivity::class.java).apply {
+                putExtra(PhoneAuthViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
+            }
         }
     }
 }

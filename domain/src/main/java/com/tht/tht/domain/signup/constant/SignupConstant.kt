@@ -1,6 +1,6 @@
 package com.tht.tht.domain.signup.constant
 
-internal object SignupConstant {
+object SignupConstant {
     const val PROFILE_IMAGE_REQUIRE_SIZE = 2
 
     const val IDEAL_TYPE_REQUIRE_SIZE = 3
