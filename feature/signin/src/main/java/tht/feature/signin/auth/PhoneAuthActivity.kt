@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -131,6 +132,8 @@ class PhoneAuthActivity : AppCompatActivity() {
             alpha = 0f
         }
         customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
+        customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
+            .setBackgroundResource(R.drawable.ic_send_success)
         binding.layoutBackground.addView(customToastView)
 
         customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
