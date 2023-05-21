@@ -28,13 +28,13 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     override val binding by viewBinding(ActivityPreloginBinding::inflate)
 
     override fun initViews() = with(binding) {
-        ivKakaoLoginButton.setOnClickListener {
+        btnKakaoLogin.setOnClickListener {
             vm.requestKakaoLogin()
         }
-        ivNumberLoginButton.setOnClickListener {
+        btnPhoneLogin.setOnClickListener {
             vm.requestNumberLogin()
         }
-        ivNaverLoginButton.setOnClickListener {
+        btnNaverLogin.setOnClickListener {
             vm.requestNaverLogin()
         }
     }
@@ -124,39 +124,38 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     }
 
     private fun handleUninitialized() = with(binding) {
-        ivNumberLoginButton.isClickable = true
-        ivKakaoLoginButton.isClickable = true
-        ivGoogleLoginButton.isClickable = true
-        ivNumberLoginButton.isClickable = true
+        btnPhoneLogin.isClickable = true
+        btnKakaoLogin.isClickable = true
+        btnGoogleLogin.isClickable = true
+        btnNaverLogin.isClickable = true
         loadingContainer.gone()
     }
 
     private fun handleLoading() = with(binding) {
-        ivNumberLoginButton.isClickable = false
-        ivKakaoLoginButton.isClickable = false
-        ivGoogleLoginButton.isClickable = false
-        ivNumberLoginButton.isClickable = false
+        btnPhoneLogin.isClickable = false
+        btnKakaoLogin.isClickable = false
+        btnGoogleLogin.isClickable = false
+        btnNaverLogin.isClickable = false
         loadingContainer.visible()
     }
 
     private fun handleSuccess() = with(binding) {
-        ivNumberLoginButton.isClickable = false
-        ivKakaoLoginButton.isClickable = false
-        ivGoogleLoginButton.isClickable = false
-        ivNumberLoginButton.isClickable = false
+        btnPhoneLogin.isClickable = false
+        btnKakaoLogin.isClickable = false
+        btnGoogleLogin.isClickable = false
+        btnNaverLogin.isClickable = false
         loadingContainer.gone()
     }
 
     private fun handleError() = with(binding) {
-        ivNumberLoginButton.isClickable = true
-        ivKakaoLoginButton.isClickable = true
-        ivGoogleLoginButton.isClickable = true
-        ivNumberLoginButton.isClickable = true
+        btnPhoneLogin.isClickable = true
+        btnKakaoLogin.isClickable = true
+        btnGoogleLogin.isClickable = true
+        btnNaverLogin.isClickable = true
         loadingContainer.gone()
     }
 
     companion object {
-
         const val TAG = "PreloginActivity"
 
         fun getIntent(context: Context): Intent {
