@@ -8,8 +8,6 @@ data class SignupRequest(
     val agreement: Agreement,
     @SerializedName("birthDay")
     val birthDay: String,
-    @SerializedName("deviceKey")
-    val deviceKey: String,
     @SerializedName("email")
     val email: String,
     @SerializedName("gender")
