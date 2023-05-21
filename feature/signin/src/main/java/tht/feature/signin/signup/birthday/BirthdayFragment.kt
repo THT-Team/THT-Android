@@ -57,9 +57,13 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                 viewModel.uiStateFlow.collect {
                     when (it) {
                         is BirthdayViewModel.BirthdayUiState.Default -> {
-                            binding.tvDate.text = getString(R.string.date_default)
                             setDateTextColor(tht.core.ui.R.color.brown_26241f)
-                            binding.btnNext.isEnabled = false
+                            binding.apply {
+                                tvDate.text = getString(R.string.date_default)
+                                btnNext.isEnabled = false
+                                rbFemale.isChecked = false
+                                rbMale.isChecked = false
+                            }
                         }
 
                         is BirthdayViewModel.BirthdayUiState.ValidBirthday -> {
@@ -67,11 +71,12 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
                             setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
                         }
 
-                        is BirthdayViewModel.BirthdayUiState.ValidGenderAndBirthday -> {
-                            binding.tvDate.text = it.birthday
-                            setDateTextColor(tht.core.ui.R.color.yellow_f9cc2e)
+                        is BirthdayViewModel.BirthdayUiState.ValidGender -> {
                             binding.rbFemale.isChecked = it.gender == BirthdayViewModel.female.second
                             binding.rbMale.isChecked = it.gender == BirthdayViewModel.male.second
+                        }
+
+                        is BirthdayViewModel.BirthdayUiState.ValidGenderAndBirthday -> {
                             binding.btnNext.isEnabled = true
                         }
 
@@ -116,7 +121,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
             stateHandle.getLiveData<String>(BirthdayConstant.KEY)
                 .observe(viewLifecycleOwner) { birthday ->
                     viewModel.setBirthday(birthday)
-                    stateHandle.remove<String>(BirthdayConstant.KEY)
                 }
         }
     }
