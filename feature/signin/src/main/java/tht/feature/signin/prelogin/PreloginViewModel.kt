@@ -14,7 +14,7 @@ class PreloginViewModel @Inject constructor() : BaseStateViewModel<PreloginState
     override val _uiStateFlow: MutableStateFlow<PreloginState> = MutableStateFlow(PreloginState.Uninitialized)
 
     fun requestNumberLogin() {
-        postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.Normal))
+        postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.NORMAL))
     }
 
     fun requestNaverLogin() {
