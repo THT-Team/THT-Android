@@ -4,11 +4,11 @@ import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
+import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.token.repository.TokenRepository
-import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -144,6 +144,14 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): PatchSignupTermsUseCase = PatchSignupTermsUseCase(
+        repository, dispatcher
+    )
+
+    @Provides
+    fun providePatchSignupDataUseCase(
+        repository: SignupRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): PatchSignupDataUseCase = PatchSignupDataUseCase(
         repository, dispatcher
     )
 
