@@ -4,9 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupEmailUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -19,7 +24,7 @@ import javax.inject.Inject
 class EmailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupEmailUseCase: PatchSignupEmailUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<EmailViewModel.EmailUiState, EmailViewModel.EmailSideEffect>() {
 
@@ -128,18 +133,28 @@ class EmailViewModel @Inject constructor(
                 return@launch
             }
             _dataLoading.value = true
-            patchSignupEmailUseCase(phone.value, email)
-                .onSuccess {
+            patchSignupDataUseCase(phone.value) {
+                it.copy(email = email)
+            }.onSuccess {
+                if (it) {
+                    savedStateHandle[KEY_EMAIL] = email
                     _sideEffectFlow.emit(EmailSideEffect.NavigateNextView(phone.value))
-                }.onFailure {
+                } else {
                     _sideEffectFlow.emit(
                         EmailSideEffect.ShowToast(
                             stringProvider.getString(StringProvider.ResId.EmailPatchFail)
                         )
                     )
-                }.also {
-                    _dataLoading.value = false
                 }
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    EmailSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.EmailPatchFail) + it
+                    )
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 

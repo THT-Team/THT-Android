@@ -34,6 +34,7 @@ interface StringProvider {
         ProfileImagePatchFail,
         BirthdayPatchFail,
         InvalidateLocation,
+        FetchLocationFail,
         AutoLocationFetchFail,
         LocationPatchFail,
         SignupFail,

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
@@ -167,11 +168,13 @@ class PhoneVerifyActivity : AppCompatActivity() {
         fun getIntent(
             context: Context,
             phone: String,
-            authNum: String
+            authNum: String,
+            signInType: SignInType
         ): Intent {
             return Intent(context, PhoneVerifyActivity::class.java).apply {
                 putExtra(PhoneVerifyViewModel.EXTRA_PHONE_KEY, phone)
                 putExtra(PhoneVerifyViewModel.EXTRA_AUTH_NUM_KEY, authNum)
+                putExtra(PhoneVerifyViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
             }
         }
     }

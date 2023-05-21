@@ -59,7 +59,6 @@ fun SignupUserModel.toRemoteRequest(): SignupRequest {
         gender = gender,
         preferGender = preferredGender,
         introduction = introduce,
-        deviceKey = "", // 임시 코드
         agreement = agreement,
         locationRequest = SignupRequest.LocationRequest(
             address = address,

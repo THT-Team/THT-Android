@@ -84,7 +84,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
 
                 override fun onSuccess() {
                     NaverIdLoginSDK.getAccessToken()?.let { token ->
-                        vm.requestSignIn(signInType = SignInType.Naver, token)
+                        vm.requestSignIn(signInType = SignInType.NAVER, token)
                     }
                 }
             }
