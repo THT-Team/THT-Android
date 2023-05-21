@@ -15,6 +15,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".email.EmailActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

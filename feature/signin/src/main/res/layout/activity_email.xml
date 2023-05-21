@@ -7,6 +7,7 @@
     tools:context=".email.EmailActivity"
     android:background="@color/black_161616"
     android:id="@+id/layout_background"
+    android:fitsSystemWindows="true"
     >
 
     <include
@@ -81,9 +82,12 @@
         android:enabled="false"
         android:layout_marginTop="44dp"
         android:layout_marginHorizontal="38dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_email_auth_message"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_et_email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
         android:background="@drawable/selector_btn_next"
         android:foreground="?attr/selectableItemBackground"
         android:layout_width="0dp"
