@@ -1,3 +1,7 @@
+import java.util.Properties
+import java.io.File
+import java.io.FileInputStream
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -15,6 +19,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        val prop = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+        buildConfigField("String", "REGION_CODE_SERVICE_KEY", prop.getProperty("REGION_CODE_SERVICE_KEY"))
     }
 
     buildTypes {
