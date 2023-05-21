@@ -19,6 +19,7 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.gone
 import tht.core.ui.extension.showToast
 import tht.core.ui.extension.visible
+import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
 
 class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBinding>() {
@@ -58,8 +59,10 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                             is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
                             is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
                             is PreloginSideEffect.ShowToast -> showToast(sideEffect.message)
-                            is PreloginSideEffect.NavigateSignUp -> { TODO("회원가입 화면 이동 처리") }
-                            is PreloginSideEffect.NavigatePhoneAuth -> navigatePhoneAuth(sideEffect)
+                            is PreloginSideEffect.NavigateSignUp ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity))
+                            is PreloginSideEffect.NavigatePhoneAuth ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity))
                         }
                     }
                 }
@@ -112,15 +115,6 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountCallback)
         }
-    }
-
-    private fun navigatePhoneAuth(sideEffect: PreloginSideEffect.NavigatePhoneAuth) {
-//        startActivity(
-//            PhoneAuthActivity.getIntent(this).apply {
-//                intent.putExtra("token", sideEffect.token)
-//                intent.putExtra("signInType", sideEffect.signInType.name)
-//            }
-//        )
     }
 
     private fun handleUninitialized() = with(binding) {
