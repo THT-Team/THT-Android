@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupProfileImagesUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileImageViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupProfileImagesUseCase: PatchSignupProfileImagesUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val removeImageUrlUseCase: RemoveImageUrlUseCase,
     private val stringProvider: StringProvider
@@ -212,25 +212,24 @@ class ProfileImageViewModel @Inject constructor(
     // 이미지 Url Array를 Local에 있는 SignupUserModel에 적용
     private suspend fun patchProfileImage(phone: String, profileImageUrls: List<String>) {
         _dataLoading.value = true
-        patchSignupProfileImagesUseCase(phone, profileImageUrls)
-            .onSuccess {
-                when (it) {
-                    true -> {
-                        postSideEffect(ProfileImageSideEffect.NavigateNextView)
-                    }
-                    else -> emitMessage(
-                        stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
-                    )
-                }
-            }.onFailure {
-                it.printStackTrace()
-                emitMessage(
-                    stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail) +
-                        it.toString()
+        patchSignupDataUseCase(phone) {
+            it.copy(profileImgUrl = profileImageUrls)
+        }.onSuccess {
+            when (it) {
+                true -> postSideEffect(ProfileImageSideEffect.NavigateNextView)
+                else -> emitMessage(
+                    stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
                 )
-            }.also {
-                _dataLoading.value = false
             }
+        }.onFailure {
+            it.printStackTrace()
+            emitMessage(
+                stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail) +
+                    it.toString()
+            )
+        }.also {
+            _dataLoading.value = false
+        }
     }
 
     private fun emitMessage(message: String) {
