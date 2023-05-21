@@ -68,14 +68,6 @@ object UseCaseModule {
     )
 
     @Provides
-    fun providePatchSignupInterestUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupInterestUseCase = PatchSignupInterestUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
     fun providePatchSignupIntroduceUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
