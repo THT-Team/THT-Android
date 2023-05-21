@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".auth.PhoneAuthActivity"
-    android:background="@color/black_1e1e1e"
+    android:background="@color/black_161616"
     android:id="@+id/layout_background"
     >
 

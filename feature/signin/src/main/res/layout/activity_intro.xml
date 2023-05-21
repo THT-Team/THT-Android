@@ -8,7 +8,7 @@
     tools:context=".intro.IntroActivity"
     android:paddingHorizontal="40dp"
     android:paddingBottom="16dp"
-    android:background="@color/black_1e1e1e"
+    android:background="@color/black_161616"
     >
 
     <ImageView
