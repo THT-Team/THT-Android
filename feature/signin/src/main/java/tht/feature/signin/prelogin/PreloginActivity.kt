@@ -60,9 +60,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                             is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
                             is PreloginSideEffect.ShowToast -> showToast(sideEffect.message)
                             is PreloginSideEffect.NavigateSignUp ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity))
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
                             is PreloginSideEffect.NavigatePhoneAuth ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity))
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
                         }
                     }
                 }
