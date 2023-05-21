@@ -40,7 +40,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.IdealPatchFail -> R.string.message_ideal_patch_fail
             StringProvider.ResId.InterestPatchFail -> R.string.message_interest_patch_fail
             StringProvider.ResId.InterestFetchFail -> R.string.message_interest_fetch_fail
-            StringProvider.ResId.InvalidateLocation -> R.string.message_location_fetch_fail
+            StringProvider.ResId.FetchLocationFail -> R.string.message_location_fetch_fail
+            StringProvider.ResId.InvalidateLocation -> R.string.message_invalidate_location
             StringProvider.ResId.AutoLocationFetchFail -> R.string.message_location_auto_fetch_fail
             StringProvider.ResId.LocationPatchFail -> R.string.message_location_patch_fail
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail

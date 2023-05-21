@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val patchSignupLocationUseCase: PatchSignupLocationUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
     private val stringProvider: StringProvider
@@ -73,7 +73,7 @@ class LocationViewModel @Inject constructor(
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            stringProvider.getString(StringProvider.ResId.FetchLocationFail)
                         )
                     )
                 }.also {
@@ -88,13 +88,22 @@ class LocationViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         viewModelScope.launch {
+            location.value.run {
+                if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
+                    LocationSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                    )
+                    return@launch
+                }
+            }
             _dataLoading.value = true
-            patchSignupLocationUseCase(
-                phone,
-                location.value.lat,
-                location.value.lng,
-                location.value.address
-            ).onSuccess {
+            patchSignupDataUseCase(phone) {
+                it.copy(
+                    lat = location.value.lat,
+                    lng = location.value.lng,
+                    address = location.value.address
+                )
+            }.onSuccess {
                 _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
             }.onFailure {
                 _sideEffectFlow.emit(
