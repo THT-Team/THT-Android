@@ -44,6 +44,7 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.InvalidateLocation -> R.string.message_invalidate_location
             StringProvider.ResId.AutoLocationFetchFail -> R.string.message_location_auto_fetch_fail
             StringProvider.ResId.LocationPatchFail -> R.string.message_location_patch_fail
+            StringProvider.ResId.RegionCodeFetchFail -> R.string.message_region_code_fetch_fail
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
             StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
             StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail

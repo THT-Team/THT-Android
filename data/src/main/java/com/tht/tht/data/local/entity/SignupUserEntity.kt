@@ -13,6 +13,7 @@ data class SignupUserEntity(
     val lat: Double,
     val lng: Double,
     val address: String,
+    val regionCode: String,
     val preferredGender: String,
     val profileImgUrl: List<String>,
     val introduce: String,

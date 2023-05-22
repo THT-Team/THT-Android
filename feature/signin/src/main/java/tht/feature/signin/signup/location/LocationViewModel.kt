@@ -101,23 +101,33 @@ class LocationViewModel @Inject constructor(
                 }
             }
             _dataLoading.value = true
-            patchSignupDataUseCase(phone) {
-                it.copy(
-                    lat = location.value.lat,
-                    lng = location.value.lng,
-                    address = location.value.address
-                )
-            }.onSuccess {
-                _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
-            }.onFailure {
-                _sideEffectFlow.emit(
-                    LocationSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.LocationPatchFail)
+            fetchRegionCodeUseCase(location.value.address)
+                .onSuccess { regionCodeModel ->
+                    patchSignupDataUseCase(phone) {
+                        it.copy(
+                            lat = location.value.lat,
+                            lng = location.value.lng,
+                            address = location.value.address,
+                            regionCode = regionCodeModel.regionCode
+                        )
+                    }.onSuccess {
+                        _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
+                    }.onFailure {
+                        _sideEffectFlow.emit(
+                            LocationSideEffect.ShowToast(
+                                stringProvider.getString(StringProvider.ResId.LocationPatchFail)
+                            )
+                        )
+                    }
+                }.onFailure {
+                    _sideEffectFlow.emit(
+                        LocationSideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.RegionCodeFetchFail)
+                        )
                     )
-                )
-            }.also {
-                _dataLoading.value = false
-            }
+                }.also {
+                    _dataLoading.value = false
+                }
         }
     }
 

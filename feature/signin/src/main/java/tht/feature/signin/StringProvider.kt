@@ -37,6 +37,7 @@ interface StringProvider {
         FetchLocationFail,
         AutoLocationFetchFail,
         LocationPatchFail,
+        RegionCodeFetchFail,
         SignupFail,
         InvalidDate
     }
