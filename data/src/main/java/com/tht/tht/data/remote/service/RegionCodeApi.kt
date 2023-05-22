@@ -9,13 +9,13 @@ import retrofit2.http.Query
 
 interface RegionCodeApi {
 
-    @GET
+    @GET(RegionCodeConstant.REGION_LIST)
     suspend fun fetchRegionCode(
         @Query("locatadd_nm") address: String,
         @Query("ServiceKey") serviceKey: String = BuildConfig.REGION_CODE_SERVICE_KEY,
-        @Query("type") type: String = RegionCodeConstant.type,
-        @Query("pageNo") pageNo: Int = RegionCodeConstant.pageNo,
-        @Query("numOfRows") numOfRows: Int = RegionCodeConstant.numOfRows,
-        @Query("flag") flag: String = RegionCodeConstant.flag
+        @Query("type") type: String = RegionCodeConstant.TYPE,
+        @Query("pageNo") pageNo: Int = RegionCodeConstant.PAGE_NO,
+        @Query("numOfRows") numOfRows: Int = RegionCodeConstant.NUM_OF_ROWS,
+        @Query("flag") flag: String = RegionCodeConstant.FLAG
     ): ThtResponse<RegionCodeResponse>
 }

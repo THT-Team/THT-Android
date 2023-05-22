@@ -15,7 +15,7 @@ class RegionCodeDataSourceImpl @Inject constructor(
 
     override suspend fun fetchRegionCode(address: String): RegionCodeResponse {
         return withContext(dispatcher) {
-            regionCodeApi.fetchRegionCode(address).toUnwrap { it }
+            regionCodeApi.fetchRegionCode(address = address).toUnwrap { it }
         }
     }
 }
