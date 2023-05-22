@@ -38,6 +38,8 @@ class RequestSignupUseCase(
 
                     user.address.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("address")
 
+                    user.regionCode.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("regionCode")
+
                     user.preferredGender.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("preferred gender")
 
                     user.profileImgUrl.size < SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("profile image")
