@@ -30,18 +30,21 @@ class LocationViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.InvalidInput)
 
-    private val _location = MutableStateFlow(LocationModel(0.0, 0.0, "")).also { flow ->
+    private val fullLocation = MutableStateFlow(LocationModel(0.0, 0.0, "")).also { flow ->
         flow.onEach {
             checkValidInput(it.address)
+            setLocationValue(it.address)
         }.launchIn(viewModelScope)
     }
+
+    private val _location = MutableStateFlow("")
     val location = _location.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
     fun checkLocationEvent() {
-        if (_location.value.address.isEmpty())
+        if (fullLocation.value.address.isEmpty())
             postSideEffect(LocationSideEffect.CheckPermission)
         else
             postSideEffect(LocationSideEffect.ShowLocationDialog)
@@ -52,7 +55,7 @@ class LocationViewModel @Inject constructor(
             _dataLoading.value = true
             fetchCurrentLocationUseCase()
                 .onSuccess { location ->
-                    _location.value = location
+                    fullLocation.value = location
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
@@ -71,7 +74,7 @@ class LocationViewModel @Inject constructor(
             _dataLoading.value = true
             fetchLocationByAddressUseCase(address)
                 .onSuccess { location ->
-                    _location.value = location
+                    fullLocation.value = location
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
@@ -90,7 +93,7 @@ class LocationViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         viewModelScope.launch {
-            location.value.run {
+            fullLocation.value.run {
                 if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
@@ -101,13 +104,13 @@ class LocationViewModel @Inject constructor(
                 }
             }
             _dataLoading.value = true
-            fetchRegionCodeUseCase(location.value.address)
+            fetchRegionCodeUseCase(fullLocation.value.address)
                 .onSuccess { regionCodeModel ->
                     patchSignupDataUseCase(phone) {
                         it.copy(
-                            lat = location.value.lat,
-                            lng = location.value.lng,
-                            address = location.value.address,
+                            lat = fullLocation.value.lat,
+                            lng = fullLocation.value.lng,
+                            address = fullLocation.value.address,
                             regionCode = regionCodeModel.regionCode
                         )
                     }.onSuccess {
@@ -131,12 +134,26 @@ class LocationViewModel @Inject constructor(
         }
     }
 
+    private fun setLocationValue(address: String) {
+        _location.value = if (checkProvince(address)) address.split(" ").run {
+            takeLast(size - 1)
+        }.joinToString(" ") else address
+    }
+
     private fun checkValidInput(location: String) {
         if (location.isEmpty())
             setUiState(LocationUiState.InvalidInput)
         else
             setUiState(LocationUiState.ValidInput)
     }
+
+    private fun checkProvince(address: String): Boolean =
+        when (address.split(" ")[0]) {
+            "부산광역시", "대구광역시", "인천광역시", "광주광역시",
+            "대전광역시", "울산광역시", "서울특별시" -> false
+
+            else -> true
+        }
 
     sealed class LocationUiState : UiState {
         object ValidInput : LocationUiState()

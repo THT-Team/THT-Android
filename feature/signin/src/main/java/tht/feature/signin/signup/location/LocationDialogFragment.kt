@@ -65,7 +65,7 @@ class LocationDialogFragment : DialogFragment() {
     private inner class LocationBridge {
         @JavascriptInterface
         fun processDATA(address: String?) {
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 navController.previousBackStackEntry?.savedStateHandle?.set(LocationConstant.KEY, address)
                 navController.popBackStack()
             }

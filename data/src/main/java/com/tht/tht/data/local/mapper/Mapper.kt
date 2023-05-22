@@ -88,8 +88,14 @@ fun LocationResponse.toModel(): LocationModel {
         if (isDetail) return@forEach
 
         val newName = when(name) {
-            "대한민국", "경기도", "경기", "충청북도", "충북", "충청남도", "충남", "경상북도", "경북",
-            "경상남도", "경남", "전라북도", "전북", "전라남도", "전남", "제주특별자치도" -> return@forEach
+            "대한민국" -> return@forEach
+            "경기" -> "경기도"
+            "충북" -> "충청북도"
+            "충남" -> "충청남도"
+            "경북" -> "경상북도"
+            "경남" -> "경상남도"
+            "전북" -> "전라북도"
+            "전남" -> "전라남도"
             "부산" -> "부산광역시"
             "대구" -> "대구광역시"
             "인천" -> "인천광역시"
@@ -97,6 +103,7 @@ fun LocationResponse.toModel(): LocationModel {
             "대전" -> "대전광역시"
             "울산" -> "울산광역시"
             "서울" -> "서울특별시"
+            "제주도" -> "제주특별자치도"
             else -> name
         }
 
