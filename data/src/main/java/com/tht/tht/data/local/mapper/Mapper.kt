@@ -119,6 +119,6 @@ fun LocationResponse.toModel(): LocationModel {
 
 fun RegionCodeResponse.toModel(): RegionCodeModel {
     return RegionCodeModel(
-        stanReginCd[1].row[0].regionCode
+        stanReginCd[1].row!![0].regionCode
     )
 }
