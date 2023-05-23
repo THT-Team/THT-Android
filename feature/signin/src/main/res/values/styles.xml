@@ -113,7 +113,7 @@
     </style>
 
     <style name="THT_ProgressStyle" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:indeterminateTint">@color/red_ef4444</item>
+        <item name="android:indeterminateTint">@color/yellow_f9cc2e</item>
     </style>
 
     <style name="ProfileImageModifyDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">

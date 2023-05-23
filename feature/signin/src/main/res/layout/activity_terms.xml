@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".terms.TermsActivity"
-    android:background="@color/black_1e1e1e"
+    android:background="@color/black_161616"
     >
     <include
         android:id="@+id/item_signup_tool_bar"
