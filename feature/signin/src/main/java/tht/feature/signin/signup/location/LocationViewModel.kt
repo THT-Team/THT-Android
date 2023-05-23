@@ -4,8 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
-import com.tht.tht.domain.signup.usecase.FetchRegionCodeUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
+import com.tht.tht.domain.signup.usecase.PatchLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,10 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
-    private val fetchRegionCodeUseCase: FetchRegionCodeUseCase,
+    private val patchLocationUseCase: PatchLocationUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
@@ -104,33 +102,22 @@ class LocationViewModel @Inject constructor(
                 }
             }
             _dataLoading.value = true
-            fetchRegionCodeUseCase(fullLocation.value.address)
-                .onSuccess { regionCodeModel ->
-                    patchSignupDataUseCase(phone) {
-                        it.copy(
-                            lat = fullLocation.value.lat,
-                            lng = fullLocation.value.lng,
-                            address = fullLocation.value.address,
-                            regionCode = regionCodeModel.regionCode
-                        )
-                    }.onSuccess {
-                        _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
-                    }.onFailure {
-                        _sideEffectFlow.emit(
-                            LocationSideEffect.ShowToast(
-                                stringProvider.getString(StringProvider.ResId.LocationPatchFail)
-                            )
-                        )
-                    }
-                }.onFailure {
-                    _sideEffectFlow.emit(
-                        LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.RegionCodeFetchFail)
-                        )
+            patchLocationUseCase(
+                phone,
+                fullLocation.value.lat,
+                fullLocation.value.lng,
+                fullLocation.value.address
+            ).onSuccess {
+                _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    LocationSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.LocationPatchFail)
                     )
-                }.also {
-                    _dataLoading.value = false
-                }
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 
@@ -151,6 +138,7 @@ class LocationViewModel @Inject constructor(
         when (address.split(" ")[0]) {
             "부산광역시", "대구광역시", "인천광역시", "광주광역시",
             "대전광역시", "울산광역시", "서울특별시" -> false
+
             else -> true
         }
 
