@@ -147,4 +147,12 @@ object UseCaseModule {
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchRegionCodeUseCase =
         FetchRegionCodeUseCase(repository, dispatcher)
+
+    @Provides
+    fun providePatchLocationUseCase(
+        useCase: FetchRegionCodeUseCase,
+        repository: SignupRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): PatchLocationUseCase =
+        PatchLocationUseCase(useCase, repository, dispatcher)
 }
