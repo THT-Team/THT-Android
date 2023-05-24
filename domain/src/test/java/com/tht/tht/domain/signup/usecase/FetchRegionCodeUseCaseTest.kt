@@ -1,5 +1,6 @@
 package com.tht.tht.domain.signup.usecase
 
+import com.tht.tht.domain.signup.model.RegionCodeModel
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -46,6 +47,38 @@ internal class FetchRegionCodeUseCaseTest {
         coEvery { repository.fetchRegionCode("test") } throws expect
 
         val actual = useCase("test")
+
+        assertThat(actual)
+            .isInstanceOf(Result::class.java)
+
+        assertThat(actual.exceptionOrNull()?.message)
+            .isNotNull
+            .isEqualTo(expect.message)
+    }
+
+    @Test
+    fun `useCase는 올바른 주소를 입력하면 결과를 RegionCodeModel을 Result로 래핑하여 전달한다`() = runTest(testDispatcher) {
+        val expect = RegionCodeModel("4113300000")
+        coEvery { repository.fetchRegionCode("경기도 성남시 중원구") } returns expect
+        val actual = useCase("경기도 성남시 중원구")
+
+        assertThat(actual)
+            .isInstanceOf(Result::class.java)
+
+        assertThat(actual.getOrNull())
+            .isNotNull
+            .isInstanceOf(RegionCodeModel::class.java)
+
+        assertThat(actual.getOrNull()?.regionCode)
+            .isNotNull
+            .isEqualTo(expect.regionCode)
+    }
+
+    @Test
+    fun `useCase는 잘못된 주소를 입력하면 결과를 예외를 Result로 래핑하여 전달한다`() = runTest(testDispatcher) {
+        val expect = Exception("unit test exception")
+        coEvery { repository.fetchRegionCode("경기도 성남시 중원") } throws  expect
+        val actual = useCase("경기도 성남시 중원")
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
