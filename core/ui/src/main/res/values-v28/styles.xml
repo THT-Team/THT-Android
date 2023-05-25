@@ -327,6 +327,13 @@
     </style>
     <!--Ex1-->
 
+    <!--Pretendard 17-->
+    <style name="Pretendard17TextStyle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    <!--Pretendard 17-->
+
     <!--Pretendard 14-->
     <style name="Pretendard14TextStyle">
         <item name="android:textSize">14sp</item>
@@ -337,5 +344,16 @@
         <item name="android:textColor">@color/gray_666666</item>
     </style>
     <!--Pretendard 14-->
+
+    <!--Pretendard 13-->
+    <style name="Pretendard13TextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="Pretendard13GrayTextStyle" parent="Pretendard13TextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--Pretendard 13-->
 
 </resources>
