@@ -2,12 +2,14 @@ package com.tht.tht.data.di
 
 import com.tht.tht.data.repository.ImageRepositoryImpl
 import com.tht.tht.data.repository.LocationRepositoryImpl
+import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.LoginRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.signup.repository.LocationRepository
+import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.token.repository.TokenRepository
 import dagger.Binds
@@ -33,4 +35,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindTokenRepository(impl: TokenRepositoryImpl): TokenRepository
+
+    @Binds
+    abstract fun bindRegionCodeRepository(impl: RegionCodeRepositoryImpl): RegionCodeRepository
 }

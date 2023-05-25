@@ -96,7 +96,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
             launch {
                 viewModel.location.collect {
-                    binding.tvLocationDetail.text = it.address
+                    binding.tvLocationDetail.text = it
                 }
             }
 
