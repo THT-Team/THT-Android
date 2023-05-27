@@ -31,6 +31,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {
@@ -50,6 +53,7 @@ dependencies {
     implementation(libs.jetpack.compose.animation)
     implementation(libs.jetpack.compose.ui.tooling)
     testImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
     implementation(libs.jetpack.compose.hilt.navigation)
     implementation(libs.jetpack.compose.activity)
     implementation(libs.jetpack.compose.viewmodel)
