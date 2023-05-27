@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,12 +29,17 @@ fun ToHotCard(
     name: String,
     age: Int,
     address: String,
+    interests: List<Long>,
+    idealTypes: List<Long>,
+    introduce: String,
     maxTimeSec: Int,
     currentSec: Int,
     ticChanged: (Int) -> Unit = { },
-    userCardClick: () -> Unit
+    userCardClick: () -> Unit = { },
+    onReportClick: () -> Unit = { }
 ) {
     val pagerState = rememberPagerState()
+    var userInfoFullShow by remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -56,10 +65,18 @@ fun ToHotCard(
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(horizontal = 18.dp, vertical = 38.dp),
+            isFullCardShow = userInfoFullShow,
             name = name,
             age = age,
             address = address,
-            onClick = userCardClick
+            interests = interests,
+            idealTypes = idealTypes,
+            introduce = introduce,
+            onClick = {
+                userInfoFullShow = userInfoFullShow.not()
+                userCardClick()
+            },
+            onReportClick = onReportClick
         )
 
         ToHotPagerIndicator(

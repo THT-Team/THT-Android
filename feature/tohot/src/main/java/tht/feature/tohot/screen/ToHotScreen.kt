@@ -51,9 +51,14 @@ private fun ToHotScreen(
                 name = card.nickname,
                 age = 10,
                 address = card.address,
+                interests = card.interestKeys,
+                idealTypes = card.idealTypeKeys,
+                introduce = card.introduce,
                 maxTimeSec = 5,
                 currentSec = 4,
-                userCardClick = { }
+                userCardClick = { },
+                onReportClick = { },
+                ticChanged = { }
             )
         }
     }
