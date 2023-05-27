@@ -1,4 +1,8 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="loading">로딩중</string>
+
+    <string name="user_info_interest_title">내 관심사</string>
+    <string name="user_info_ideal_type_title">내 이상형</string>
+    <string name="user_info_introduce_title">자기소개</string>
 </resources>
