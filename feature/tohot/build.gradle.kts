@@ -28,10 +28,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core)
@@ -41,4 +45,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+
+    implementation(libs.jetpack.compose.material)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    testImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.hilt.navigation)
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.jetpack.compose.viewmodel)
+    implementation(libs.app.compat.theme.adpater)
 }
