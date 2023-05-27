@@ -57,5 +57,6 @@ dependencies {
     implementation(libs.jetpack.compose.hilt.navigation)
     implementation(libs.jetpack.compose.activity)
     implementation(libs.jetpack.compose.viewmodel)
+    implementation(libs.jetpack.compose.coil)
     implementation(libs.app.compat.theme.adpater)
 }
