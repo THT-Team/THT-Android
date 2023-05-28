@@ -10,11 +10,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _navigationItemStateFlow = MutableStateFlow(MainNavigation(-1))
+    private val _navigationItemStateFlow = MutableStateFlow(MainNavigation(NONE_SELECT_ITEM))
     val navigationItemStateFlow = _navigationItemStateFlow.asStateFlow()
 
     fun changeNavigation(mainNavigation: MainNavigation) {
         _navigationItemStateFlow.value = mainNavigation
+    }
+
+    companion object {
+        private const val NONE_SELECT_ITEM = -1
     }
 }
 
