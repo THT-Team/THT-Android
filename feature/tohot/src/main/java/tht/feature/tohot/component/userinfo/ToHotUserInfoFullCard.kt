@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -27,15 +26,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.p.ThtP2
+import com.tht.tht.domain.signup.model.IdealTypeModel
+import com.tht.tht.domain.signup.model.InterestModel
 import tht.feature.tohot.R
-import tht.feature.tohot.component.chip.ToHotChip
+import tht.feature.tohot.component.chip.ToHotEmojiChip
+import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.userData
 
 @Composable
 fun ToHotUserInfoFullCard(
     modifier: Modifier = Modifier,
-    interests: List<Long>,
-    idealTypes: List<Long>,
+    interests: ImmutableListWrapper<InterestModel>,
+    idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
     onClick: () -> Unit = { },
     onReportClick: () -> Unit = { }
@@ -69,8 +71,11 @@ fun ToHotUserInfoFullCard(
                 modifier = Modifier
                     .padding(start = 12.dp, top = 4.dp)
             ) {
-                interests.forEach { interest ->
-                    ToHotChip(item = interest.toString())
+                interests.list.forEach { interest ->
+                    ToHotEmojiChip(
+                        content = interest.title,
+                        emojiCode = interest.emojiCode
+                    )
                     Spacer(modifier = Modifier.width(6.dp))
                 }
             }
@@ -86,8 +91,11 @@ fun ToHotUserInfoFullCard(
                 modifier = Modifier
                     .padding(start = 12.dp, top = 4.dp)
             ) {
-                idealTypes.forEach { ideal ->
-                    ToHotChip(item = ideal.toString())
+                idealTypes.list.forEach { ideal ->
+                    ToHotEmojiChip(
+                       content = ideal.title,
+                       emojiCode = ideal.emojiCode
+                    )
                     Spacer(modifier = Modifier.width(6.dp))
                 }
             }
@@ -136,8 +144,8 @@ fun ToHotUserInfoFullCard(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 private fun ToHotUserInfoFullCardPreview() {
     ToHotUserInfoFullCard(
-        interests = userData.interestKeys,
-        idealTypes = userData.idealTypeKeys,
+        interests = userData.interests,
+        idealTypes = userData.idealTypes,
         introduce = userData.introduce
     )
 }

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import tht.feature.tohot.component.card.ToHotCardImage
+import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.userData
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -18,19 +19,19 @@ import tht.feature.tohot.userData
 fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
-    imageUrls: List<String>
+    imageUrls: ImmutableListWrapper<String>
 ) {
     Box(
         modifier = modifier
     ) {
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            pageCount = imageUrls.size,
+            pageCount = imageUrls.list.size,
             state = pagerState
         ) {
             ToHotCardImage(
                 modifier = Modifier.fillMaxHeight(),
-                imageUrl = imageUrls[it]
+                imageUrl = imageUrls.list[it]
             )
         }
     }

@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tht.tht.domain.signup.model.IdealTypeModel
+import com.tht.tht.domain.signup.model.InterestModel
+import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.userData
 
 @Composable
@@ -17,8 +20,8 @@ fun ToHotUserInfoCard(
     name: String,
     age: Int,
     address: String,
-    interests: List<Long>,
-    idealTypes: List<Long>,
+    interests: ImmutableListWrapper<InterestModel>,
+    idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
     onClick: (Boolean) -> Unit = { },
     onReportClick: () -> Unit = { }
@@ -59,8 +62,8 @@ private fun FullToHotUserInfoCardPreview() {
         name = userData.nickname,
         age = 32,
         address = userData.address,
-        interests = userData.interestKeys,
-        idealTypes = userData.idealTypeKeys,
+        interests = userData.interests,
+        idealTypes = userData.idealTypes,
         introduce = userData.introduce
     )
 }
@@ -73,8 +76,8 @@ private fun MinimumToHotUserInfoCardPreview() {
         name = userData.nickname,
         age = 32,
         address = userData.address,
-        interests = userData.interestKeys,
-        idealTypes = userData.idealTypeKeys,
+        interests = userData.interests,
+        idealTypes = userData.idealTypes,
         introduce = userData.introduce
     )
 }

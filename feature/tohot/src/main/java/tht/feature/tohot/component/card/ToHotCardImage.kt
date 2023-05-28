@@ -45,6 +45,6 @@ fun ToHotCardImage(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 private fun ToHotCardImagePreview() {
     ToHotCardImage(
-        imageUrl = userData.profileImgUrl.first()
+        imageUrl = userData.profileImgUrl.list.first()
     )
 }

@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ToHotAnimateTimeProgressContainer(
     modifier: Modifier = Modifier,
+    enable: Boolean,
     maxTimeSec: Int,
     currentSec: Int,
+    destinationSec: Int,
     ticChanged: (Int) -> Unit = { }
 ) {
     Row(
@@ -27,8 +29,10 @@ fun ToHotAnimateTimeProgressContainer(
     ) {
         ToHotAnimateTimeLinearProgress(
             modifier = Modifier.padding(start = 12.dp),
+            enable = enable,
             maxTimeSec = maxTimeSec,
             currentSec = currentSec,
+            destinationSec = destinationSec,
             ticChanged = ticChanged
         )
     }

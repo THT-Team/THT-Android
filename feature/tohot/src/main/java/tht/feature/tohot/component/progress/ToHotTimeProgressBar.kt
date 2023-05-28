@@ -1,45 +1,64 @@
 package tht.feature.tohot.component.progress
 
 import android.util.Log
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * 1. maxTime, currentSec 를 받아 ProgressBar 구성
+ * 2. maxTime, destinationSec 로 목표 progress 산출
+ * 3. 애니메이션 수행
+ * 4. 애니메이션 수행 후 ticChanged 호출
+ */
 @Composable
 fun ToHotAnimateTimeLinearProgress(
     modifier: Modifier = Modifier,
+    enable: Boolean,
     maxTimeSec: Int,
     currentSec: Int,
+    destinationSec: Int,
+    duration: Int = (currentSec - destinationSec) * 1000,
     ticChanged: (Int) -> Unit = { }
 ) {
-    //5초중 1초 -> 0.2
-    var progress by remember { mutableStateOf((currentSec.toFloat() / maxTimeSec.toFloat())) }
-    Log.d("progress", "$progress")
-    val progressAnimation by animateFloatAsState(
-        targetValue = progress, // 0.1 ~ 1.0
-        animationSpec = tween(
-            durationMillis = 1000,
-            easing = FastOutLinearInEasing
-        )
-    )
+    val progressAnimatable = remember { Animatable((currentSec.toFloat() / maxTimeSec.toFloat())) }
     ToHotTimeProgressBar(
         modifier = modifier,
-        progress = progressAnimation
+        progress = progressAnimatable.value,
     )
-    LaunchedEffect(key1 = currentSec, key2 = maxTimeSec) {
-        progress = currentSec.toFloat() / maxTimeSec.toFloat()
-        ticChanged((progress * maxTimeSec).toInt())
+    LaunchedEffect(key1 = destinationSec, key2 = enable) {
+        if (enable) {
+            Log.d("ToHot", "duration => $duration, progress => ${destinationSec.toFloat() / maxTimeSec.toFloat()}, target : ${progressAnimatable.targetValue}, value : ${progressAnimatable.value}")
+            if (progressAnimatable.targetValue == destinationSec.toFloat() / maxTimeSec.toFloat()) {
+                ticChanged((progressAnimatable.value * maxTimeSec).toInt())
+                return@LaunchedEffect
+            }
+            if (destinationSec > progressAnimatable.value * maxTimeSec) {
+                progressAnimatable.animateTo(
+                    targetValue = currentSec.toFloat() / maxTimeSec.toFloat(),
+                    animationSpec = tween(
+                        durationMillis = 0,
+                        easing = LinearEasing
+                    )
+                )
+            }
+            progressAnimatable.animateTo(
+                targetValue = destinationSec.toFloat() / maxTimeSec.toFloat(),
+                animationSpec = tween(
+                    durationMillis = duration,
+                    easing = LinearEasing
+                )
+            )
+            ticChanged((progressAnimatable.value * maxTimeSec).toInt())
+        }
     }
 }
 
@@ -50,7 +69,7 @@ fun ToHotTimeProgressBar(
 ) {
     LinearProgressIndicator(
         modifier = modifier.fillMaxWidth(),
-        progress = progress,
+        progress = progress, // 0.1 ~ 1.0
         backgroundColor = Color(0xFF222222),
         color = Color(0xFFF9CC2E)
     )
@@ -60,17 +79,20 @@ fun ToHotTimeProgressBar(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, name = "AnimateProgress")
 private fun ToHotAnimateTimeProgressBarPreview() {
     ToHotAnimateTimeLinearProgress(
+        enable = true,
         maxTimeSec = 5,
-        currentSec = 3
+        currentSec = 5,
+        destinationSec = 3
     )
 }
 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF000000, name = "progress")
-private fun ToHotTimeProgressBarPreview(
-    progress: Float
-) {
-    ToHotTimeProgressBar(
-        progress = (3 / 5).toFloat()
+private fun ToHotTimeProgressBarPreview() {
+    ToHotAnimateTimeLinearProgress(
+        enable = true,
+        maxTimeSec = 5,
+        currentSec = 3,
+        destinationSec = 3
     )
 }

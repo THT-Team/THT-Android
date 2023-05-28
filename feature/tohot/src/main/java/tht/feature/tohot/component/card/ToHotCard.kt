@@ -8,32 +8,39 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.tht.tht.domain.signup.model.IdealTypeModel
+import com.tht.tht.domain.signup.model.InterestModel
 import tht.feature.tohot.component.pager.ToHotCardImagePager
 import tht.feature.tohot.component.pager.ToHotPagerIndicator
 import tht.feature.tohot.component.progress.ToHotAnimateTimeProgressContainer
 import tht.feature.tohot.component.userinfo.ToHotUserInfoCard
+import tht.feature.tohot.model.ImmutableListWrapper
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToHotCard(
     modifier: Modifier = Modifier,
-    imageUrls: List<String>,
+    imageUrls: ImmutableListWrapper<String>,
     name: String,
     age: Int,
     address: String,
-    interests: List<Long>,
-    idealTypes: List<Long>,
+    interests: ImmutableListWrapper<InterestModel>,
+    idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
     maxTimeSec: Int,
     currentSec: Int,
+    destinationSec: Int,
+    enable: Boolean,
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
     onReportClick: () -> Unit = { }
@@ -55,9 +62,11 @@ fun ToHotCard(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(horizontal = 13.dp, vertical = 12.dp),
+            enable = enable,
             maxTimeSec = maxTimeSec,
             currentSec = currentSec,
-            ticChanged = ticChanged
+            ticChanged = ticChanged,
+            destinationSec = destinationSec,
         )
 
         ToHotUserInfoCard(
@@ -84,7 +93,7 @@ fun ToHotCard(
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp, start = 10.dp, end = 10.dp),
             pagerState = pagerState,
-            pageCount = imageUrls.size,
+            pageCount = imageUrls.list.size,
             width = 10.dp,
             height = 10.dp
         )
