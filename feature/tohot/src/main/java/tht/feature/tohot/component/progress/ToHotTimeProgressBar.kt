@@ -27,12 +27,14 @@ fun ToHotAnimateTimeLinearProgress(
     currentSec: Int,
     destinationSec: Int,
     duration: Int = (currentSec - destinationSec) * 1000,
+    color: Color,
     ticChanged: (Int) -> Unit = { }
 ) {
     val progressAnimatable = remember { Animatable((currentSec.toFloat() / maxTimeSec.toFloat())) }
     ToHotTimeProgressBar(
         modifier = modifier,
         progress = progressAnimatable.value,
+        color = color
     )
     LaunchedEffect(key1 = destinationSec, key2 = enable) {
         if (enable) {
@@ -65,13 +67,15 @@ fun ToHotAnimateTimeLinearProgress(
 @Composable
 fun ToHotTimeProgressBar(
     modifier: Modifier = Modifier,
-    progress: Float
+    progress: Float,
+    backgroundColor: Color = Color(0xFF222222),
+    color: Color = Color(0xFFF9CC2E)
 ) {
     LinearProgressIndicator(
         modifier = modifier.fillMaxWidth(),
         progress = progress, // 0.1 ~ 1.0
-        backgroundColor = Color(0xFF222222),
-        color = Color(0xFFF9CC2E)
+        backgroundColor = backgroundColor,
+        color = color
     )
 }
 
@@ -82,17 +86,15 @@ private fun ToHotAnimateTimeProgressBarPreview() {
         enable = true,
         maxTimeSec = 5,
         currentSec = 5,
-        destinationSec = 3
+        destinationSec = 3,
+        color = Color(0xFFF9CC2E)
     )
 }
 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF000000, name = "progress")
 private fun ToHotTimeProgressBarPreview() {
-    ToHotAnimateTimeLinearProgress(
-        enable = true,
-        maxTimeSec = 5,
-        currentSec = 3,
-        destinationSec = 3
+    ToHotTimeProgressBar(
+        progress = 0.4f
     )
 }
