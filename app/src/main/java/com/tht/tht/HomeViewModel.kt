@@ -1,24 +1,24 @@
 package com.tht.tht
 
 import androidx.annotation.IdRes
-import androidx.lifecycle.viewModelScope
-import tht.core.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import tht.core.ui.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
-    private val _navigationItemStateFlow = MutableSharedFlow<MainNavigation>()
-    val navigationItemStateFlow: SharedFlow<MainNavigation> = _navigationItemStateFlow
+    private val _navigationItemStateFlow = MutableStateFlow(MainNavigation(NONE_SELECT_ITEM))
+    val navigationItemStateFlow = _navigationItemStateFlow.asStateFlow()
 
     fun changeNavigation(mainNavigation: MainNavigation) {
-        viewModelScope.launch {
-            _navigationItemStateFlow.emit(mainNavigation)
-        }
+        _navigationItemStateFlow.value = mainNavigation
+    }
+
+    companion object {
+        private const val NONE_SELECT_ITEM = -1
     }
 }
 
