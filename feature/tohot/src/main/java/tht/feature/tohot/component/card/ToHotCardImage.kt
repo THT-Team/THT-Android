@@ -18,9 +18,9 @@ import tht.feature.tohot.R
 import tht.feature.tohot.userData
 
 @Composable
-fun ToHotCardImage(
+fun <T>ToHotCardImage(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    imageUrl: T,
     placeholder: Painter = painterResource(id = R.drawable.ic_location),
     error: Painter = painterResource(id = R.drawable.ic_location)
 ) {
