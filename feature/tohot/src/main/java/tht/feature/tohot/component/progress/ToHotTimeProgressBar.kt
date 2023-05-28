@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.tooling.preview.Preview
 
 /**
@@ -75,7 +76,8 @@ fun ToHotTimeProgressBar(
         modifier = modifier.fillMaxWidth(),
         progress = progress, // 0.1 ~ 1.0
         backgroundColor = backgroundColor,
-        color = color
+        color = color,
+        strokeCap = StrokeCap.Round
     )
 }
 
