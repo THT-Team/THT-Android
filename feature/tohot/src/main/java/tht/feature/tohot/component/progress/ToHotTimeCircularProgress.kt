@@ -19,11 +19,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+
+/**
+ * offset setting 
+ * https://stackoverflow.com/questions/74456259/android-compose-drawarc-would-not-get-centered-within-box
+ */
 @Composable
 fun ToHotTimeCircularProgress(
     modifier: Modifier = Modifier,
-    size: Float = 24f,
+    size: Dp,
     sec: Int,
     progress: Float,
     duration: Int,
@@ -31,7 +37,7 @@ fun ToHotTimeCircularProgress(
 ) {
     Box(
         modifier = modifier
-            .size(size.dp)
+            .size(size)
             .padding(end = 6.dp)
     ) {
         ToHotCircularProgress(
@@ -54,24 +60,30 @@ fun ToHotTimeCircularProgress(
 fun ToHotCircularProgress(
     modifier: Modifier = Modifier,
     color: Color,
-    size: Float,
+    size: Dp,
     progress: Float,
     duration: Int
 ) {
     val animateFloat = remember { Animatable(progress) }
     val stroke = with(LocalDensity.current) { Stroke(2.dp.toPx()) }
+    val sizePx = with(LocalDensity.current) { size.toPx() }
     Canvas(
         modifier = modifier
-            .size(size.dp)
+            .size(size)
             .aspectRatio(1f)
     ) {
+        val offsetX = this.center.x - sizePx / 4
+        val offsetY = this.center.y - sizePx / 4
         drawArc(
             color = color,
             startAngle = 0f,
             sweepAngle = 360f * progress,
             useCenter = false,
-            topLeft = Offset.Zero,
-            size = Size(size * 2 , size * 2),
+            topLeft = Offset(
+                x = offsetX,
+                y = offsetY
+            ),
+            size = Size(sizePx / 2 , sizePx / 2),
             style = stroke
         )
     }
@@ -89,7 +101,7 @@ private fun ToHotAnimateTimeCircularProgressPreview() {
         progress = 1.0f,
         duration = 1000,
         color = Color.Blue,
-        size = 24f
+        size = 36.dp
     )
 }
 
@@ -98,7 +110,7 @@ private fun ToHotAnimateTimeCircularProgressPreview() {
 private fun ToHotTimeCircularProgressPreview() {
     ToHotTimeCircularProgress(
         color = Color(0xFFF9CC2E),
-        size = 24f,
+        size = 36.dp,
         sec = 5,
         progress = 0.8f,
         duration = 1000

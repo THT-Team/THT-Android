@@ -81,12 +81,12 @@ fun ToHotAnimateTimeProgressContainer(
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .background(color = Color(0xFF1A1A1A).copy(alpha = 0.5f))
-            .padding(horizontal = 10.dp, vertical = 4.dp)
+            .padding(horizontal = 10.dp)
     ) {
         ToHotTimeCircularProgress(
             modifier = Modifier
                 .align(Alignment.CenterVertically),
-            size = 24f,
+            size = 36.dp,
             color = progressColor,
             progress = 1 - progressAnimatable.value,
             duration = duration,
