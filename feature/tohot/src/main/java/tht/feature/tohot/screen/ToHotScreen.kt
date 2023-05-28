@@ -83,7 +83,7 @@ private fun ToHotScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        ToHotTopAppBar { }
+        ToHotTopAppBar()
         VerticalPager(
             pageCount = cardList.list.size,
             state = pagerState,

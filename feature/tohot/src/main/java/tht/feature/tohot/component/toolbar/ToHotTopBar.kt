@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ToHotTopAppBar(
-    rightIcons: @Composable () -> Unit,
+    rightIcons: @Composable () -> Unit = { },
 ) {
     Row(
         modifier = Modifier
@@ -31,5 +31,5 @@ fun ToHotTopAppBar(
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 internal fun ToHotTopAppBarPreview() {
-    ToHotTopAppBar { }
+    ToHotTopAppBar()
 }
