@@ -1,5 +1,7 @@
 package tht.feature.signin.inquiry
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -120,6 +122,12 @@ class InquiryActivity : AppCompatActivity() {
             setNavigationOnClickListener {
                 finish()
             }
+        }
+    }
+
+    companion object {
+        fun getIntent(context: Context): Intent {
+            return Intent(context, InquiryActivity::class.java)
         }
     }
 }
