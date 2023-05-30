@@ -116,4 +116,9 @@
     <string name="message_email_agreement_detail">보내주신 질문에 답변드리기 위해 이메일 정보 제공에 동의해 주시기 바랍니다.</string>
     <string name="message_email_send_fail">이메일 전송에 실패하였습니다.</string>
 
+    <string name="title_complete_dialog">문의하기 완료</string>
+    <string name="message_complete_content">답변에는 하루 정도의 시간이 걸릴 수 있어요.\n답변이 안온다면, 스팸 메일함을 확인해주세요.</string>
+    <string name="message_complete_back"><u>돌아가기</u></string>
+    <string name="inquiry_complete_dialog">InquiryCompleteDialog</string>
+
 </resources>

@@ -81,6 +81,7 @@ class InquiryActivity : AppCompatActivity() {
                         InquiryViewModel.InquiryUiState.ButtonInvalid -> {
                             binding.btnSend.isEnabled = false
                         }
+
                         InquiryViewModel.InquiryUiState.ButtonValid -> {
                             binding.btnSend.isEnabled = true
                         }
@@ -92,8 +93,12 @@ class InquiryActivity : AppCompatActivity() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         InquiryViewModel.InquirySideEffect.ShowCompleteDialog -> {
-
+                            InquiryCompleteDialog().show(
+                                supportFragmentManager,
+                                getString(R.string.inquiry_complete_dialog)
+                            )
                         }
+
                         is InquiryViewModel.InquirySideEffect.ShowToast -> {
                             showToast(it.message)
                         }
