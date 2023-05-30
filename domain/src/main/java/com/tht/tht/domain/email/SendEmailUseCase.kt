@@ -10,7 +10,7 @@ class SendEmailUseCase(
 
     suspend operator fun invoke(email: String, content: String) = kotlin.runCatching {
         withContext(dispatcher) {
-            repository.sendEmail("$email\n\n$content")
+            repository.sendEmail("답변받을 이메일 주소\n$email\n\n\n내용\n$content")
         }
     }
 }

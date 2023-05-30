@@ -3,6 +3,7 @@ package tht.feature.signin.inquiry
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,6 +34,12 @@ class InquiryActivity : AppCompatActivity() {
         }
         binding.etContent.addTextChangedListener {
             viewModel.setContent(it.toString())
+        }
+        binding.btnSend.setOnClickListener {
+            viewModel.sendEmail(
+                binding.etEmail.text.toString(),
+                binding.etContent.text.toString()
+            )
         }
     }
 
@@ -77,6 +84,25 @@ class InquiryActivity : AppCompatActivity() {
                             binding.btnSend.isEnabled = true
                         }
                     }
+                }
+            }
+
+            launch {
+                viewModel.sideEffectFlow.collect {
+                    when (it) {
+                        InquiryViewModel.InquirySideEffect.ShowCompleteDialog -> {
+
+                        }
+                        is InquiryViewModel.InquirySideEffect.ShowToast -> {
+
+                        }
+                    }
+                }
+            }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
                 }
             }
         }

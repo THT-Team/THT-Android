@@ -114,5 +114,6 @@
     <string name="caption_inquiry_content">내용 입력</string>
     <string name="message_email_agreement">이메일 정보 제공 동의</string>
     <string name="message_email_agreement_detail">보내주신 질문에 답변드리기 위해 이메일 정보 제공에 동의해 주시기 바랍니다.</string>
+    <string name="message_email_send_fail">이메일 전송에 실패하였습니다.</string>
 
 </resources>

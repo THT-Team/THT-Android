@@ -51,6 +51,7 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.BirthdayPatchFail -> R.string.message_birthday_patch_fail
             StringProvider.ResId.SignupFail -> R.string.message_signup_fail
             StringProvider.ResId.InvalidDate -> R.string.message_invalidate_date
+            StringProvider.ResId.EmailSendFail -> R.string.message_email_send_fail
         }
     }
 }
