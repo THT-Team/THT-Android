@@ -1,5 +1,7 @@
 package tht.feature.signin.inquiry
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,11 +26,16 @@ class InquiryCompleteDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListener()
+        setBackgroundTransparent()
     }
 
     private fun setListener() {
         binding.tvBack.setOnClickListener {
             dismiss()
         }
+    }
+
+    private fun setBackgroundTransparent() {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 }
