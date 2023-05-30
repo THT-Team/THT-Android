@@ -65,7 +65,6 @@ class InquiryViewModel @Inject constructor(
                     ) InquiryUiState.ButtonValid
                     else InquiryUiState.ButtonInvalid
                 )
-
             }.launchIn(viewModelScope)
         }
     }
@@ -76,7 +75,13 @@ class InquiryViewModel @Inject constructor(
             sendEmailUseCase(email, content).onSuccess {
                 postSideEffect(InquirySideEffect.ShowCompleteDialog)
             }.onFailure {
-                postSideEffect(InquirySideEffect.ShowToast(stringProvider.getString(StringProvider.ResId.EmailSendFail)))
+                postSideEffect(
+                    InquirySideEffect.ShowToast(
+                        stringProvider.getString(
+                            StringProvider.ResId.EmailSendFail
+                        )
+                    )
+                )
             }.also {
                 _dataLoading.value = false
             }
