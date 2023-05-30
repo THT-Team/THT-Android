@@ -24,6 +24,8 @@ android {
             load(FileInputStream(File(rootProject.rootDir, "local.properties")))
         }
         buildConfigField("String", "REGION_CODE_SERVICE_KEY", prop.getProperty("REGION_CODE_SERVICE_KEY"))
+        buildConfigField("String", "APP_EMAIL_ID", prop.getProperty("APP_EMAIL_ID"))
+        buildConfigField("String", "APP_EMAIL_PASSWORD", prop.getProperty("APP_EMAIL_PASSWORD"))
     }
 
     buildTypes {
@@ -82,6 +84,10 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
+
+    //javax-mail
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
 
     // Coroutines
     implementation(libs.coroutines.core)
