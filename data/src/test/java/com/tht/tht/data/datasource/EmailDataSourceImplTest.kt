@@ -16,7 +16,7 @@ import org.junit.Test
 
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-class EmailDataSourceImplTest {
+internal class EmailDataSourceImplTest {
 
     private lateinit var emailService: EmailService
     private lateinit var emailDataSource: EmailDataSource
