@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/tv_tool_bar_title"
-            style="@style/Pretendard17TextStyle"
+            style="@style/Pretendard17_500TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -37,7 +37,7 @@
 
     <TextView
         android:id="@+id/tv_caption_email"
-        style="@style/Pretendard13GrayTextStyle"
+        style="@style/Pretendard13_500GrayTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -69,7 +69,7 @@
 
     <TextView
         android:id="@+id/tv_caption_content"
-        style="@style/Pretendard13GrayTextStyle"
+        style="@style/Pretendard13_500GrayTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
