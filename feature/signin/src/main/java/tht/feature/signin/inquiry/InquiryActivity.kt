@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
+import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityInquiryBinding
 
@@ -94,7 +95,7 @@ class InquiryActivity : AppCompatActivity() {
 
                         }
                         is InquiryViewModel.InquirySideEffect.ShowToast -> {
-
+                            showToast(it.message)
                         }
                     }
                 }
@@ -111,11 +112,9 @@ class InquiryActivity : AppCompatActivity() {
     private fun setToolbar() {
         binding.toolBar.apply {
             setNavigationIcon(R.drawable.ic_left_arrow)
-            setSupportActionBar(this)
             setNavigationOnClickListener {
-
+                finish()
             }
         }
-        title = null
     }
 }
