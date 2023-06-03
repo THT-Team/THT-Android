@@ -27,7 +27,8 @@ fun TopicSelectModel(
     topics: ImmutableListWrapper<TopicUiModel>,
     selectTopic: Long,
     topicClickListener: (Long) -> Unit = { },
-    startListener: () -> Unit = { }
+    startListener: () -> Unit = { },
+    content: @Composable () -> Unit
 ) {
     ModalBottomSheetLayout(
         modifier = modifier,
@@ -41,8 +42,9 @@ fun TopicSelectModel(
                 topicClickListener = topicClickListener,
                 startListener = startListener
             )
-        }
-    ) {}
+        },
+        content = content
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -53,6 +55,7 @@ fun TopicSelectModelPreview() {
         modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded),
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),
-        selectTopic = 1L
+        selectTopic = 1L,
+        content = { }
     )
 }

@@ -11,6 +11,7 @@ import tht.feature.tohot.StringProvider
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.model.topics
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
 import tht.feature.tohot.userData
@@ -41,7 +42,10 @@ class ToHotViewModel @Inject constructor(
                 timers = ImmutableListWrapper(
                     List(userList.size) { CardTimerUiModel(5, 5, 5) }
                 ),
-                enableTimerIdx = 0
+                enableTimerIdx = 0,
+                selectTopic = null,
+                topicList = ImmutableListWrapper(topics),
+                topicSelectRemainingTime = "24:00:00"
             )
         )
     private var removeUserCardStack = Stack<ToHotUserUiModel>()

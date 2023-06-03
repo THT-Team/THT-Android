@@ -2,16 +2,22 @@ package tht.feature.tohot.screen
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,7 +32,7 @@ import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ToHotRoute(
     toHotViewModel: ToHotViewModel = hiltViewModel()
@@ -59,14 +65,34 @@ fun ToHotRoute(
             }
         }
     }
-    ToHotScreen(
-        cardList = toHotState.userList,
-        pagerState = pagerState,
-        timers = toHotState.timers,
-        currentUserIdx = toHotState.enableTimerIdx,
-        pageChanged = toHotViewModel::userChangeEvent,
-        ticChanged = toHotViewModel::ticChangeEvent
+
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
     )
+    LaunchedEffect(key1 = toHotState.selectTopic) {
+        if (toHotState.selectTopic == null) {
+            modalBottomSheetState.show()
+        } else {
+            modalBottomSheetState.hide()
+        }
+    }
+
+    TopicSelectModel(
+        modalBottomSheetState = modalBottomSheetState,
+        remainingTime = toHotState.topicSelectRemainingTime,
+        topics = toHotState.topicList,
+        selectTopic = toHotState.selectTopic?.key ?: -1
+    ) {
+        ToHotScreen(
+            cardList = toHotState.userList,
+            pagerState = pagerState,
+            timers = toHotState.timers,
+            currentUserIdx = toHotState.enableTimerIdx,
+            pageChanged = toHotViewModel::userChangeEvent,
+            ticChanged = toHotViewModel::ticChangeEvent
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
