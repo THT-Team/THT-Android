@@ -18,6 +18,7 @@ fun ThtButton(
     backgroundColor: Color,
     contentColor: Color,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     Button(
@@ -32,6 +33,7 @@ fun ThtButton(
             backgroundColor = backgroundColor,
             contentColor = contentColor,
         ),
+        enabled = enabled
     ) {
         content()
     }
