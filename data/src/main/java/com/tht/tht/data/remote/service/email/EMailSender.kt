@@ -57,7 +57,7 @@ class EMailSender : Authenticator() {
         Transport.send(message)
     }
 
-    inner class ByteArrayDataSource(private var data: ByteArray, private var type: String?) : DataSource {
+    class ByteArrayDataSource(private var data: ByteArray, private var type: String?) : DataSource {
 
         override fun getContentType(): String {
             return type ?: "application/octet-stream"
