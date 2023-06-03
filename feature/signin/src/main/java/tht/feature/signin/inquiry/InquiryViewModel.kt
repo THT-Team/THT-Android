@@ -38,7 +38,7 @@ class InquiryViewModel @Inject constructor(
             .onEach {
                 setUiState(
                     when {
-                        it.isEmpty() -> InquiryUiState.Default
+                        it.isEmpty() -> InquiryUiState.EmailDefault
                         Patterns.EMAIL_ADDRESS.matcher(it).matches() -> InquiryUiState.EmailCorrect
                         else -> InquiryUiState.EmailError
                     }
@@ -58,12 +58,14 @@ class InquiryViewModel @Inject constructor(
         }.also { flow ->
             flow.onEach {
                 setUiState(
-                    if (
-                        Patterns.EMAIL_ADDRESS.matcher(it.first).matches() &&
-                        it.second.isNotEmpty() &&
-                        it.third
-                    ) InquiryUiState.ButtonValid
-                    else InquiryUiState.ButtonInvalid
+                    when {
+                        Patterns.EMAIL_ADDRESS.matcher(it.first).matches() && it.second.isNotEmpty() && it.third -> {
+                            InquiryUiState.ButtonValid
+                        }
+                        else -> {
+                            InquiryUiState.ButtonInvalid
+                        }
+                    }
                 )
             }.launchIn(viewModelScope)
         }
