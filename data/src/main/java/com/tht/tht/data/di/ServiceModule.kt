@@ -16,9 +16,9 @@ abstract class ServiceModule {
 
     @Binds
     @Singleton
-    abstract fun provideLocationService(impl: LocationServiceImpl): LocationService
+    abstract fun bindLocationService(impl: LocationServiceImpl): LocationService
 
     @Binds
     @Singleton
-    abstract fun provideEmailService(impl: EmailServiceImpl): EmailService
+    abstract fun bindEmailService(impl: EmailServiceImpl): EmailService
 }
