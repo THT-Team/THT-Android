@@ -18,7 +18,7 @@ import javax.mail.internet.MimeMessage
 
 /* reference: https://stickode.tistory.com/669 */
 
-class EMailSender : Authenticator() {
+class EmailSender : Authenticator() {
 
     private val user = BuildConfig.APP_EMAIL_ID
     private val password = BuildConfig.APP_EMAIL_PASSWORD
