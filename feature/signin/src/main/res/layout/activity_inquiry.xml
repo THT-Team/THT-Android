@@ -64,6 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_inquiry_email"
+            android:inputType="text"
+            android:scrollHorizontally="true"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
