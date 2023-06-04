@@ -39,6 +39,7 @@ interface StringProvider {
         LocationPatchFail,
         RegionCodeFetchFail,
         SignupFail,
-        InvalidDate
+        InvalidDate,
+        EmailSendFail
     }
 }

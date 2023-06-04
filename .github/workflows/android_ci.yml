@@ -42,12 +42,18 @@ jobs:
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
                   REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
@@ -79,12 +85,18 @@ jobs:
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
                   REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Run unit tests
               run: ./gradlew testDebugUnitTest
@@ -123,12 +135,18 @@ jobs:
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
                   echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
                   REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace

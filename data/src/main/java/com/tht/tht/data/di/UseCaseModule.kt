@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.email.repository.EmailRepository
+import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
@@ -113,12 +115,12 @@ object UseCaseModule {
     @Provides
     fun provideUploadImageUseCase(
         repository: ImageRepository
-    ) : UploadImageUseCase = UploadImageUseCase(repository)
+    ): UploadImageUseCase = UploadImageUseCase(repository)
 
     @Provides
     fun provideRemoveImageUrlUseCase(
         repository: ImageRepository
-    ) : RemoveImageUrlUseCase = RemoveImageUrlUseCase(repository)
+    ): RemoveImageUrlUseCase = RemoveImageUrlUseCase(repository)
 
     @Provides
     fun provideFetchCurrentLocationUseCase(
@@ -155,4 +157,10 @@ object UseCaseModule {
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): PatchLocationUseCase =
         PatchLocationUseCase(useCase, repository, dispatcher)
+
+    @Provides
+    fun provideSendEmailUseCase(
+        repository: EmailRepository
+    ): SendInquiryEmailUseCase =
+        SendInquiryEmailUseCase(repository)
 }

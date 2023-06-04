@@ -32,4 +32,8 @@ class PreloginViewModel @Inject constructor() : BaseStateViewModel<PreloginState
         postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = token, signInType = signInType))
         setUiState(PreloginState.Uninitialized)
     }
+
+    fun navigateInquiry() {
+        postSideEffect(PreloginSideEffect.NavigateInquiry)
+    }
 }

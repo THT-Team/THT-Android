@@ -107,6 +107,23 @@
         <item name="endIconDrawable">@drawable/ic_delete</item>
     </style>
 
+    <style name="InquiryTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
+        <item name="colorControlActivated">@color/yellow_f9cc2e</item>
+        <item name="colorControlHighlight">@color/yellow_f9cc2e</item>
+        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">false</item>
+    </style>
+
+    <style name="InquiryEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColorHint">@color/brown_26241f</item>
+        <item name="android:textColor">@color/white_f9fafa</item>
+        <item name="android:layout_marginBottom">@dimen/TextInputEditTextBottomMinusMargin</item>
+    </style>
+
     <style name="NumberPickerStyle">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/white_d7d7d7</item>

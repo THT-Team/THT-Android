@@ -1,11 +1,13 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.repository.EmailRepositoryImpl
 import com.tht.tht.data.repository.ImageRepositoryImpl
 import com.tht.tht.data.repository.LocationRepositoryImpl
-import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.LoginRepositoryImpl
+import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
+import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.signup.repository.LocationRepository
@@ -38,4 +40,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRegionCodeRepository(impl: RegionCodeRepositoryImpl): RegionCodeRepository
+
+    @Binds
+    abstract fun bindEmailRepository(impl: EmailRepositoryImpl): EmailRepository
 }

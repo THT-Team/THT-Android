@@ -21,6 +21,7 @@ import tht.core.ui.extension.showToast
 import tht.core.ui.extension.visible
 import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
+import tht.feature.signin.inquiry.InquiryActivity
 
 class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBinding>() {
 
@@ -37,6 +38,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         }
         btnNaverLogin.setOnClickListener {
             vm.requestNaverLogin()
+        }
+        tvHelpLogin.setOnClickListener {
+            vm.navigateInquiry()
         }
     }
 
@@ -63,6 +67,8 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                                 startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
                             is PreloginSideEffect.NavigatePhoneAuth ->
                                 startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
+                            is PreloginSideEffect.NavigateInquiry ->
+                                startActivity(InquiryActivity.getIntent(this@PreloginActivity))
                         }
                     }
                 }

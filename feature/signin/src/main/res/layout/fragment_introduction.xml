@@ -68,7 +68,7 @@
         />
 
     <TextView
-        style="@style/Pretendard14GrayTextStyle"
+        style="@style/Pretendard14_700GrayTextStyle"
         android:layout_marginEnd="38dp"
         android:id="@+id/tv_input_length"
         app:layout_constraintTop_toTopOf="@id/tv_nickname_input_message"
