@@ -1,7 +1,7 @@
 package com.tht.tht.data.repository
 
 import com.tht.tht.data.remote.datasource.EmailDataSource
-import com.tht.tht.domain.email.EmailRepository
+import com.tht.tht.domain.email.repository.EmailRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -25,22 +25,21 @@ internal class EmailRepositoryImplTest {
     fun setupTest() {
         datasource = mockk(relaxed = true)
         repository = EmailRepositoryImpl(
-            datasource,
-            testDispatcher
+            datasource
         )
     }
 
     @Test
     fun `sendEmail은 EmailDataSource의 sendEmail을 호출한다`() = runTest(testDispatcher) {
-        repository.sendEmail("")
-        coVerify(exactly = 1) { datasource.sendEmail("") }
+        repository.sendEmail("", "", "")
+        coVerify(exactly = 1) { datasource.sendEmail("", "", "") }
     }
 
     @Test
     fun `EmailDataSource의 sendEmail에서 예외가 발생하면 repository에서도 예외가 발생한다`() {
-        coEvery { datasource.sendEmail("exception") } throws Exception("exception")
+        coEvery { datasource.sendEmail("", "", "") } throws Exception("exception")
         Assert.assertThrows(Exception::class.java) {
-            runTest(testDispatcher) { repository.sendEmail("exception") }
+            runTest(testDispatcher) { repository.sendEmail("", "", "") }
         }
     }
 }

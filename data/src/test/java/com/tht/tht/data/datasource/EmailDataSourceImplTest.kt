@@ -33,15 +33,15 @@ internal class EmailDataSourceImplTest {
 
     @Test
     fun `sendEmail은 EmailService의 sendEmail을 호출한다`() = runTest(testDispatcher) {
-        emailDataSource.sendEmail("")
-        coVerify(exactly = 1) { emailService.sendEmail("") }
+        emailDataSource.sendEmail("", "", "")
+        coVerify(exactly = 1) { emailService.sendEmail("", "", "") }
     }
 
     @Test
     fun `EmailService의 sendEmail에서 예외가 발생하면 datasource에서도 예외가 발생한다`() {
-        coEvery { emailService.sendEmail("exception") } throws Exception("exception")
+        coEvery { emailService.sendEmail("", "", "") } throws Exception("exception")
         assertThrows(Exception::class.java) {
-            runTest(testDispatcher) { emailDataSource.sendEmail("exception") }
+            runTest(testDispatcher) { emailDataSource.sendEmail("", "", "") }
         }
     }
 }

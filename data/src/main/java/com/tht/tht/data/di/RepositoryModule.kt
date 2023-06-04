@@ -7,7 +7,7 @@ import com.tht.tht.data.repository.LoginRepositoryImpl
 import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
-import com.tht.tht.domain.email.EmailRepository
+import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.signup.repository.LocationRepository

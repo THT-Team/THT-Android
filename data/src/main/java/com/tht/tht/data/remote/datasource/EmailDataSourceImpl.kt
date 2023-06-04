@@ -11,9 +11,9 @@ class EmailDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : EmailDataSource {
 
-    override suspend fun sendEmail(text: String) {
+    override suspend fun sendEmail(title: String, text: String, recipient: String) {
         withContext(dispatcher) {
-            emailService.sendEmail(text)
+            emailService.sendEmail(title, text, recipient)
         }
     }
 }

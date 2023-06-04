@@ -18,7 +18,7 @@ import javax.mail.internet.MimeMessage
 
 /* reference: https://stickode.tistory.com/669 */
 
-class EmailSender : Authenticator() {
+class EMailSender : Authenticator() {
 
     private val user = BuildConfig.APP_EMAIL_ID
     private val password = BuildConfig.APP_EMAIL_PASSWORD
@@ -56,24 +56,24 @@ class EmailSender : Authenticator() {
         )
         Transport.send(message)
     }
+}
 
-    class ByteArrayDataSource(private var data: ByteArray, private var type: String?) : DataSource {
+class ByteArrayDataSource(private var data: ByteArray, private var type: String?) : DataSource {
 
-        override fun getContentType(): String {
-            return type ?: "application/octet-stream"
-        }
+    override fun getContentType(): String {
+        return type ?: "application/octet-stream"
+    }
 
-        override fun getInputStream(): InputStream {
-            return ByteArrayInputStream(data)
-        }
+    override fun getInputStream(): InputStream {
+        return ByteArrayInputStream(data)
+    }
 
-        override fun getName(): String {
-            return "ByteArrayDataSource"
-        }
+    override fun getName(): String {
+        return "ByteArrayDataSource"
+    }
 
-        override fun getOutputStream(): OutputStream {
-            throw IOException("Not Supported")
-        }
+    override fun getOutputStream(): OutputStream {
+        throw IOException("Not Supported")
     }
 }
 

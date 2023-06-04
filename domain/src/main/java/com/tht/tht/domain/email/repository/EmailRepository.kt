@@ -1,6 +1,6 @@
-package com.tht.tht.data.remote.datasource
+package com.tht.tht.domain.email.repository
 
-interface EmailDataSource {
+interface EmailRepository {
 
     suspend fun sendEmail(title: String, text: String, recipient: String)
 }

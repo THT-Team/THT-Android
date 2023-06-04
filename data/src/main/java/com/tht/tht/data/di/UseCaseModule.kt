@@ -1,7 +1,7 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.domain.email.EmailRepository
-import com.tht.tht.domain.email.SendEmailUseCase
+import com.tht.tht.domain.email.repository.EmailRepository
+import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
@@ -160,8 +160,7 @@ object UseCaseModule {
 
     @Provides
     fun provideSendEmailUseCase(
-        repository: EmailRepository,
-        @IODispatcher dispatcher: CoroutineDispatcher
-    ): SendEmailUseCase =
-        SendEmailUseCase(repository, dispatcher)
+        repository: EmailRepository
+    ): SendInquiryEmailUseCase =
+        SendInquiryEmailUseCase(repository)
 }

@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 
 class EmailServiceImpl @Inject constructor(
-    private val eMailSender: EmailSender
+    private val eMailSender: EMailSender
 ): EmailService {
 
     override fun sendEmail(title: String, text: String, recipient: String) {

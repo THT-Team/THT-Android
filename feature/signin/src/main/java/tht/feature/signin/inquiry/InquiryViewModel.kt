@@ -2,7 +2,7 @@ package tht.feature.signin.inquiry
 
 import android.util.Patterns
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.domain.email.SendEmailUseCase
+import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InquiryViewModel @Inject constructor(
-    private val sendEmailUseCase: SendEmailUseCase,
+    private val sendInquiryEmailUseCase: SendInquiryEmailUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<InquiryViewModel.InquiryUiState, InquiryViewModel.InquirySideEffect>() {
 
@@ -74,7 +74,7 @@ class InquiryViewModel @Inject constructor(
     fun sendEmail(email: String, content: String) {
         viewModelScope.launch {
             _dataLoading.value = true
-            sendEmailUseCase(email, content).onSuccess {
+            sendInquiryEmailUseCase(email, content).onSuccess {
                 postSideEffect(InquirySideEffect.ShowCompleteDialog)
             }.onFailure {
                 postSideEffect(

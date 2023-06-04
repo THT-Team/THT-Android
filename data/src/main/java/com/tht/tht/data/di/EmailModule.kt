@@ -1,6 +1,6 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.data.remote.service.email.EmailSender
+import com.tht.tht.data.remote.service.email.EMailSender
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ object EmailModule {
 
     @Provides
     @Singleton
-    fun provideEmailSender(): EmailSender = EmailSender()
+    fun provideEmailSender(): EMailSender = EMailSender()
 }
