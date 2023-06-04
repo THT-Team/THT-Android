@@ -34,6 +34,7 @@ import javax.inject.Inject
 
 /**
  * - 손으로 드래그 중에 시간이 다 달면 예외 발생
+ * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
@@ -53,11 +54,13 @@ class ToHotViewModel @Inject constructor(
                 userList = ImmutableListWrapper(emptyList()),
                 timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
-                selectTopic = null,
+                selectTopicKey = -1,
+                currentTopic = null,
                 topicModalShow = false,
                 topicList = ImmutableListWrapper(emptyList()),
                 topicSelectRemainingTime = "00:00:00",
-                topicSelectRemainingTimeMill = 0
+                topicSelectRemainingTimeMill = 0,
+                hasUnReadAlarm = false
             )
         )
     private var removeUserCardStack = Stack<ToHotUserUiModel>()
@@ -69,21 +72,21 @@ class ToHotViewModel @Inject constructor(
     private fun toHotLogic() {
         with(store.state.value) {
             when {
-                topicList.list.isEmpty() -> fetchTopicList()
+                topicList.list.isEmpty() -> fetchTopicList(true)
 
-                selectTopic == null  -> {
+                currentTopic == null  -> {
                     clearUserCard()
                     intent {
                         reduce { it.copy(topicModalShow = true) }
                     }
                 }
 
-                userList.list.isEmpty() -> requestUserCard(selectTopic.key)
+                userList.list.isEmpty() -> requestUserCard(selectTopicKey)
             }
         }
     }
 
-    private fun fetchTopicList() {
+    private fun fetchTopicList(openTopicList: Boolean) {
         viewModelScope.launch {
             intent { reduce { it.copy(loading = true) } }
             delay(500)
@@ -91,7 +94,7 @@ class ToHotViewModel @Inject constructor(
                 reduce {
                     it.copy(
                         topicList = ImmutableListWrapper(topics),
-                        topicModalShow = true,
+                        topicModalShow = if (openTopicList) true else it.topicModalShow,
                         topicSelectRemainingTime = "24:00:00"
                     )
                 }
@@ -112,6 +115,7 @@ class ToHotViewModel @Inject constructor(
     /**
      * 1 초 마다 LocalDateTime 객체, State 객체를 생성 하는 문제 존재
      * 미완성
+     * Topic Modal 을 두번째 부터 열때 타이머가 멈추며, fetchTopicList 가 호출되어 progress 가 돌아감
      */
     private lateinit var topicRemainingTimer: Job
     private fun startTopicRemainingTimer() {
@@ -135,7 +139,7 @@ class ToHotViewModel @Inject constructor(
                 }
 
                 if (topicSelectRemainingTimeMill < 0) {
-                    fetchTopicList()
+                    fetchTopicList(false)
                 }
             }
         }
@@ -164,10 +168,24 @@ class ToHotViewModel @Inject constructor(
                             List(userList.size) {
                                 CardTimerUiModel(MAX_TIMER_SEC, MAX_TIMER_SEC, MAX_TIMER_SEC)
                             }
-                        )
+                        ),
+                        enableTimerIdx = 0
                     )
                 }
                 reduce { it.copy(loading = false) }
+            }
+        }
+    }
+
+    fun backClickEvent(topicModalShown: Boolean) {
+        if (store.state.value.currentTopic == null) return
+        if (topicModalShown) {
+            intent {
+                reduce {
+                    it.copy(
+                        topicModalShow = false
+                    )
+                }
             }
         }
     }
@@ -176,7 +194,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    selectTopic = it.topicList.list.firstOrNull { t -> t.key == topicKey }
+                    selectTopicKey = topicKey
                 )
             }
         }
@@ -189,11 +207,13 @@ class ToHotViewModel @Inject constructor(
             intent {
                 reduce {
                     it.copy(
-                        topicModalShow = false
+                        topicModalShow = false,
+                        currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
                     )
                 }
                 reduce { it.copy(loading = false) }
             }
+            clearUserCard()
             toHotLogic()
         }
     }
@@ -277,6 +297,21 @@ class ToHotViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun topicChangeClickEvent() {
+        intent {
+            reduce {
+                //TODO: Stop user card timer
+                it.copy(
+                    topicModalShow = true
+                )
+            }
+        }
+    }
+
+    fun alarmClickEvent() {
+        //TODO: Navigate Alarm Screen
     }
 
     companion object {
