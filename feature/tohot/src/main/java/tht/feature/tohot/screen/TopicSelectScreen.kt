@@ -33,6 +33,7 @@ fun TopicSelectScreen(
     remainingTime: String,
     topics: ImmutableListWrapper<TopicUiModel>,
     selectTopic: Long,
+    buttonEnabled: Boolean,
     topicClickListener: (Long) -> Unit = { },
     startListener: () -> Unit = { }
 ) {
@@ -93,7 +94,7 @@ fun TopicSelectScreen(
                 .heightIn(min = 54.dp),
             backgroundColor = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
             contentColor = colorResource(id = tht.core.ui.R.color.black_222222),
-            enabled = selectTopic >= 0,
+            enabled = buttonEnabled,
             onClick = startListener,
         ) {
             ThtHeadline5(
@@ -111,7 +112,8 @@ fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),
-        selectTopic = 1L
+        selectTopic = 1L,
+        buttonEnabled = true
     )
 }
 

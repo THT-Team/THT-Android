@@ -40,7 +40,8 @@ fun TopicSelectModel(
                 topics = topics,
                 selectTopic = selectTopic,
                 topicClickListener = topicClickListener,
-                startListener = startListener
+                startListener = startListener,
+                buttonEnabled = selectTopic >= 0
             )
         },
         content = content
