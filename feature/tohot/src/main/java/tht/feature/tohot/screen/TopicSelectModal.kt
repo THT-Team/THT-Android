@@ -22,7 +22,11 @@ import tht.feature.tohot.model.topics
 @Composable
 fun TopicSelectModel(
     modifier: Modifier = Modifier,
-    modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden),
+    modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true,
+        confirmValueChange = { false }
+    ),
     remainingTime: String,
     topics: ImmutableListWrapper<TopicUiModel>,
     selectTopic: Long,

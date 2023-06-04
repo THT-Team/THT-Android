@@ -68,7 +68,8 @@ fun ToHotRoute(
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
+        skipHalfExpanded = true,
+        confirmValueChange = { false }
     )
     LaunchedEffect(key1 = toHotState.selectTopic) {
         if (toHotState.selectTopic == null) {
