@@ -32,7 +32,7 @@ fun TopicSelectScreen(
     modifier: Modifier = Modifier,
     remainingTime: String,
     topics: ImmutableListWrapper<TopicUiModel>,
-    selectTopic: Long,
+    selectTopicKey: Long,
     buttonEnabled: Boolean,
     topicClickListener: (Long) -> Unit = { },
     selectFinishListener: () -> Unit = { }
@@ -78,7 +78,7 @@ fun TopicSelectScreen(
                 title = it.title,
                 content = it.content,
                 key = it.key,
-                isSelect = selectTopic == it.key,
+                isSelect = selectTopicKey == it.key,
                 topicClickListener = topicClickListener
             )
 
@@ -112,7 +112,7 @@ fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),
-        selectTopic = 1L,
+        selectTopicKey = 1L,
         buttonEnabled = true
     )
 }
