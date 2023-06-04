@@ -35,6 +35,7 @@ import javax.inject.Inject
 /**
  * - 손으로 드래그 중에 시간이 다 달면 예외 발생
  * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
+ * - userList 가 비어 있을 때 modal 을 열면 fetchTopicList 가 호출 되면서 toHotLogic 도 호출돼 userList 가 호출 되는 문제
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
