@@ -1,6 +1,7 @@
 package tht.feature.tohot.screen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,11 +24,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.component.progress.ThtCircularProgress
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
-import tht.feature.tohot.component.toolbar.ToHotTopAppBar
+import tht.feature.tohot.component.toolbar.ToHotToolBar
+import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
@@ -94,6 +95,10 @@ fun ToHotRoute(
             }
     }
 
+    BackHandler {
+        toHotViewModel.backClickEvent(modalBottomSheetState.currentValue != ModalBottomSheetValue.Hidden)
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -101,7 +106,7 @@ fun ToHotRoute(
             modalBottomSheetState = modalBottomSheetState,
             remainingTime = toHotState.topicSelectRemainingTime,
             topics = toHotState.topicList,
-            selectTopic = toHotState.selectTopic?.key ?: -1,
+            selectTopicKey = toHotState.selectTopicKey,
             topicClickListener = toHotViewModel::topicSelectEvent,
             selectFinishListener = toHotViewModel::topicSelectFinishEvent
         ) {
@@ -110,6 +115,12 @@ fun ToHotRoute(
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
+                topicIconUrl = toHotState.currentTopic?.iconUrl,
+                topicIconRes = toHotState.currentTopic?.iconRes,
+                topicTitle = toHotState.currentTopic?.title,
+                hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                topicSelectListener = toHotViewModel::topicChangeClickEvent,
+                alarmClickListener = toHotViewModel::alarmClickEvent,
                 pageChanged = toHotViewModel::userChangeEvent,
                 ticChanged = toHotViewModel::ticChangeEvent
             )
@@ -131,13 +142,29 @@ private fun ToHotScreen(
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
     currentUserIdx: Int,
+    topicIconUrl: String?,
+    topicIconRes: Int?,
+    topicTitle: String?,
+    hasUnReadAlarm: Boolean,
+    topicSelectListener: () -> Unit = { },
+    alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
     ticChanged: (Int, Int) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        ToHotTopAppBar()
+        ToHotToolBar {
+            ToHotToolBarContent(
+                topicIconUrl = topicIconUrl,
+                topicIconRes = topicIconRes,
+                topicTitle = topicTitle,
+                hasUnReadAlarm = hasUnReadAlarm,
+                topicSelectListener = topicSelectListener,
+                alarmClickListener = alarmClickListener
+            )
+        }
+
         VerticalPager(
             pageCount = cardList.list.size,
             state = pagerState,
