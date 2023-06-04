@@ -5,7 +5,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
@@ -17,11 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.compose_ui.component.progress.ThtCircularProgress
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
@@ -71,27 +73,52 @@ fun ToHotRoute(
         skipHalfExpanded = true,
         confirmValueChange = { false }
     )
-    LaunchedEffect(key1 = toHotState.selectTopic) {
-        if (toHotState.selectTopic == null) {
+    LaunchedEffect(key1 = toHotState.topicModalShow) {
+        if (toHotState.topicModalShow) {
             modalBottomSheetState.show()
         } else {
             modalBottomSheetState.hide()
         }
     }
 
-    TopicSelectModel(
-        modalBottomSheetState = modalBottomSheetState,
-        remainingTime = toHotState.topicSelectRemainingTime,
-        topics = toHotState.topicList,
-        selectTopic = toHotState.selectTopic?.key ?: -1
+    LaunchedEffect(key1 = modalBottomSheetState) {
+        snapshotFlow { modalBottomSheetState.currentValue }
+            .collect {
+                when (it) {
+                    ModalBottomSheetValue.Expanded, ModalBottomSheetValue.HalfExpanded ->
+                        toHotViewModel.openTopicSelectEvent()
+
+                    ModalBottomSheetValue.Hidden ->
+                        toHotViewModel.closeTopicSelectEvent()
+                }
+            }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        ToHotScreen(
-            cardList = toHotState.userList,
-            pagerState = pagerState,
-            timers = toHotState.timers,
-            currentUserIdx = toHotState.enableTimerIdx,
-            pageChanged = toHotViewModel::userChangeEvent,
-            ticChanged = toHotViewModel::ticChangeEvent
+        TopicSelectModel(
+            modalBottomSheetState = modalBottomSheetState,
+            remainingTime = toHotState.topicSelectRemainingTime,
+            topics = toHotState.topicList,
+            selectTopic = toHotState.selectTopic?.key ?: -1,
+            topicClickListener = toHotViewModel::topicSelectEvent,
+            selectFinishListener = toHotViewModel::topicSelectFinishEvent
+        ) {
+            ToHotScreen(
+                cardList = toHotState.userList,
+                pagerState = pagerState,
+                timers = toHotState.timers,
+                currentUserIdx = toHotState.enableTimerIdx,
+                pageChanged = toHotViewModel::userChangeEvent,
+                ticChanged = toHotViewModel::ticChangeEvent
+            )
+        }
+
+        ThtCircularProgress(
+            modifier = Modifier.align(Alignment.Center),
+            dataLoading = { toHotState.loading },
+            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)
         )
     }
 }
