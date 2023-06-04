@@ -30,8 +30,7 @@ fun RowScope.ToHotToolBarContent(
     if (!topicIconUrl.isNullOrBlank() && topicIconRes != null && !topicTitle.isNullOrBlank()) {
         Row(
             modifier = Modifier
-                .noRippleClickable(topicSelectListener)
-                .padding(start = 20.dp, top = 9.dp, bottom = 9.dp),
+                .noRippleClickable(topicSelectListener),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ToHotToolbarTopicIcon(
@@ -58,9 +57,7 @@ fun RowScope.ToHotToolBarContent(
 
     val alarmRes = if (hasUnReadAlarm) R.drawable.ic_alarm_on else R.drawable.ic_alarm_default
     Image(
-        modifier = Modifier
-            .padding(top = 9.dp, bottom = 9.dp, end = 20.dp)
-            .noRippleClickable(alarmClickListener),
+        modifier = Modifier.noRippleClickable(alarmClickListener),
         painter = painterResource(id = alarmRes),
         contentDescription = "alarm"
     )
