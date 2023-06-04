@@ -35,7 +35,7 @@ fun TopicSelectScreen(
     selectTopic: Long,
     buttonEnabled: Boolean,
     topicClickListener: (Long) -> Unit = { },
-    startListener: () -> Unit = { }
+    selectFinishListener: () -> Unit = { }
 ) {
     Column(
         modifier = modifier
@@ -95,7 +95,7 @@ fun TopicSelectScreen(
             backgroundColor = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
             contentColor = colorResource(id = tht.core.ui.R.color.black_222222),
             enabled = buttonEnabled,
-            onClick = startListener,
+            onClick = selectFinishListener,
         ) {
             ThtHeadline5(
                 text = stringResource(id = R.string.starting),

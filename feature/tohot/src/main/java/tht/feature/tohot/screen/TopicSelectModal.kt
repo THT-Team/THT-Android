@@ -27,7 +27,7 @@ fun TopicSelectModel(
     topics: ImmutableListWrapper<TopicUiModel>,
     selectTopic: Long,
     topicClickListener: (Long) -> Unit = { },
-    startListener: () -> Unit = { },
+    selectFinishListener: () -> Unit = { },
     content: @Composable () -> Unit
 ) {
     ModalBottomSheetLayout(
@@ -40,7 +40,7 @@ fun TopicSelectModel(
                 topics = topics,
                 selectTopic = selectTopic,
                 topicClickListener = topicClickListener,
-                startListener = startListener,
+                selectFinishListener = selectFinishListener,
                 buttonEnabled = selectTopic >= 0
             )
         },
