@@ -8,10 +8,13 @@ import tht.feature.tohot.model.TopicUiModel
 
 @Immutable
 data class ToHotState(
+    val loading: Boolean,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int,
     val selectTopic: TopicUiModel?,
     val topicList: ImmutableListWrapper<TopicUiModel>,
-    val topicSelectRemainingTime: String
+    val topicModalShow: Boolean,
+    val topicSelectRemainingTime: String,
+    val topicSelectRemainingTimeMill: Long
 )
