@@ -21,8 +21,8 @@ import tht.feature.tohot.userData
 fun <T>ToHotCardImage(
     modifier: Modifier = Modifier,
     imageUrl: T,
-    placeholder: Painter = painterResource(id = R.drawable.ic_location),
-    error: Painter = painterResource(id = R.drawable.ic_location)
+    placeholder: Painter = painterResource(id = R.drawable.ic_user_card_placeholder),
+    error: Painter = painterResource(id = R.drawable.ic_user_card_error)
 ) {
     val model = ImageRequest.Builder(LocalContext.current)
         .data(imageUrl)
