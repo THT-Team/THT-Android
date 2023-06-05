@@ -54,6 +54,15 @@ glide = "4.14.2"
 #javax-email
 javax_mail = "1.6.2"
 
+#jetpack compose
+jetpack-compose = "1.4.3"
+jetpack-compose-activity = "1.7.2"
+jetpack-compose-viewmodel= "2.6.1"
+jetpack-compose-navigation = "2.5.3"
+jetpack-compose-hilt-navigation = "1.0.0"
+jetpack-compose-coil = "2.4.0"
+app-compat-theme-adpater = "0.28.0"
+
 [plugins]
 #android
 application = { id = "com.android.application", version.ref = "android.gradle" }
@@ -134,3 +143,15 @@ glideComplier = { module = "com.github.bumptech.glide:compiler", version.ref = "
 javax-mail = { module = "javax.mail:javax.mail-api", version.ref = "javax_mail" }
 android-mail = { module = "com.sun.mail:android-mail", version.ref = "javax_mail" }
 android-activation = { module = "com.sun.mail:android-activation", version.ref = "javax_mail" }
+
+#Jetpack Compose
+jetpack-compose-material = { module = "androidx.compose.material:material", version.ref = "jetpack-compose" }
+jetpack-compose-animation = { module = "androidx.compose.animation:animation", version.ref = "jetpack-compose" }
+jetpack-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "jetpack-compose" }
+jetpack-compose-ui-tooling-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "jetpack-compose" }
+jetpack-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "jetpack-compose-activity" }
+jetpack-compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetpack-compose-viewmodel" }
+jetpack-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "jetpack-compose-navigation" }
+jetpack-compose-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "jetpack-compose-hilt-navigation" }
+jetpack-compose-coil = { module = "io.coil-kt:coil-compose", version.ref = "jetpack-compose-coil" }
+app-compat-theme-adpater = { module = "com.google.accompanist:accompanist-themeadapter-appcompat", version.ref = "app-compat-theme-adpater" }

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -28,10 +30,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
+    }
 }
 
 dependencies {
     implementation(project(":core:ui"))
+    implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core)
@@ -41,4 +50,21 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+
+    implementation(libs.hilt)
+    testImplementation(libs.hilt.android.testing)
+    kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.jetpack.compose.material)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    testImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
+    implementation(libs.jetpack.compose.hilt.navigation)
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.jetpack.compose.viewmodel)
+    implementation(libs.jetpack.compose.coil)
+    implementation(libs.app.compat.theme.adpater)
 }
