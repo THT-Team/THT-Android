@@ -1,10 +1,17 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.domain.signup.repository.LocationRepository
+import com.tht.tht.domain.email.repository.EmailRepository
+import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
+import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
+import com.tht.tht.domain.login.repository.LoginRepository
+import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
+import com.tht.tht.domain.signup.repository.LocationRepository
+import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.token.repository.TokenRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,90 +63,10 @@ object UseCaseModule {
     )
 
     @Provides
-    fun providePatchSignupBirthdayUseCase(
+    fun providePatchSignupDataUseCase(
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupBirthdayUseCase = PatchSignupBirthdayUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupEmailUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupEmailUseCase = PatchSignupEmailUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupGenderUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupGenderUseCase = PatchSignupGenderUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupIdealTypeUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupIdealTypeUseCase = PatchSignupIdealTypeUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupInterestUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupInterestUseCase = PatchSignupInterestUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupIntroduceUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupIntroduceUseCase = PatchSignupIntroduceUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupLocationUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupLocationUseCase = PatchSignupLocationUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupNickNameUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupNickNameUseCase = PatchSignupNickNameUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupPreferredGenderUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupPreferredGenderUseCase = PatchSignupPreferredGenderUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupProfileImagesUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupProfileImagesUseCase = PatchSignupProfileImagesUseCase(
-        repository, dispatcher
-    )
-
-    @Provides
-    fun providePatchSignupTermsUseCase(
-        repository: SignupRepository,
-        @DefaultDispatcher dispatcher: CoroutineDispatcher
-    ): PatchSignupTermsUseCase = PatchSignupTermsUseCase(
+    ): PatchSignupDataUseCase = PatchSignupDataUseCase(
         repository, dispatcher
     )
 
@@ -162,10 +89,11 @@ object UseCaseModule {
     @Provides
     fun provideRequestSignupUseCase(
         repository: SignupRepository,
+        tokenRepository: TokenRepository,
         removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
-        repository, removeSignupUserUseCase, dispatcher
+        repository, tokenRepository, removeSignupUserUseCase, dispatcher
     )
 
     @Provides
@@ -187,7 +115,12 @@ object UseCaseModule {
     @Provides
     fun provideUploadImageUseCase(
         repository: ImageRepository
-    ) : UploadImageUseCase = UploadImageUseCase(repository)
+    ): UploadImageUseCase = UploadImageUseCase(repository)
+
+    @Provides
+    fun provideRemoveImageUrlUseCase(
+        repository: ImageRepository
+    ): RemoveImageUrlUseCase = RemoveImageUrlUseCase(repository)
 
     @Provides
     fun provideFetchCurrentLocationUseCase(
@@ -202,4 +135,32 @@ object UseCaseModule {
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchLocationByAddressUseCase =
         FetchLocationByAddressUseCase(repository, dispatcher)
+
+    @Provides
+    fun provideRequestFcmTokenLoginUseCase(
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): RequestFcmTokenLoginUseCase =
+        RequestFcmTokenLoginUseCase(tokenRepository, loginRepository)
+
+    @Provides
+    fun provideFetchRegionCodeUseCase(
+        repository: RegionCodeRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): FetchRegionCodeUseCase =
+        FetchRegionCodeUseCase(repository, dispatcher)
+
+    @Provides
+    fun providePatchLocationUseCase(
+        useCase: FetchRegionCodeUseCase,
+        repository: SignupRepository,
+        @DefaultDispatcher dispatcher: CoroutineDispatcher
+    ): PatchLocationUseCase =
+        PatchLocationUseCase(useCase, repository, dispatcher)
+
+    @Provides
+    fun provideSendEmailUseCase(
+        repository: EmailRepository
+    ): SendInquiryEmailUseCase =
+        SendInquiryEmailUseCase(repository)
 }

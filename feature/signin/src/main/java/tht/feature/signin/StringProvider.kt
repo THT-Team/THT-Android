@@ -32,8 +32,14 @@ interface StringProvider {
         ProfileImagePartialUploadFail,
         ProfileImageUploadFail,
         ProfileImagePatchFail,
+        BirthdayPatchFail,
         InvalidateLocation,
+        FetchLocationFail,
+        AutoLocationFetchFail,
         LocationPatchFail,
-        SignupFail
+        RegionCodeFetchFail,
+        SignupFail,
+        InvalidDate,
+        EmailSendFail
     }
 }

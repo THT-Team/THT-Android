@@ -1,10 +1,11 @@
 package tht.feature.signin.signup.interest
 
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.signup.constant.SignupConstant
 import com.tht.tht.domain.signup.model.InterestModel
 import com.tht.tht.domain.signup.usecase.FetchInterestUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupInterestUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class InterestViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val fetchInterestUseCase: FetchInterestUseCase,
-    private val patchSignupInterestUseCase: PatchSignupInterestUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<InterestViewModel.InterestTypeUiState, InterestViewModel.InterestTypeSideEffect>() {
 
@@ -122,14 +123,13 @@ class InterestViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         if (_selectInterest.value.size < MAX_REQUIRE_SELECT_COUNT) {
-            return // show Toast
+            return
         }
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupInterestUseCase(
-                phone,
-                selectInterest.value.map { it.key }
-            ).onSuccess {
+            patchSignupDataUseCase(phone) {
+                it.copy(interestKeys = selectInterest.value.map { it.key })
+            }.onSuccess {
                 _sideEffectFlow.emit(InterestTypeSideEffect.NavigateNextView)
             }.onFailure {
                 _sideEffectFlow.emit(
@@ -156,6 +156,6 @@ class InterestViewModel @Inject constructor(
     }
 
     companion object {
-        const val MAX_REQUIRE_SELECT_COUNT = 3
+        const val MAX_REQUIRE_SELECT_COUNT = SignupConstant.INTEREST_REQUIRE_SIZE
     }
 }

@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tht.tht.data.local.entity.SignupUserEntity
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,10 +19,10 @@ class SignupUserDaoImpl @Inject constructor(
         private const val SIGNUP_USER_KEY = "signup_user_key"
     }
 
-    private var signupUserMap: HashMap<String, SignupUserEntity>
+    private var signupUserMap: ConcurrentHashMap<String, SignupUserEntity>
         get() {
-            val typeToken = object : TypeToken<HashMap<String, SignupUserEntity>>() {}.type
-            return gson.fromJson(sp.getString(SIGNUP_USER_KEY, ""), typeToken) ?: HashMap()
+            val typeToken = object : TypeToken<ConcurrentHashMap<String, SignupUserEntity>>() {}.type
+            return gson.fromJson(sp.getString(SIGNUP_USER_KEY, ""), typeToken) ?: ConcurrentHashMap()
         }
         set(value) {
             sp.edit { putString(SIGNUP_USER_KEY, gson.toJson(value)) }

@@ -1,6 +1,7 @@
 package com.tht.tht.domain.signup.usecase
 
 import com.tht.tht.domain.signup.repository.SignupRepository
+import com.tht.tht.domain.type.SignInType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -34,29 +35,38 @@ internal class RequestPhoneVerifyUseCaseTest {
     }
 
     @Test
-    fun `useCase는 Repository의 두 auth 매개변수들이 동일하고 Repository의 fetchSignupUser가 null을 리턴하면 CreateSignupUserUseCase를 호출한다`() = runTest(testDispatcher) {
+    fun `useCase는 매개변수 phone과 signInType을 CreateSignupUserUseCase의 매개변수로 전달한다`() = runTest(testDispatcher) {
         val phone = "test"
+        val signInType = SignInType.NORMAL
         coEvery { repository.fetchSignupUser(any()) } returns null
 
-        useCase("123456", phone, "123456")
+        useCase("123456", phone, "123456", signInType)
 
-        coVerify { createSignupUserUseCase(phone) }
+        coVerify { createSignupUserUseCase(phone, signInType) }
+    }
+
+    @Test
+    fun `useCase는 Repository의 두 auth 매개변수들이 동일하고 Repository의 fetchSignupUser가 null을 리턴하면 CreateSignupUserUseCase를 호출한다`() = runTest(testDispatcher) {
+        coEvery { repository.fetchSignupUser(any()) } returns null
+
+        useCase("123456", "test", "123456", SignInType.NORMAL)
+
+        coVerify(exactly = 1) { createSignupUserUseCase(any(), any()) }
     }
 
     @Test
     fun `useCase는 Repository의 두 auth 매개변수들이 동일하고 Repository의 fetchSignupUser가 null을 리턴하지 않으면 CreateSignupUserUseCase를 호출하지 않는다`() = runTest(testDispatcher) {
-        val phone = "test"
         coEvery { repository.fetchSignupUser(any()) } returns mockk(relaxed = true)
 
-        useCase("123456", phone, "123456")
+        useCase("123456", "test", "123456", SignInType.NORMAL)
 
-        coVerify(exactly = 0) { createSignupUserUseCase(phone) }
+        coVerify(exactly = 0) { createSignupUserUseCase(any(), any()) }
     }
 
 
     @Test
     fun `useCase는 매개변수 apiAuthNum과 inputAuthNum가 동일함을 체크하고 그 결과를 리턴한다`() = runTest(testDispatcher) {
-        val actual = useCase("123456", "test", "123456").getOrNull()
+        val actual = useCase("123456", "test", "123456", SignInType.NORMAL).getOrNull()
 
         assertThat(actual)
             .isNotNull
@@ -68,7 +78,7 @@ internal class RequestPhoneVerifyUseCaseTest {
         val expect = Exception("unit test exception")
         coEvery { repository.fetchSignupUser(any()) } throws expect
 
-        val actual = useCase("123456","test", "123456")
+        val actual = useCase("123456","test", "123456", SignInType.NORMAL)
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -80,7 +90,7 @@ internal class RequestPhoneVerifyUseCaseTest {
 
     @Test
     fun `useCase는 결과를 Result타입으로 래핑하여 리턴한다`() = runTest(testDispatcher) {
-        val actual = useCase("123456","test", "123456")
+        val actual = useCase("123456","test", "123456", SignInType.NORMAL)
 
         assertThat(actual)
             .isInstanceOf(Result::class.java)

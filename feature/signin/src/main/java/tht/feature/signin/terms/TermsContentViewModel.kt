@@ -21,7 +21,7 @@ class TermsContentViewModel @Inject constructor(
     val sideEffectFlow = _sideEffectFlow.asSharedFlow()
 
     val terms: StateFlow<TermsModel> =
-        savedStateHandle.getStateFlow(EXTRA_TERMS, TermsModel("", emptyList(), "", false))
+        savedStateHandle.getStateFlow(EXTRA_TERMS, TermsModel("", "", emptyList(), "", false))
 
     fun backEvent() {
         viewModelScope.launch {

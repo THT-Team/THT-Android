@@ -14,6 +14,8 @@ data class TermsEntity(
         val require: Boolean,
         @SerializedName("title")
         val title: String,
+        @SerializedName("key")
+        val key: String,
         @SerializedName("description")
         val description: String
     ) {
