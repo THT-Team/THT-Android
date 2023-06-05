@@ -37,6 +37,7 @@ internal class RequestSignupUseCaseTest {
         lat = 1.0,
         lng = 1.0,
         address = "address",
+        regionCode = "regionCode",
         preferredGender = "preferredGender",
         profileImgUrl = listOf("image1", "image2"),
         introduce = "introduce",
