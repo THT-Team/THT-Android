@@ -65,7 +65,8 @@ fun ToHotRoute(
         timers = toHotState.timers,
         currentUserIdx = toHotState.enableTimerIdx,
         pageChanged = toHotViewModel::userChangeEvent,
-        ticChanged = toHotViewModel::ticChangeEvent
+        ticChanged = toHotViewModel::ticChangeEvent,
+        loadFinishListener = toHotViewModel::userCardLoadFinishEvent
     )
 }
 
@@ -78,7 +79,8 @@ private fun ToHotScreen(
     timers: ImmutableListWrapper<CardTimerUiModel>,
     currentUserIdx: Int,
     pageChanged: (Int) -> Unit,
-    ticChanged: (Int, Int) -> Unit
+    ticChanged: (Int, Int) -> Unit,
+    loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -104,10 +106,11 @@ private fun ToHotScreen(
                 maxTimeSec = timers.list[idx].maxSec,
                 currentSec = timers.list[idx].currentSec,
                 destinationSec = timers.list[idx].destinationSec,
-                enable = currentUserIdx == pagerState.currentPage,
+                enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
                 userCardClick = { },
                 onReportClick = { },
-                ticChanged = { ticChanged(it, idx) }
+                ticChanged = { ticChanged(it, idx) },
+                loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
             )
         }
         LaunchedEffect(key1 = pagerState) {

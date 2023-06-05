@@ -17,12 +17,17 @@ import coil.size.Size
 import tht.feature.tohot.R
 import tht.feature.tohot.userData
 
+/**
+ * https://coil-kt.github.io/coil/compose/
+ */
+
 @Composable
 fun <T>ToHotCardImage(
     modifier: Modifier = Modifier,
     imageUrl: T,
     placeholder: Painter = painterResource(id = R.drawable.ic_user_card_placeholder),
-    error: Painter = painterResource(id = R.drawable.ic_user_card_error)
+    error: Painter = painterResource(id = R.drawable.ic_user_card_error),
+    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     val model = ImageRequest.Builder(LocalContext.current)
         .data(imageUrl)
@@ -37,7 +42,9 @@ fun <T>ToHotCardImage(
         contentDescription = "card_image",
         placeholder = placeholder,
         error = error,
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
+        onSuccess = { loadFinishListener(true, null) },
+        onError = { loadFinishListener(null, it.result.throwable) }
     )
 }
 

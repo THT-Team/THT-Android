@@ -19,7 +19,8 @@ import tht.feature.tohot.userData
 fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
-    imageUrls: ImmutableListWrapper<String>
+    imageUrls: ImmutableListWrapper<String>,
+    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     Box(
         modifier = modifier
@@ -28,10 +29,11 @@ fun ToHotCardImagePager(
             modifier = Modifier.fillMaxSize(),
             pageCount = imageUrls.list.size,
             state = pagerState
-        ) {
+        ) { page ->
             ToHotCardImage(
                 modifier = Modifier.fillMaxHeight(),
-                imageUrl = imageUrls.list[it]
+                imageUrl = imageUrls.list[page],
+                loadFinishListener = loadFinishListener
             )
         }
     }

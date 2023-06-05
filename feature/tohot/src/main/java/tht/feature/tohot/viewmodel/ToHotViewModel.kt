@@ -67,6 +67,8 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    fun userCardLoadFinishEvent(idx: Int, result: Boolean?, error: Throwable?) {
+    }
     fun ticChangeEvent(tic: Int, userIdx: Int) = with(store.state.value) {
         Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
