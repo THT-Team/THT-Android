@@ -39,7 +39,7 @@ class ToHotViewModel @Inject constructor(
             initialState = ToHotState(
                 userList = ImmutableListWrapper(userList),
                 timers = ImmutableListWrapper(
-                    List(userList.size) { CardTimerUiModel(5, 5, 5) }
+                    List(userList.size) { CardTimerUiModel(5, 5, 5, false) }
                 ),
                 enableTimerIdx = 0
             )
@@ -68,7 +68,24 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun userCardLoadFinishEvent(idx: Int, result: Boolean?, error: Throwable?) {
+        Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
+        result?.let {
+            intent {
+                reduce {
+                    it.copy(
+                        timers = ImmutableListWrapper(
+                            it.timers.list.toMutableList().apply {
+                                this[idx] = this[idx].copy(
+                                    startAble = true
+                                )
+                            }
+                        )
+                    )
+                }
+            }
+        }
     }
+
     fun ticChangeEvent(tic: Int, userIdx: Int) = with(store.state.value) {
         Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
