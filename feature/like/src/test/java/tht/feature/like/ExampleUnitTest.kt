@@ -1,4 +1,4 @@
-package tht.feature.heart
+package tht.feature.like
 
 import org.junit.Test
 
