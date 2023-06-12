@@ -80,6 +80,12 @@
     </style>
     <!--H5Bold-->
 
+    <!--H5SemiBold-->
+    <style name="H5SemiBoldTextStyle">
+        <item name="android:textSize">17sp</item>
+    </style>
+    <!--H5SemiBold-->
+
     <!--H5Medium-->
     <style name="H5MediumTextStyle">
         <item name="android:textSize">17sp</item>
