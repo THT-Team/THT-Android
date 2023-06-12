@@ -1,3 +1,4 @@
 <resources>
     <string name="nickname">%s, %d</string>
+    <string name="title_like">나를 좋아요한 무디</string>
 </resources>

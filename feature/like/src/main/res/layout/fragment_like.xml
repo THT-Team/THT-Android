@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tht.feature.like.LikeFragment">
+    tools:context="tht.feature.like.like.LikeFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_like"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginStart="8dp"
-            android:text="나를 좋아요한 무디" />
+            android:text="@string/title_like" />
 
         <ImageView
             android:id="@+id/iv_notification"

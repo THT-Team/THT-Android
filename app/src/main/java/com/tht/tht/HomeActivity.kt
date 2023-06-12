@@ -17,7 +17,7 @@ import tht.core.ui.base.FragmentNavigator
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
-import tht.feature.like.LikeFragment
+import tht.feature.like.like.LikeFragment
 import tht.feature.setting.MyFragment
 import tht.feature.tohot.ToHotFragment
 

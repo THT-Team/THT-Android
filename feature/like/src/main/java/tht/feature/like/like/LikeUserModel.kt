@@ -1,4 +1,4 @@
-package tht.feature.like
+package tht.feature.like.like
 
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel

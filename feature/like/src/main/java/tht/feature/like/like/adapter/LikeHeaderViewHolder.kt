@@ -1,4 +1,4 @@
-package tht.feature.like
+package tht.feature.like.like.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import tht.feature.heart.databinding.ItemHeaderBinding

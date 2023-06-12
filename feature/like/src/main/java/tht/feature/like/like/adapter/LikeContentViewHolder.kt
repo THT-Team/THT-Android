@@ -1,4 +1,4 @@
-package tht.feature.like
+package tht.feature.like.like.adapter
 
 import android.widget.ImageView
 import androidx.core.view.isVisible
@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import tht.core.ui.extension.getPxFromDp
 import tht.feature.heart.R
 import tht.feature.heart.databinding.ItemContentBinding
+import tht.feature.like.like.LikeUserModel
 
 class LikeContentViewHolder(
     private val binding: ItemContentBinding
@@ -22,6 +23,10 @@ class LikeContentViewHolder(
             tvAddress.text = likeUser.address
             viewNewCircle.isVisible = likeUser.isNew
         }
+    }
+
+    fun bind(isNew: Boolean) {
+        binding.viewNewCircle.isVisible = isNew
     }
 
     private fun loadImage(imageView: ImageView, url: String) {
