@@ -3,7 +3,7 @@ package tht.feature.like.like
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 
-data class LikeUserModel(
+data class LikeModel(
     val nickname: String,
     val birthday: String,
     val interests: List<InterestModel>,

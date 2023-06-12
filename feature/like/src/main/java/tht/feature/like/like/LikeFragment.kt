@@ -35,10 +35,19 @@ class LikeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        observeData()
     }
 
     private fun initAdapter() {
         binding.rvLike.adapter = likeAdapter
+    }
+
+    private fun observeData() {
+        repeatOnStarted {
+            viewModel.likeList.collect {
+                likeAdapter.submitList(it)
+            }
+        }
     }
 
     companion object {

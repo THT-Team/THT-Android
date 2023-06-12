@@ -21,6 +21,22 @@ class LikeViewModel @Inject constructor(
         MutableStateFlow(LikeUiState.Default)
 
     private val likeResponse = MutableStateFlow<MutableMap<String, List<LikeModel>>>(MockData.data)
+    private val _likeList = MutableStateFlow<List<LikeItem>>(emptyList())
+    val likeList: StateFlow<List<LikeItem>> get() = _likeList
+
+    init {
+        viewModelScope.launch {
+            likeResponse.collect { map ->
+                val list = mutableListOf<LikeItem>().apply {
+                    map.forEach { (key, value) ->
+                        add(LikeItem.Header(key))
+                        value.forEach { add(LikeItem.Content(it)) }
+                    }
+                }
+                _likeList.value = list
+            }
+        }
+    }
 
     fun deleteLike(nickname: String) {
         val tempMap = HashMap(likeResponse.value)
