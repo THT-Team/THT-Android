@@ -12,6 +12,7 @@
         android:id="@+id/iv_profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/bg_radius_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +25,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_new_circle"
         app:layout_constraintStart_toEndOf="@id/iv_profile"
         app:layout_constraintTop_toTopOf="@id/iv_profile"
         tools:text="최광현, 27"
         tools:textColor="@color/white_ffffff" />
+
+    <View
+        android:id="@+id/view_new_circle"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_new_circle"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_username"
+        app:layout_constraintBottom_toBottomOf="@id/tv_username"/>
 
     <ImageView
         android:id="@+id/iv_map_pin"
