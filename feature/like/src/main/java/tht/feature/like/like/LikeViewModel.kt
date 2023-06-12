@@ -20,7 +20,7 @@ class LikeViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LikeUiState> =
         MutableStateFlow(LikeUiState.Default)
 
-    private val likeResponse = MutableStateFlow<MutableMap<String, List<LikeModel>>>(MockData.data)
+    private val likeResponse = MutableStateFlow<LinkedHashMap<String, List<LikeModel>>>(MockData.data)
     private val _likeList = MutableStateFlow<List<LikeItem>>(emptyList())
     val likeList: StateFlow<List<LikeItem>> get() = _likeList
 
@@ -39,15 +39,15 @@ class LikeViewModel @Inject constructor(
     }
 
     fun deleteLike(nickname: String) {
-        val tempMap = HashMap(likeResponse.value)
-        val keys = tempMap.keys
-
-        keys.forEach { key ->
+        val tempMap = LinkedHashMap(likeResponse.value)
+        val deletedCategories = mutableListOf<String>()
+        tempMap.keys.forEach { key ->
             tempMap[key] = tempMap[key]!!.filter { like ->
                 like.nickname != nickname
             }
-            if (tempMap[key]!!.isEmpty()) tempMap.remove(key)
+            if(tempMap[key]!!.isEmpty()) deletedCategories.add(key)
         }
+        deletedCategories.forEach { tempMap.remove(it) }
         likeResponse.value = tempMap
     }
 
