@@ -4,5 +4,6 @@
     style="@style/H5SemiBoldTextStyle"
     android:id="@+id/tv_category"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:maxLines="1"
     tools:text="마음"/>
