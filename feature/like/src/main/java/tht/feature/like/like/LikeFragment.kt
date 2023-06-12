@@ -5,16 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.repeatOnStarted
 import tht.feature.heart.databinding.FragmentLikeBinding
 import tht.feature.like.like.adapter.LikeAdapter
-import tht.feature.like.like.adapter.MockData
 
+@AndroidEntryPoint
 class LikeFragment : Fragment() {
 
     private val binding: FragmentLikeBinding by viewBinding(FragmentLikeBinding::inflate)
+    private val viewModel: LikeViewModel by viewModels()
     private val likeAdapter: LikeAdapter by lazy {
-        LikeAdapter()
+        LikeAdapter(nextClickListener)
+    }
+
+    private val nextClickListener: (String) -> Unit = { nickname ->
+        viewModel.deleteLike(nickname)
     }
 
     override fun onCreateView(
@@ -31,7 +39,6 @@ class LikeFragment : Fragment() {
 
     private fun initAdapter() {
         binding.rvLike.adapter = likeAdapter
-        likeAdapter.submitList(MockData.data)
     }
 
     companion object {

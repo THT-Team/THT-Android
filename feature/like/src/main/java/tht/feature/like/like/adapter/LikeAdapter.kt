@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import tht.feature.heart.databinding.ItemContentBinding
 import tht.feature.heart.databinding.ItemHeaderBinding
 
-class LikeAdapter : ListAdapter<LikeItem, RecyclerView.ViewHolder>(diffUtil) {
+class LikeAdapter(
+    private val nextClickListener: (String) -> Unit
+) : ListAdapter<LikeItem, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -32,8 +34,13 @@ class LikeAdapter : ListAdapter<LikeItem, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is LikeHeaderViewHolder -> holder.bind((getItem(position) as LikeItem.Header).category)
-            is LikeContentViewHolder -> holder.bind((getItem(position) as LikeItem.Content).item)
+            is LikeHeaderViewHolder -> holder.bind(
+                (getItem(position) as LikeItem.Header).category
+            )
+            is LikeContentViewHolder -> holder.bind(
+                nextClickListener,
+                (getItem(position) as LikeItem.Content).item
+            )
         }
     }
 

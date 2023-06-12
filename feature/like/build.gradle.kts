@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -46,10 +47,21 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.android.material)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.coroutines.core)
+    implementation(libs.viewmodel.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
 
     implementation(libs.glide)
     kapt(libs.glideComplier)
+
+    implementation(libs.hilt)
+    testImplementation(libs.hilt.android.testing)
+    kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
 }
