@@ -230,6 +230,10 @@
         <item name="android:textColor">@color/black_222222</item>
     </style>
 
+    <style name="P2SemiBoldGrayTextStyle" parent="P2SemiBoldTextStyle">
+        <item name="android:textColor">@color/gray_939393</item>
+    </style>
+
     <style name="P2SemiBoldYellowTextStyle" parent="P2SemiBoldTextStyle">
         <item name="android:textColor">@color/yellow_f9cc2e</item>
     </style>

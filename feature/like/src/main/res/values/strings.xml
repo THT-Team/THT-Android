@@ -1,4 +1,8 @@
 <resources>
     <string name="nickname">%s, %d</string>
     <string name="title_like">나를 좋아요한 무디</string>
+    <string name="caption_detail_category">우리가 통한 주제</string>
+    <string name="label_interests">내 관심사</string>
+    <string name="label_ideal_type">내 이상형</string>
+    <string name="label_introduction">자기소개</string>
 </resources>

@@ -2,4 +2,6 @@
 <resources>
     <dimen name="like_item_radius">12dp</dimen>
     <dimen name="img_radius">8dp</dimen>
+    <dimen name="detail_category_radius">24dp</dimen>
+    <dimen name="text_introduction_radius">6dp</dimen>
 </resources>
