@@ -24,6 +24,14 @@ class LikeViewModel @Inject constructor(
     private val _likeList = MutableStateFlow<List<LikeItem>>(emptyList())
     val likeList: StateFlow<List<LikeItem>> get() = _likeList
 
+    val nextClickListener: (String) -> Unit = { nickname ->
+        deleteLike(nickname)
+    }
+
+    val imageClickListener: (LikeModel) -> Unit = { likeModel ->
+        postSideEffect(LikeSideEffect.ShowDetailDialog(likeModel))
+    }
+
     init {
         viewModelScope.launch {
             likeResponse.collect { map ->
@@ -45,7 +53,7 @@ class LikeViewModel @Inject constructor(
             tempMap[key] = tempMap[key]!!.filter { like ->
                 like.nickname != nickname
             }
-            if(tempMap[key]!!.isEmpty()) deletedCategories.add(key)
+            if (tempMap[key]!!.isEmpty()) deletedCategories.add(key)
         }
         deletedCategories.forEach { tempMap.remove(it) }
         likeResponse.value = tempMap
@@ -55,5 +63,7 @@ class LikeViewModel @Inject constructor(
         object Default : LikeUiState()
     }
 
-    sealed class LikeSideEffect : SideEffect
+    sealed class LikeSideEffect : SideEffect {
+        data class ShowDetailDialog(val likeModel: LikeModel) : LikeSideEffect()
+    }
 }

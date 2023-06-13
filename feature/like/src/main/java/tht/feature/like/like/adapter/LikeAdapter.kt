@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import tht.feature.heart.databinding.ItemContentBinding
 import tht.feature.heart.databinding.ItemHeaderBinding
+import tht.feature.like.like.LikeModel
 
 class LikeAdapter(
+    private val imageClickListener: (LikeModel) -> Unit,
     private val nextClickListener: (String) -> Unit
 ) : ListAdapter<LikeItem, RecyclerView.ViewHolder>(diffUtil) {
 
@@ -38,6 +40,7 @@ class LikeAdapter(
                 (getItem(position) as LikeItem.Header).category
             )
             is LikeContentViewHolder -> holder.bind(
+                imageClickListener,
                 nextClickListener,
                 (getItem(position) as LikeItem.Content).item
             )

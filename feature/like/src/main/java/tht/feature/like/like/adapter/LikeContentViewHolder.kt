@@ -16,13 +16,18 @@ class LikeContentViewHolder(
     private val binding: ItemContentBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(nextClickListener: (String) -> Unit, likeUser: LikeModel) {
+    fun bind(
+        imageClickListener: (LikeModel) -> Unit,
+        nextClickListener: (String) -> Unit,
+        likeUser: LikeModel
+    ) {
         binding.apply {
             loadImage(binding.ivProfile, likeUser.profileImgUrl[0])
             tvNickname.text = tvNickname.context.getString(R.string.nickname, likeUser.nickname, likeUser.age)
             tvAddress.text = likeUser.address
             viewNewCircle.isVisible = likeUser.isNew
-            btnNext.setOnClickListener{ nextClickListener(likeUser.nickname) }
+            btnNext.setOnClickListener { nextClickListener(likeUser.nickname) }
+            ivProfile.setOnClickListener { imageClickListener(likeUser) }
         }
     }
 

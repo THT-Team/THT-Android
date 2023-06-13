@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.heart.databinding.FragmentLikeBinding
+import tht.feature.like.constant.LikeConstant
+import tht.feature.like.detail.LikeDetailFragment
 import tht.feature.like.like.adapter.LikeAdapter
 
 @AndroidEntryPoint
@@ -18,7 +21,7 @@ class LikeFragment : Fragment() {
     private val binding: FragmentLikeBinding by viewBinding(FragmentLikeBinding::inflate)
     private val viewModel: LikeViewModel by viewModels()
     private val likeAdapter: LikeAdapter by lazy {
-        LikeAdapter(nextClickListener)
+        LikeAdapter(viewModel.imageClickListener, viewModel.nextClickListener)
     }
 
     private val nextClickListener: (String) -> Unit = { nickname ->
@@ -44,8 +47,23 @@ class LikeFragment : Fragment() {
 
     private fun observeData() {
         repeatOnStarted {
-            viewModel.likeList.collect {
-                likeAdapter.submitList(it)
+            launch {
+                viewModel.sideEffectFlow.collect {
+                    when (it) {
+                        is LikeViewModel.LikeSideEffect.ShowDetailDialog -> {
+                            LikeDetailFragment()
+                                .apply {
+                                    arguments = Bundle().apply { putSerializable(LikeConstant.KEY, it.likeModel) }
+                                }
+                                .show(childFragmentManager, "")
+                        }
+                    }
+                }
+            }
+            launch {
+                viewModel.likeList.collect {
+                    likeAdapter.submitList(it)
+                }
             }
         }
     }
