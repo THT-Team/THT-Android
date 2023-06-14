@@ -95,7 +95,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun getBottomSheetDialogDefaultHeight(): Int {
-        return getWindowHeight() * 80 / 100
+        return getWindowHeight() * 85 / 100
     }
 
     private fun getWindowHeight(): Int =
