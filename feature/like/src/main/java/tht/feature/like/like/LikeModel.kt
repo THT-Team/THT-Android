@@ -14,4 +14,12 @@ data class LikeModel(
     val introduce: String,
     val category: String,
     val isNew: Boolean
-) : java.io.Serializable
+) : java.io.Serializable {
+
+    companion object {
+        fun getDefaultLikeModel() = LikeModel(
+            "", "", listOf(), listOf(), 0, "",
+            listOf(), "", "", false
+        )
+    }
+}

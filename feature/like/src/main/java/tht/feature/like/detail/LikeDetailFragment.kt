@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowMetrics
 import android.widget.ImageView
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,12 +22,14 @@ import tht.feature.heart.R
 import tht.feature.heart.databinding.DialogDetailBinding
 import tht.feature.like.constant.LikeConstant
 import tht.feature.like.like.LikeModel
+import tht.feature.like.like.LikeViewModel
 
 @AndroidEntryPoint
 class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogDetailBinding::inflate)
-
+    private val viewModel: LikeViewModel by viewModels({ requireParentFragment() })
+    private lateinit var likeUser: LikeModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, tht.core.ui.R.style.TransparentBottomSheet)
@@ -54,13 +57,13 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun initView() {
-        val likeUser = arguments?.let {
+        likeUser = arguments?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                 it.getSerializable(LikeConstant.KEY, LikeModel::class.java)
             else
                 it.getSerializable(LikeConstant.KEY) as LikeModel
-        }
-        if (likeUser == null) dismiss()
+        } ?: LikeModel.getDefaultLikeModel()
+        if (likeUser.nickname.isEmpty()) dismiss()
         else {
             binding.apply {
                 svDetail.clipToOutline = true
@@ -84,8 +87,11 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private fun setOnClickListener() {
         binding.ivClose.setOnClickListener { dismiss() }
-        binding.btnNextChance.setOnClickListener {  }
-        binding.btnChatting.setOnClickListener {  }
+        binding.btnNextChance.setOnClickListener {
+            viewModel.nextClickListener(likeUser.nickname)
+            dismiss()
+        }
+        binding.btnChatting.setOnClickListener { }
     }
 
     private fun setDialogSize(bottomSheetDialog: BottomSheetDialog) {
