@@ -26,7 +26,7 @@ class LikeContentViewHolder(
             tvNickname.text = tvNickname.context.getString(R.string.nickname, likeUser.nickname, likeUser.age)
             tvAddress.text = likeUser.address
             viewNewCircle.isVisible = likeUser.isNew
-            btnNext.setOnClickListener { nextClickListener(likeUser.nickname) }
+            btnNextChance.setOnClickListener { nextClickListener(likeUser.nickname) }
             ivProfile.setOnClickListener { imageClickListener(likeUser) }
         }
     }

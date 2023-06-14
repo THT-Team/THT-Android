@@ -78,6 +78,8 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private fun setOnClickListener() {
         binding.ivClose.setOnClickListener { dismiss() }
+        binding.btnNextChance.setOnClickListener {  }
+        binding.btnChatting.setOnClickListener {  }
     }
 
     private fun setDialogSize(bottomSheetDialog: BottomSheetDialog) {

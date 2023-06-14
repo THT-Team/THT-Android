@@ -62,11 +62,11 @@
         tools:text="성남시 중원구 금광동" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_next_chance"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_btn_next"
+        android:background="@drawable/btn_next_chance"
         android:backgroundTint="@color/white_ffffff"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintEnd_toStartOf="@id/blank"
@@ -79,13 +79,13 @@
         android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_chatting"
-        app:layout_constraintStart_toEndOf="@id/btn_next" />
+        app:layout_constraintStart_toEndOf="@id/btn_next_chance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_chatting"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_btn_chatting"
+        android:background="@drawable/btn_chatting"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
