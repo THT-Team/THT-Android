@@ -343,13 +343,11 @@
 
     <style name="TransparentBottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
-        <item name="android:colorBackground">@color/white_ffffff</item>
     </style>
 
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
 </resources>

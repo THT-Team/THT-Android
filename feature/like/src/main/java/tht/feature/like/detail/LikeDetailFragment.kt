@@ -27,6 +27,11 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogDetailBinding::inflate)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, tht.core.ui.R.style.TransparentBottomSheet)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog: Dialog = super.onCreateDialog(savedInstanceState)
         dialog.setOnShowListener {
@@ -58,6 +63,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         if (likeUser == null) dismiss()
         else {
             binding.apply {
+                svDetail.clipToOutline = true
                 tvCategory.text = likeUser.category
                 tvNickname.text = getString(R.string.nickname, likeUser.nickname, likeUser.age)
                 tvAddress.text = likeUser.address

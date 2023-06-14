@@ -42,12 +42,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/layout_category" />
 
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/sv_detail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_bottom_sheet"
+        android:clipToOutline="true"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/view_detail_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +64,6 @@
                 android:id="@+id/iv_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_bottom_sheet"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
