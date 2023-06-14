@@ -206,22 +206,12 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next_chance"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:background="@drawable/btn_next_chance_gray"
         app:layout_constraintBottom_toBottomOf="@id/sv_detail"
-        app:layout_constraintEnd_toStartOf="@+id/view_btn_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sv_detail" />
-
-    <View
-        android:id="@+id/view_btn_margin"
-        android:layout_width="16dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/sv_detail"
-        app:layout_constraintEnd_toStartOf="@id/btn_chatting"
-        app:layout_constraintStart_toEndOf="@id/btn_next_chance"
         app:layout_constraintTop_toBottomOf="@id/sv_detail" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -232,7 +222,6 @@
         android:background="@drawable/btn_chatting_large"
         app:layout_constraintBottom_toBottomOf="@id/sv_detail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view_btn_margin"
         app:layout_constraintTop_toBottomOf="@id/sv_detail" />
 
     <View

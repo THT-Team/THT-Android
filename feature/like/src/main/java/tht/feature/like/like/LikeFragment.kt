@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,10 +23,6 @@ class LikeFragment : Fragment() {
     private val viewModel: LikeViewModel by viewModels()
     private val likeAdapter: LikeAdapter by lazy {
         LikeAdapter(viewModel.imageClickListener, viewModel.nextClickListener)
-    }
-
-    private val nextClickListener: (String) -> Unit = { nickname ->
-        viewModel.deleteLike(nickname)
     }
 
     override fun onCreateView(
@@ -48,6 +45,22 @@ class LikeFragment : Fragment() {
     private fun observeData() {
         repeatOnStarted {
             launch {
+                viewModel.uiStateFlow.collect {
+                    when (it) {
+                        LikeViewModel.LikeUiState.Empty -> {
+                            setEmptyViewVisibility(true)
+                            setLikeItemViewVisibility(false)
+                        }
+
+                        is LikeViewModel.LikeUiState.NotEmpty -> {
+                            setEmptyViewVisibility(false)
+                            setLikeItemViewVisibility(true)
+                            likeAdapter.submitList(it.likes)
+                        }
+                    }
+                }
+            }
+            launch {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is LikeViewModel.LikeSideEffect.ShowDetailDialog -> {
@@ -60,12 +73,20 @@ class LikeFragment : Fragment() {
                     }
                 }
             }
-            launch {
-                viewModel.likeList.collect {
-                    likeAdapter.submitList(it)
-                }
-            }
         }
+    }
+
+    private fun setEmptyViewVisibility(isVisible: Boolean) {
+        binding.apply {
+            ivLikeEmpty.isVisible = isVisible
+            tvLikeEmptyHeader.isVisible = isVisible
+            tvLikeEmptyContent.isVisible = isVisible
+            btnToHome.isVisible = isVisible
+        }
+    }
+
+    private fun setLikeItemViewVisibility(isVisible: Boolean) {
+        binding.rvLike.isVisible = isVisible
     }
 
     companion object {

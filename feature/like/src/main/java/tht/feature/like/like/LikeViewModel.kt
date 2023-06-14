@@ -3,7 +3,6 @@ package tht.feature.like.like
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -18,11 +17,9 @@ class LikeViewModel @Inject constructor(
 ) : BaseStateViewModel<LikeViewModel.LikeUiState, LikeViewModel.LikeSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LikeUiState> =
-        MutableStateFlow(LikeUiState.Default)
+        MutableStateFlow(LikeUiState.Empty)
 
-    private val likeResponse = MutableStateFlow<LinkedHashMap<String, List<LikeModel>>>(MockData.data)
-    private val _likeList = MutableStateFlow<List<LikeItem>>(emptyList())
-    val likeList: StateFlow<List<LikeItem>> get() = _likeList
+    private val likeItems = MutableStateFlow<LinkedHashMap<String, List<LikeModel>>>(MockData.data)
 
     val nextClickListener: (String) -> Unit = { nickname ->
         deleteLike(nickname)
@@ -34,20 +31,25 @@ class LikeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            likeResponse.collect { map ->
-                val list = mutableListOf<LikeItem>().apply {
-                    map.forEach { (key, value) ->
-                        add(LikeItem.Header(key))
-                        value.forEach { add(LikeItem.Content(it)) }
-                    }
+            likeItems.collect { map ->
+                _uiStateFlow.value = if (map.isNotEmpty()) {
+                    LikeUiState.NotEmpty(
+                        mutableListOf<LikeItem>().apply {
+                            map.forEach { (key, value) ->
+                                add(LikeItem.Header(key))
+                                value.forEach { add(LikeItem.Content(it)) }
+                            }
+                        }
+                    )
+                } else {
+                    LikeUiState.Empty
                 }
-                _likeList.value = list
             }
         }
     }
 
-    fun deleteLike(nickname: String) {
-        val tempMap = LinkedHashMap(likeResponse.value)
+    private fun deleteLike(nickname: String) {
+        val tempMap = LinkedHashMap(likeItems.value)
         val deletedCategories = mutableListOf<String>()
         tempMap.keys.forEach { key ->
             tempMap[key] = tempMap[key]!!.filter { like ->
@@ -56,11 +58,12 @@ class LikeViewModel @Inject constructor(
             if (tempMap[key]!!.isEmpty()) deletedCategories.add(key)
         }
         deletedCategories.forEach { tempMap.remove(it) }
-        likeResponse.value = tempMap
+        likeItems.value = tempMap
     }
 
     sealed class LikeUiState : UiState {
-        object Default : LikeUiState()
+        object Empty : LikeUiState()
+        data class NotEmpty(val likes: List<LikeItem>) : LikeUiState()
     }
 
     sealed class LikeSideEffect : SideEffect {

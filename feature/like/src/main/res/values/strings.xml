@@ -5,4 +5,6 @@
     <string name="label_interests">내 관심사</string>
     <string name="label_ideal_type">내 이상형</string>
     <string name="label_introduction">자기소개</string>
+    <string name="header_like_empty">아직 좋아요를 받지 못했어요.</string>
+    <string name="content_like_empty">먼저 마음에 드는 무디를 찾아볼까요?</string>
 </resources>

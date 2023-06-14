@@ -63,33 +63,22 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_next_chance"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:background="@drawable/btn_next_chance"
         android:backgroundTint="@color/white_ffffff"
-        app:layout_constraintDimensionRatio="3:1"
-        app:layout_constraintEnd_toStartOf="@id/blank"
         app:layout_constraintStart_toStartOf="@id/tv_nickname"
         app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
-    <View
-        android:id="@+id/blank"
-        android:layout_width="24dp"
-        android:layout_height="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_chatting"
-        app:layout_constraintStart_toEndOf="@id/btn_next_chance" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_chatting"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/btn_chatting"
-        app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/blank" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
