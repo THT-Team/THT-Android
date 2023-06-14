@@ -43,23 +43,25 @@
         app:layout_constraintTop_toTopOf="@id/layout_category" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv_detail"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_category"
+        android:background="@drawable/bg_bottom_sheet"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/layout_category"
+        app:layout_constraintBottom_toTopOf="@+id/view_detail_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black_222222"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/iv_one"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_bottom_sheet"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,8 +85,11 @@
             <TextView
                 android:id="@+id/tv_nickname"
                 style="@style/H2BoldTextStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toStartOf="@id/iv_report"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_three"
                 tools:text="최광현, 27"
@@ -94,6 +99,7 @@
                 android:id="@+id/iv_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_report"
                 app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_map_pin"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/tv_nickname"
                 app:tint="@color/white_ffffff" />
 
@@ -114,7 +120,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/iv_map_pin"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
                 app:layout_constraintStart_toEndOf="@id/iv_map_pin"
                 app:layout_constraintTop_toTopOf="@id/iv_map_pin"
                 tools:text="성남시 중원구 금광동"
@@ -127,8 +133,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/label_interests"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/iv_map_pin" />
 
             <com.google.android.material.chip.ChipGroup
@@ -136,8 +142,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/tv_interests_label" />
 
             <TextView
@@ -147,8 +153,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/label_ideal_type"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/cg_interests" />
 
             <com.google.android.material.chip.ChipGroup
@@ -156,8 +162,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/tv_ideal_type_label" />
 
             <TextView
@@ -167,18 +173,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/label_introduction"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/cg_ideal_type" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_text_introduction"
                 android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/iv_report"
+                app:layout_constraintStart_toStartOf="@id/tv_nickname"
                 app:layout_constraintTop_toBottomOf="@id/tv_introduction_label">
 
                 <TextView
@@ -193,4 +201,9 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+    <View
+        android:id="@+id/view_detail_margin"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

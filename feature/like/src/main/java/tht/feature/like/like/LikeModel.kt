@@ -12,5 +12,6 @@ data class LikeModel(
     val address: String,
     val profileImgUrl: List<String>,
     val introduce: String,
+    val category: String,
     val isNew: Boolean
 ) : java.io.Serializable
