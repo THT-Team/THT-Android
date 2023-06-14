@@ -1,10 +1,15 @@
 package tht.feature.like.detail
 
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowMetrics
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import tht.core.ui.delegate.viewBinding
@@ -30,6 +35,14 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         initView()
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog: Dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            setDialogSize(it as BottomSheetDialog)
+        }
+        return dialog
+    }
+
     private fun initView() {
         val likeUser = arguments?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
@@ -47,6 +60,32 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
             }
         }
-
     }
+
+    private fun setDialogSize(bottomSheetDialog: BottomSheetDialog) {
+        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
+        val behavior = BottomSheetBehavior.from<View>(bottomSheet)
+        val layoutParams = bottomSheet.layoutParams
+        val height = getBottomSheetDialogDefaultHeight()
+        layoutParams.height = height
+        bottomSheet.layoutParams = layoutParams
+        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        behavior.peekHeight = height
+    }
+
+    private fun getBottomSheetDialogDefaultHeight(): Int {
+        return getWindowHeight() * 75 / 100
+    }
+
+    private fun getWindowHeight(): Int =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics: WindowMetrics = requireActivity().windowManager.currentWindowMetrics
+            val bounds = windowMetrics.bounds
+            bounds.height()
+        } else {
+            val displayMetrics = DisplayMetrics()
+            val display = requireActivity().windowManager.defaultDisplay
+            display.getRealMetrics(displayMetrics)
+            displayMetrics.heightPixels
+        }
 }

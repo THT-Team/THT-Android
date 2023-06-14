@@ -12,5 +12,6 @@
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
         <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="bottomSheetDialogTheme">@style/TransparentBottomSheet</item>
     </style>
 </resources>
