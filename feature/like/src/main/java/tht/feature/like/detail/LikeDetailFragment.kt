@@ -23,6 +23,14 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private val binding by viewBinding(DialogDetailBinding::inflate)
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog: Dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            setDialogSize(it as BottomSheetDialog)
+        }
+        return dialog
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,14 +41,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog: Dialog = super.onCreateDialog(savedInstanceState)
-        dialog.setOnShowListener {
-            setDialogSize(it as BottomSheetDialog)
-        }
-        return dialog
+        setOnClickListener()
     }
 
     private fun initView() {
@@ -60,6 +61,10 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
             }
         }
+    }
+
+    private fun setOnClickListener() {
+        binding.ivClose.setOnClickListener { dismiss() }
     }
 
     private fun setDialogSize(bottomSheetDialog: BottomSheetDialog) {
