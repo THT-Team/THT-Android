@@ -2,26 +2,40 @@ package tht.feature.tohot.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import tht.feature.tohot.StringProvider
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.model.topics
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
 import tht.feature.tohot.userData
 import tht.feature.tohot.userData2
 import tht.feature.tohot.userData3
 import tht.feature.tohot.userData4
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Stack
 import javax.inject.Inject
 
+
 /**
  * - 손으로 드래그 중에 시간이 다 달면 예외 발생
+ * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
+ * - userList 가 비어 있을 때 modal 을 열면 fetchTopicList 가 호출 되면서 toHotLogic 도 호출돼 userList 가 호출 되는 문제
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
@@ -37,14 +51,173 @@ class ToHotViewModel @Inject constructor(
     override val store: Store<ToHotState, ToHotSideEffect> =
         store(
             initialState = ToHotState(
-                userList = ImmutableListWrapper(userList),
-                timers = ImmutableListWrapper(
-                    List(userList.size) { CardTimerUiModel(5, 5, 5) }
-                ),
-                enableTimerIdx = 0
+                loading = false,
+                userList = ImmutableListWrapper(emptyList()),
+                timers = ImmutableListWrapper(emptyList()),
+                enableTimerIdx = 0,
+                selectTopicKey = -1,
+                currentTopic = null,
+                topicModalShow = false,
+                topicList = ImmutableListWrapper(emptyList()),
+                topicSelectRemainingTime = "00:00:00",
+                topicSelectRemainingTimeMill = 0,
+                hasUnReadAlarm = false
             )
         )
     private var removeUserCardStack = Stack<ToHotUserUiModel>()
+
+    init {
+        toHotLogic()
+    }
+
+    private fun toHotLogic() {
+        with(store.state.value) {
+            when {
+                topicList.list.isEmpty() -> fetchTopicList(true)
+
+                currentTopic == null  -> {
+                    clearUserCard()
+                    intent {
+                        reduce { it.copy(topicModalShow = true) }
+                    }
+                }
+
+                userList.list.isEmpty() -> requestUserCard(selectTopicKey)
+            }
+        }
+    }
+
+    private fun fetchTopicList(openTopicList: Boolean) {
+        viewModelScope.launch {
+            intent { reduce { it.copy(loading = true) } }
+            delay(500)
+            intent {
+                reduce {
+                    it.copy(
+                        topicList = ImmutableListWrapper(topics),
+                        topicModalShow = if (openTopicList) true else it.topicModalShow,
+                        topicSelectRemainingTime = "24:00:00"
+                    )
+                }
+                reduce { it.copy(loading = false) }
+            }
+            toHotLogic()
+        }
+    }
+
+    fun openTopicSelectEvent() {
+        startTopicRemainingTimer()
+    }
+
+    fun closeTopicSelectEvent() {
+        if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
+    }
+
+    /**
+     * 1 초 마다 LocalDateTime 객체, State 객체를 생성 하는 문제 존재
+     * 미완성
+     * Topic Modal 을 두번째 부터 열때 타이머가 멈추며, fetchTopicList 가 호출되어 progress 가 돌아감
+     */
+    private lateinit var topicRemainingTimer: Job
+    private fun startTopicRemainingTimer() {
+        if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
+        topicRemainingTimer = viewModelScope.launch(Dispatchers.IO) {
+            with (store.state.value) {
+                while (isActive && topicSelectRemainingTimeMill >= 0) {
+                    delay(1000)
+                    val remainingString = (topicSelectRemainingTimeMill - System.currentTimeMillis()).let {
+                        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
+                        date.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+                    }
+                    intent {
+                        reduce {
+                            it.copy(
+                                topicSelectRemainingTime = remainingString,
+                                topicSelectRemainingTimeMill = topicSelectRemainingTimeMill - 1000
+                            )
+                        }
+                    }
+                }
+
+                if (topicSelectRemainingTimeMill < 0) {
+                    fetchTopicList(false)
+                }
+            }
+        }
+    }
+
+    private fun clearUserCard() {
+        intent {
+            reduce {
+                it.copy(
+                    userList = ImmutableListWrapper(emptyList()),
+                    timers = ImmutableListWrapper(emptyList())
+                )
+            }
+        }
+    }
+
+    private fun requestUserCard(topicKey: Long) {
+        viewModelScope.launch {
+            intent { reduce { it.copy(loading = true) } }
+            delay(500)
+            intent {
+                reduce {
+                    it.copy(
+                        userList = ImmutableListWrapper(userList),
+                        timers = ImmutableListWrapper(
+                            List(userList.size) {
+                                CardTimerUiModel(MAX_TIMER_SEC, MAX_TIMER_SEC, MAX_TIMER_SEC)
+                            }
+                        ),
+                        enableTimerIdx = 0
+                    )
+                }
+                reduce { it.copy(loading = false) }
+            }
+        }
+    }
+
+    fun backClickEvent(topicModalShown: Boolean) {
+        if (store.state.value.currentTopic == null) return
+        if (topicModalShown) {
+            intent {
+                reduce {
+                    it.copy(
+                        topicModalShow = false
+                    )
+                }
+            }
+        }
+    }
+
+    fun topicSelectEvent(topicKey: Long) {
+        intent {
+            reduce {
+                it.copy(
+                    selectTopicKey = topicKey
+                )
+            }
+        }
+    }
+
+    fun topicSelectFinishEvent() {
+        viewModelScope.launch {
+            intent { reduce { it.copy(loading = true) } }
+            delay(500)
+            intent {
+                reduce {
+                    it.copy(
+                        topicModalShow = false,
+                        currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
+                    )
+                }
+                reduce { it.copy(loading = false) }
+            }
+            clearUserCard()
+            toHotLogic()
+        }
+    }
 
     fun userChangeEvent(userIdx: Int) {
         Log.d("ToHot", "userChangeEvent => $userIdx")
@@ -55,9 +228,9 @@ class ToHotViewModel @Inject constructor(
                     timers = ImmutableListWrapper(
                         it.timers.list.toMutableList().apply {
                             this[userIdx] = this[userIdx].copy(
-                                maxSec = 5,
-                                currentSec = 5,
-                                destinationSec = 4
+                                maxSec = MAX_TIMER_SEC,
+                                currentSec = MAX_TIMER_SEC,
+                                destinationSec = MAX_TIMER_SEC - 1
                             )
                         }
                     ),
@@ -125,5 +298,24 @@ class ToHotViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun topicChangeClickEvent() {
+        intent {
+            reduce {
+                //TODO: Stop user card timer
+                it.copy(
+                    topicModalShow = true
+                )
+            }
+        }
+    }
+
+    fun alarmClickEvent() {
+        //TODO: Navigate Alarm Screen
+    }
+
+    companion object {
+        private const val MAX_TIMER_SEC = 5
     }
 }

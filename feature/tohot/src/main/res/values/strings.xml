@@ -5,4 +5,8 @@
     <string name="user_info_interest_title">내 관심사</string>
     <string name="user_info_ideal_type_title">내 이상형</string>
     <string name="user_info_introduce_title">자기소개</string>
+
+    <string name="starting">시작하기</string>
+
+    <string name="select_topic_title">오늘의 폴링</string>
 </resources>
