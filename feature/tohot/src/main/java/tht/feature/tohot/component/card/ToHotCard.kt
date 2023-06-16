@@ -41,9 +41,9 @@ fun ToHotCard(
     enable: Boolean,
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
-    onReportClick: () -> Unit = { },
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { },
+    onReportMenuClick: () -> Unit = { },
     loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     val pagerState = rememberPagerState()
@@ -87,7 +87,7 @@ fun ToHotCard(
                 userInfoFullShow = userInfoFullShow.not()
                 userCardClick()
             },
-            onReportClick = onReportClick,
+            onReportClick = onReportMenuClick,
             onLikeClick = onLikeClick,
             onUnLikeClick = onUnLikeClick
         )

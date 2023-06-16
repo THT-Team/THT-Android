@@ -61,7 +61,10 @@ class ToHotViewModel @Inject constructor(
                             )
                         }
                     ),
-                    enableTimerIdx = userIdx
+                    enableTimerIdx = userIdx,
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false,
+                    blockDialogShow = false
                 )
             }
         }
@@ -134,6 +137,86 @@ class ToHotViewModel @Inject constructor(
 
     fun unlikeCardEvent(idx: Int) {
         intent {
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun dialogDismissEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    enableTimerIdx = idx,
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false,
+                    blockDialogShow = false
+                )
+            }
+        }
+    }
+
+    fun reportMenuEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    enableTimerIdx = -1,
+                    reportMenuDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportMenuReportEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    reportDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportMenuBlockEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    blockDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false
+                )
+            }
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun blockEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    blockDialogShow = false
+                )
+            }
             postSideEffect(
                 ToHotSideEffect.RemoveAndScroll(
                     scrollIdx = idx + 1,

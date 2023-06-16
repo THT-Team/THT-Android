@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.compose_ui.component.text.headline.ThtHeadline5
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
 import tht.feature.tohot.R
@@ -30,11 +31,15 @@ fun ToHotUseReportDialog(
     isShow: Boolean,
     onReportClick: (Int) -> Unit = {},
     onCancelClick: () -> Unit = {},
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit
 ) {
     if (!isShow) return
     Dialog(
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        )
     ) {
         Column(
             modifier = modifier
@@ -112,6 +117,7 @@ fun ToHotUseReportDialogPreview() {
             "사진 도용",
             "욕설 및 비방",
             "불법 촬영물 공유"
-        )
+        ),
+        onDismiss = { }
     )
 }

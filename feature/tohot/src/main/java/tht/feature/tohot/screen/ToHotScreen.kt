@@ -19,6 +19,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
+import tht.feature.tohot.component.dialog.ToHotUseReportDialog
+import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
+import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
 import tht.feature.tohot.component.toolbar.ToHotTopAppBar
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
@@ -68,7 +71,30 @@ fun ToHotRoute(
         ticChanged = toHotViewModel::ticChangeEvent,
         loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
         onLikeClick = toHotViewModel::likeCardEvent,
-        onUnLikeClick = toHotViewModel::unlikeCardEvent
+        onUnLikeClick = toHotViewModel::unlikeCardEvent,
+        onReportMenuClick = toHotViewModel::reportMenuEvent
+    )
+
+    ToHotUserReportMenuDialog(
+        isShow = toHotState.reportMenuDialogShow,
+        onReportClick = toHotViewModel::reportMenuReportEvent,
+        onBlockClick = toHotViewModel::reportMenuBlockEvent,
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+    )
+
+    ToHotUseReportDialog(
+        isShow = toHotState.reportDialogShow,
+        reportReason = toHotState.reportReason,
+        onReportClick = { toHotViewModel.reportEvent(pagerState.currentPage) },
+        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+    )
+
+    ToHotUserBlockDialog(
+        isShow = toHotState.blockDialogShow,
+        onBlockClick = { toHotViewModel.blockEvent(pagerState.currentPage) },
+        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
     )
 }
 
@@ -84,6 +110,7 @@ private fun ToHotScreen(
     ticChanged: (Int, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
+    onReportMenuClick: () -> Unit = { },
     loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
@@ -113,7 +140,7 @@ private fun ToHotScreen(
                 destinationSec = timers.list[idx].destinationSec,
                 enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
                 userCardClick = { },
-                onReportClick = { },
+                onReportMenuClick = onReportMenuClick,
                 ticChanged = { ticChanged(it, idx) },
                 onLikeClick = { onLikeClick(idx) },
                 onUnLikeClick = { onUnLikeClick(idx) },

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.compose_ui.component.text.headline.ThtHeadline5
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
@@ -30,11 +31,15 @@ fun ToHotUserBlockDialog(
     isShow: Boolean,
     onBlockClick: () -> Unit = {},
     onCancelClick: () -> Unit = {},
-    onDismiss: () -> Unit = {}
+    onDismiss: () -> Unit
 ) {
     if (!isShow) return
     Dialog(
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        )
     ) {
         Column(
             modifier = modifier
@@ -104,5 +109,8 @@ fun ToHotUserBlockDialog(
 @Composable
 @Preview(showBackground = true)
 fun ToHotUserBlockDialogPreview() {
-    ToHotUserBlockDialog(isShow = true)
+    ToHotUserBlockDialog(
+        isShow = true,
+        onDismiss = { }
+    )
 }
