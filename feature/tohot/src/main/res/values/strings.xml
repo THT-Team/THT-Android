@@ -1,5 +1,4 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="loading">로딩중</string>
     <string name="cancel">취소</string>
 
@@ -15,4 +14,8 @@
     <string name="block_dialog_title">차단할까요?</string>
     <string name="block_dialog_content">"해당 사용자와 서로 차단됩니다.?</string>
     <string name="block_dialog_block">차단하기</string>
+
+    <string name="starting">시작하기</string>
+
+    <string name="select_topic_title">오늘의 폴링</string>
 </resources>

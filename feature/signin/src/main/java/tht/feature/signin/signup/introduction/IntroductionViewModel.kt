@@ -2,7 +2,7 @@ package tht.feature.signin.signup.introduction
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupIntroduceUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IntroductionViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupIntroduceUseCase: PatchSignupIntroduceUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<IntroductionViewModel.IntroductionUiState, IntroductionViewModel.IntroductionSideEffect>() {
 
@@ -81,18 +81,19 @@ class IntroductionViewModel @Inject constructor(
         postSideEffect(IntroductionSideEffect.KeyboardVisible(false))
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupIntroduceUseCase(phone, text)
-                .onSuccess {
-                    _sideEffectFlow.emit(IntroductionSideEffect.NavigateNextView)
-                }.onFailure {
-                    _sideEffectFlow.emit(
-                        IntroductionSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.SendAuthFail)
-                        )
+            patchSignupDataUseCase(phone) {
+                it.copy(introduce = text)
+            }.onSuccess {
+                _sideEffectFlow.emit(IntroductionSideEffect.NavigateNextView)
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    IntroductionSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.SendAuthFail)
                     )
-                }.also {
-                    _dataLoading.value = false
-                }
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestSignupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -25,6 +26,9 @@ class SignupRootViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<SignupRootUiState> =
         MutableStateFlow(SignupRootUiState.Progress(Step.EMPTY))
 
+    private val _dataLoading = MutableStateFlow(false)
+    val dataLoading = _dataLoading.asStateFlow()
+
     fun progressEvent(step: Step) {
         setUiState(SignupRootUiState.Progress(step))
     }
@@ -39,14 +43,18 @@ class SignupRootViewModel @Inject constructor(
 
     fun signUpEvent() {
         viewModelScope.launch {
+            _dataLoading.value = true
             requestSignupUseCase(phone.value).onSuccess {
                 _sideEffectFlow.emit(SignupRootSideEffect.FinishSignup)
             }.onFailure {
+                it.printStackTrace()
                 _sideEffectFlow.emit(
                     SignupRootSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.SignupFail)
+                        stringProvider.getString(StringProvider.ResId.SignupFail) + "\n${it.message}"
                     )
                 )
+            }.also {
+                _dataLoading.value = false
             }
         }
     }

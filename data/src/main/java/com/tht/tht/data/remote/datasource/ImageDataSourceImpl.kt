@@ -16,4 +16,10 @@ class ImageDataSourceImpl @Inject constructor(
             imageService.uploadImage(uri, saveFileName)
         }
     }
+
+    override suspend fun removeImage(fileName: String): Boolean {
+        return withContext(dispatcher) {
+            imageService.removeImage(fileName)
+        }
+    }
 }

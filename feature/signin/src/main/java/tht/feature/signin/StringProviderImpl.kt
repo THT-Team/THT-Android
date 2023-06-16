@@ -40,12 +40,18 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.IdealPatchFail -> R.string.message_ideal_patch_fail
             StringProvider.ResId.InterestPatchFail -> R.string.message_interest_patch_fail
             StringProvider.ResId.InterestFetchFail -> R.string.message_interest_fetch_fail
-            StringProvider.ResId.InvalidateLocation -> R.string.message_location_fetch_fail
+            StringProvider.ResId.FetchLocationFail -> R.string.message_location_fetch_fail
+            StringProvider.ResId.InvalidateLocation -> R.string.message_invalidate_location
+            StringProvider.ResId.AutoLocationFetchFail -> R.string.message_location_auto_fetch_fail
             StringProvider.ResId.LocationPatchFail -> R.string.message_location_patch_fail
+            StringProvider.ResId.RegionCodeFetchFail -> R.string.message_region_code_fetch_fail
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
             StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
             StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail
+            StringProvider.ResId.BirthdayPatchFail -> R.string.message_birthday_patch_fail
             StringProvider.ResId.SignupFail -> R.string.message_signup_fail
+            StringProvider.ResId.InvalidDate -> R.string.message_invalidate_date
+            StringProvider.ResId.EmailSendFail -> R.string.message_email_send_fail
         }
     }
 }

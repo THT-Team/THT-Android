@@ -17,4 +17,7 @@ class ImageRepositoryImpl @Inject constructor(
         return imageDataSource.uploadImage(Uri.parse(uri), saveFileName) to idx
     }
 
+    override suspend fun removeImage(fileName: String): Boolean {
+        return imageDataSource.removeImage(fileName)
+    }
 }

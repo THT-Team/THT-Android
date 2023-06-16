@@ -2,7 +2,7 @@ package tht.feature.signin.signup.preferredgender
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupPreferredGenderUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PreferredGenderViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupPreferredGenderUseCase: PatchSignupPreferredGenderUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<PreferredGenderViewModel.PreferredGenderUiState,
     PreferredGenderViewModel.PreferredGenderSideEffect>() {
@@ -60,21 +60,22 @@ class PreferredGenderViewModel @Inject constructor(
     fun nextEvent(phone: String) {
         val gender = getGenderKey(
             (_uiStateFlow.value as? PreferredGenderUiState.SelectedGender)?.idx
-        ) ?: return // TODO: ShowToast?
+        ) ?: return
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupPreferredGenderUseCase(phone, gender)
-                .onSuccess {
-                    when (it) {
-                        true -> postSideEffect(PreferredGenderSideEffect.NavigateNextView)
-                        else ->
-                            emitMessage(stringProvider.getString(StringProvider.ResId.PreferredGenderPatchFail))
-                    }
-                }.onFailure {
-                    emitMessage(stringProvider.getString(StringProvider.ResId.PreferredGenderPatchFail) + it)
-                }.also {
-                    _dataLoading.value = false
+            patchSignupDataUseCase(phone) {
+                it.copy(preferredGender = gender)
+            }.onSuccess {
+                when (it) {
+                    true -> postSideEffect(PreferredGenderSideEffect.NavigateNextView)
+                    else ->
+                        emitMessage(stringProvider.getString(StringProvider.ResId.PreferredGenderPatchFail))
                 }
+            }.onFailure {
+                emitMessage(stringProvider.getString(StringProvider.ResId.PreferredGenderPatchFail) + it)
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 

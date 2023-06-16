@@ -7,6 +7,11 @@
     <string name="next">다음</string>
     <string name="loading">로딩중</string>
 
+    <string name="year">년</string>
+    <string name="month">월</string>
+    <string name="day">일</string>
+    <string name="confirm">확인</string>
+
     <string name="message_login_issue"><u>로그인에 어려움이 있으신가요?</u></string>
 
     <string name="message_invalidate_phone">유효하지 않은 핸드폰 번호입니다</string>
@@ -54,6 +59,10 @@
     <string name="message_preferred_gender_input">마이페이지에서 변경 가능합니다</string>
     <string name="message_preferred_gender_patch_fail">선호 성별 입력을 실패했습니다</string>
 
+    <string name="text_male">남성</string>
+    <string name="text_female">여성</string>
+    <string name="text_all">모두</string>
+
     <string name="title_ideal_type">이상형을 알려주세요</string>
     <string name="message_ideal_type">내 이상형 %1d개를 선택해주세요</string>
     <string name="message_ideal_fetch_fail">이상형 목록을 불러올 수 없습니다</string>
@@ -71,15 +80,45 @@
     <string name="message_profile_image_upload_fail">프로필 이미지 업로드를 실패하였습니다</string>
     <string name="message_profile_image_patch_fail">프로필 이미지 입력을 실패하였습니다</string>
 
+    <string name="menu_profile_image_modify">사진 변경</string>
+    <string name="menu_profile_image_remove">사진 삭제</string>
+
     <string name="title_introduce">나를 알려 주세요.</string>
     <string name="hint_introduce">제 MBTI는요 :)</string>
     <string name="message_introduce_input">자유롭게 자기소개를 해주세요.</string>
 
+    <string name="title_birthday">성별, 생일을 알려주세요.</string>
+    <string name="message_birthday_patch_fail">생일, 성별 입력을 실패하였습니다.</string>
+    <string name="message_invalidate_date">올바른 날짜를 입력해주세요.</string>
+
+    <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
+    <string name="date_default">2004. 01. 01</string>
+
+
     <string name="title_location">현재 위치를 알려주세요.</string>
     <string name="hint_location">서울시 강남구 대치동</string>
     <string name="message_caption_location">내 주변의 친구들과 더 많은 대화를 나눌 수 있어요.</string>
+    <string name="message_location_auto_fetch_fail">위치를 자동으로 불러올 수 없습니다.</string>
     <string name="message_location_fetch_fail">위치를 불러올 수 없습니다.</string>
+    <string name="message_region_code_fetch_fail">지역구 코드를 불러오지 못 했습니다.</string>
     <string name="message_location_patch_fail">위치 입력을 실패하였습니다</string>
+    <string name="message_invalidate_location">위치정보가 유효하지 않습니다</string>
+
 
     <string name="message_signup_fail">회원가입에 실패하였습니다</string>
+    <string name="title_inquiry">무엇이든 물어보세요!</string>
+    <string name="caption_inquiry_email">답변받을 이메일 주소</string>
+    <string name="title_inquiry_tool_bar">문의하기</string>
+    <string name="hint_inquiry_email">답변받을 이메일 주소를 입력해주세요.</string>
+    <string name="hint_inquiry_content">내용을 적어주세요.</string>
+    <string name="caption_inquiry_content">내용 입력</string>
+    <string name="message_email_agreement">이메일 정보 제공 동의</string>
+    <string name="message_email_agreement_detail">보내주신 질문에 답변드리기 위해 이메일 정보 제공에 동의해 주시기 바랍니다.</string>
+    <string name="message_email_send_fail">이메일 전송에 실패하였습니다.</string>
+
+    <string name="title_complete_dialog">문의하기 완료</string>
+    <string name="message_complete_content">답변에는 하루 정도의 시간이 걸릴 수 있어요.\n답변이 안온다면, 스팸 메일함을 확인해주세요.</string>
+    <string name="message_complete_back"><u>돌아가기</u></string>
+    <string name="inquiry_complete_dialog">InquiryCompleteDialog</string>
+
 </resources>

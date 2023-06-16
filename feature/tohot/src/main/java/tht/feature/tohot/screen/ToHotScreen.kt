@@ -1,35 +1,44 @@
 package tht.feature.tohot.screen
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.compose_ui.component.progress.ThtCircularProgress
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
-import tht.feature.tohot.component.toolbar.ToHotTopAppBar
+import tht.feature.tohot.component.toolbar.ToHotToolBar
+import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ToHotRoute(
     toHotViewModel: ToHotViewModel = hiltViewModel()
@@ -62,18 +71,6 @@ fun ToHotRoute(
             }
         }
     }
-    ToHotScreen(
-        cardList = toHotState.userList,
-        pagerState = pagerState,
-        timers = toHotState.timers,
-        currentUserIdx = toHotState.enableTimerIdx,
-        pageChanged = toHotViewModel::userChangeEvent,
-        ticChanged = toHotViewModel::ticChangeEvent,
-        loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
-        onLikeClick = toHotViewModel::likeCardEvent,
-        onUnLikeClick = toHotViewModel::unlikeCardEvent,
-        onReportMenuClick = toHotViewModel::reportMenuEvent
-    )
 
     ToHotUserReportMenuDialog(
         isShow = toHotState.reportMenuDialogShow,
@@ -96,6 +93,74 @@ fun ToHotRoute(
         onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
         onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
     )
+
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true,
+        confirmValueChange = { false }
+    )
+    LaunchedEffect(key1 = toHotState.topicModalShow) {
+        if (toHotState.topicModalShow) {
+            modalBottomSheetState.show()
+        } else {
+            modalBottomSheetState.hide()
+        }
+    }
+
+    LaunchedEffect(key1 = modalBottomSheetState) {
+        snapshotFlow { modalBottomSheetState.currentValue }
+            .collect {
+                when (it) {
+                    ModalBottomSheetValue.Expanded, ModalBottomSheetValue.HalfExpanded ->
+                        toHotViewModel.openTopicSelectEvent()
+
+                    ModalBottomSheetValue.Hidden ->
+                        toHotViewModel.closeTopicSelectEvent()
+                }
+            }
+    }
+
+    BackHandler {
+        toHotViewModel.backClickEvent(modalBottomSheetState.currentValue != ModalBottomSheetValue.Hidden)
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        TopicSelectModel(
+            modalBottomSheetState = modalBottomSheetState,
+            remainingTime = toHotState.topicSelectRemainingTime,
+            topics = toHotState.topicList,
+            selectTopicKey = toHotState.selectTopicKey,
+            topicClickListener = toHotViewModel::topicSelectEvent,
+            selectFinishListener = toHotViewModel::topicSelectFinishEvent
+        ) {
+            ToHotScreen(
+                cardList = toHotState.userList,
+                pagerState = pagerState,
+                timers = toHotState.timers,
+                currentUserIdx = toHotState.enableTimerIdx,
+                topicIconUrl = toHotState.currentTopic?.iconUrl,
+                topicIconRes = toHotState.currentTopic?.iconRes,
+                topicTitle = toHotState.currentTopic?.title,
+                hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                topicSelectListener = toHotViewModel::topicChangeClickEvent,
+                alarmClickListener = toHotViewModel::alarmClickEvent,
+                pageChanged = toHotViewModel::userChangeEvent,
+                ticChanged = toHotViewModel::ticChangeEvent,
+                loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
+                onLikeClick = toHotViewModel::likeCardEvent,
+                onUnLikeClick = toHotViewModel::unlikeCardEvent,
+                onReportMenuClick = toHotViewModel::reportMenuEvent
+            )
+        }
+
+        ThtCircularProgress(
+            modifier = Modifier.align(Alignment.Center),
+            dataLoading = { toHotState.loading },
+            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -106,6 +171,12 @@ private fun ToHotScreen(
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
     currentUserIdx: Int,
+    topicIconUrl: String?,
+    topicIconRes: Int?,
+    topicTitle: String?,
+    hasUnReadAlarm: Boolean,
+    topicSelectListener: () -> Unit = { },
+    alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
     ticChanged: (Int, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
@@ -116,7 +187,17 @@ private fun ToHotScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        ToHotTopAppBar()
+        ToHotToolBar {
+            ToHotToolBarContent(
+                topicIconUrl = topicIconUrl,
+                topicIconRes = topicIconRes,
+                topicTitle = topicTitle,
+                hasUnReadAlarm = hasUnReadAlarm,
+                topicSelectListener = topicSelectListener,
+                alarmClickListener = alarmClickListener
+            )
+        }
+
         VerticalPager(
             userScrollEnabled = false,
             pageCount = cardList.list.size,

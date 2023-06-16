@@ -1,10 +1,11 @@
 package tht.feature.signin.signup.idealtype
 
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.signup.constant.SignupConstant
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.usecase.FetchIdealTypeUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupIdealTypeUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class IdealTypeViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val fetchIdealTypeUseCase: FetchIdealTypeUseCase,
-    private val patchSignupIdealTypeUseCase: PatchSignupIdealTypeUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<IdealTypeViewModel.IdealTypeUiState, IdealTypeViewModel.IdealTypeSideEffect>() {
 
@@ -125,10 +126,9 @@ class IdealTypeViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupIdealTypeUseCase(
-                phone,
-                selectIdealTypes.value.map { it.key }
-            ).onSuccess {
+            patchSignupDataUseCase(phone) {
+                it.copy(idealTypeKeys = selectIdealTypes.value.map { it.key })
+            }.onSuccess {
                 _sideEffectFlow.emit(IdealTypeSideEffect.NavigateNextView)
             }.onFailure {
                 _sideEffectFlow.emit(
@@ -155,6 +155,6 @@ class IdealTypeViewModel @Inject constructor(
     }
 
     companion object {
-        const val MAX_REQUIRE_SELECT_COUNT = 3
+        const val MAX_REQUIRE_SELECT_COUNT = SignupConstant.IDEAL_TYPE_REQUIRE_SIZE
     }
 }
