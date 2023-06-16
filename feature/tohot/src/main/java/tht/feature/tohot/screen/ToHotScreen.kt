@@ -40,7 +40,7 @@ fun ToHotRoute(
                 Log.d("ToHot", "sideEffect collect => $isActive")
                 try {
                     when (it) {
-                        is ToHotSideEffect.ScrollToAndRemoveFirst -> {
+                        is ToHotSideEffect.RemoveAndScroll -> {
                             try {
                                 pagerState.animateScrollToPage(it.scrollIdx)
                                 Log.d("ToHot", "scroll to ${it.scrollIdx}")
@@ -66,7 +66,9 @@ fun ToHotRoute(
         currentUserIdx = toHotState.enableTimerIdx,
         pageChanged = toHotViewModel::userChangeEvent,
         ticChanged = toHotViewModel::ticChangeEvent,
-        loadFinishListener = toHotViewModel::userCardLoadFinishEvent
+        loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
+        onLikeClick = toHotViewModel::likeCardEvent,
+        onUnLikeClick = toHotViewModel::unlikeCardEvent
     )
 }
 
@@ -80,6 +82,8 @@ private fun ToHotScreen(
     currentUserIdx: Int,
     pageChanged: (Int) -> Unit,
     ticChanged: (Int, Int) -> Unit,
+    onLikeClick: (Int) -> Unit = { },
+    onUnLikeClick: (Int) -> Unit = { },
     loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
@@ -87,6 +91,7 @@ private fun ToHotScreen(
     ) {
         ToHotTopAppBar()
         VerticalPager(
+            userScrollEnabled = false,
             pageCount = cardList.list.size,
             state = pagerState,
             key = { cardList.list[it].nickname }
@@ -110,6 +115,8 @@ private fun ToHotScreen(
                 userCardClick = { },
                 onReportClick = { },
                 ticChanged = { ticChanged(it, idx) },
+                onLikeClick = { onLikeClick(idx) },
+                onUnLikeClick = { onUnLikeClick(idx) },
                 loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
             )
         }

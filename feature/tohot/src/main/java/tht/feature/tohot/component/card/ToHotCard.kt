@@ -42,6 +42,8 @@ fun ToHotCard(
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
     onReportClick: () -> Unit = { },
+    onLikeClick: () -> Unit = { },
+    onUnLikeClick: () -> Unit = { },
     loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     val pagerState = rememberPagerState()
@@ -85,7 +87,9 @@ fun ToHotCard(
                 userInfoFullShow = userInfoFullShow.not()
                 userCardClick()
             },
-            onReportClick = onReportClick
+            onReportClick = onReportClick,
+            onLikeClick = onLikeClick,
+            onUnLikeClick = onUnLikeClick
         )
 
         ToHotPagerIndicator(

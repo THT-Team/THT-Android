@@ -94,7 +94,7 @@ class ToHotViewModel @Inject constructor(
                 true ->
                     intent {
                         postSideEffect(
-                            ToHotSideEffect.ScrollToAndRemoveFirst(
+                            ToHotSideEffect.RemoveAndScroll(
                                 scrollIdx = userIdx + 1,
                                 removeIdx = userIdx
                             )
@@ -118,6 +118,28 @@ class ToHotViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun likeCardEvent(idx: Int) {
+        intent {
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun unlikeCardEvent(idx: Int) {
+        intent {
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
         }
     }
 
