@@ -1,8 +1,6 @@
 package tht.feature.tohot.component.userinfo
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,18 +35,14 @@ fun ToHotUserInfoCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(5.dp))
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioLowBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
             .clickable(
                 enabled = true,
                 onClick = onClick
             )
     ) {
-        if (isFullCardShow) {
+        AnimatedVisibility(
+            visible = isFullCardShow
+        ) {
             ToHotUserInfoFullCard(
                 interests = interests,
                 idealTypes = idealTypes,
