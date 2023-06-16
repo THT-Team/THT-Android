@@ -25,6 +25,9 @@ fun ToHotCardManageRow(
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { }
 ) {
+    val userInfoButtonInteractionSource = remember { MutableInteractionSource() }
+    val userInfoButtonPressed by userInfoButtonInteractionSource.collectIsPressedAsState()
+
     val likeButtonInteractionSource = remember { MutableInteractionSource() }
     val likeButtonPressed by likeButtonInteractionSource.collectIsPressedAsState()
 
@@ -34,9 +37,14 @@ fun ToHotCardManageRow(
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
-        IconButton(onClick = onInfoClick) {
+        IconButton(
+            onClick = onInfoClick,
+            interactionSource = userInfoButtonInteractionSource
+        ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_unlike_unpressed),
+                painter = painterResource(
+                    id = if (userInfoButtonPressed) R.drawable.ic_user_info_pressed else R.drawable.ic_user_info_unpreseed
+                ),
                 contentDescription = "user_info_button_icon",
                 tint = Color.Unspecified
             )
