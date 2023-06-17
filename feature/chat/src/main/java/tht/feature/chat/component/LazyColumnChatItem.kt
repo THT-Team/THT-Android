@@ -12,13 +12,18 @@ import androidx.compose.ui.tooling.preview.Preview
 internal fun LazyColumnChatItem(
     items: List<String>,
     isLoading: Boolean,
+    onClickItem: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        state = rememberLazyListState()
+        state = rememberLazyListState(),
     ) {
         items(items) { item ->
-            ChatItem(item, isLoading)
+            ChatItem(
+                item = item,
+                isLoading = isLoading,
+                onClickItem = onClickItem,
+            )
         }
     }
 }
@@ -29,5 +34,6 @@ internal fun LazyColumnChatItemPreview() {
     LazyColumnChatItem(
         items = emptyList(),
         isLoading = false,
+        onClickItem = {},
     )
 }

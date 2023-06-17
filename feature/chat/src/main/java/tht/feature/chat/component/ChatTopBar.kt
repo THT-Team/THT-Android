@@ -25,7 +25,7 @@ internal fun ChatTopAppBar(
             .fillMaxWidth()
             .padding(
                 horizontal = 20.dp,
-                vertical = (15.5).dp
+                vertical = (15.5).dp,
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {

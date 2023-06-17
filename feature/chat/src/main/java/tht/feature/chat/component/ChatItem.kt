@@ -18,21 +18,24 @@ import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
+import com.example.compose_ui.extensions.noRippleClickable
 
 @Composable
 internal fun ChatItem(
     item: String,
     isLoading: Boolean,
+    onClickItem: () -> Unit,
 ) {
     Row(
         modifier = Modifier
+            .noRippleClickable { onClickItem() }
             .fillMaxWidth()
             .padding(horizontal = 15.dp, vertical = (16.5).dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         ThtImage(
             modifier = Modifier.skeleton(visible = isLoading),
-            src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832",
+            src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
             size = DpSize(50.dp, 50.dp),
         )
         Spacer(space = 12.dp)
@@ -67,5 +70,5 @@ internal fun ChatItem(
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 internal fun ChatItemPreivew() {
-    ChatItem(item = "아이템 1", isLoading = false)
+    ChatItem(item = "아이템 1", isLoading = false, onClickItem = {})
 }
