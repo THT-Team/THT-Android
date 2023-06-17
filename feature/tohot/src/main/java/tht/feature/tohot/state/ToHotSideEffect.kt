@@ -1,7 +1,7 @@
 package tht.feature.tohot.state
 
 sealed class ToHotSideEffect {
-    data class ScrollToAndRemoveFirst(
+    data class RemoveAndScroll(
         val scrollIdx: Int,
         val removeIdx: Int
     ) : ToHotSideEffect()

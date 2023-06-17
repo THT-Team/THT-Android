@@ -37,7 +37,7 @@ fun ToHotChip(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
             .background(
-                color = Color(0xFF111111).copy(alpha = 0.5f)
+                color = Color(0xFF111111)
             )
     ) {
         ThtP2(

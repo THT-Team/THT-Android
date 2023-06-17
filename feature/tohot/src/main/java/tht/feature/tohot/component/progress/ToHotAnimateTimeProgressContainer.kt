@@ -33,18 +33,25 @@ fun ToHotAnimateTimeProgressContainer(
     maxTimeSec: Int,
     currentSec: Int,
     destinationSec: Int,
+    colors: List<Color> = listOf(
+        Color(0xFFF9CC2E),
+        Color(0xFFF98F2E),
+        Color(0xFFF93A2E)
+    ),
     duration: Int = (currentSec - destinationSec) * 1000,
     ticChanged: (Int) -> Unit = { }
 ) {
     val destinationProgress = destinationSec.toFloat() / maxTimeSec.toFloat()
+    var color = colors.lastOrNull() ?: Color.Yellow
+    for (i in colors.indices) {
+        val value = colors.size - i - 1
+        if (destinationProgress >= (1.0f / colors.size) * value) {
+            color = colors[i]
+            break
+        }
+    }
     val progressColor by animateColorAsState(
-        targetValue = if (destinationProgress >= 0.7f) {
-            Color(0xFFF9CC2E)
-        } else if (destinationProgress >= 0.3f) {
-            Color(0xFFF98F2E)
-        } else {
-            Color(0xFFF93A2E)
-        },
+        targetValue = color,
         animationSpec = tween(durationMillis = 1000)
     )
 

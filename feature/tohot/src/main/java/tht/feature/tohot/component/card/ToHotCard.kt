@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +41,10 @@ fun ToHotCard(
     enable: Boolean,
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
-    onReportClick: () -> Unit = { }
+    onLikeClick: () -> Unit = { },
+    onUnLikeClick: () -> Unit = { },
+    onReportMenuClick: () -> Unit = { },
+    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     val pagerState = rememberPagerState()
     var userInfoFullShow by remember { mutableStateOf(false) }
@@ -55,7 +56,8 @@ fun ToHotCard(
         ToHotCardImagePager(
             modifier = Modifier.fillMaxSize(),
             pagerState = pagerState,
-            imageUrls = imageUrls
+            imageUrls = imageUrls,
+            loadFinishListener = loadFinishListener
         )
 
         ToHotAnimateTimeProgressContainer(
@@ -85,7 +87,9 @@ fun ToHotCard(
                 userInfoFullShow = userInfoFullShow.not()
                 userCardClick()
             },
-            onReportClick = onReportClick
+            onReportClick = onReportMenuClick,
+            onLikeClick = onLikeClick,
+            onUnLikeClick = onUnLikeClick
         )
 
         ToHotPagerIndicator(

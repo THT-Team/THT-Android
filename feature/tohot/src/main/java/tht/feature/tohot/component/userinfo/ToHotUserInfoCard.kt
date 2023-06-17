@@ -1,13 +1,16 @@
 package tht.feature.tohot.component.userinfo
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 import tht.feature.tohot.model.ImmutableListWrapper
@@ -23,33 +26,41 @@ fun ToHotUserInfoCard(
     interests: ImmutableListWrapper<InterestModel>,
     idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
-    onClick: (Boolean) -> Unit = { },
-    onReportClick: () -> Unit = { }
+    onClick: () -> Unit = { },
+    onReportClick: () -> Unit = { },
+    onLikeClick: () -> Unit = { },
+    onUnLikeClick: () -> Unit = { }
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioLowBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
+            .clip(RoundedCornerShape(5.dp))
+            .clickable(
+                enabled = true,
+                onClick = onClick
             )
     ) {
-        if (isFullCardShow) {
+        AnimatedVisibility(
+            visible = isFullCardShow
+        ) {
             ToHotUserInfoFullCard(
                 interests = interests,
                 idealTypes = idealTypes,
                 introduce = introduce,
-                onClick = { onClick(true) },
+                onClick = onClick,
                 onReportClick = onReportClick
             )
         }
         ToHotUserInfoMinimumCard(
             name = name,
             age = age,
-            address = address,
-            onClick = { onClick(false) }
+            address = address
+        )
+        ToHotCardManageRow(
+            modifier = Modifier.padding(top = 10.dp),
+            onInfoClick = onClick,
+            onLikeClick = onLikeClick,
+            onUnLikeClick = onUnLikeClick
         )
     }
 }

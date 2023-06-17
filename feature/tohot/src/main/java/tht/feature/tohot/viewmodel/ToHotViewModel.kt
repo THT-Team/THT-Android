@@ -51,10 +51,12 @@ class ToHotViewModel @Inject constructor(
     override val store: Store<ToHotState, ToHotSideEffect> =
         store(
             initialState = ToHotState(
-                loading = false,
-                userList = ImmutableListWrapper(emptyList()),
-                timers = ImmutableListWrapper(emptyList()),
+                userList = ImmutableListWrapper(userList),
+                timers = ImmutableListWrapper(
+                    List(userList.size) { CardTimerUiModel(5, 5, 5, false) }
+                ),
                 enableTimerIdx = 0,
+                loading = false,
                 selectTopicKey = -1,
                 currentTopic = null,
                 topicModalShow = false,
@@ -167,7 +169,12 @@ class ToHotViewModel @Inject constructor(
                         userList = ImmutableListWrapper(userList),
                         timers = ImmutableListWrapper(
                             List(userList.size) {
-                                CardTimerUiModel(MAX_TIMER_SEC, MAX_TIMER_SEC, MAX_TIMER_SEC)
+                                CardTimerUiModel(
+                                    maxSec = MAX_TIMER_SEC,
+                                    currentSec = MAX_TIMER_SEC,
+                                    destinationSec = MAX_TIMER_SEC,
+                                    startAble = false
+                                )
                             }
                         ),
                         enableTimerIdx = 0
@@ -234,8 +241,30 @@ class ToHotViewModel @Inject constructor(
                             )
                         }
                     ),
-                    enableTimerIdx = userIdx
+                    enableTimerIdx = userIdx,
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false,
+                    blockDialogShow = false
                 )
+            }
+        }
+    }
+
+    fun userCardLoadFinishEvent(idx: Int, result: Boolean?, error: Throwable?) {
+        Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
+        result?.let {
+            intent {
+                reduce {
+                    it.copy(
+                        timers = ImmutableListWrapper(
+                            it.timers.list.toMutableList().apply {
+                                this[idx] = this[idx].copy(
+                                    startAble = true
+                                )
+                            }
+                        )
+                    )
+                }
             }
         }
     }
@@ -248,7 +277,7 @@ class ToHotViewModel @Inject constructor(
                 true ->
                     intent {
                         postSideEffect(
-                            ToHotSideEffect.ScrollToAndRemoveFirst(
+                            ToHotSideEffect.RemoveAndScroll(
                                 scrollIdx = userIdx + 1,
                                 removeIdx = userIdx
                             )
@@ -272,6 +301,108 @@ class ToHotViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun likeCardEvent(idx: Int) {
+        intent {
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun unlikeCardEvent(idx: Int) {
+        intent {
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun dialogDismissEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    enableTimerIdx = idx,
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false,
+                    blockDialogShow = false
+                )
+            }
+        }
+    }
+
+    fun reportMenuEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    enableTimerIdx = -1,
+                    reportMenuDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportMenuReportEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    reportDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportMenuBlockEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    blockDialogShow = true
+                )
+            }
+        }
+    }
+
+    fun reportEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    reportDialogShow = false
+                )
+            }
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
+        }
+    }
+
+    fun blockEvent(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    reportMenuDialogShow = false,
+                    blockDialogShow = false
+                )
+            }
+            postSideEffect(
+                ToHotSideEffect.RemoveAndScroll(
+                    scrollIdx = idx + 1,
+                    removeIdx = idx
+                )
+            )
         }
     }
 

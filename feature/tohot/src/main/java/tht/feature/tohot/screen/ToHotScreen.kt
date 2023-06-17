@@ -27,6 +27,9 @@ import com.example.compose_ui.component.progress.ThtCircularProgress
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
+import tht.feature.tohot.component.dialog.ToHotUseReportDialog
+import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
+import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.model.CardTimerUiModel
@@ -49,7 +52,7 @@ fun ToHotRoute(
                 Log.d("ToHot", "sideEffect collect => $isActive")
                 try {
                     when (it) {
-                        is ToHotSideEffect.ScrollToAndRemoveFirst -> {
+                        is ToHotSideEffect.RemoveAndScroll -> {
                             try {
                                 pagerState.animateScrollToPage(it.scrollIdx)
                                 Log.d("ToHot", "scroll to ${it.scrollIdx}")
@@ -68,6 +71,28 @@ fun ToHotRoute(
             }
         }
     }
+
+    ToHotUserReportMenuDialog(
+        isShow = toHotState.reportMenuDialogShow,
+        onReportClick = toHotViewModel::reportMenuReportEvent,
+        onBlockClick = toHotViewModel::reportMenuBlockEvent,
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+    )
+
+    ToHotUseReportDialog(
+        isShow = toHotState.reportDialogShow,
+        reportReason = toHotState.reportReason,
+        onReportClick = { toHotViewModel.reportEvent(pagerState.currentPage) },
+        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+    )
+
+    ToHotUserBlockDialog(
+        isShow = toHotState.blockDialogShow,
+        onBlockClick = { toHotViewModel.blockEvent(pagerState.currentPage) },
+        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
+        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+    )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -122,7 +147,11 @@ fun ToHotRoute(
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
                 pageChanged = toHotViewModel::userChangeEvent,
-                ticChanged = toHotViewModel::ticChangeEvent
+                ticChanged = toHotViewModel::ticChangeEvent,
+                loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
+                onLikeClick = toHotViewModel::likeCardEvent,
+                onUnLikeClick = toHotViewModel::unlikeCardEvent,
+                onReportMenuClick = toHotViewModel::reportMenuEvent
             )
         }
 
@@ -149,7 +178,11 @@ private fun ToHotScreen(
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
-    ticChanged: (Int, Int) -> Unit
+    ticChanged: (Int, Int) -> Unit,
+    onLikeClick: (Int) -> Unit = { },
+    onUnLikeClick: (Int) -> Unit = { },
+    onReportMenuClick: () -> Unit = { },
+    loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -166,6 +199,7 @@ private fun ToHotScreen(
         }
 
         VerticalPager(
+            userScrollEnabled = false,
             pageCount = cardList.list.size,
             state = pagerState,
             key = { cardList.list[it].nickname }
@@ -185,10 +219,13 @@ private fun ToHotScreen(
                 maxTimeSec = timers.list[idx].maxSec,
                 currentSec = timers.list[idx].currentSec,
                 destinationSec = timers.list[idx].destinationSec,
-                enable = currentUserIdx == pagerState.currentPage,
+                enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
                 userCardClick = { },
-                onReportClick = { },
-                ticChanged = { ticChanged(it, idx) }
+                onReportMenuClick = onReportMenuClick,
+                ticChanged = { ticChanged(it, idx) },
+                onLikeClick = { onLikeClick(idx) },
+                onUnLikeClick = { onUnLikeClick(idx) },
+                loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
             )
         }
         LaunchedEffect(key1 = pagerState) {

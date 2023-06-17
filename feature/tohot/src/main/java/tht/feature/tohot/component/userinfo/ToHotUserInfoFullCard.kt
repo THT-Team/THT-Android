@@ -112,7 +112,7 @@ fun ToHotUserInfoFullCard(
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 12.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .background(
-                        color = Color(0xFF111111).copy(alpha = 0.5f)
+                        color = Color(0xFF111111)
                     )
             ) {
                 ThtP2(
