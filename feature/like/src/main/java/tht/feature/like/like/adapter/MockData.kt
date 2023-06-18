@@ -8,7 +8,7 @@ object MockData {
     val data = LinkedHashMap<String, List<LikeModel>>().apply {
         this["뉴진스"] = listOf(
             LikeModel(
-                "혜린",
+                "해린",
                 "2006.04.11",
                 listOf(
                     InterestModel("지적인", 1L, "1F9E0"),
