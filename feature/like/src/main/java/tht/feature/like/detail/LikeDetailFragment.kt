@@ -95,7 +95,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         binding.ivReport.setOnClickListener {
-            viewModel.showReportDialogEvent()
+            viewModel.showReportOrBlockDialogEvent()
         }
         binding.btnNextChance.setOnClickListener {
             parentViewModel.nextClickListener(likeUser.nickname)
@@ -109,16 +109,16 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             launch {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
-                        is LikeDetailViewModel.LikeDetailSideEffect.Block -> {
-
+                        is LikeDetailViewModel.LikeDetailSideEffect.ShowBlockDialog -> {
+                            showBlockDialog()
                         }
 
-                        is LikeDetailViewModel.LikeDetailSideEffect.Report -> {
-
-                        }
-
-                        LikeDetailViewModel.LikeDetailSideEffect.ShowReportDialog -> {
+                        is LikeDetailViewModel.LikeDetailSideEffect.ShowReportDialog -> {
                             showReportDialog()
+                        }
+
+                        LikeDetailViewModel.LikeDetailSideEffect.ShowReportOrBlockDialog -> {
+                            showBlockOrReportDialog()
                         }
                     }
                 }
@@ -126,7 +126,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun showReportDialog() {
+    private fun showBlockOrReportDialog() =
         showCustomAlertDialog(
             requireContext(),
             requireActivity(),
@@ -135,9 +135,62 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
                 requireContext().getString(R.string.menu_block),
             ),
             R.layout.item_dialog_subt2_semi_bold,
-            true
+            true,
+            itemClickListener = { dialog, which ->
+                when (which) {
+                    0 -> viewModel.showReportDialogEvent()
+                    1 -> viewModel.blockEvent()
+                }
+                dialog.dismiss()
+            }
         )
-    }
+
+    private fun showReportDialog() =
+        showCustomAlertDialog(
+            requireContext(),
+            requireActivity(),
+            arrayOf(
+                requireContext().getString(R.string.report_content_unpleasant_picture),
+                requireContext().getString(R.string.report_content_false_profile),
+                requireContext().getString(R.string.report_content_steal_picture),
+                requireContext().getString(R.string.report_content_swear_word),
+                requireContext().getString(R.string.report_content_illegality),
+            ),
+            R.layout.item_dialog_subt2_regular,
+            titleText = requireContext().getString(R.string.report_title),
+            dividerVisibility = false,
+            footerText = requireContext().getString(R.string.cancel),
+            itemClickListener = { dialog, which ->
+                when (which) {
+                    0 -> viewModel.reportUser(requireContext().getString(R.string.report_content_unpleasant_picture))
+                    1 -> viewModel.reportUser(requireContext().getString(R.string.report_content_false_profile))
+                    2 -> viewModel.reportUser(requireContext().getString(R.string.report_content_steal_picture))
+                    3 -> viewModel.reportUser(requireContext().getString(R.string.report_content_swear_word))
+                    4 -> viewModel.reportUser(requireContext().getString(R.string.report_content_illegality))
+                }
+                dialog.dismiss()
+            }
+        )
+
+    private fun showBlockDialog() =
+        showCustomAlertDialog(
+            requireContext(),
+            requireActivity(),
+            arrayOf(
+                requireContext().getString(R.string.menu_block),
+                requireContext().getString(R.string.cancel),
+            ),
+            R.layout.item_dialog_subt2_semi_bold,
+            titleText = requireContext().getString(R.string.block_title),
+            subTitleText = requireContext().getString(R.string.block_content),
+            dividerVisibility = true,
+            itemClickListener = { dialog, which ->
+                when (which) {
+                    0 -> viewModel.blockUser()
+                }
+                dialog.dismiss()
+            }
+        )
 
     private fun loadImage(view: ImageView, url: String) {
         Glide.with(view)

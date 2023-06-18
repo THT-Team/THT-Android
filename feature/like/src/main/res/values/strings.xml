@@ -17,7 +17,7 @@
     <string name="report_content_illegality">불법 촬영물 공유</string>
 
     <string name="menu_block">차단하기</string>
-    <style name="block_title">차단할까요?</style>
+    <string name="block_title">차단할까요?</string>
     <string name="block_content">해당 사용자와 서로 차단됩니다.</string>
 
     <string name="cancel">취소</string>

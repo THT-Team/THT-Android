@@ -15,7 +15,7 @@
         android:paddingVertical="4dp" />
 
     <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_subtitle"
         style="@style/P1RegularGrayTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

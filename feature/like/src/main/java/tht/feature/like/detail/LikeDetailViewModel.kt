@@ -15,22 +15,30 @@ class LikeDetailViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LikeDetailUiState> =
         MutableStateFlow(LikeDetailUiState.Default)
 
+    fun showReportOrBlockDialogEvent() =
+        postSideEffect(LikeDetailSideEffect.ShowReportOrBlockDialog)
+
     fun showReportDialogEvent() =
         postSideEffect(LikeDetailSideEffect.ShowReportDialog)
 
-    fun reportEvent(nickname: String) =
-        postSideEffect(LikeDetailSideEffect.Report(nickname))
+    fun blockEvent() =
+        postSideEffect(LikeDetailSideEffect.ShowBlockDialog)
 
-    fun blockEvent(nickname: String) =
-        postSideEffect(LikeDetailSideEffect.Block(nickname))
+    fun blockUser() {
+
+    }
+
+    fun reportUser(reportReason: String) {
+
+    }
 
     sealed class LikeDetailUiState : UiState {
         object Default : LikeDetailUiState()
     }
 
     sealed class LikeDetailSideEffect : SideEffect {
+        object ShowReportOrBlockDialog : LikeDetailSideEffect()
         object ShowReportDialog : LikeDetailSideEffect()
-        data class Report(val nickname: String) : LikeDetailSideEffect()
-        data class Block(val nickname: String) : LikeDetailSideEffect()
+        object ShowBlockDialog : LikeDetailSideEffect()
     }
 }

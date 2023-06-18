@@ -88,11 +88,12 @@ fun showCustomAlertDialog(
         menus
     )
     val builder = AlertDialog.Builder(context, R.style.AlertDialogStyle)
+    var dialog: AlertDialog? = null
     if (titleText != null) {
         builder.setCustomTitle(
             LayoutInflater.from(context).inflate(R.layout.item_dialog_title, null).also {
                 it.findViewById<TextView>(R.id.tv_title).text = titleText
-                it.findViewById<TextView>(R.id.tv_content).text = subTitleText
+                it.findViewById<TextView>(R.id.tv_subtitle).text = subTitleText
             }
         )
     }
@@ -103,7 +104,7 @@ fun showCustomAlertDialog(
                 it.findViewById<TextView>(R.id.tv_dialog_footer).apply {
                     text = footerText
                     setOnClickListener {
-
+                        dialog?.dismiss()
                     }
                 }
             }
@@ -112,7 +113,7 @@ fun showCustomAlertDialog(
 
     builder.setAdapter(adapter, itemClickListener)
 
-    val dialog = builder.create()
+    dialog = builder.create()
     dialog.setOnShowListener {
         val width = getWindowSize(activity).second * 85 / 100
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
