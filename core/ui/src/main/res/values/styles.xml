@@ -350,4 +350,10 @@
         <item name="android:elevation">0dp</item>
     </style>
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/black_222222</item>
+        <item name="android:textColorAlertDialogListItem">@color/white_f9fafa</item>
+        <item name="android:windowBackground">@drawable/bg_alert_dialog</item>
+    </style>
+
 </resources>

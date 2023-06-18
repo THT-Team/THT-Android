@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="ReportDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/black_222222</item>
-        <item name="android:textColorAlertDialogListItem">@color/white_f9fafa</item>
-        <item name="android:windowBackground">@drawable/bg_report_dialog</item>
-    </style>
-</resources>
