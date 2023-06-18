@@ -18,7 +18,7 @@ class LikeContentViewHolder(
 
     fun bind(
         imageClickListener: (LikeModel) -> Unit,
-        nextClickListener: (String) -> Unit,
+        nextChanceClickListener: (String) -> Unit,
         likeUser: LikeModel
     ) {
         binding.apply {
@@ -26,7 +26,7 @@ class LikeContentViewHolder(
             tvNickname.text = tvNickname.context.getString(R.string.nickname, likeUser.nickname, likeUser.age)
             tvAddress.text = likeUser.address
             viewNewCircle.isVisible = likeUser.isNew
-            btnNextChance.setOnClickListener { nextClickListener(likeUser.nickname) }
+            btnNextChance.setOnClickListener { nextChanceClickListener(likeUser.nickname) }
             ivProfile.setOnClickListener { imageClickListener(likeUser) }
         }
     }

@@ -11,7 +11,7 @@ import tht.feature.like.like.LikeModel
 
 class LikeAdapter(
     private val imageClickListener: (LikeModel) -> Unit,
-    private val nextClickListener: (String) -> Unit
+    private val nextChanceClickListener: (String) -> Unit
 ) : ListAdapter<LikeItem, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -41,7 +41,7 @@ class LikeAdapter(
             )
             is LikeContentViewHolder -> holder.bind(
                 imageClickListener,
-                nextClickListener,
+                nextChanceClickListener,
                 (getItem(position) as LikeItem.Content).item
             )
         }

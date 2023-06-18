@@ -101,7 +101,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             viewModel.showReportOrBlockDialogEvent()
         }
         binding.btnNextChance.setOnClickListener {
-            parentViewModel.nextClickListener(likeUser.nickname)
+            parentViewModel.nextChanceClickListener(likeUser.nickname)
             dismiss()
         }
         binding.btnChatting.setOnClickListener { }

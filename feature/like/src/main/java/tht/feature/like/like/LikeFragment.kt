@@ -22,7 +22,7 @@ class LikeFragment : Fragment() {
     private val binding: FragmentLikeBinding by viewBinding(FragmentLikeBinding::inflate)
     private val viewModel: LikeViewModel by viewModels()
     private val likeAdapter: LikeAdapter by lazy {
-        LikeAdapter(viewModel.imageClickListener, viewModel.nextClickListener)
+        LikeAdapter(viewModel.imageClickListener, viewModel.nextChanceClickListener)
     }
 
     override fun onCreateView(

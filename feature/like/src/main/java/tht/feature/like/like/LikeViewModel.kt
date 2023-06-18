@@ -21,7 +21,7 @@ class LikeViewModel @Inject constructor(
 
     private val likeItems = MutableStateFlow<LinkedHashMap<String, List<LikeModel>>>(MockData.data)
 
-    val nextClickListener: (String) -> Unit = { nickname ->
+    val nextChanceClickListener: (String) -> Unit = { nickname ->
         deleteLike(nickname)
     }
 
