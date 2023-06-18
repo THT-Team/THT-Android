@@ -131,21 +131,14 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private fun finishBottomSheet() {
         val parentView = dialog!!.findViewById<CoordinatorLayout>(com.google.android.material.R.id.coordinator)
-        val slideOutAnimation = AnimationUtils.loadAnimation(requireContext(), tht.core.ui.R.anim.finish_bottom_sheet)
+        val finishAnimation = AnimationUtils.loadAnimation(requireContext(), tht.core.ui.R.anim.finish_bottom_sheet)
 
-        slideOutAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                dismiss()
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
+        finishAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) { }
+            override fun onAnimationEnd(animation: Animation?) { dismiss() }
+            override fun onAnimationRepeat(animation: Animation?) { }
         })
-        parentView.startAnimation(slideOutAnimation)
+        parentView.startAnimation(finishAnimation)
     }
 
     private fun showBlockOrReportDialog() =
