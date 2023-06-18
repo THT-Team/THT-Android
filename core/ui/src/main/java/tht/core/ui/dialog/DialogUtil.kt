@@ -114,10 +114,6 @@ fun showCustomAlertDialog(
     builder.setAdapter(adapter, itemClickListener)
 
     dialog = builder.create()
-    dialog.setOnShowListener {
-        val width = getWindowSize(activity).second * 85 / 100
-        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
-    }
 
     dialog.apply {
         if (dividerVisibility) {
@@ -129,4 +125,9 @@ fun showCustomAlertDialog(
         listView.setFooterDividersEnabled(false)
         listView.addFooterView(View(context))
     }.show()
+
+    dialog.window?.setLayout(
+        getWindowSize(activity).second * 85 / 100,
+        WindowManager.LayoutParams.WRAP_CONTENT
+    )
 }

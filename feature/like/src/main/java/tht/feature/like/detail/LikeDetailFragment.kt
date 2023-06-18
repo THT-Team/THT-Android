@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -126,6 +129,25 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun finishBottomSheet() {
+        val parentView = dialog!!.findViewById<CoordinatorLayout>(com.google.android.material.R.id.coordinator)
+        val slideOutAnimation = AnimationUtils.loadAnimation(requireContext(), tht.core.ui.R.anim.finish_bottom_sheet)
+
+        slideOutAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                dismiss()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        })
+        parentView.startAnimation(slideOutAnimation)
+    }
+
     private fun showBlockOrReportDialog() =
         showCustomAlertDialog(
             requireContext(),
@@ -186,7 +208,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             dividerVisibility = true,
             itemClickListener = { dialog, which ->
                 when (which) {
-                    0 -> viewModel.blockUser()
+                    0 -> finishBottomSheet()
                 }
                 dialog.dismiss()
             }
