@@ -27,6 +27,8 @@ import com.example.compose_ui.component.progress.ThtCircularProgress
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.component.card.ToHotCard
+import tht.feature.tohot.component.card.ToHotEmptyCard
+import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
@@ -137,6 +139,7 @@ fun ToHotRoute(
         ) {
             ToHotScreen(
                 cardList = toHotState.userList,
+                isEnterDelay = toHotState.isFirstPage,
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
@@ -167,6 +170,7 @@ fun ToHotRoute(
 @Composable
 private fun ToHotScreen(
     modifier: Modifier = Modifier,
+    isEnterDelay: Boolean,
     pagerState: PagerState,
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
@@ -198,39 +202,51 @@ private fun ToHotScreen(
             )
         }
 
-        VerticalPager(
-            userScrollEnabled = false,
-            pageCount = cardList.list.size,
-            state = pagerState,
-            key = { cardList.list[it].nickname }
-        ) { idx ->
-            val card = cardList.list[idx]
-            ToHotCard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
-                imageUrls = card.profileImgUrl,
-                name = card.nickname,
-                age = card.age,
-                address = card.address,
-                interests = card.interests,
-                idealTypes = card.idealTypes,
-                introduce = card.introduce,
-                maxTimeSec = timers.list[idx].maxSec,
-                currentSec = timers.list[idx].currentSec,
-                destinationSec = timers.list[idx].destinationSec,
-                enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
-                userCardClick = { },
-                onReportMenuClick = onReportMenuClick,
-                ticChanged = { ticChanged(it, idx) },
-                onLikeClick = { onLikeClick(idx) },
-                onUnLikeClick = { onUnLikeClick(idx) },
-                loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
-            )
-        }
-        LaunchedEffect(key1 = pagerState) {
-            snapshotFlow { pagerState.currentPage }
-                .collect { pageChanged(it) }
+        when (cardList.list.isEmpty()) {
+            true -> {
+                if (isEnterDelay) {
+                    ToHotEnterCard()
+                } else {
+                    ToHotEmptyCard()
+                }
+            }
+
+            else -> {
+                VerticalPager(
+                    userScrollEnabled = false,
+                    pageCount = cardList.list.size,
+                    state = pagerState,
+                    key = { cardList.list[it].nickname }
+                ) { idx ->
+                    val card = cardList.list[idx]
+                    ToHotCard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                        imageUrls = card.profileImgUrl,
+                        name = card.nickname,
+                        age = card.age,
+                        address = card.address,
+                        interests = card.interests,
+                        idealTypes = card.idealTypes,
+                        introduce = card.introduce,
+                        maxTimeSec = timers.list[idx].maxSec,
+                        currentSec = timers.list[idx].currentSec,
+                        destinationSec = timers.list[idx].destinationSec,
+                        enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
+                        userCardClick = { },
+                        onReportMenuClick = onReportMenuClick,
+                        ticChanged = { ticChanged(it, idx) },
+                        onLikeClick = { onLikeClick(idx) },
+                        onUnLikeClick = { onUnLikeClick(idx) },
+                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
+                    )
+                }
+                LaunchedEffect(key1 = pagerState) {
+                    snapshotFlow { pagerState.currentPage }
+                        .collect { pageChanged(it) }
+                }
+            }
         }
     }
 }

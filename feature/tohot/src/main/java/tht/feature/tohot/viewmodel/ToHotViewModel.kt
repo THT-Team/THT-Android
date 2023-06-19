@@ -51,10 +51,8 @@ class ToHotViewModel @Inject constructor(
     override val store: Store<ToHotState, ToHotSideEffect> =
         store(
             initialState = ToHotState(
-                userList = ImmutableListWrapper(userList),
-                timers = ImmutableListWrapper(
-                    List(userList.size) { CardTimerUiModel(5, 5, 5, false) }
-                ),
+                userList = ImmutableListWrapper(emptyList()),
+                timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
                 loading = false,
                 selectTopicKey = -1,
@@ -84,7 +82,7 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
 
-                userList.list.isEmpty() -> requestUserCard(selectTopicKey)
+                userList.list.isEmpty() -> fetchUserCard(selectTopicKey)
             }
         }
     }
@@ -159,7 +157,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    private fun requestUserCard(topicKey: Long) {
+    private fun fetchUserCard(topicKey: Long) {
         viewModelScope.launch {
             intent { reduce { it.copy(loading = true) } }
             delay(500)
@@ -167,6 +165,7 @@ class ToHotViewModel @Inject constructor(
                 reduce {
                     it.copy(
                         userList = ImmutableListWrapper(userList),
+                        isFirstPage = userList.isEmpty(),
                         timers = ImmutableListWrapper(
                             List(userList.size) {
                                 CardTimerUiModel(

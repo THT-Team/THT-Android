@@ -10,6 +10,7 @@ import tht.feature.tohot.model.TopicUiModel
 data class ToHotState(
     val loading: Boolean,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
+    val isFirstPage: Boolean = true,
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int,
     val reportMenuDialogShow: Boolean = false,
