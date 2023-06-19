@@ -157,6 +157,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    // Topic 을 선택 했을 때 목록을 불러 오는 함수. Not Paging
     private fun fetchUserCard(topicKey: Long) {
         viewModelScope.launch {
             intent { reduce { it.copy(loading = true) } }
