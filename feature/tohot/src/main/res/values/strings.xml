@@ -24,4 +24,6 @@
     <string name="to_hot_empty_card_description">아직 무디들이 들어오고있어요.</string>
     <string name="to_hot_enter_card_title">주제어를 가장 먼저 선택하셨어요!</string>
     <string name="to_hot_enter_card_description">아직 무디들이 들어오고있어요.</string>
+
+    <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
 </resources>
