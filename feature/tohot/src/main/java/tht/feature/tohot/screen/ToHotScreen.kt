@@ -18,17 +18,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.compose_ui.component.progress.ThtCircularProgress
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
+import tht.feature.tohot.component.card.ToHotLoadingCard
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
@@ -158,10 +158,9 @@ fun ToHotRoute(
             )
         }
 
-        ThtCircularProgress(
-            modifier = Modifier.align(Alignment.Center),
-            dataLoading = { toHotState.loading },
-            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)
+        ToHotLoadingCard(
+            isVisible = { toHotState.loading },
+            message = stringResource(id = R.string.to_hot_user_card_loading)
         )
     }
 }
