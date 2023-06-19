@@ -54,7 +54,6 @@ fun ToHotLoadingCard(
     }
 }
 
-
 @Composable
 @Preview
 fun ToHotLoadingCardPreview() {
