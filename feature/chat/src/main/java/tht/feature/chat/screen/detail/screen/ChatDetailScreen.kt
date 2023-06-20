@@ -1,27 +1,56 @@
 package tht.feature.chat.screen.detail.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.compose_ui.common.viewmodel.collectAsState
+import tht.feature.chat.screen.detail.component.ChatDetailList
 import tht.feature.chat.screen.detail.component.ChatDetailTopAppBar
+import tht.feature.chat.screen.detail.component.ChatEditTextContainer
+import tht.feature.chat.viewmodel.detail.ChatDetailViewModel
+import tht.feature.chat.viewmodel.detail.state.ChatDetailState
 
 @Composable
-internal fun ChatDetailScreen() {
-    ChatDetailTopAppBar(
-        title = "마음",
-        onClickBack = { },
-        onClickReport = {},
-        onClickLogout = {},
-    )
-    Column(modifier = Modifier.fillMaxSize()) {
-        ThtSubtitle2(
-            text = "상세화면",
-            fontWeight = FontWeight.Medium,
-            color = Color(0xFFF9FAFA),
+internal fun ChatDetailScreen(
+    viewModel: ChatDetailViewModel = hiltViewModel(),
+) {
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getChatList()
+    }
+
+    val state = viewModel.collectAsState().value
+    val currentText = viewModel.currentText.collectAsState().value
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            ChatDetailTopAppBar(
+                title = "마음",
+                onClickBack = { },
+                onClickReport = {},
+                onClickLogout = {},
+            )
+            Box(modifier = Modifier.weight(1f)) {
+                when (state) {
+                    is ChatDetailState.ChatList -> ChatDetailList(state.chatList)
+                }
+            }
+        }
+        ChatEditTextContainer(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            text = currentText,
+            onChangedText = viewModel::updateCurrentText,
         )
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ChatDetailScreenPreview() {
+    ChatDetailScreen()
 }

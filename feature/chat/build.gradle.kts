@@ -62,4 +62,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }
