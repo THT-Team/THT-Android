@@ -1,6 +1,7 @@
 package tht.feature.tohot.screen
 
 import android.util.Log
+import android.view.MotionEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -18,7 +19,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +32,7 @@ import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.card.ToHotLoadingCard
+import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
@@ -40,7 +44,7 @@ import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ToHotRoute(
     toHotViewModel: ToHotViewModel = hiltViewModel()
@@ -62,7 +66,8 @@ fun ToHotRoute(
                                 e.printStackTrace()
                                 Log.d("ToHot", "Cancel Coroutine")
                             } finally {
-                                toHotViewModel.removeUserCard(it.removeIdx)
+                                //TODO: Remove 하지 않는 다면, 마지막 카드 에서 Scroll 해야 할 시점의 처리가 필요
+//                                toHotViewModel.removeUserCard(it.removeIdx)
                                 Log.d("ToHot", "remove ${it.removeIdx}")
                             }
                         }
@@ -95,6 +100,10 @@ fun ToHotRoute(
         onCancelClick =  toHotViewModel::reportDialogDismissEvent,
         onDismiss =  toHotViewModel::reportDialogDismissEvent
     )
+
+    ToHotHoldDialog(
+        isShow = toHotState.holdDialogShow,
+        onRestartClick = toHotViewModel::releaseHoldEvent
     )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -139,6 +148,13 @@ fun ToHotRoute(
             selectFinishListener = toHotViewModel::topicSelectFinishEvent
         ) {
             ToHotScreen(
+                modifier = Modifier
+                    .pointerInteropFilter {
+                        when (it.action) {
+                            MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
+                        }
+                        false
+                    },
                 cardList = toHotState.userList,
                 isEnterDelay = toHotState.isFirstPage,
                 pagerState = pagerState,

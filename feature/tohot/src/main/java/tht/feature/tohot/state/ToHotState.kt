@@ -17,6 +17,7 @@ data class ToHotState(
     val reportMenuDialogShow: Boolean = false,
     val reportDialogShow: Boolean = false,
     val blockDialogShow: Boolean = false,
+    val holdDialogShow: Boolean = false,
     val reportReason: List<String> = listOf(
         "불쾌한 사진",
         "허위 프로필",

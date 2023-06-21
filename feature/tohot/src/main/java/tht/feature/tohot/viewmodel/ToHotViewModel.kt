@@ -65,7 +65,8 @@ class ToHotViewModel @Inject constructor(
                 hasUnReadAlarm = false
             )
         )
-    private var removeUserCardStack = Stack<ToHotUserUiModel>()
+    private var passedUserCardStack = Stack<ToHotUserUiModel>()
+    private var passedCardCountBetweenTouch = 0
 
     init {
         toHotLogic()
@@ -230,6 +231,8 @@ class ToHotViewModel @Inject constructor(
     fun userChangeEvent(userIdx: Int) {
         Log.d("ToHot", "userChangeEvent => $userIdx")
         if (userIdx !in store.state.value.userList.list.indices) return
+        passedUserCardStack.push(store.state.value.userList.list[userIdx])
+        passedCardCountBetweenTouch++
         intent {
             reduce {
                 it.copy(
@@ -243,9 +246,11 @@ class ToHotViewModel @Inject constructor(
                         }
                     ),
                     enableTimerIdx = userIdx,
+                    cardMoveAllow = passedCardCountBetweenTouch <= cardCountAllowWithoutTouch,
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
-                    blockDialogShow = false
+                    blockDialogShow = false,
+                    holdDialogShow = passedCardCountBetweenTouch > cardCountAllowWithoutTouch,
                 )
             }
         }
@@ -277,12 +282,17 @@ class ToHotViewModel @Inject constructor(
             when (userIdx in userList.list.indices) {
                 true ->
                     intent {
-                        postSideEffect(
-                            ToHotSideEffect.RemoveAndScroll(
-                                scrollIdx = userIdx + 1,
-                                removeIdx = userIdx
+                        if ((userIdx + 1) in userList.list.indices) {
+                            postSideEffect(
+                                ToHotSideEffect.RemoveAndScroll(
+                                    scrollIdx = userIdx + 1,
+                                    removeIdx = userIdx
+                                )
                             )
-                        )
+                        } else {
+                            //TODO: Paging or Remove List
+                            removeAllCard()
+                        }
                     }
                 else -> removeUserCard(userIdx)
             }
@@ -407,20 +417,28 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    private fun removeAllCard() {
+        intent {
+            reduce {
+                it.copy(
+                    userList = ImmutableListWrapper(emptyList()),
+                    timers = ImmutableListWrapper(emptyList()),
+                    enableTimerIdx = 0
+                )
+            }
+        }
+    }
+
     fun removeUserCard(userIdx: Int) = with(store.state.value) {
         if (userIdx !in userList.list.indices) return
         intent {
             reduce {
                 it.copy(
                     userList = ImmutableListWrapper(
-                        it.userList.list.toMutableList().apply {
-                            removeUserCardStack.push(removeAt(userIdx))
-                        }
+                        it.userList.list.toMutableList().apply { removeAt(userIdx) }
                     ),
                     timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            removeAt(userIdx)
-                        }
+                        it.timers.list.toMutableList().apply { removeAt(userIdx) }
                     ),
                     enableTimerIdx = if (enableTimerIdx >= userIdx) {
                         enableTimerIdx - 1
@@ -447,7 +465,25 @@ class ToHotViewModel @Inject constructor(
         //TODO: Navigate Alarm Screen
     }
 
+    fun screenTouchEvent() {
+        passedCardCountBetweenTouch = 0
+    }
+
+    fun releaseHoldEvent() {
+        passedCardCountBetweenTouch = 0
+        intent {
+            reduce {
+                it.copy(
+                    cardMoveAllow = true,
+                    holdDialogShow = false
+                )
+            }
+        }
+    }
+
     companion object {
         private const val MAX_TIMER_SEC = 5
+
+        private const val cardCountAllowWithoutTouch = 3
     }
 }

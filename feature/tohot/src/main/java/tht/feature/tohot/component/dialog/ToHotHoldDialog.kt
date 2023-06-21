@@ -32,7 +32,7 @@ fun ToHotHoldDialog(
     modifier: Modifier = Modifier,
     isShow: Boolean,
     onRestartClick: () -> Unit = {},
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit = {}
 ) {
     if (!isShow) return
     Dialog(
@@ -99,7 +99,6 @@ fun ToHotHoldDialog(
 @Preview
 fun ToHotHoldDialog() {
     ToHotHoldDialog(
-        isShow = true,
-        onDismiss = {}
+        isShow = true
     )
 }
