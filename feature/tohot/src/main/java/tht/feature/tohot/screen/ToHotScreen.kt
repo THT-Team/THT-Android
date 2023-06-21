@@ -78,22 +78,23 @@ fun ToHotRoute(
         isShow = toHotState.reportMenuDialogShow,
         onReportClick = toHotViewModel::reportMenuReportEvent,
         onBlockClick = toHotViewModel::reportMenuBlockEvent,
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onDismiss =  toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUseReportDialog(
         isShow = toHotState.reportDialogShow,
         reportReason = toHotState.reportReason,
-        onReportClick = { toHotViewModel.reportEvent(pagerState.currentPage) },
-        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage) },
+        onCancelClick =  toHotViewModel::reportDialogDismissEvent,
+        onDismiss =  toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUserBlockDialog(
         isShow = toHotState.blockDialogShow,
-        onBlockClick = { toHotViewModel.blockEvent(pagerState.currentPage) },
-        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onBlockClick = { toHotViewModel.cardBlockEvent(pagerState.currentPage) },
+        onCancelClick =  toHotViewModel::reportDialogDismissEvent,
+        onDismiss =  toHotViewModel::reportDialogDismissEvent
+    )
     )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -143,6 +144,7 @@ fun ToHotRoute(
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
+                cardMoveAllow = toHotState.cardMoveAllow,
                 topicIconUrl = toHotState.currentTopic?.iconUrl,
                 topicIconRes = toHotState.currentTopic?.iconRes,
                 topicTitle = toHotState.currentTopic?.title,
@@ -174,6 +176,7 @@ private fun ToHotScreen(
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
     currentUserIdx: Int,
+    cardMoveAllow: Boolean,
     topicIconUrl: String?,
     topicIconRes: Int?,
     topicTitle: String?,
@@ -232,7 +235,7 @@ private fun ToHotScreen(
                         maxTimeSec = timers.list[idx].maxSec,
                         currentSec = timers.list[idx].currentSec,
                         destinationSec = timers.list[idx].destinationSec,
-                        enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
+                        enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble && cardMoveAllow,
                         userCardClick = { },
                         onReportMenuClick = onReportMenuClick,
                         ticChanged = { ticChanged(it, idx) },

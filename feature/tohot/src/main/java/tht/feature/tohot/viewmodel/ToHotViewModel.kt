@@ -54,6 +54,7 @@ class ToHotViewModel @Inject constructor(
                 userList = ImmutableListWrapper(emptyList()),
                 timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
+                cardMoveAllow = true,
                 loading = false,
                 selectTopicKey = -1,
                 currentTopic = null,
@@ -326,11 +327,11 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun dialogDismissEvent(idx: Int) {
+    fun reportDialogDismissEvent() {
         intent {
             reduce {
                 it.copy(
-                    enableTimerIdx = idx,
+                    cardMoveAllow = true,
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false
@@ -343,7 +344,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    enableTimerIdx = -1,
+                    cardMoveAllow = false,
                     reportMenuDialogShow = true
                 )
             }
@@ -372,7 +373,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun reportEvent(idx: Int) {
+    fun cardReportEvent(idx: Int) {
         intent {
             reduce {
                 it.copy(
@@ -389,7 +390,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun blockEvent(idx: Int) {
+    fun cardBlockEvent(idx: Int) {
         intent {
             reduce {
                 it.copy(
