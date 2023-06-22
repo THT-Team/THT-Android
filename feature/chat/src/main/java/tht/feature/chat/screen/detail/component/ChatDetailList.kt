@@ -3,13 +3,15 @@ package tht.feature.chat.screen.detail.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,9 +23,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ChainStyle
-import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.compose_ui.component.Image.ThtImage
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
 import com.example.compose_ui.component.text.p.ThtP1
@@ -34,8 +36,7 @@ fun ChatDetailList(items: List<String>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .background(Color.Green),
+            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
     ) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -46,7 +47,12 @@ fun ChatDetailList(items: List<String>) {
             if (index % 2 == 0) {
                 Sender(text = item, updateTime = "3:13 PM")
             } else {
-                Receiver(text = item, updateTime = "3:12 PM")
+                Receiver(
+                    text = item,
+                    updateTime = "3:12 PM",
+                    isShowProfile = true,
+                    userName = "Stitch",
+                )
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -85,6 +91,7 @@ fun Sender(text: String, updateTime: String) {
         Spacer(space = 8.dp)
         ThtP2(
             modifier = Modifier
+                .widthIn(min = 0.dp, max = 226.dp)
                 .clip(RoundedCornerShape(20.dp))
                 .background(Color(0xFFF9CC2E))
                 .padding(horizontal = 10.dp, vertical = (6.5).dp),
@@ -97,56 +104,61 @@ fun Sender(text: String, updateTime: String) {
 }
 
 @Composable
-fun Receiver(text: String, updateTime: String) {
-    ConstraintLayout {
-        val (talk, spacer, timeFormat) = createRefs()
-        ThtP2(
-            modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFF222222))
-                .constrainAs(talk) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(spacer.start)
-                }
-                .padding(horizontal = 10.dp, vertical = (6.5).dp),
-            text = text,
-            fontWeight = FontWeight.Normal,
-            color = Color(0xFFF9FAFA),
-            textAlign = TextAlign.Start,
-        )
-        Spacer(
-            modifier = Modifier
-                .width(8.dp)
-                .height(2.dp)
-                .background(Color.Yellow)
-                .constrainAs(spacer) {
-                    start.linkTo(talk.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(timeFormat.start)
-                },
-        )
-        ThtCaption2(
-            modifier = Modifier
-                .constrainAs(timeFormat) {
-                    start.linkTo(spacer.end)
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                }
-                .padding(end = 10.dp),
-            text = updateTime,
-            fontWeight = FontWeight.Normal,
-            color = Color(0xFFF9FAFA),
-            textAlign = TextAlign.Start,
-        )
-        createHorizontalChain(
-            talk,
-            spacer,
-            timeFormat,
-            chainStyle = ChainStyle.Packed,
-        )
+fun Receiver(
+    isShowProfile: Boolean,
+    userName: String,
+    text: String,
+    updateTime: String,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        if (isShowProfile) {
+            ThtImage(
+                modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
+                src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
+                size = DpSize(34.dp, 34.dp),
+            )
+            Spacer(space = 10.dp)
+        }
+        Column {
+            ThtP2(
+                modifier = Modifier,
+                text = userName,
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFF8D8D8D),
+                textAlign = TextAlign.Start,
+            )
+            Spacer(space = 8.dp)
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.End,
+            ) {
+                ThtP2(
+                    modifier = Modifier
+                        .widthIn(min = 0.dp, max = 226.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color(0xFF222222))
+                        .padding(horizontal = 10.dp, vertical = (6.5).dp),
+                    text = text,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFFF9FAFA),
+                    textAlign = TextAlign.Start,
+                )
+                Spacer(space = 8.dp)
+                ThtCaption2(
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentWidth(align = Alignment.Start),
+                    text = updateTime,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFFF9FAFA),
+                    textAlign = TextAlign.Start,
+                )
+            }
+        }
     }
 }
 
@@ -156,6 +168,8 @@ fun ReceiverPreview() {
     Receiver(
         text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
         updateTime = "3:12 PM",
+        isShowProfile = false,
+        userName = "stitch",
     )
 }
 
@@ -165,6 +179,8 @@ fun ReceiverPreview2() {
     Receiver(
         text = "긴 텍스트",
         updateTime = "3:12 PM",
+        isShowProfile = false,
+        userName = "stitch",
     )
 }
 
