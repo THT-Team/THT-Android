@@ -72,6 +72,7 @@ class ToHotViewModel @Inject constructor(
         )
     private var passedUserCardStack = Stack<ToHotUserUiModel>()
     private var passedCardCountBetweenTouch = 0
+    private val passedCardIdSet = mutableSetOf<Int>()
 
     init {
         toHotLogic()
@@ -89,7 +90,7 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
 
-                userList.list.isEmpty() -> fetchUserCard(selectTopicKey)
+                userList.list.isEmpty() -> fetchUserCard()
             }
         }
     }
@@ -165,7 +166,7 @@ class ToHotViewModel @Inject constructor(
     }
 
     // Topic 을 선택 했을 때 목록을 불러 오는 함수. Not Paging
-    private fun fetchUserCard(topicKey: Long) {
+    private fun fetchUserCard() {
         viewModelScope.launch {
             intent { reduce { it.copy(loading = true) } }
             delay(500)
@@ -233,11 +234,20 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Card List Item 이 제거 되거나 추가 되면, Index 에 변경이 일어나서 다시 호출됨
+     * 중복 데이터 처리를 위해 passedCardIdSet 추가
+     */
     fun userChangeEvent(userIdx: Int) {
         Log.d("ToHot", "userChangeEvent => $userIdx")
-        if (userIdx !in store.state.value.userList.list.indices) return
-        passedUserCardStack.push(store.state.value.userList.list[userIdx])
-        passedCardCountBetweenTouch++
+        with(store.state.value) {
+            if (userIdx !in userList.list.indices) return
+            if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
+                passedCardIdSet.add(userList.list[userIdx].id)
+                passedUserCardStack.push(userList.list[userIdx])
+                passedCardCountBetweenTouch++
+            }
+        }
         intent {
             reduce {
                 it.copy(
@@ -289,10 +299,7 @@ class ToHotViewModel @Inject constructor(
                     intent {
                         if ((userIdx + 1) in userList.list.indices) {
                             postSideEffect(
-                                ToHotSideEffect.RemoveAndScroll(
-                                    scrollIdx = userIdx + 1,
-                                    removeIdx = userIdx
-                                )
+                                ToHotSideEffect.Scroll(userIdx + 1)
                             )
                         } else {
                             //TODO: Paging or Remove List
@@ -323,10 +330,7 @@ class ToHotViewModel @Inject constructor(
     fun likeCardEvent(idx: Int) {
         intent {
             postSideEffect(
-                ToHotSideEffect.RemoveAndScroll(
-                    scrollIdx = idx + 1,
-                    removeIdx = idx
-                )
+                ToHotSideEffect.Scroll(idx + 1)
             )
         }
     }
@@ -334,10 +338,7 @@ class ToHotViewModel @Inject constructor(
     fun unlikeCardEvent(idx: Int) {
         intent {
             postSideEffect(
-                ToHotSideEffect.RemoveAndScroll(
-                    scrollIdx = idx + 1,
-                    removeIdx = idx
-                )
+                ToHotSideEffect.Scroll(idx + 1)
             )
         }
     }
@@ -434,7 +435,7 @@ class ToHotViewModel @Inject constructor(
                 )
             }
             postSideEffect(
-                ToHotSideEffect.RemoveAndScroll(
+                ToHotSideEffect.RemoveAfterScroll(
                     scrollIdx = idx + 1,
                     removeIdx = idx
                 )

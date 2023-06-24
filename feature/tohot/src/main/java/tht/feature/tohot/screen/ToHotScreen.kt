@@ -1,6 +1,5 @@
 package tht.feature.tohot.screen
 
-import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -26,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
@@ -58,22 +56,25 @@ fun ToHotRoute(
     LaunchedEffect(key1 = toHotViewModel, key2 = context) {
         launch {
             toHotViewModel.store.sideEffect.collect {
-                Log.d("ToHot", "sideEffect collect => $isActive")
                 try {
                     when (it) {
                         is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
 
-                        is ToHotSideEffect.RemoveAndScroll -> {
+                        is ToHotSideEffect.Scroll -> {
                             try {
-                                pagerState.animateScrollToPage(it.scrollIdx)
-                                Log.d("ToHot", "scroll to ${it.scrollIdx}")
+                                pagerState.animateScrollToPage(it.idx)
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                Log.d("ToHot", "Cancel Coroutine")
+                            }
+                        }
+
+                        is ToHotSideEffect.RemoveAfterScroll -> {
+                            try {
+                                pagerState.animateScrollToPage(it.scrollIdx)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             } finally {
-                                //TODO: Remove 하지 않는 다면, 마지막 카드 에서 Scroll 해야 할 시점의 처리가 필요
-//                                toHotViewModel.removeUserCard(it.removeIdx)
-                                Log.d("ToHot", "remove ${it.removeIdx}")
+                                toHotViewModel.removeUserCard(it.removeIdx)
                             }
                         }
                     }

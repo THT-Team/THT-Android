@@ -5,7 +5,11 @@ sealed class ToHotSideEffect {
         val message: String
     ) : ToHotSideEffect()
 
-    data class RemoveAndScroll(
+    data class Scroll(
+        val idx: Int
+    ) : ToHotSideEffect()
+
+    data class RemoveAfterScroll(
         val scrollIdx: Int,
         val removeIdx: Int
     ) : ToHotSideEffect()
