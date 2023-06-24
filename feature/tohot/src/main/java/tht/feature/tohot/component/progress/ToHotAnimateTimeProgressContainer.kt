@@ -38,6 +38,7 @@ fun ToHotAnimateTimeProgressContainer(
         Color(0xFFF98F2E),
         Color(0xFFF93A2E)
     ),
+    progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
     duration: Int = (currentSec - destinationSec) * 1000,
     ticChanged: (Int) -> Unit = { }
 ) {
@@ -99,6 +100,9 @@ fun ToHotAnimateTimeProgressContainer(
                 .align(Alignment.CenterVertically),
             size = 36.dp,
             color = progressColor,
+            size = 24.dp,
+            progressColor = animateProgressColor,
+            backgroundColor = progressBackgroundColor,
             progress = 1 - progressAnimatable.value,
             sec = currentSec
         )
