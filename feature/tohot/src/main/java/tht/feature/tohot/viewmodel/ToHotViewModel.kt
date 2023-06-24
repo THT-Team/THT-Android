@@ -24,6 +24,9 @@ import tht.feature.tohot.userData
 import tht.feature.tohot.userData2
 import tht.feature.tohot.userData3
 import tht.feature.tohot.userData4
+import tht.feature.tohot.userData5
+import tht.feature.tohot.userData6
+import tht.feature.tohot.userData7
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -44,7 +47,10 @@ class ToHotViewModel @Inject constructor(
         userData2,
         userData3,
         userData4,
-        userData
+        userData,
+        userData5,
+        userData6,
+        userData7
     )
 
     override val store: Store<ToHotState, ToHotSideEffect> =
