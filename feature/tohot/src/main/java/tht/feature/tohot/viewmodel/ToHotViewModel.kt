@@ -269,7 +269,7 @@ class ToHotViewModel @Inject constructor(
                 // 실제로 PagerState 가 업데이트 되기 전에 호출 되서 그런듯 -> Screen 이 호출 되기 전임
                 // 해결 방법은?
                 delay(100) // delay(1) 도 안되고 yield 도 안됨
-                fetchUserListPagingResultChannel.send(Unit)
+                fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
             }
 
             else -> {
