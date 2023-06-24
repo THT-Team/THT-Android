@@ -363,10 +363,10 @@ class ToHotViewModel @Inject constructor(
                 passedCardIdSet.add(userList.list[userIdx].id)
                 passedUserCardStack.push(userList.list[userIdx])
                 passedCardCountBetweenTouch++
+                if (userIdx == currentUserListRange.last) {
+                    viewModelScope.launch { fetchUserCard(isPaging = true) }
+                }
             }
-        }
-        if (userIdx == currentUserListRange.last) {
-            viewModelScope.launch { fetchUserCard(isPaging = true) }
         }
         intent {
             reduce {
