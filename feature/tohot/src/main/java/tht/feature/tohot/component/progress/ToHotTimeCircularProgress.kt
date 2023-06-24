@@ -67,8 +67,8 @@ fun ToHotCircularProgress(
         val offsetY = this.center.y - sizePx / 4
         drawArc(
             color = color,
-            startAngle = 0f,
-            sweepAngle = 360f * progress,
+            startAngle = 360f,
+            sweepAngle = 360f - (360f * progress),
             useCenter = false,
             topLeft = Offset(
                 x = offsetX,
