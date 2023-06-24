@@ -22,11 +22,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
@@ -51,13 +53,16 @@ fun ToHotRoute(
 ) {
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState()
+    val context = LocalContext.current
 
-    LaunchedEffect(key1 = toHotViewModel) {
+    LaunchedEffect(key1 = toHotViewModel, key2 = context) {
         launch {
             toHotViewModel.store.sideEffect.collect {
                 Log.d("ToHot", "sideEffect collect => $isActive")
                 try {
                     when (it) {
+                        is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
+
                         is ToHotSideEffect.RemoveAndScroll -> {
                             try {
                                 pagerState.animateScrollToPage(it.scrollIdx)
@@ -165,6 +170,8 @@ fun ToHotRoute(
                 topicIconRes = toHotState.currentTopic?.iconRes,
                 topicTitle = toHotState.currentTopic?.title,
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
                 pageChanged = toHotViewModel::userChangeEvent,
@@ -197,6 +204,8 @@ private fun ToHotScreen(
     topicIconRes: Int?,
     topicTitle: String?,
     hasUnReadAlarm: Boolean,
+    fallingAnimationTargetIdx: Int,
+    onFallingAnimationFinish: (Int) -> Unit = { },
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
@@ -253,6 +262,8 @@ private fun ToHotScreen(
                         destinationSec = timers.list[idx].destinationSec,
                         enable = currentUserIdx == pagerState.currentPage &&
                             timers.list[idx].startAble && cardMoveAllow,
+                        fallingAnimationEnable = idx == fallingAnimationTargetIdx,
+                        onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
                         userCardClick = { },
                         onReportMenuClick = onReportMenuClick,
                         ticChanged = { ticChanged(it, idx) },

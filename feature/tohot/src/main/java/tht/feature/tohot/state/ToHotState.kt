@@ -13,6 +13,7 @@ data class ToHotState(
     val isFirstPage: Boolean = true,
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int,
+    val fallingAnimationIdx: Int = -1,
     val cardMoveAllow: Boolean,
     val reportMenuDialogShow: Boolean = false,
     val reportDialogShow: Boolean = false,

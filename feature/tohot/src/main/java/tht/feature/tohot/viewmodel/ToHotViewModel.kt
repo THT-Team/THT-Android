@@ -384,27 +384,47 @@ class ToHotViewModel @Inject constructor(
 
     fun cardReportEvent(idx: Int) {
         intent {
+            postSideEffect(
+                ToHotSideEffect.ToastMessage(
+                    message = stringProvider.getString(
+                        StringProvider.ResId.ReportSuccess
+                    )
+                )
+            )
             reduce {
                 it.copy(
+                    fallingAnimationIdx = idx,
                     reportMenuDialogShow = false,
                     reportDialogShow = false
                 )
             }
-            postSideEffect(
-                ToHotSideEffect.RemoveAndScroll(
-                    scrollIdx = idx + 1,
-                    removeIdx = idx
-                )
-            )
         }
     }
 
     fun cardBlockEvent(idx: Int) {
         intent {
+            postSideEffect(
+                ToHotSideEffect.ToastMessage(
+                    message = stringProvider.getString(
+                        StringProvider.ResId.BlockSuccess
+                    )
+                )
+            )
             reduce {
                 it.copy(
+                    fallingAnimationIdx = idx,
                     reportMenuDialogShow = false,
                     blockDialogShow = false
+                )
+            }
+        }
+    }
+
+    fun fallingAnimationFinish(idx: Int) {
+        intent {
+            reduce {
+                it.copy(
+                    fallingAnimationIdx = -1
                 )
             }
             postSideEffect(

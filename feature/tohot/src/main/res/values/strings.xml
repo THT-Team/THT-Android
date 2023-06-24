@@ -30,4 +30,7 @@
 
     <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
     <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>
+
+    <string name="to_hot_report_success">신고하기가 완료되었습니다. 해당 사용자와 서로 차단되며, 신고 사유는 검토 후 처리됩니다.</string>
+    <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
 </resources>
