@@ -243,7 +243,7 @@ private fun ToHotScreen(
                     userScrollEnabled = false,
                     pageCount = cardList.list.size,
                     state = pagerState,
-                    key = { cardList.list[it].nickname }
+                    key = { cardList.list[it].id }
                 ) { idx ->
                     val card = cardList.list[idx]
                     ToHotCard(

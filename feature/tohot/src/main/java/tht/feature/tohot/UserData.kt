@@ -6,6 +6,7 @@ import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 
 internal val userData = ToHotUserUiModel(
+    id = 0,
     nickname = "Harry",
     birthday = "2022.02.03",
     interests = ImmutableListWrapper(
@@ -37,6 +38,7 @@ internal val userData = ToHotUserUiModel(
 )
 
 internal val userData2 = userData.copy(
+    id = 2,
     nickname = "Suzume",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -53,6 +55,7 @@ internal val userData2 = userData.copy(
 )
 
 internal val userData3 = userData.copy(
+    id = 3,
     nickname = "ToToro",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -63,6 +66,7 @@ internal val userData3 = userData.copy(
 )
 
 internal val userData4 = userData.copy(
+    id = 4,
     nickname = "SpiderMan",
     profileImgUrl = ImmutableListWrapper(
         listOf(

@@ -6,6 +6,7 @@ import javax.annotation.concurrent.Immutable
 
 @Immutable
 data class ToHotUserUiModel(
+    val id: Int,
     val nickname: String,
     val birthday: String,
     val interests: ImmutableListWrapper<InterestModel>,
