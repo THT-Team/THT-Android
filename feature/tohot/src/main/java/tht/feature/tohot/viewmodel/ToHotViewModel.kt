@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter
 import java.util.Stack
 import javax.inject.Inject
 
-
 /**
  * - 손으로 드래그 중에 시간이 다 달면 예외 발생
  * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
@@ -77,7 +76,7 @@ class ToHotViewModel @Inject constructor(
             when {
                 topicList.list.isEmpty() -> fetchTopicList(true)
 
-                currentTopic == null  -> {
+                currentTopic == null -> {
                     clearUserCard()
                     intent {
                         reduce { it.copy(topicModalShow = true) }
@@ -124,7 +123,7 @@ class ToHotViewModel @Inject constructor(
     private fun startTopicRemainingTimer() {
         if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
         topicRemainingTimer = viewModelScope.launch(Dispatchers.IO) {
-            with (store.state.value) {
+            with(store.state.value) {
                 while (isActive && topicSelectRemainingTimeMill >= 0) {
                     delay(1000)
                     val remainingString = (topicSelectRemainingTimeMill - System.currentTimeMillis()).let {
@@ -250,7 +249,7 @@ class ToHotViewModel @Inject constructor(
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
-                    holdDialogShow = passedCardCountBetweenTouch > cardCountAllowWithoutTouch,
+                    holdDialogShow = passedCardCountBetweenTouch > cardCountAllowWithoutTouch
                 )
             }
         }

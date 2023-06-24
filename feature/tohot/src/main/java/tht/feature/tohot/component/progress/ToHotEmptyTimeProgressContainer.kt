@@ -52,4 +52,3 @@ fun ToHotEmptyTimeProgressContainer(
 fun ToHotEmptyTimeProgressContainerPreview() {
     ToHotEmptyTimeProgressContainer()
 }
-

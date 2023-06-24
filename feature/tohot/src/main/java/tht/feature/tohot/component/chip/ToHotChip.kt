@@ -20,7 +20,7 @@ fun ToHotEmojiChip(
     content: String,
     emojiCode: String
 ) {
-    val code = Integer.decode("0x${emojiCode}")
+    val code = Integer.decode("0x$emojiCode")
     val emoji = String(Character.toChars(code))
     ToHotChip(
         modifier = modifier,

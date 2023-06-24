@@ -43,8 +43,7 @@ fun ToHotUserInfoFullCard(
     onReportClick: () -> Unit = { }
 ) {
     Box(
-        modifier = modifier
-        .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
@@ -93,8 +92,8 @@ fun ToHotUserInfoFullCard(
             ) {
                 idealTypes.list.forEach { ideal ->
                     ToHotEmojiChip(
-                       content = ideal.title,
-                       emojiCode = ideal.emojiCode
+                        content = ideal.title,
+                        emojiCode = ideal.emojiCode
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                 }

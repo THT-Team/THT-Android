@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * offset setting 
+ * offset setting
  * https://stackoverflow.com/questions/74456259/android-compose-drawarc-would-not-get-centered-within-box
  */
 @Composable
@@ -83,14 +83,15 @@ fun ToHotCircularProgress(
                 x = offsetX,
                 y = offsetY
             ),
-            size = Size(sizePx / 2 , sizePx / 2),
+            size = Size(sizePx / 2, sizePx / 2),
             style = stroke
         )
     }
     LaunchedEffect(animateFloat) {
         animateFloat.animateTo(
             targetValue = progress,
-            animationSpec = tween(durationMillis = duration, easing = LinearEasing))
+            animationSpec = tween(durationMillis = duration, easing = LinearEasing)
+        )
     }
 }
 

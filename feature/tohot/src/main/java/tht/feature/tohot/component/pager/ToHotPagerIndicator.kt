@@ -61,4 +61,3 @@ private fun ToHotPagerIndicatorPreview() {
         height = 20.dp
     )
 }
-

@@ -58,7 +58,11 @@ fun ToHotAnimateTimeProgressContainer(
     val progressAnimatable = remember { Animatable((currentSec.toFloat() / maxTimeSec.toFloat())) }
     LaunchedEffect(key1 = destinationSec, key2 = enable) {
         if (enable) {
-            Log.d("ToHot", "duration => $duration, progress => ${destinationProgress}, target : ${progressAnimatable.targetValue}, value : ${progressAnimatable.value}")
+            Log.d(
+                "ToHot",
+                "duration => $duration, progress => $destinationProgress," +
+                    " target : ${progressAnimatable.targetValue}, value : ${progressAnimatable.value}"
+            )
             if (progressAnimatable.targetValue == destinationProgress) {
                 ticChanged((progressAnimatable.value * maxTimeSec).toInt())
                 return@LaunchedEffect

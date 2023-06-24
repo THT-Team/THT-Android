@@ -72,7 +72,7 @@ fun ToHotRoute(
                             }
                         }
                     }
-                }catch (e :Exception) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -83,22 +83,22 @@ fun ToHotRoute(
         isShow = toHotState.reportMenuDialogShow,
         onReportClick = toHotViewModel::reportMenuReportEvent,
         onBlockClick = toHotViewModel::reportMenuBlockEvent,
-        onDismiss =  toHotViewModel::reportDialogDismissEvent
+        onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUseReportDialog(
         isShow = toHotState.reportDialogShow,
         reportReason = toHotState.reportReason,
         onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage) },
-        onCancelClick =  toHotViewModel::reportDialogDismissEvent,
-        onDismiss =  toHotViewModel::reportDialogDismissEvent
+        onCancelClick = toHotViewModel::reportDialogDismissEvent,
+        onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUserBlockDialog(
         isShow = toHotState.blockDialogShow,
         onBlockClick = { toHotViewModel.cardBlockEvent(pagerState.currentPage) },
-        onCancelClick =  toHotViewModel::reportDialogDismissEvent,
-        onDismiss =  toHotViewModel::reportDialogDismissEvent
+        onCancelClick = toHotViewModel::reportDialogDismissEvent,
+        onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotHoldDialog(
@@ -251,7 +251,8 @@ private fun ToHotScreen(
                         maxTimeSec = timers.list[idx].maxSec,
                         currentSec = timers.list[idx].currentSec,
                         destinationSec = timers.list[idx].destinationSec,
-                        enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble && cardMoveAllow,
+                        enable = currentUserIdx == pagerState.currentPage &&
+                            timers.list[idx].startAble && cardMoveAllow,
                         userCardClick = { },
                         onReportMenuClick = onReportMenuClick,
                         ticChanged = { ticChanged(it, idx) },

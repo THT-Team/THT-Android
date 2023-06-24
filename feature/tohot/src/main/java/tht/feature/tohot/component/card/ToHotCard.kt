@@ -68,7 +68,7 @@ fun ToHotCard(
             maxTimeSec = maxTimeSec,
             currentSec = currentSec,
             ticChanged = ticChanged,
-            destinationSec = destinationSec,
+            destinationSec = destinationSec
         )
 
         ToHotUserInfoCard(

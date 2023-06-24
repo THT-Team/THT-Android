@@ -93,7 +93,6 @@ fun ToHotNotifyCard(
     }
 }
 
-
 @Composable
 @Preview
 fun ToHotNotifyCardPreview() {

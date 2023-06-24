@@ -4,7 +4,6 @@ import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 import javax.annotation.concurrent.Immutable
 
-
 @Immutable
 data class ToHotUserUiModel(
     val nickname: String,
@@ -14,5 +13,5 @@ data class ToHotUserUiModel(
     val age: Int,
     val address: String,
     val profileImgUrl: ImmutableListWrapper<String>,
-    val introduce: String,
+    val introduce: String
 )

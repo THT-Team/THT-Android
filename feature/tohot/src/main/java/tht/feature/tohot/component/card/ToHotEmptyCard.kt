@@ -20,7 +20,6 @@ fun ToHotEmptyCard(
     )
 }
 
-
 @Composable
 @Preview
 fun ToHotEmptyCardPreview() {
