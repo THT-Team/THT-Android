@@ -100,7 +100,6 @@ fun ToHotAnimateTimeProgressContainer(
             size = 36.dp,
             color = progressColor,
             progress = 1 - progressAnimatable.value,
-            duration = duration,
             sec = currentSec
         )
 

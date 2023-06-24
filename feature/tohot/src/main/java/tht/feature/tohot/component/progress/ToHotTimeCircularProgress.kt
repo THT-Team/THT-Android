@@ -1,16 +1,11 @@
 package tht.feature.tohot.component.progress
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,7 +27,6 @@ fun ToHotTimeCircularProgress(
     size: Dp,
     sec: Int,
     progress: Float,
-    duration: Int,
     color: Color
 ) {
     Box(
@@ -44,8 +38,7 @@ fun ToHotTimeCircularProgress(
             modifier = Modifier,
             color = color,
             size = size,
-            progress = progress,
-            duration = duration
+            progress = progress
         )
         ToHotTimeProgressText(
             modifier = Modifier
@@ -61,10 +54,8 @@ fun ToHotCircularProgress(
     modifier: Modifier = Modifier,
     color: Color,
     size: Dp,
-    progress: Float,
-    duration: Int
+    progress: Float
 ) {
-    val animateFloat = remember { Animatable(progress) }
     val stroke = with(LocalDensity.current) { Stroke(2.dp.toPx()) }
     val sizePx = with(LocalDensity.current) { size.toPx() }
     Canvas(
@@ -87,12 +78,6 @@ fun ToHotCircularProgress(
             style = stroke
         )
     }
-    LaunchedEffect(animateFloat) {
-        animateFloat.animateTo(
-            targetValue = progress,
-            animationSpec = tween(durationMillis = duration, easing = LinearEasing)
-        )
-    }
 }
 
 @Composable
@@ -100,7 +85,6 @@ fun ToHotCircularProgress(
 private fun ToHotAnimateTimeCircularProgressPreview() {
     ToHotCircularProgress(
         progress = 1.0f,
-        duration = 1000,
         color = Color.Blue,
         size = 36.dp
     )
@@ -113,7 +97,6 @@ private fun ToHotTimeCircularProgressPreview() {
         color = Color(0xFFF9CC2E),
         size = 36.dp,
         sec = 5,
-        progress = 0.8f,
-        duration = 1000
+        progress = 0.8f
     )
 }
