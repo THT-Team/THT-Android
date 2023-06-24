@@ -22,16 +22,12 @@ import tht.feature.tohot.R
 fun ToHotEmptyTimeProgressContainer(
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(color = Color(0xFF1A1A1A).copy(alpha = 0.5f))
-            .padding(horizontal = 10.dp)
+    ToHotProgressTimeBackground(
+        modifier = modifier,
+        color = colorResource(id = tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.5f),
     ) {
         Image(
             modifier = Modifier
-                .size(36.dp)
                 .align(Alignment.CenterVertically)
                 .padding(end = 12.dp),
             painter = painterResource(id = R.drawable.ic_timer_empty),

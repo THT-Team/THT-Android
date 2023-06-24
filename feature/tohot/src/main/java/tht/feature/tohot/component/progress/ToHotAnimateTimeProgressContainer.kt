@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 /**
@@ -33,7 +35,7 @@ fun ToHotAnimateTimeProgressContainer(
     maxTimeSec: Int,
     currentSec: Int,
     destinationSec: Int,
-    colors: List<Color> = listOf(
+    progressColor: List<Color> = listOf(
         Color(0xFFF9CC2E),
         Color(0xFFF98F2E),
         Color(0xFFF93A2E)
@@ -43,15 +45,15 @@ fun ToHotAnimateTimeProgressContainer(
     ticChanged: (Int) -> Unit = { }
 ) {
     val destinationProgress = destinationSec.toFloat() / maxTimeSec.toFloat()
-    var color = colors.lastOrNull() ?: Color.Yellow
-    for (i in colors.indices) {
-        val value = colors.size - i - 1
-        if (destinationProgress >= (1.0f / colors.size) * value) {
-            color = colors[i]
+    var color = progressColor.lastOrNull() ?: Color.Yellow
+    for (i in progressColor.indices) {
+        val value = progressColor.size - i - 1
+        if (destinationProgress >= (1.0f / progressColor.size) * value) {
+            color = progressColor[i]
             break
         }
     }
-    val progressColor by animateColorAsState(
+    val animateProgressColor by animateColorAsState(
         targetValue = color,
         animationSpec = tween(durationMillis = 1000)
     )
@@ -88,18 +90,12 @@ fun ToHotAnimateTimeProgressContainer(
         }
     }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(color = Color(0xFF1A1A1A).copy(alpha = 0.5f))
-            .padding(horizontal = 10.dp)
+    ToHotProgressTimeBackground(
+        color = colorResource(id = tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.5f),
     ) {
         ToHotTimeCircularProgress(
             modifier = Modifier
                 .align(Alignment.CenterVertically),
-            size = 36.dp,
-            color = progressColor,
             size = 24.dp,
             progressColor = animateProgressColor,
             backgroundColor = progressBackgroundColor,
@@ -109,9 +105,23 @@ fun ToHotAnimateTimeProgressContainer(
 
         ToHotTimeProgressBar(
             modifier = Modifier
-                .align(Alignment.CenterVertically),
-            color = progressColor,
+                .align(Alignment.CenterVertically)
+                .padding(start = 10.dp),
+            color = animateProgressColor,
             progress = progressAnimatable.value
         )
     }
+}
+
+@Composable
+@Preview
+fun ToHotAnimateTimeProgressContainerPreview() {
+    ToHotAnimateTimeProgressContainer(
+        modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
+        enable = true,
+        maxTimeSec = 5,
+        currentSec = 5,
+        ticChanged = {},
+        destinationSec = 4
+    )
 }
