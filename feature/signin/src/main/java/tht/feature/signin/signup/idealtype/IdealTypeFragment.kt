@@ -85,8 +85,9 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
             launch {
                 viewModel.selectIdealTypes.collect { set ->
                     binding.groupChip.children.forEachIndexed { idx, view ->
-                        if (idx !in 0 until viewModel.idealTypeList.value.size)
+                        if (idx !in 0 until viewModel.idealTypeList.value.size) {
                             return@forEachIndexed
+                        }
                         val ideal = viewModel.idealTypeList.value[idx]
                         (view as? Chip)?.isSelected = set.contains(ideal)
                     }
