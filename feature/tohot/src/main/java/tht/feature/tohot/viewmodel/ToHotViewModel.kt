@@ -10,6 +10,7 @@ import com.example.compose_ui.common.viewmodel.store
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -47,7 +48,9 @@ class ToHotViewModel @Inject constructor(
         userData2,
         userData3,
         userData4,
-        userData,
+        userData
+    )
+    private val userList2 = listOf(
         userData5,
         userData6,
         userData7
@@ -74,10 +77,22 @@ class ToHotViewModel @Inject constructor(
     private var passedCardCountBetweenTouch = 0
     private val passedCardIdSet = mutableSetOf<Int>()
 
+    private var pagingable = true // 임시 개발용 변수
+    private var pagingLoading = false
+
+    private val fetchUserListPagingResultChannel = Channel<Unit>()
+
+    private val currentUserListRange: IntRange
+        get() = store.state.value.userList.list.indices
+
     init {
         toHotLogic()
     }
 
+    /**
+     *  UserList API 호출
+     *  - Topic 이 선택 되어 있지 않다고 리턴 되면 Topic 선택 화면
+     */
     private fun toHotLogic() {
         with(store.state.value) {
             when {
@@ -90,7 +105,9 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
 
-                userList.list.isEmpty() -> fetchUserCard()
+                userList.list.isEmpty() -> viewModelScope.launch { fetchUserCard(isPaging = false) }
+
+                else -> {}
             }
         }
     }
@@ -165,30 +182,120 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    // Topic 을 선택 했을 때 목록을 불러 오는 함수. Not Paging
-    private fun fetchUserCard() {
+    /**
+     * 다음 아이템 있다면 Scroll
+     * 다음 아이템이 없다면 페이징 로딩 여부 체크
+     * - 로딩 중 이라면 channel 을 통해 페이징 로딩이 끝나는 것을 대기
+     * - 로딩 중 이지 않다면 페이징 처리가 끝났는데 다음 Item이 없으므로 List Empty 처리
+     */
+    private fun tryScrollToNext(currentIdx: Int) {
         viewModelScope.launch {
-            intent { reduce { it.copy(loading = true) } }
-            delay(500)
-            intent {
-                reduce {
-                    it.copy(
-                        userList = ImmutableListWrapper(userList),
-                        isFirstPage = userList.isEmpty(),
-                        timers = ImmutableListWrapper(
-                            List(userList.size) {
-                                CardTimerUiModel(
-                                    maxSec = MAX_TIMER_SEC,
-                                    currentSec = MAX_TIMER_SEC,
-                                    destinationSec = MAX_TIMER_SEC,
-                                    startAble = false
-                                )
-                            }
-                        ),
-                        enableTimerIdx = 0
+            when ((currentIdx + 1) in currentUserListRange) {
+                true -> intent {
+                    postSideEffect(
+                        ToHotSideEffect.Scroll(currentIdx + 1)
                     )
                 }
-                reduce { it.copy(loading = false) }
+
+                else -> {
+                    if (pagingLoading) {
+                        intent {
+                            reduce {
+                                it.copy(loading = true)
+                            }
+                        }
+                        fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
+                        intent {
+                            reduce {
+                                it.copy(loading = false)
+                            }
+                            if ((currentIdx + 1) !in currentUserListRange) {
+                                return@intent
+                            }
+                            postSideEffect(
+                                ToHotSideEffect.Scroll(currentIdx + 1)
+                            )
+                        }
+                    } else {
+                        removeAllCard()
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 페이징 - 마지막 Index Card 에서 페이징 요청
+     * - 페이징 List 가 없다면?
+     * - 페이징 로딩 중에 다음 카드로 넘어 가려 한다면 - 로딩 효과 표시, 페이징 완료 후 다음 리스트 표시
+     */
+    private suspend fun fetchUserCard(isPaging: Boolean) {
+        when (isPaging) {
+            true -> {
+                pagingLoading = true
+                if (!pagingable) {
+                    //TODO: 페이징 유저가 더 없는 경우. 처리 고민
+                    pagingLoading = false
+                    return
+                }
+                pagingable = false
+                delay(1000)
+                intent {
+                    reduce {
+                        it.copy(
+                            userList = ImmutableListWrapper(
+                                store.state.value.userList.list +
+                                    userList2
+                            ),
+                            isFirstPage = userList.isEmpty(),
+                            timers = ImmutableListWrapper(
+                                store.state.value.timers.list +
+                                    List(userList.size) {
+                                        CardTimerUiModel(
+                                            maxSec = MAX_TIMER_SEC,
+                                            currentSec = MAX_TIMER_SEC,
+                                            destinationSec = MAX_TIMER_SEC,
+                                            startAble = false
+                                        )
+                                    }
+                            ),
+                            loading = false
+                        )
+                    }
+                }
+                pagingLoading = false
+                // PagerState 가 업데이트 됨을 인지하는 방법?
+                // pagerState.canScrollForward 가 false 가 뜨네
+                // 실제로 PagerState 가 업데이트 되기 전에 호출 되서 그런듯 -> Screen 이 호출 되기 전임
+                // 해결 방법은?
+                delay(100) // delay(1) 도 안되고 yield 도 안됨
+                fetchUserListPagingResultChannel.send(Unit)
+            }
+
+            else -> {
+                pagingable = true
+                intent { reduce { it.copy(loading = true) } }
+                delay(500)
+                intent {
+                    reduce {
+                        it.copy(
+                            userList = ImmutableListWrapper(userList),
+                            isFirstPage = userList.isEmpty(),
+                            timers = ImmutableListWrapper(
+                                List(userList.size) {
+                                    CardTimerUiModel(
+                                        maxSec = MAX_TIMER_SEC,
+                                        currentSec = MAX_TIMER_SEC,
+                                        destinationSec = MAX_TIMER_SEC,
+                                        startAble = false
+                                    )
+                                }
+                            ),
+                            enableTimerIdx = 0,
+                            loading = false
+                        )
+                    }
+                }
             }
         }
     }
@@ -240,13 +347,16 @@ class ToHotViewModel @Inject constructor(
      */
     fun userChangeEvent(userIdx: Int) {
         Log.d("ToHot", "userChangeEvent => $userIdx")
+        if (userIdx !in currentUserListRange) return
         with(store.state.value) {
-            if (userIdx !in userList.list.indices) return
             if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
                 passedCardIdSet.add(userList.list[userIdx].id)
                 passedUserCardStack.push(userList.list[userIdx])
                 passedCardCountBetweenTouch++
             }
+        }
+        if (userIdx == currentUserListRange.last) {
+            viewModelScope.launch { fetchUserCard(isPaging = true) }
         }
         intent {
             reduce {
@@ -290,24 +400,16 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    /**
+     * timer tic 이 변경될 때 호출
+     * - timer 가 0이면 다음 유저 스크롤
+     * - timer 가 0이 아니면 timer 를 1 감소
+     */
     fun ticChangeEvent(tic: Int, userIdx: Int) = with(store.state.value) {
         Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
         if (tic <= 0) {
-            when (userIdx in userList.list.indices) {
-                true ->
-                    intent {
-                        if ((userIdx + 1) in userList.list.indices) {
-                            postSideEffect(
-                                ToHotSideEffect.Scroll(userIdx + 1)
-                            )
-                        } else {
-                            //TODO: Paging or Remove List
-                            removeAllCard()
-                        }
-                    }
-                else -> removeUserCard(userIdx)
-            }
+            tryScrollToNext(userIdx)
             return
         }
         if (userIdx !in userList.list.indices) return
@@ -328,19 +430,11 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun likeCardEvent(idx: Int) {
-        intent {
-            postSideEffect(
-                ToHotSideEffect.Scroll(idx + 1)
-            )
-        }
+        tryScrollToNext(idx)
     }
 
     fun unlikeCardEvent(idx: Int) {
-        intent {
-            postSideEffect(
-                ToHotSideEffect.Scroll(idx + 1)
-            )
-        }
+        tryScrollToNext(idx)
     }
 
     fun reportDialogDismissEvent() {
@@ -434,12 +528,19 @@ class ToHotViewModel @Inject constructor(
                     fallingAnimationIdx = -1
                 )
             }
-            postSideEffect(
-                ToHotSideEffect.RemoveAfterScroll(
-                    scrollIdx = idx + 1,
-                    removeIdx = idx
+            when ((idx + 1) in currentUserListRange) {
+                true -> postSideEffect(
+                    ToHotSideEffect.RemoveAfterScroll(
+                        scrollIdx = idx + 1,
+                        removeIdx = idx
+                    )
                 )
-            )
+
+                else -> {
+                    removeUserCard(idx) // 지우고
+                    tryScrollToNext(idx) // 다음 Item 스크롤 시도
+                }
+            }
         }
     }
 
