@@ -52,7 +52,9 @@ class ToHotViewModel @Inject constructor(
     )
     private val userList2 = listOf(
         userData5,
-        userData6,
+        userData6
+    )
+    private val userList3 = listOf(
         userData7
     )
 
@@ -78,6 +80,7 @@ class ToHotViewModel @Inject constructor(
     private val passedCardIdSet = mutableSetOf<Int>()
 
     private var pagingable = true // 임시 개발용 변수
+    private var pagingCount = 0 // 임시 개발용 변수
     private var pagingLoading = false
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
@@ -232,25 +235,31 @@ class ToHotViewModel @Inject constructor(
     private suspend fun fetchUserCard(isPaging: Boolean) {
         when (isPaging) {
             true -> {
+                pagingCount++
                 pagingLoading = true
                 if (!pagingable) {
                     //TODO: 페이징 유저가 더 없는 경우. 처리 고민
                     pagingLoading = false
                     return
                 }
-                pagingable = false
+                if (pagingCount > 2) {
+                    pagingable = false
+                    pagingLoading = false
+                    return
+                }
                 delay(1000)
                 intent {
                     reduce {
                         it.copy(
                             userList = ImmutableListWrapper(
-                                store.state.value.userList.list +
-                                    userList2
+                                store.state.value.userList.list + if(pagingCount == 1) userList2 else userList3
                             ),
                             isFirstPage = userList.isEmpty(),
                             timers = ImmutableListWrapper(
                                 store.state.value.timers.list +
-                                    List(userList.size) {
+                                    List(
+                                        if (pagingCount == 1) userList2.size else userList3.size
+                                    ) {
                                         CardTimerUiModel(
                                             maxSec = MAX_TIMER_SEC,
                                             currentSec = MAX_TIMER_SEC,
@@ -273,6 +282,7 @@ class ToHotViewModel @Inject constructor(
             }
 
             else -> {
+                pagingCount = 0
                 pagingable = true
                 intent { reduce { it.copy(loading = true) } }
                 delay(500)
