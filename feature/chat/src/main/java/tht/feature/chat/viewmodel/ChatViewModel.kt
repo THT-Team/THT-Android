@@ -8,6 +8,7 @@ import com.example.compose_ui.common.viewmodel.store
 import dagger.hilt.android.lifecycle.HiltViewModel
 import tht.feature.chat.viewmodel.sideeffect.ChatSideEffect
 import tht.feature.chat.viewmodel.state.ChatState
+import tht.feature.chat.viewmodel.state.ImmutableListWrapper
 import tht.feature.chat.viewmodel.state.skeletonChatList
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ internal class ChatViewModel @Inject constructor() : ViewModel(), Container<Chat
     fun getChatList() {
         intent {
             reduce {
-                ChatState.ChatList(isLoading = false, chatList = listOf("아이템1", "아이템1", "아이템1", "아이템1", "아이템1"))
+                ChatState.ChatList(isLoading = false, chatList = ImmutableListWrapper(listOf("아이템1", "아이템1", "아이템1", "아이템1", "아이템1")))
             }
         }
     }

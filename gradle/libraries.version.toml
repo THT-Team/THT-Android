@@ -62,7 +62,6 @@ jetpack-compose-navigation = "2.5.3"
 jetpack-compose-hilt-navigation = "1.0.0"
 jetpack-compose-coil = "2.4.0"
 app-compat-theme-adpater = "0.28.0"
-collections-immutable = "0.3.5"
 
 [plugins]
 #android
@@ -97,7 +96,6 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 
 #kotlin
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections-immutable" }
 
 #test
 junit = { module = "junit:junit", version.ref = "junit" }

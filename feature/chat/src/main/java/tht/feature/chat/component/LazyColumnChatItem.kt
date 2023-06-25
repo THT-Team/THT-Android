@@ -7,10 +7,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import tht.feature.chat.viewmodel.state.ImmutableListWrapper
 
 @Composable
 internal fun LazyColumnChatItem(
-    items: List<String>,
+    items: ImmutableListWrapper<String>,
     isLoading: Boolean,
     onClickItem: () -> Unit,
 ) {
@@ -18,7 +19,7 @@ internal fun LazyColumnChatItem(
         modifier = Modifier.fillMaxSize(),
         state = rememberLazyListState(),
     ) {
-        items(items) { item ->
+        items(items.list) { item ->
             ChatItem(
                 item = item,
                 isLoading = isLoading,
@@ -32,7 +33,7 @@ internal fun LazyColumnChatItem(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 internal fun LazyColumnChatItemPreview() {
     LazyColumnChatItem(
-        items = emptyList(),
+        items = ImmutableListWrapper(emptyList()),
         isLoading = false,
         onClickItem = {},
     )
