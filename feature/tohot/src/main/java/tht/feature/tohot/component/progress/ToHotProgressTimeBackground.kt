@@ -23,7 +23,7 @@ fun ToHotProgressTimeBackground(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(32.dp))
             .background(color = color)
             .padding(horizontal = 10.dp, vertical = 4.dp)
     ) {

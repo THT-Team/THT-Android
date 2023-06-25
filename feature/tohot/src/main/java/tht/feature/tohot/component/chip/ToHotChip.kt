@@ -35,7 +35,7 @@ fun ToHotChip(
 ) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(
                 color = Color(0xFF111111)
             )

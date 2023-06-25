@@ -74,7 +74,7 @@ fun ToHotCardManageRow(
         }
 
         IconButton(
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = 20.dp),
             interactionSource = unlikeButtonInteractionSource,
             onClick = onUnLikeClick
         ) {
