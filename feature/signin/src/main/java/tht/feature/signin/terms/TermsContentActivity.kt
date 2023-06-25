@@ -83,7 +83,8 @@ class TermsContentActivity : AppCompatActivity() {
         }
         val parent = binding.layoutBackground
         parent.addView(
-            termsItemView.apply { termsItemView.setView(terms) }, 0
+            termsItemView.apply { termsItemView.setView(terms) },
+            0
         )
 
         termsItemView.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -92,10 +93,11 @@ class TermsContentActivity : AppCompatActivity() {
             startToStart = parent.id
             endToEnd = parent.id
             topToBottom = prevView.id
-            topMargin = if (prevView !is TermsContentItemView)
+            topMargin = if (prevView !is TermsContentItemView) {
                 getPxFromDp(32).toInt()
-            else
+            } else {
                 getPxFromDp(24).toInt()
+            }
 
             if (isLast) {
                 bottomToBottom = parent.id

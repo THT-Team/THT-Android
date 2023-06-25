@@ -75,10 +75,11 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
         textInputEditTexts.forEachIndexed { i, view ->
             view.setOnKeyListener(VerifyEditKeyEvent(view, if (i == 0) null else textInputEditTexts[i - 1]))
-            val nxtView = if (i in 0 until textInputEditTexts.size - 1)
+            val nxtView = if (i in 0 until textInputEditTexts.size - 1) {
                 textInputEditTexts[i + 1]
-            else
+            } else {
                 null
+            }
             view.addTextChangedListener(
                 VerifyEditTextWatcher(
                     nxtView,

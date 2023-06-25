@@ -42,10 +42,11 @@ class LocationViewModel @Inject constructor(
     val dataLoading = _dataLoading.asStateFlow()
 
     fun checkLocationEvent() {
-        if (fullLocation.value.address.isEmpty())
+        if (fullLocation.value.address.isEmpty()) {
             postSideEffect(LocationSideEffect.CheckPermission)
-        else
+        } else {
             postSideEffect(LocationSideEffect.ShowLocationDialog)
+        }
     }
 
     fun fetchCurrentLocation() {
@@ -122,16 +123,21 @@ class LocationViewModel @Inject constructor(
     }
 
     private fun setLocationValue(address: String) {
-        _location.value = if (checkProvince(address)) address.split(" ").run {
-            takeLast(size - 1)
-        }.joinToString(" ") else address
+        _location.value = if (checkProvince(address)) {
+            address.split(" ").run {
+                takeLast(size - 1)
+            }.joinToString(" ")
+        } else {
+            address
+        }
     }
 
     private fun checkValidInput(location: String) {
-        if (location.isEmpty())
+        if (location.isEmpty()) {
             setUiState(LocationUiState.InvalidInput)
-        else
+        } else {
             setUiState(LocationUiState.ValidInput)
+        }
     }
 
     private fun checkProvince(address: String): Boolean =
