@@ -30,10 +30,10 @@ import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.p.ThtP2
-import tht.feature.chat.viewmodel.state.ImmutableListWrapper
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun ChatDetailList(items: ImmutableListWrapper<String>) {
+fun ChatDetailList(items: ImmutableList<String>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +44,7 @@ fun ChatDetailList(items: ImmutableListWrapper<String>) {
             ChatRandomTitle(title = "마음이 답답할 때 무엇을 하나요?")
             Spacer(modifier = Modifier.height(8.dp))
         }
-        itemsIndexed(items.list) { index, item ->
+        itemsIndexed(items) { index, item ->
             if (index % 2 == 0) {
                 Sender(text = item, updateTime = "3:13 PM")
             } else {

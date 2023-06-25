@@ -16,6 +16,7 @@ androidx-navigation = "2.5.3"
 #kotlin
 kotlin = "1.8.10"
 kotlin-jvm = "1.8.10"
+collections-immutable = "0.3.5"
 
 #test
 junit = "4.13.2"
@@ -96,6 +97,7 @@ androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx",
 
 #kotlin
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections-immutable" }
 
 #test
 junit = { module = "junit:junit", version.ref = "junit" }

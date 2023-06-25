@@ -1,14 +1,12 @@
 package tht.feature.chat.viewmodel.state
 
-import javax.annotation.concurrent.Immutable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 sealed class ChatState {
     object Empty : ChatState()
     data class ChatList(
         val isLoading: Boolean,
-        val chatList: ImmutableListWrapper<String> = ImmutableListWrapper(emptyList()),
+        val chatList: ImmutableList<String> = persistentListOf(),
     ) : ChatState()
 }
-
-@Immutable
-data class ImmutableListWrapper<T>(val list: List<T>)

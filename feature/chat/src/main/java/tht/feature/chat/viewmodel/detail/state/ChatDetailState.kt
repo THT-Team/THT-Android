@@ -1,10 +1,11 @@
 package tht.feature.chat.viewmodel.detail.state
 
-import tht.feature.chat.viewmodel.state.ImmutableListWrapper
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 sealed class ChatDetailState {
     data class ChatList(
         val isLoading: Boolean,
-        val chatList: ImmutableListWrapper<String> = ImmutableListWrapper(emptyList()),
+        val chatList: ImmutableList<String> = persistentListOf(),
     ) : ChatDetailState()
 }
