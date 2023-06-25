@@ -54,6 +54,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+    implementation(libs.kotlin.collections.immutable)
 
     implementation("androidx.activity:activity-compose:1.7.1")
     implementation("androidx.compose.material:material:1.4.3")

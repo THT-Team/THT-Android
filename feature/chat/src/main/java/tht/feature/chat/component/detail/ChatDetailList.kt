@@ -1,4 +1,4 @@
-package tht.feature.chat.screen.detail.component
+package tht.feature.chat.component.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.example.compose_ui.component.Image.ThtImage
+import com.example.compose_ui.component.image.ThtImage
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
 import com.example.compose_ui.component.text.p.ThtP1

@@ -1,4 +1,4 @@
-package com.example.compose_ui.component.Image
+package com.example.compose_ui.component.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -16,12 +16,12 @@ fun ThtImage(
     modifier: Modifier,
     src: String?,
     size: DpSize,
-    errorImage: (@Composable () -> Unit)? = null
+    errorImage: (@Composable () -> Unit)? = null,
 ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(src)
-            .build()
+            .build(),
     )
     when (painter.state) {
         is AsyncImagePainter.State.Error -> {

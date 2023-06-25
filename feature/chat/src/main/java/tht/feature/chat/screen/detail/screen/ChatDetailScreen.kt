@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.common.viewmodel.collectAsState
-import tht.feature.chat.screen.detail.component.ChatDetailList
-import tht.feature.chat.screen.detail.component.ChatDetailTopAppBar
-import tht.feature.chat.screen.detail.component.ChatEditTextContainer
+import tht.feature.chat.component.detail.ChatDetailList
+import tht.feature.chat.component.detail.ChatDetailTopAppBar
+import tht.feature.chat.component.detail.ChatEditTextContainer
 import tht.feature.chat.viewmodel.detail.ChatDetailViewModel
 import tht.feature.chat.viewmodel.detail.state.ChatDetailState
 

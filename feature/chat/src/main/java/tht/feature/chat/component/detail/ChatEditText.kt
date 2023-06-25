@@ -1,4 +1,4 @@
-package tht.feature.chat.screen.detail.component
+package tht.feature.chat.component.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.extensions.noRippleClickable
@@ -84,7 +85,17 @@ fun ChatEditText(
             .padding(horizontal = 12.dp, vertical = 6.dp)
             .then(modifier),
         value = text,
-        onValueChange = { onChangedText(it) },
+        onValueChange = onChangedText,
         textStyle = TextStyle(color = Color.White),
+    )
+}
+
+@Composable
+@Preview(name = "채팅창 하단 컴포넌트")
+fun ChatEditTextContainer() {
+    ChatEditTextContainer(
+        modifier = Modifier,
+        text = "테스트",
+        onChangedText = {},
     )
 }

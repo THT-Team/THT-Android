@@ -1,4 +1,4 @@
-package tht.feature.chat.screen.detail.component
+package tht.feature.chat.component.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

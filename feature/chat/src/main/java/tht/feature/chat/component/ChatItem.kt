@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.example.compose_ui.component.Image.ThtImage
+import com.example.compose_ui.component.image.ThtImage
 import com.example.compose_ui.component.modifier.skeleton
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption1
