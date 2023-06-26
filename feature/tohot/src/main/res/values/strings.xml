@@ -18,6 +18,7 @@
     <string name="starting">시작하기</string>
     <string name="waiting">기다리기</string>
     <string name="restart">다시 시작</string>
+    <string name="reset">리셋</string>
 
     <string name="select_topic_title">오늘의 폴링</string>
 
@@ -34,4 +35,9 @@
 
     <string name="to_hot_report_success">신고하기가 완료되었습니다. 해당 사용자와 서로 차단되며, 신고 사유는 검토 후 처리됩니다.</string>
     <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
+
+    <string name="to_hot_topic_reset_1">10분뒤</string>
+    <string name="to_hot_topic_reset_2">핫 토픽들이</string>
+    <string name="to_hot_topic_reset_3">됩니다!</string>
+    <string name="to_hot_topic_reset_description">새로운 무디들을 만나보실 준비 되셨나요?</string>
 </resources>
