@@ -252,7 +252,7 @@ class ToHotViewModel @Inject constructor(
                     reduce {
                         it.copy(
                             userList = ImmutableListWrapper(
-                                store.state.value.userList.list + if(pagingCount == 1) userList2 else userList3
+                                store.state.value.userList.list + if (pagingCount == 1) userList2 else userList3
                             ),
                             isFirstPage = userList.isEmpty(),
                             timers = ImmutableListWrapper(
@@ -273,11 +273,7 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
                 pagingLoading = false
-                // PagerState 가 업데이트 됨을 인지하는 방법?
-                // pagerState.canScrollForward 가 false 가 뜨네
-                // 실제로 PagerState 가 업데이트 되기 전에 호출 되서 그런듯 -> Screen 이 호출 되기 전임
-                // 해결 방법은?
-                delay(100) // delay(1) 도 안되고 yield 도 안됨
+                delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
                 fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
             }
 
