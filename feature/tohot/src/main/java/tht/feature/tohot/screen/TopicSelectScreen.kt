@@ -95,7 +95,7 @@ fun TopicSelectScreen(
             backgroundColor = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
             contentColor = colorResource(id = tht.core.ui.R.color.black_222222),
             enabled = buttonEnabled,
-            onClick = selectFinishListener,
+            onClick = selectFinishListener
         ) {
             ThtHeadline5(
                 text = stringResource(id = R.string.starting),
@@ -116,4 +116,3 @@ fun TopicSelectScreenPreview() {
         buttonEnabled = true
     )
 }
-

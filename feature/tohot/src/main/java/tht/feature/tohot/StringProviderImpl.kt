@@ -19,6 +19,8 @@ class StringProviderImpl @Inject constructor(
     private fun getResId(id: StringProvider.ResId): Int {
         return when (id) {
             StringProvider.ResId.Loading -> R.string.loading
+            StringProvider.ResId.ReportSuccess -> R.string.to_hot_report_success
+            StringProvider.ResId.BlockSuccess -> R.string.to_hot_block_success
         }
     }
 }

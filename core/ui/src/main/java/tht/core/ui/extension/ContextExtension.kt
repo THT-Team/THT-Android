@@ -14,3 +14,8 @@ fun Context.getPxFromDp(dp: Int): Float {
     val displayMetrics = resources.displayMetrics
     return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
+
+fun Context.getPxFromDp(dp: Float): Float {
+    val displayMetrics = resources.displayMetrics
+    return dp * (displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+}

@@ -9,6 +9,7 @@ import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
+import com.tht.tht.domain.signup.model.SignupResponseModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.signup.repository.SignupRepository
@@ -76,9 +77,9 @@ class SignupRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestSignup(user: SignupUserModel): Boolean {
+    override suspend fun requestSignup(user: SignupUserModel): SignupResponseModel {
         return withContext(dispatcher) {
-            signupApiDataSource.requestSignup(user).userId.isNotBlank()
+            signupApiDataSource.requestSignup(user).toModel()
         }
     }
 }

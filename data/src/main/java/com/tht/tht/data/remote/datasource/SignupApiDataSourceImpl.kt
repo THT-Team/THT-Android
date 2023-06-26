@@ -1,6 +1,7 @@
 package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.di.IODispatcher
+import com.tht.tht.data.remote.mapper.toRemoteRequest
 import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
@@ -42,7 +43,7 @@ class SignupApiDataSourceImpl @Inject constructor(
 
     override suspend fun requestSignup(user: SignupUserModel): SignupResponse {
         return withContext(dispatcher) {
-            apiService.requestSignup(user).toUnwrap { it }
+            apiService.requestSignup(user.toRemoteRequest()).toUnwrap { it }
         }
     }
 }

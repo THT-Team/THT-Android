@@ -1,7 +1,6 @@
 package tht.feature.tohot.component.userinfo
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,16 +22,11 @@ fun ToHotUserInfoMinimumCard(
     modifier: Modifier = Modifier,
     name: String,
     age: Int,
-    address: String,
-    onClick: () -> Unit = { }
+    address: String
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                enabled = true,
-                onClick = onClick
-            )
     ) {
         Column(
             modifier = Modifier.weight(1f)
@@ -58,12 +52,6 @@ fun ToHotUserInfoMinimumCard(
                 )
             }
         }
-
-        Image(
-            modifier = Modifier.padding(top = 8.dp),
-            painter = painterResource(id = R.drawable.ic_detail),
-            contentDescription = "detail_card"
-        )
     }
 }
 

@@ -17,7 +17,7 @@ fun ToHotToolbarTopicIcon(
     modifier: Modifier = Modifier,
     size: DpSize,
     topicIconUrl: String,
-    topicIconRes: Int,
+    topicIconRes: Int
 ) {
     val model = ImageRequest.Builder(LocalContext.current)
         .data(topicIconUrl)

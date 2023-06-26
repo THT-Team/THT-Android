@@ -1,7 +1,8 @@
 package tht.feature.tohot.component.card
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,10 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
@@ -41,21 +42,39 @@ fun ToHotCard(
     currentSec: Int,
     destinationSec: Int,
     enable: Boolean,
+    fallingAnimationEnable: Boolean = false,
+    onFallingAnimationFinish: () -> Unit = { },
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
-    onReportClick: () -> Unit = { }
+    onLikeClick: () -> Unit = { },
+    onUnLikeClick: () -> Unit = { },
+    onReportMenuClick: () -> Unit = { },
+    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
 ) {
     val pagerState = rememberPagerState()
     var userInfoFullShow by remember { mutableStateOf(false) }
-    Box(
+
+    val fallingAnimatedProgress = remember { Animatable(0f) }
+    LaunchedEffect(key1 = fallingAnimationEnable) {
+        if (!fallingAnimationEnable) return@LaunchedEffect
+        fallingAnimatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 500)
+        )
+        onFallingAnimationFinish()
+    }
+
+    FallingCard(
         modifier = modifier
             .fillMaxSize()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(12.dp)),
+        fallingProgress = fallingAnimatedProgress.value
     ) {
         ToHotCardImagePager(
             modifier = Modifier.fillMaxSize(),
             pagerState = pagerState,
-            imageUrls = imageUrls
+            imageUrls = imageUrls,
+            loadFinishListener = loadFinishListener
         )
 
         ToHotAnimateTimeProgressContainer(
@@ -66,7 +85,7 @@ fun ToHotCard(
             maxTimeSec = maxTimeSec,
             currentSec = currentSec,
             ticChanged = ticChanged,
-            destinationSec = destinationSec,
+            destinationSec = destinationSec
         )
 
         ToHotUserInfoCard(
@@ -85,7 +104,9 @@ fun ToHotCard(
                 userInfoFullShow = userInfoFullShow.not()
                 userCardClick()
             },
-            onReportClick = onReportClick
+            onReportClick = onReportMenuClick,
+            onLikeClick = onLikeClick,
+            onUnLikeClick = onUnLikeClick
         )
 
         ToHotPagerIndicator(
@@ -98,4 +119,29 @@ fun ToHotCard(
             height = 10.dp
         )
     }
+}
+
+@Composable
+@Preview
+fun ToHotCardPreview() {
+    ToHotCard(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+        imageUrls = ImmutableListWrapper(
+            listOf(
+                "https://profile"
+            )
+        ),
+        name = "nickname",
+        age = 1,
+        address = "address",
+        interests = ImmutableListWrapper(emptyList()),
+        idealTypes = ImmutableListWrapper(emptyList()),
+        introduce = "introduce",
+        maxTimeSec = 5,
+        currentSec = 5,
+        destinationSec = 4,
+        enable = true
+    )
 }

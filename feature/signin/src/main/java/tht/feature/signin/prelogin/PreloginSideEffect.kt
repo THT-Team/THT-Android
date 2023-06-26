@@ -14,4 +14,6 @@ sealed class PreloginSideEffect : SideEffect {
     object NavigateSignUp : PreloginSideEffect()
 
     data class NavigatePhoneAuth(val token: String?, val signInType: SignInType) : PreloginSideEffect()
+
+    object NavigateInquiry : PreloginSideEffect()
 }

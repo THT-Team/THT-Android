@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,8 @@ class PhoneVerifyViewModel @Inject constructor(
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
     private val authNum = savedStateHandle.getStateFlow(EXTRA_AUTH_NUM_KEY, "")
+
+    private val signInType: SignInType = savedStateHandle[EXTRA_SIGN_IN_TYPE_KEY] ?: SignInType.NORMAL
 
     private var timerJob: Job? = null
     private val _time = MutableStateFlow(DEFAULT_TIME_MILL)
@@ -109,7 +112,7 @@ class PhoneVerifyViewModel @Inject constructor(
         require(authNum.value.isNotBlank())
         viewModelScope.launch {
             _dataLoading.value = true
-            requestPhoneVerifyUseCase(authNum.value, phone.value, verify)
+            requestPhoneVerifyUseCase(authNum.value, phone.value, verify, signInType)
                 .onSuccess {
                     when (it) {
                         true -> {
@@ -171,6 +174,8 @@ class PhoneVerifyViewModel @Inject constructor(
         const val EXTRA_PHONE_KEY = "extra_phone_key"
 
         const val EXTRA_AUTH_NUM_KEY = "extra_auth_num_key"
+
+        const val EXTRA_SIGN_IN_TYPE_KEY = "extra_login_type_key"
 
         private const val VERIFY_SIZE = 6
 

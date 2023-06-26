@@ -7,6 +7,8 @@ interface StringProvider {
     fun getString(id: ResId, vararg formatArg: Any): String
 
     enum class ResId {
-        Loading
+        Loading,
+        ReportSuccess,
+        BlockSuccess
     }
 }

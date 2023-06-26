@@ -25,13 +25,13 @@ jobs:
                   key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/buildSrc/**/*.kt') }}
                   restore-keys: |
                       ${{ runner.os }}-gradle-
-                      
+
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-              
+
             - name: Access APP_GOOGLE_SERVICES_JSON
               run: echo '${{ secrets.APP_GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
-              
+
             - name: Access DATA_GOOGLE_SERVICES_JSON
               run: echo '${{ secrets.DATA_GOOGLE_SERVICES_JSON }}' > ./data/google-services.json
 
@@ -41,11 +41,19 @@ jobs:
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+                  REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Build with Gradle Without Test
               run: ./gradlew build -x test
@@ -63,24 +71,32 @@ jobs:
 
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
-              
+
             - name: Access APP_GOOGLE_SERVICES_JSON
               run: echo '${{ secrets.APP_GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
-              
+
             - name: Access DATA_GOOGLE_SERVICES_JSON
               run: echo '${{ secrets.DATA_GOOGLE_SERVICES_JSON }}' > ./data/google-services.json
-              
+
             - name: Add Key Info into local.properties
               run: |
                   touch ./local.properties
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+                  REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Run unit tests
               run: ./gradlew testDebugUnitTest
@@ -118,11 +134,19 @@ jobs:
                   echo -e KAKAO_NATIVE_APP_KEY=\"$KAKAO_NATIVE_APP_KEY\" >> ./local.properties
                   echo -e NAVER_CLIENT_ID=\"$NAVER_CLIENT_ID\" >> ./local.properties
                   echo -e NAVER_CLIENT_SECRET=\"$NAVER_CLIENT_SECRET\" >> ./local.properties
+                  echo -e REGION_CODE_SERVICE_KEY=\"REGION_CODE_SERVICE_KEY\" >> ./local.properties
+                  echo -e APP_EMAIL_ID=\"APP_EMAIL_ID\" >> ./local.properties
+                  echo -e APP_EMAIL_PASSWORD=\"APP_EMAIL_PASSWORD\" >> ./local.properties
+                  echo -e CEO_EMAIL=\"CEO_EMAIL\" >> ./local.properties
                   cat ./local.properties
               env:
                   KAKAO_NATIVE_APP_KEY: ${{ secrets.KAKAO_NATIVE_APP_KEY }}
                   NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
                   NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+                  REGION_CODE_SERVICE_KEY: ${{ secrets.REGION_CODE_SERVICE_KEY }}
+                  APP_EMAIL_ID: ${{ secrets.APP_EMAIL_ID }}
+                  APP_EMAIL_PASSWORD: ${{ secrets.APP_EMAIL_PASSWORD }}
+                  CEO_EMAIL: ${{ secrets.CEO_EMAIL }}
 
             - name: Run ktlint
               run: ./gradlew ktlintCheck --stacktrace
