@@ -27,6 +27,7 @@
     <string name="to_hot_enter_card_description">아직 무디들이 들어오고있어요.</string>
 
     <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
+    <string name="to_hot_topic_loading">"주제어 목록을 불러오고 있어요.."</string>
 
     <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
     <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>

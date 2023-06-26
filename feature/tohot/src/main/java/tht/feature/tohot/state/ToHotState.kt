@@ -8,7 +8,8 @@ import tht.feature.tohot.model.TopicUiModel
 
 @Immutable
 data class ToHotState(
-    val loading: Boolean,
+    val cardLoading: Boolean,
+    val topicLoading: Boolean,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
     val isFirstPage: Boolean = true,
     val timers: ImmutableListWrapper<CardTimerUiModel>,
