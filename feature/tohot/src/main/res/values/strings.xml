@@ -40,4 +40,7 @@
     <string name="to_hot_topic_reset_2">핫 토픽들이</string>
     <string name="to_hot_topic_reset_3">됩니다!</string>
     <string name="to_hot_topic_reset_description">새로운 무디들을 만나보실 준비 되셨나요?</string>
+
+    <string name="to_hot_topic_wait">아직 주제어 변경 시간이 좀 남았네요!</string>
+    <string name="to_hot_topic_wait_description">금방 더 흥미로운 주제를 가지고 올게요.</string>
 </resources>
