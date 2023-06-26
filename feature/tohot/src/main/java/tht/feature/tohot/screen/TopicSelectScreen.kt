@@ -59,7 +59,7 @@ fun TopicSelectScreen(
             )
 
             Image(
-                painter = painterResource(id = R.drawable.ic_stopwatch),
+                painter = painterResource(id = R.drawable.ic_stopwatch_yellow),
                 contentDescription = "ic_stopwatch"
             )
 
