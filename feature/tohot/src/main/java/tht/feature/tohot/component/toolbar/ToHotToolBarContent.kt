@@ -45,12 +45,6 @@ fun RowScope.ToHotToolBarContent(
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
             )
-
-            Image(
-                modifier = Modifier.padding(start = 8.dp),
-                painter = painterResource(id = R.drawable.ic_arrow_down),
-                contentDescription = "arrow_down"
-            )
         }
     }
     Spacer(modifier = Modifier.weight(1f))
