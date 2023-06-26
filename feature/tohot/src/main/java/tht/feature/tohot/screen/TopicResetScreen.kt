@@ -61,7 +61,7 @@ fun TopicResetScreen(
             ThtHeadline5(
                 modifier = Modifier.padding(start = 8.dp),
                 text = remainingTime,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.ExtraBold,
                 color = colorResource(id = R.color.green_2ef95a)
             )
         }
