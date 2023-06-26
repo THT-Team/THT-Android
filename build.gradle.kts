@@ -39,4 +39,20 @@ subprojects {
         config.setFrom(files("$rootDir/detekt-config.yml"))
         parallel = true
     }
+
+    // run use ./gradlew assembleRelease -PcomposeCompilerReports=true  --rerun-tasks
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach  {
+        kotlinOptions {
+            if (project.findProperty("composeCompilerReports") == "true") {
+                val metricsOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-metrics"
+                val reportOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-reports"
+                freeCompilerArgs = freeCompilerArgs + listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$reportOutputDir",
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$metricsOutputDir"
+                )
+            }
+        }
+    }
 }
