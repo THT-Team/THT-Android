@@ -1,8 +1,8 @@
 package tht.feature.tohot.model
 
+import androidx.compose.runtime.Immutable
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
-import javax.annotation.concurrent.Immutable
 
 @Immutable
 data class ToHotUserUiModel(

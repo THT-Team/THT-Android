@@ -1,6 +1,7 @@
 package tht.feature.tohot.model
 
-import javax.annotation.concurrent.Immutable
+import androidx.compose.runtime.Immutable
+
 
 @Immutable
 data class CardTimerUiModel(
