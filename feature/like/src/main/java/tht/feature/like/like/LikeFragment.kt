@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.heart.databinding.FragmentLikeBinding
-import tht.feature.like.constant.LikeConstant
 import tht.feature.like.detail.LikeDetailFragment
 import tht.feature.like.like.adapter.LikeAdapter
 
@@ -64,11 +63,8 @@ class LikeFragment : Fragment() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is LikeViewModel.LikeSideEffect.ShowDetailDialog -> {
-                            LikeDetailFragment()
-                                .apply {
-                                    arguments = Bundle().apply { putSerializable(LikeConstant.KEY, it.likeModel) }
-                                }
-                                .show(childFragmentManager, "")
+                            LikeDetailFragment.getInstance(it.likeModel)
+                                .show(childFragmentManager, LikeDetailFragment.LIKE_DETAIL_TAG)
                         }
                     }
                 }

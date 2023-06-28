@@ -24,7 +24,6 @@ import tht.core.ui.dialog.showCustomAlertDialog
 import tht.core.ui.extension.repeatOnStarted
 import tht.feature.heart.R
 import tht.feature.heart.databinding.DialogDetailBinding
-import tht.feature.like.constant.LikeConstant
 import tht.feature.like.like.LikeModel
 import tht.feature.like.like.LikeViewModel
 
@@ -67,9 +66,9 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     private fun initView() {
         likeUser = arguments?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                it.getSerializable(LikeConstant.KEY, LikeModel::class.java)
+                it.getSerializable(LIKE_DETAIL_KEY, LikeModel::class.java)
             else
-                it.getSerializable(LikeConstant.KEY) as LikeModel
+                it.getSerializable(LIKE_DETAIL_KEY) as LikeModel
         } ?: LikeModel.getDefaultLikeModel()
         if (likeUser.nickname.isEmpty()) dismiss()
         else {
@@ -228,5 +227,15 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     private fun getChip(): Chip = Chip(requireContext()).apply {
         setTextColor(resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
         setChipBackgroundColorResource(tht.core.ui.R.color.black_111111)
+    }
+
+    companion object {
+        private const val LIKE_DETAIL_KEY = "LikeDetailKey"
+        const val LIKE_DETAIL_TAG = "LikeDetailTag"
+        fun getInstance(likeModel: LikeModel): LikeDetailFragment {
+            return LikeDetailFragment().apply {
+                arguments = Bundle().apply { putSerializable(LIKE_DETAIL_KEY, likeModel) }
+            }
+        }
     }
 }
