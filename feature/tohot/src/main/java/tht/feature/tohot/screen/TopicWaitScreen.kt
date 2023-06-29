@@ -64,7 +64,7 @@ fun TopicWaitScreen(
 
         Box(
             modifier = Modifier
-                .weight(1f)
+                .padding(top = 52.dp, bottom = 36.dp)
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
