@@ -20,7 +20,7 @@ val topics = listOf(
         key = 1,
         content = "게임 좋아하세요?",
         iconUrl = "123",
-        iconRes = R.drawable.ic_topic_value_38
+        iconRes = R.drawable.ic_topic_item_values_38
     ),
     TopicUiModel(
         emoji = "1F4DA",
@@ -28,7 +28,7 @@ val topics = listOf(
         key = 2,
         content = "책읽을래요??",
         iconUrl = "123",
-        iconRes = R.drawable.ic_topic_rest_38
+        iconRes = R.drawable.ic_topic_item_rest_38
     ),
     TopicUiModel(
         emoji = "1F3AC",
@@ -36,6 +36,6 @@ val topics = listOf(
         key = 3,
         content = "영화 뭐좋아해요?",
         iconUrl = "123",
-        iconRes = R.drawable.ic_topic_value_38
+        iconRes = R.drawable.ic_topic_item_values_38
     )
 )

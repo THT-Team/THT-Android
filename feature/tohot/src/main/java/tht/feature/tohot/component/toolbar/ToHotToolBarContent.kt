@@ -63,7 +63,7 @@ fun ToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = false
         )
@@ -76,7 +76,7 @@ fun AlarmOnToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = true
         )
@@ -89,7 +89,7 @@ fun NoneTopicToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = true
         )
