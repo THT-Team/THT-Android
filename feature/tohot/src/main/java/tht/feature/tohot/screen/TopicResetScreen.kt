@@ -87,7 +87,7 @@ fun TopicResetScreen(
 
         Box(
             modifier = Modifier
-                .weight(1f)
+                .padding(top = 65.dp, bottom = 48.dp)
                 .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
