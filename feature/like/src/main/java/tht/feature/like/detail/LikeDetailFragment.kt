@@ -132,7 +132,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun finishBottomSheet() {
+    private fun blockUser() {
         val parentView = dialog!!.findViewById<CoordinatorLayout>(com.google.android.material.R.id.coordinator)
         val finishAnimation = AnimationUtils.loadAnimation(requireContext(), tht.core.ui.R.anim.finish_bottom_sheet)
 
@@ -207,7 +207,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             dividerVisibility = true,
             itemClickListener = { dialog, which ->
                 when (which) {
-                    0 -> finishBottomSheet()
+                    0 -> blockUser()
                 }
                 dialog.dismiss()
             }
