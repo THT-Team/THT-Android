@@ -44,7 +44,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog: Dialog = super.onCreateDialog(savedInstanceState)
         dialog.setOnShowListener {
-            setBottomSheetDialogSize(requireActivity(), it as BottomSheetDialog)
+            setBottomSheetDialogSize(requireActivity(), it as BottomSheetDialog, 85)
         }
         return dialog
     }
@@ -70,8 +70,8 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             else
                 it.getSerializable(LIKE_DETAIL_KEY) as LikeModel
         } ?: LikeModel.getDefaultLikeModel()
-        if (likeUser.nickname.isEmpty()) dismiss()
-        else {
+
+        if (viewModel.checkNickname(likeUser.nickname)) {
             binding.apply {
                 svDetail.clipToOutline = true
                 tvCategory.text = likeUser.category
@@ -94,14 +94,14 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     private fun setOnClickListener() {
         binding.ivClose.setOnClickListener {
-            dismiss()
+            viewModel.dismissEvent()
         }
         binding.ivReport.setOnClickListener {
             viewModel.showReportOrBlockDialogEvent()
         }
         binding.btnNextChance.setOnClickListener {
             parentViewModel.nextChanceClickListener(likeUser.nickname)
-            dismiss()
+            viewModel.dismissEvent()
         }
         binding.btnChatting.setOnClickListener { }
     }
@@ -122,6 +122,10 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
                         LikeDetailViewModel.LikeDetailSideEffect.ShowReportOrBlockDialog -> {
                             showBlockOrReportDialog()
                         }
+
+                        LikeDetailViewModel.LikeDetailSideEffect.Dismiss -> {
+                            dismiss()
+                        }
                     }
                 }
             }
@@ -133,9 +137,12 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         val finishAnimation = AnimationUtils.loadAnimation(requireContext(), tht.core.ui.R.anim.finish_bottom_sheet)
 
         finishAnimation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) { }
-            override fun onAnimationEnd(animation: Animation?) { dismiss() }
-            override fun onAnimationRepeat(animation: Animation?) { }
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                dismiss()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
         })
         parentView.startAnimation(finishAnimation)
     }

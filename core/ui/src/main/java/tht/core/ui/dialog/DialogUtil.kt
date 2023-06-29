@@ -59,12 +59,12 @@ fun getWindowSize(activity: Activity): Pair<Int, Int> =
         displayMetrics.heightPixels to displayMetrics.widthPixels
     }
 
-fun setBottomSheetDialogSize(activity: Activity, bottomSheetDialog: BottomSheetDialog) {
+fun setBottomSheetDialogSize(activity: Activity, bottomSheetDialog: BottomSheetDialog, heightPercent: Int) {
     val bottomSheet =
         bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
     val behavior = BottomSheetBehavior.from<View>(bottomSheet)
     val layoutParams = bottomSheet.layoutParams
-    val height = getWindowSize(activity).first * 85 / 100
+    val height = getWindowSize(activity).first * heightPercent / 100
     layoutParams.height = height
     bottomSheet.layoutParams = layoutParams
     behavior.state = BottomSheetBehavior.STATE_EXPANDED

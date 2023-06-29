@@ -24,6 +24,17 @@ class LikeDetailViewModel @Inject constructor(
     fun blockEvent() =
         postSideEffect(LikeDetailSideEffect.ShowBlockDialog)
 
+    fun dismissEvent() =
+        postSideEffect(LikeDetailSideEffect.Dismiss)
+
+    fun checkNickname(nickname: String): Boolean =
+        if(nickname.isEmpty()) {
+            postSideEffect(LikeDetailSideEffect.Dismiss)
+            false
+        } else {
+            true
+        }
+
     fun blockUser() {
 
     }
@@ -40,5 +51,6 @@ class LikeDetailViewModel @Inject constructor(
         object ShowReportOrBlockDialog : LikeDetailSideEffect()
         object ShowReportDialog : LikeDetailSideEffect()
         object ShowBlockDialog : LikeDetailSideEffect()
+        object Dismiss : LikeDetailSideEffect()
     }
 }
