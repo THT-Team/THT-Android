@@ -19,7 +19,7 @@ class LikeViewModel @Inject constructor(
     override val _uiStateFlow: MutableStateFlow<LikeUiState> =
         MutableStateFlow(LikeUiState.Empty)
 
-    private val likeItems = MutableStateFlow<LinkedHashMap<String, List<LikeModel>>>(MockData.data)
+    private val likeItems = MutableStateFlow(MockData.data)
 
     val nextChanceClickListener: (String) -> Unit = { nickname ->
         deleteLike(nickname)
