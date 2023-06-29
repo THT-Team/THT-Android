@@ -1,5 +1,7 @@
 package tht.feature.like.like.adapter
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tht.feature.heart.databinding.ItemHeaderBinding
 
@@ -11,5 +13,17 @@ class LikeHeaderViewHolder(
         binding.apply {
             tvCategory.text = category
         }
+    }
+
+    companion object {
+        fun getInstance(parent: ViewGroup) =
+            LikeHeaderViewHolder(
+                ItemHeaderBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
+
     }
 }

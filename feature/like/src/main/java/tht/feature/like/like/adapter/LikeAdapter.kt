@@ -1,12 +1,9 @@
 package tht.feature.like.like.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import tht.feature.heart.databinding.ItemContentBinding
-import tht.feature.heart.databinding.ItemHeaderBinding
 import tht.feature.like.like.LikeModel
 
 class LikeAdapter(
@@ -16,21 +13,8 @@ class LikeAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            HEADER -> LikeHeaderViewHolder(
-                ItemHeaderBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
-
-            else -> LikeContentViewHolder(
-                ItemContentBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
+            HEADER -> LikeHeaderViewHolder.getInstance(parent)
+            else -> LikeContentViewHolder.getInstance(parent)
         }
     }
 

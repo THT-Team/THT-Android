@@ -1,5 +1,7 @@
 package tht.feature.like.like.adapter
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -47,5 +49,16 @@ class LikeContentViewHolder(
                 )
             )
             .into(imageView)
+    }
+
+    companion object {
+        fun getInstance(parent: ViewGroup) =
+            LikeContentViewHolder(
+                ItemContentBinding.inflate(
+                    LayoutInflater.from(
+                        parent.context
+                    ), parent, false
+                )
+            )
     }
 }
