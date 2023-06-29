@@ -1,5 +1,6 @@
 package tht.feature.tohot.screen
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,8 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,12 +33,25 @@ import com.example.compose_ui.component.text.headline.ThtHeadline5
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.extensions.dpTextUnit
 import tht.core.ui.R
+import tht.feature.tohot.component.animation.shakingAnimation
 
 @Composable
 fun TopicResetScreen(
     modifier: Modifier = Modifier,
-    remainingTime: String
+    remainingTime: String,
+    animationStart: Boolean
 ) {
+    val rotateAngleAnimate = remember { Animatable(0f) }
+    LaunchedEffect(key1 = animationStart) {
+        if (animationStart) {
+            shakingAnimation(
+                rotateAngle = rotateAngleAnimate,
+                animateAngle = 5f,
+                totalDuration = 600,
+                repeatCount = 3
+            )
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -80,6 +97,10 @@ fun TopicResetScreen(
             )
 
             Image(
+                modifier = Modifier
+                    .graphicsLayer {
+                        rotationZ = rotateAngleAnimate.value // z축 기점 회전
+                    },
                 painter = painterResource(id = tht.feature.tohot.R.drawable.ic_topic_reset),
                 contentDescription = "ic_topic_reset"
             )
@@ -134,6 +155,7 @@ fun TopicResetScreen(
 @Preview
 fun TopicResetScreenPreview() {
     TopicResetScreen(
-        remainingTime = "24:00:00"
+        remainingTime = "24:00:00",
+        animationStart = false
     )
 }
