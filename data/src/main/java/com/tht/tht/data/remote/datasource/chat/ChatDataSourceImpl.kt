@@ -8,8 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 class ChatDataSourceImpl @Inject constructor(
-    private val chatService: ChatService,
-    @IODispatcher private val dispatcher: CoroutineDispatcher,
+    private val chatService: ChatService
 ) : ChatDataSource {
 
     override suspend fun getChatList(): List<ChatListResponse> {
