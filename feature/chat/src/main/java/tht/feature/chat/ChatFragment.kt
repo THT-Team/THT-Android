@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import tht.feature.chat.screen.ChatScreen
+import tht.feature.chat.screen.detail.ChatDetailActivity
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -24,7 +25,9 @@ class ChatFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ChatScreen()
+                ChatScreen {
+                    startActivity(ChatDetailActivity.newIntent(requireContext()))
+                }
             }
         }
     }

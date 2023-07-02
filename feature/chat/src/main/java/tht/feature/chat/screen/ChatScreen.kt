@@ -21,6 +21,7 @@ import tht.feature.chat.viewmodel.state.ChatState
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
+    navigateChatDetail: () -> Unit = { },
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getChatList()
@@ -47,7 +48,7 @@ internal fun ChatScreen(
         ) { state ->
             when (state) {
                 is ChatState.Empty -> ChatEmptyScreen(onClickChangeTitle = {})
-                is ChatState.ChatList -> ChatListScreen(items = state)
+                is ChatState.ChatList -> ChatListScreen(items = state, navigateChatDetail = navigateChatDetail)
             }
         }
     }
