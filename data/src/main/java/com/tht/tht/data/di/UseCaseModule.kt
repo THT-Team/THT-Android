@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.chat.repository.ChatRepository
+import com.tht.tht.domain.chat.usecase.GetChatListUseCase
 import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
@@ -184,6 +186,12 @@ object UseCaseModule {
         repository: EmailRepository
     ): SendInquiryEmailUseCase =
         SendInquiryEmailUseCase(repository)
+
+    @Provides
+    fun provideGetChatListUseCase(
+        repository: ChatRepository,
+    ): GetChatListUseCase =
+        GetChatListUseCase(repository)
 
     @Provides
     fun provideFetchThtTokenUseCase(

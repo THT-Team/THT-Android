@@ -1,5 +1,6 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.repository.ChatRepositoryImpl
 import com.tht.tht.data.repository.DailyTopicRepositoryImpl
 import com.tht.tht.data.repository.DailyUserCardRepositoryImpl
 import com.tht.tht.data.repository.EmailRepositoryImpl
@@ -9,6 +10,7 @@ import com.tht.tht.data.repository.LoginRepositoryImpl
 import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
+import com.tht.tht.domain.chat.repository.ChatRepository
 import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.image.ImageRepository
@@ -47,6 +49,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindEmailRepository(impl: EmailRepositoryImpl): EmailRepository
+
+    @Binds
+    abstract fun bindChatRepository(impl: ChatRepositoryImpl): ChatRepository
 
     @Binds
     abstract fun bindDailyTopicRepository(impl: DailyTopicRepositoryImpl): DailyTopicRepository
