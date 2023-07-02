@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -62,6 +63,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:1.4.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    implementation(libs.hilt)
+    testImplementation(libs.hilt.android.testing)
+    kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.jetpack.compose.hilt.navigation)
 }

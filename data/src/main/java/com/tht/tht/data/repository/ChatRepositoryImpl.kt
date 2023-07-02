@@ -7,8 +7,9 @@ import com.tht.tht.domain.chat.model.ChatListModel
 import com.tht.tht.domain.chat.repository.ChatRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ChatRepositoryImpl(
+class ChatRepositoryImpl @Inject constructor(
     private val chatDataSource: ChatDataSource,
     @IODispatcher private val dispatcher: CoroutineDispatcher,
 ) : ChatRepository {
