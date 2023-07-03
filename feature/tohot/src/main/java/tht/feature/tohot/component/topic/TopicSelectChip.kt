@@ -1,5 +1,6 @@
 package tht.feature.tohot.component.topic
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,18 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
 import tht.core.ui.R
-import tht.feature.tohot.component.emoji.EmojiText
 
 @Composable
 fun TopicSelectChip(
     modifier: Modifier = Modifier,
-    emojiCode: String,
+    imageUrl: String?,
+    @DrawableRes imageRes: Int,
     title: String,
     key: Long,
     content: String,
@@ -46,12 +48,12 @@ fun TopicSelectChip(
                 shape = RoundedCornerShape(36.dp)
             )
     ) {
-        EmojiText(
+        TopicItemChipImage(
             modifier = Modifier
                 .padding(start = 24.dp, top = 16.dp, bottom = 16.dp)
                 .align(Alignment.CenterVertically),
-            emojiCode = emojiCode,
-            textSize = 38
+            imageUrl = imageUrl,
+            error = painterResource(id = imageRes)
         )
 
         Column(
@@ -80,7 +82,8 @@ fun TopicSelectChip(
 @Preview
 fun TopicSelectItemPreview() {
     TopicSelectChip(
-        emojiCode = "1F3AE",
+        imageUrl = "1F3AE",
+        imageRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
         title = "게임",
         content = "게임 좋아하시나요?",
         key = 1,
@@ -92,7 +95,8 @@ fun TopicSelectItemPreview() {
 @Preview
 fun SelectTopicSelectItemPreview() {
     TopicSelectChip(
-        emojiCode = "1F3AE",
+        imageUrl = "1F3AE",
+        imageRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
         title = "게임",
         content = "게임 좋아하시나요?",
         key = 1,

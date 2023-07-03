@@ -77,7 +77,8 @@ fun TopicSelectScreen(
             TopicSelectChip(
                 modifier = Modifier
                     .padding(horizontal = 22.dp),
-                emojiCode = it.emoji,
+                imageUrl = it.imageUrl,
+                imageRes = it.imageRes,
                 title = it.title,
                 content = it.content,
                 key = it.key,
