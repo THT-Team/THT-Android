@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,16 +25,11 @@ fun ToHotUserInfoMinimumCard(
     modifier: Modifier = Modifier,
     name: String,
     age: Int,
-    address: String,
-    onClick: () -> Unit = { }
+    address: String
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                enabled = true,
-                onClick = onClick
-            )
     ) {
         Column(
             modifier = Modifier.weight(1f)
@@ -58,12 +55,6 @@ fun ToHotUserInfoMinimumCard(
                 )
             }
         }
-
-        Image(
-            modifier = Modifier.padding(top = 8.dp),
-            painter = painterResource(id = R.drawable.ic_detail),
-            contentDescription = "detail_card"
-        )
     }
 }
 

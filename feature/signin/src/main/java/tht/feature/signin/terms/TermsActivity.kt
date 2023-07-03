@@ -119,7 +119,8 @@ class TermsActivity : AppCompatActivity() {
         }
         val parent = binding.layoutBackground
         parent.addView(
-            termsItemView.apply { termsItemView.setView(terms) }, 0
+            termsItemView.apply { termsItemView.setView(terms) },
+            0
         )
 
         termsItemView.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -128,8 +129,9 @@ class TermsActivity : AppCompatActivity() {
             startToStart = parent.id
             endToEnd = parent.id
             topToBottom = prevView.id
-            if (prevView !is TermsItemView)
+            if (prevView !is TermsItemView) {
                 topMargin = getPxFromDp(35).toInt()
+            }
         }
     }
 
@@ -148,8 +150,7 @@ class TermsActivity : AppCompatActivity() {
         binding.layoutBackground.children.forEach {
             if (it !is TermsItemView) return@forEach
             it.isSelect = selectTermsSet.contains(it.terms)
-            if (!it.isSelect)
-                isAllSelect = false
+            if (!it.isSelect) isAllSelect = false
         }
         binding.btnStart.isEnabled = isRequireTermsAllSelect
         binding.ivCheckAll.isSelected = isAllSelect

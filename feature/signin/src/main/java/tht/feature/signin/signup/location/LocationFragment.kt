@@ -55,7 +55,6 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
 
     override fun observeData() {
         repeatOnStarted {
-
             launch {
                 viewModel.uiStateFlow.collect {
                     when (it) {

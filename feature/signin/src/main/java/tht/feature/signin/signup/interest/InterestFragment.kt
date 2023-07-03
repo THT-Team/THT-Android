@@ -86,8 +86,9 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
             launch {
                 viewModel.selectInterest.collect { set ->
                     binding.groupChip.children.forEachIndexed { idx, view ->
-                        if (idx !in 0 until viewModel.interestList.value.size)
+                        if (idx !in 0 until viewModel.interestList.value.size) {
                             return@forEachIndexed
+                        }
                         val interest = viewModel.interestList.value[idx]
                         (view as? Chip)?.isSelected = set.contains(interest)
                     }
