@@ -1,7 +1,6 @@
 package tht.feature.like.detail
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,8 +33,6 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     private val parentViewModel: LikeViewModel by viewModels({ requireParentFragment() })
     private val viewModel: LikeDetailViewModel by viewModels()
 
-    private lateinit var likeUser: LikeModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, tht.core.ui.R.style.TransparentBottomSheet)
@@ -58,36 +55,28 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeData()
         initView()
         setOnClickListener()
-        observeData()
     }
 
     private fun initView() {
-        likeUser = arguments?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                it.getSerializable(LIKE_DETAIL_KEY, LikeModel::class.java)
-            else
-                it.getSerializable(LIKE_DETAIL_KEY) as LikeModel
-        } ?: LikeModel.getDefaultLikeModel()
-
-        if (viewModel.checkNickname(likeUser.nickname)) {
-            binding.apply {
-                svDetail.clipToOutline = true
-                tvCategory.text = likeUser.category
-                tvNickname.text = getString(R.string.nickname, likeUser.nickname, likeUser.age)
-                tvAddress.text = likeUser.address
-                tvIntroduction.text = likeUser.introduce
-                likeUser.idealTypes.forEachIndexed { index, idealType ->
-                    addChip(binding.cgIdealType, idealType.emojiCode, idealType.title, index)
-                }
-                likeUser.interests.forEachIndexed { index, interest ->
-                    addChip(binding.cgInterests, interest.emojiCode, interest.title, index)
-                }
-                val images = listOf(binding.ivOne, binding.ivTwo, binding.ivThree)
-                likeUser.profileImgUrl.forEachIndexed { index, url ->
-                    loadImage(images[index], url)
-                }
+        val likeUser = viewModel.user.value
+        binding.apply {
+            svDetail.clipToOutline = true
+            tvCategory.text = likeUser.category
+            tvNickname.text = getString(R.string.nickname, likeUser.nickname, likeUser.age)
+            tvAddress.text = likeUser.address
+            tvIntroduction.text = likeUser.introduce
+            likeUser.idealTypes.forEachIndexed { index, idealType ->
+                addChip(binding.cgIdealType, idealType.emojiCode, idealType.title, index)
+            }
+            likeUser.interests.forEachIndexed { index, interest ->
+                addChip(binding.cgInterests, interest.emojiCode, interest.title, index)
+            }
+            val images = listOf(binding.ivOne, binding.ivTwo, binding.ivThree)
+            likeUser.profileImgUrl.forEachIndexed { index, url ->
+                loadImage(images[index], url)
             }
         }
     }
@@ -100,7 +89,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             viewModel.showReportOrBlockDialogEvent()
         }
         binding.btnNextChance.setOnClickListener {
-            parentViewModel.nextChanceClickListener(likeUser.nickname)
+            parentViewModel.nextChanceClickListener(viewModel.user.value.nickname)
             viewModel.dismissEvent()
         }
         binding.btnChatting.setOnClickListener { }
@@ -139,7 +128,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         finishAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
-                dismiss()
+                viewModel.dismissEvent()
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -237,7 +226,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val LIKE_DETAIL_KEY = "LikeDetailKey"
+        const val LIKE_DETAIL_KEY = "LikeDetailKey"
         const val LIKE_DETAIL_TAG = "LikeDetailTag"
         fun getInstance(likeModel: LikeModel): LikeDetailFragment {
             return LikeDetailFragment().apply {

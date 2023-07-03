@@ -1,19 +1,26 @@
 package tht.feature.like.detail
 
+import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
+import tht.feature.like.like.LikeModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LikeDetailViewModel @Inject constructor(
-
+    savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<LikeDetailViewModel.LikeDetailUiState, LikeDetailViewModel.LikeDetailSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LikeDetailUiState> =
         MutableStateFlow(LikeDetailUiState.Default)
+
+    val user = savedStateHandle.getStateFlow(
+        LikeDetailFragment.LIKE_DETAIL_KEY,
+        LikeModel.getDefaultLikeModel()
+    )
 
     fun showReportOrBlockDialogEvent() =
         postSideEffect(LikeDetailSideEffect.ShowReportOrBlockDialog)
@@ -26,14 +33,6 @@ class LikeDetailViewModel @Inject constructor(
 
     fun dismissEvent() =
         postSideEffect(LikeDetailSideEffect.Dismiss)
-
-    fun checkNickname(nickname: String): Boolean =
-        if(nickname.isEmpty()) {
-            postSideEffect(LikeDetailSideEffect.Dismiss)
-            false
-        } else {
-            true
-        }
 
     fun blockUser() {
 
