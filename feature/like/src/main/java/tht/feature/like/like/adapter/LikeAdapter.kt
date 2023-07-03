@@ -56,8 +56,9 @@ class LikeAdapter(
 
             override fun getChangePayload(oldItem: LikeItem, newItem: LikeItem): Any? {
                 if (oldItem is LikeItem.Content && newItem is LikeItem.Content) {
-                    if (oldItem.item.isNew != newItem.item.isNew)
+                    if (oldItem.item.isNew != newItem.item.isNew) {
                         return newItem.item.isNew
+                    }
                 }
 
                 return super.getChangePayload(oldItem, newItem)

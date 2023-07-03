@@ -55,9 +55,9 @@ class LikeContentViewHolder(
         fun getInstance(parent: ViewGroup) =
             LikeContentViewHolder(
                 ItemContentBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
                 )
             )
     }

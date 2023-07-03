@@ -24,10 +24,7 @@ class LikeFragment : Fragment() {
         LikeAdapter(viewModel.imageClickListener, viewModel.nextChanceClickListener)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return binding.root
     }
 

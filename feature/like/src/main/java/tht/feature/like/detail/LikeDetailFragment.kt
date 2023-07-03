@@ -46,10 +46,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
         return dialog
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return binding.root
     }
 
@@ -142,7 +139,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             requireActivity(),
             arrayOf(
                 requireContext().getString(R.string.menu_report),
-                requireContext().getString(R.string.menu_block),
+                requireContext().getString(R.string.menu_block)
             ),
             R.layout.item_dialog_subt2_semi_bold,
             true,
@@ -164,7 +161,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
                 requireContext().getString(R.string.report_content_false_profile),
                 requireContext().getString(R.string.report_content_steal_picture),
                 requireContext().getString(R.string.report_content_swear_word),
-                requireContext().getString(R.string.report_content_illegality),
+                requireContext().getString(R.string.report_content_illegality)
             ),
             R.layout.item_dialog_subt2_regular,
             titleText = requireContext().getString(R.string.report_title),
@@ -188,7 +185,7 @@ class LikeDetailFragment : BottomSheetDialogFragment() {
             requireActivity(),
             arrayOf(
                 requireContext().getString(R.string.menu_block),
-                requireContext().getString(R.string.cancel),
+                requireContext().getString(R.string.cancel)
             ),
             R.layout.item_dialog_subt2_semi_bold,
             titleText = requireContext().getString(R.string.block_title),

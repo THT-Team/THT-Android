@@ -34,13 +34,9 @@ class LikeDetailViewModel @Inject constructor(
     fun dismissEvent() =
         postSideEffect(LikeDetailSideEffect.Dismiss)
 
-    fun blockUser() {
+    fun blockUser() {}
 
-    }
-
-    fun reportUser(reportReason: String) {
-
-    }
+    fun reportUser(reportReason: String) {}
 
     sealed class LikeDetailUiState : UiState {
         object Default : LikeDetailUiState()

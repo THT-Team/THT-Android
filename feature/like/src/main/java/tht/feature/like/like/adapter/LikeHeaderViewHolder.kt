@@ -19,11 +19,10 @@ class LikeHeaderViewHolder(
         fun getInstance(parent: ViewGroup) =
             LikeHeaderViewHolder(
                 ItemHeaderBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
                 )
             )
-
     }
 }

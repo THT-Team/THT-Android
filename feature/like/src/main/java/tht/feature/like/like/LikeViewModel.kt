@@ -12,9 +12,8 @@ import tht.feature.like.like.adapter.MockData
 import javax.inject.Inject
 
 @HiltViewModel
-class LikeViewModel @Inject constructor(
-
-) : BaseStateViewModel<LikeViewModel.LikeUiState, LikeViewModel.LikeSideEffect>() {
+class LikeViewModel @Inject constructor() :
+    BaseStateViewModel<LikeViewModel.LikeUiState, LikeViewModel.LikeSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LikeUiState> =
         MutableStateFlow(LikeUiState.Empty)
