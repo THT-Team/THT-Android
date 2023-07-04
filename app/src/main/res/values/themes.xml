@@ -13,4 +13,15 @@
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
         <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
     </style>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black_222222</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_falling_launcher</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.THT</item>
+
+        <item name="android:statusBarColor">@color/black_222222</item>
+        <item name="android:navigationBarColor">@color/black_222222</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>
