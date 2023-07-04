@@ -12,6 +12,7 @@ import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -163,4 +164,10 @@ object UseCaseModule {
         repository: EmailRepository
     ): SendInquiryEmailUseCase =
         SendInquiryEmailUseCase(repository)
+
+    @Provides
+    fun provideFetchThtTokenUseCase(
+        repository: TokenRepository
+    ) : FetchThtTokenUseCase =
+        FetchThtTokenUseCase(repository)
 }
