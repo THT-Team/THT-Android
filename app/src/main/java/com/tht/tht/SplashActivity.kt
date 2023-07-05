@@ -3,6 +3,7 @@ package com.tht.tht
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -46,6 +47,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         val signupResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            Log.d("TAG", "signupResult => $it")
             when (it.resultCode) {
                 RESULT_OK -> {
                     viewModel.signupSuccessEvent()
@@ -56,13 +58,12 @@ class SplashActivity : AppCompatActivity() {
 
         repeatOnStarted {
             launch {
-                viewModel.uiState.collect {
+                viewModel.sideEffect.collect {
                     when (it) {
-                        is SplashUiState.Splash -> {}
-                        is SplashUiState.Signup -> {
+                        is SplashSideEffect.Signup -> {
                             signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
                         }
-                        is SplashUiState.Home -> {
+                        is SplashSideEffect.Home -> {
                             startActivity(HomeActivity.newIntent(this@SplashActivity))
                             finish()
                         }
