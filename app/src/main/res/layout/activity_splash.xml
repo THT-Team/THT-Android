@@ -6,8 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
-    <VideoView
-        android:id="@+id/video_view"
+    <com.airbnb.lottie.LottieAnimationView
+        android:scaleType="centerCrop"
+        app:lottie_rawRes="@raw/splash_animation"
+        android:id="@+id/lottie_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,7 +1,7 @@
 package com.tht.tht
 
+import android.animation.Animator
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -30,15 +30,18 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun setSplashVideo() {
-        binding.videoView.apply {
-            setVideoURI(
-                Uri.parse("android.resource://" + packageName + "/" + R.raw.splash_video)
-            )
-            setOnCompletionListener {
-                if (isFinishing) return@setOnCompletionListener
+        binding.lottieView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
                 viewModel.splashFinishEvent()
             }
-        }.start()
+
+            override fun onAnimationCancel(animation: Animator) {}
+
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+        binding.lottieView.playAnimation()
     }
 
     private fun observeViewModel() {
