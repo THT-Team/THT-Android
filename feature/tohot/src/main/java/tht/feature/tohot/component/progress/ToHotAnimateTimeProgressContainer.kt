@@ -87,7 +87,7 @@ fun ToHotAnimateTimeProgressContainer(
 
     ToHotProgressTimeBackground(
         modifier = modifier,
-        color = colorResource(id = tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.5f),
+        color = colorResource(id = tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.5f)
     ) {
         ToHotTimeCircularProgress(
             modifier = Modifier

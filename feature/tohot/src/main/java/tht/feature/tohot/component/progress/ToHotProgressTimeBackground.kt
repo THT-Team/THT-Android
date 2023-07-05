@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun ToHotProgressTimeBackground(
     modifier: Modifier = Modifier,
     color: Color,
-    content: @Composable RowScope.() -> Unit,
+    content: @Composable RowScope.() -> Unit
 ) {
     Row(
         modifier = modifier
