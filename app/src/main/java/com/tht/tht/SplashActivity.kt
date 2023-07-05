@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import com.tht.tht.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -49,24 +50,25 @@ class SplashActivity : AppCompatActivity() {
         val signupResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             Log.d("TAG", "signupResult => $it")
             when (it.resultCode) {
-                RESULT_OK -> {
-                    viewModel.signupSuccessEvent()
-                }
-                else -> finish()
+                RESULT_OK -> viewModel.signupSuccessEvent()
+                else -> viewModel.signupCancelEvent()
             }
         }
 
-            launch {
-                viewModel.sideEffect.collect {
-                    when (it) {
-                        is SplashSideEffect.Signup -> {
-                            signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
-                        }
-                        is SplashSideEffect.Home -> {
-                            startActivity(HomeActivity.newIntent(this@SplashActivity))
-                            finish()
-                        }
         lifecycleScope.launch {
+            viewModel.sideEffect.collect {
+                when (it) {
+                    is SplashSideEffect.Signup -> {
+                        signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
+                    }
+
+                    is SplashSideEffect.Home -> {
+                        startActivity(HomeActivity.newIntent(this@SplashActivity))
+                        finish()
+                    }
+
+                    is SplashSideEffect.Cancel -> {
+                        finish()
                     }
                 }
             }

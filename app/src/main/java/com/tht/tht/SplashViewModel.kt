@@ -34,9 +34,16 @@ class SplashViewModel @Inject constructor(
             _sideEffect.emit(SplashSideEffect.Home)
         }
     }
+
+    fun signupCancelEvent() {
+        viewModelScope.launch {
+            _sideEffect.emit(SplashSideEffect.Cancel)
+        }
+    }
 }
 
 sealed class SplashSideEffect {
     object Signup : SplashSideEffect()
     object Home : SplashSideEffect()
+    object Cancel : SplashSideEffect()
 }
