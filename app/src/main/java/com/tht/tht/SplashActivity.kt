@@ -13,7 +13,6 @@ import com.tht.tht.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.repeatOnStarted
 import tht.feature.signin.prelogin.PreloginActivity
 
 @SuppressLint("CustomSplashScreen")
