@@ -56,7 +56,6 @@ class SplashActivity : AppCompatActivity() {
             }
         }
 
-        repeatOnStarted {
             launch {
                 viewModel.sideEffect.collect {
                     when (it) {
@@ -67,6 +66,7 @@ class SplashActivity : AppCompatActivity() {
                             startActivity(HomeActivity.newIntent(this@SplashActivity))
                             finish()
                         }
+        lifecycleScope.launch {
                     }
                 }
             }
