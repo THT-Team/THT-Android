@@ -17,8 +17,6 @@ object THTApiConstant {
     }
 
     object Login {
-        const val LOGIN = "/auth/login"
-
         const val FCM_TOKEN_LOGIN = "/users/login/normal"
     }
 }
