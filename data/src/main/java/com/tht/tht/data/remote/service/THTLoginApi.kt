@@ -9,7 +9,7 @@ import retrofit2.http.POST
 
 interface THTLoginApi {
     @POST(THTApiConstant.Login.FCM_TOKEN_LOGIN)
-    suspend fun requestFcmTokenLogin(
+    suspend fun refreshFcmTokenLogin(
         @Body fcmTokenLoginRequest: FcmTokenLoginRequest
     ): ThtResponse<FcmTokenLoginResponse>
 }

@@ -15,7 +15,7 @@ class RefreshFcmTokenLoginUseCase(
             tokenRepository.updateFcmToken(fcmToken) // local 에 fcm token 저장
             val phone = tokenRepository.fetchPhone()
             requireNotNull(phone) { "before login" }
-            loginRepository.requestFcmTokenLogin(fcmToken, phone).let {
+            loginRepository.refreshFcmTokenLogin(fcmToken, phone).let {
                 tokenRepository.updateThtToken(
                     it.accessToken,
                     it.accessTokenExpiresIn,

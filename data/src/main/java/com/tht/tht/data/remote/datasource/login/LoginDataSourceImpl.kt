@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LoginDataSourceImpl @Inject constructor(
     private val apiService: THTLoginApi
 ) : LoginDataSource {
-    override suspend fun requestFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse {
-        return apiService.requestFcmTokenLogin(fcmTokenLoginRequest).toUnwrap { it }
+    override suspend fun refreshFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse {
+        return apiService.refreshFcmTokenLogin(fcmTokenLoginRequest).toUnwrap { it }
     }
 }

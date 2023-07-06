@@ -66,7 +66,7 @@ internal class RefreshFcmTokenLoginUseCaseTest {
     fun `useCase는 tokenRepository의 fetchPhone가 null이 아니면 loginRepository의 requestFcmTokenLogin를 호출한다`() = runTest {
         coEvery { tokenRepository.fetchPhone() } returns "phone"
         useCase("fcmToken")
-        coVerify(exactly = 1) { loginRepository.requestFcmTokenLogin(any(), any()) }
+        coVerify(exactly = 1) { loginRepository.refreshFcmTokenLogin(any(), any()) }
     }
 
     @Test
@@ -75,13 +75,13 @@ internal class RefreshFcmTokenLoginUseCaseTest {
         val token = "fcmToken"
         coEvery { tokenRepository.fetchPhone() } returns phone
         useCase(token)
-        coVerify(exactly = 1) { loginRepository.requestFcmTokenLogin(token, phone) }
+        coVerify(exactly = 1) { loginRepository.refreshFcmTokenLogin(token, phone) }
     }
 
     @Test
     fun `useCase는 loginRepository의 requestFcmTokenLogin가 예외를 발생시키면 Result로 래핑해 리턴한다`() = runTest {
         val unitTestException = Exception("unit test")
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } throws unitTestException
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } throws unitTestException
 
         val actual = useCase("token")
 
@@ -96,7 +96,7 @@ internal class RefreshFcmTokenLoginUseCaseTest {
     @Test
     fun `useCase는 loginRepository의 requestFcmTokenLogin 완료되면 tokenRepository의 updateThtToken를 호출한다`() = runTest {
         coEvery { tokenRepository.fetchPhone() } returns "phone"
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
             "token", 1
         )
         useCase("fcmToken")
@@ -109,7 +109,7 @@ internal class RefreshFcmTokenLoginUseCaseTest {
         val token = "token"
         val tokenExpires = 1L
         coEvery { tokenRepository.fetchPhone() } returns phone
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
             token, tokenExpires
         )
         useCase("fcmToken")

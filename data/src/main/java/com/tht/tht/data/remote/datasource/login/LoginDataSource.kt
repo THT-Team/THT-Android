@@ -4,5 +4,5 @@ import com.tht.tht.data.remote.request.login.FcmTokenLoginRequest
 import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
 
 interface LoginDataSource {
-    suspend fun requestFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse
+    suspend fun refreshFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse
 }
