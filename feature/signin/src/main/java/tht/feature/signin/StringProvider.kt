@@ -13,6 +13,7 @@ interface StringProvider {
         InvalidateSignupProcess,
         SendAuthSuccess,
         SendAuthFail,
+        CheckSignupStateFail,
         AuthTimeout,
         ResendAuthSuccess,
         VerifyFail,
