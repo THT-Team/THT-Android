@@ -98,6 +98,15 @@ object UseCaseModule {
     )
 
     @Provides
+    fun provideCheckSignupStateUseCase(
+        repository: SignupRepository,
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
+        repository, tokenRepository, loginRepository
+    )
+
+    @Provides
     fun provideRequestVerifyUseCase(
         repository: SignupRepository,
         createSignupUserUseCase: CreateSignupUserUseCase,
