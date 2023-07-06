@@ -6,6 +6,7 @@ import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
+import com.tht.tht.data.remote.response.signup.SignupCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import com.tht.tht.data.remote.service.THTSignupApi
 import com.tht.tht.domain.signup.model.SignupUserModel
@@ -44,6 +45,12 @@ class SignupApiDataSourceImpl @Inject constructor(
     override suspend fun requestSignup(user: SignupUserModel): SignupResponse {
         return withContext(dispatcher) {
             apiService.requestSignup(user.toRemoteRequest()).toUnwrap { it }
+        }
+    }
+
+    override suspend fun checkLoginState(phone: String): SignupCheckResponse {
+        return withContext(dispatcher) {
+            apiService.checkSignupState(phone).toUnwrap { it }
         }
     }
 }

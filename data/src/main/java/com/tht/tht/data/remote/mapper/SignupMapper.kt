@@ -3,13 +3,13 @@ package com.tht.tht.data.remote.mapper
 import com.tht.tht.data.remote.request.signup.SignupRequest
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
-import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
+import com.tht.tht.data.remote.response.signup.SignupCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
-import com.tht.tht.domain.signup.model.SignupUserModel
+import com.tht.tht.domain.signup.model.SignupCheckModel
 import com.tht.tht.domain.signup.model.SignupResponseModel
-import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
+import com.tht.tht.domain.signup.model.SignupUserModel
 
 fun InterestTypeResponse.toModel(): InterestModel {
     return InterestModel(
@@ -82,9 +82,9 @@ fun SignupResponse.toModel(): SignupResponseModel {
     )
 }
 
-fun FcmTokenLoginResponse.toModel(): FcmTokenLoginResponseModel {
-    return FcmTokenLoginResponseModel(
-        accessToken = accessToken,
-        accessTokenExpiresIn = accessTokenExpiresIn
+fun SignupCheckResponse.toModel(): SignupCheckModel {
+    return SignupCheckModel(
+        isSignup = isSignup,
+        loginTypeList = loginTypeList
     )
 }
