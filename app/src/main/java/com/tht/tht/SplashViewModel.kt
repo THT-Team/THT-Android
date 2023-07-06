@@ -18,6 +18,14 @@ class SplashViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun splashFinishEvent() {
+        checkAutoLogin()
+    }
+
+    fun signupSuccessEvent() {
+        checkAutoLogin()
+    }
+
+    private fun checkAutoLogin() {
         viewModelScope.launch {
             fetchThtTokenUseCase()
                 .onSuccess {
@@ -26,12 +34,6 @@ class SplashViewModel @Inject constructor(
                     it.printStackTrace()
                     _sideEffect.emit(SplashSideEffect.Signup)
                 }
-        }
-    }
-
-    fun signupSuccessEvent() {
-        viewModelScope.launch {
-            _sideEffect.emit(SplashSideEffect.Home)
         }
     }
 
