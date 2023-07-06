@@ -14,9 +14,9 @@ import org.junit.Test
 
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-internal class RequestFcmTokenLoginUseCaseTest {
+internal class RefreshFcmTokenLoginUseCaseTest {
 
-    private lateinit var useCase: RequestFcmTokenLoginUseCase
+    private lateinit var useCase: RefreshFcmTokenLoginUseCase
     private lateinit var tokenRepository: TokenRepository
     private lateinit var loginRepository: LoginRepository
 
@@ -24,7 +24,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
     fun setUp() {
         tokenRepository = mockk(relaxed = true)
         loginRepository = mockk(relaxed = true)
-        useCase = RequestFcmTokenLoginUseCase(
+        useCase = RefreshFcmTokenLoginUseCase(
             tokenRepository, loginRepository
         )
     }
