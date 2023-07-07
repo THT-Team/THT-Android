@@ -253,3 +253,4 @@ gradle-app.setting
 # Java heap dump
 
 # End of https://www.toptal.com/developers/gitignore/api/android,macos,windows,java,kotlin,gradle
+compose-report

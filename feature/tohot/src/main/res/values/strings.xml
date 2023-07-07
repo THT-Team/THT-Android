@@ -16,6 +16,21 @@
     <string name="block_dialog_block">차단하기</string>
 
     <string name="starting">시작하기</string>
+    <string name="waiting">기다리기</string>
+    <string name="restart">다시 시작</string>
 
     <string name="select_topic_title">오늘의 폴링</string>
+
+    <string name="to_hot_empty_card_title">무디들을 모두 만나봤어요!</string>
+    <string name="to_hot_empty_card_description">아직 무디들이 들어오고있어요.</string>
+    <string name="to_hot_enter_card_title">주제어를 가장 먼저 선택하셨어요!</string>
+    <string name="to_hot_enter_card_description">아직 무디들이 들어오고있어요.</string>
+
+    <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
+
+    <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
+    <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>
+
+    <string name="to_hot_report_success">신고하기가 완료되었습니다. 해당 사용자와 서로 차단되며, 신고 사유는 검토 후 처리됩니다.</string>
+    <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
 </resources>

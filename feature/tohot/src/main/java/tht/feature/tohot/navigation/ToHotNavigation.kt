@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import tht.feature.tohot.screen.ToHotRoute
-import tht.feature.tohot.viewmodel.ToHotViewModel
 
 @Composable
 fun ToHotNavigation() {

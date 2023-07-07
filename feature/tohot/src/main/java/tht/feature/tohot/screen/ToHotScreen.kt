@@ -1,6 +1,6 @@
 package tht.feature.tohot.screen
 
-import android.util.Log
+import android.view.MotionEvent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -18,15 +18,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.compose_ui.component.progress.ThtCircularProgress
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import tht.core.ui.extension.showToast
+import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotCard
+import tht.feature.tohot.component.card.ToHotEmptyCard
+import tht.feature.tohot.component.card.ToHotEnterCard
+import tht.feature.tohot.component.card.ToHotLoadingCard
+import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
@@ -38,34 +44,41 @@ import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ToHotRoute(
     toHotViewModel: ToHotViewModel = hiltViewModel()
 ) {
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState()
+    val context = LocalContext.current
 
-    LaunchedEffect(key1 = toHotViewModel) {
+    LaunchedEffect(key1 = toHotViewModel, key2 = context) {
         launch {
             toHotViewModel.store.sideEffect.collect {
-                Log.d("ToHot", "sideEffect collect => $isActive")
                 try {
                     when (it) {
-                        is ToHotSideEffect.RemoveAndScroll -> {
+                        is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
+
+                        is ToHotSideEffect.Scroll -> {
                             try {
-                                pagerState.animateScrollToPage(it.scrollIdx)
-                                Log.d("ToHot", "scroll to ${it.scrollIdx}")
+                                pagerState.animateScrollToPage(it.idx)
                             } catch (e: Exception) {
                                 e.printStackTrace()
-                                Log.d("ToHot", "Cancel Coroutine")
+                            }
+                        }
+
+                        is ToHotSideEffect.RemoveAfterScroll -> {
+                            try {
+                                pagerState.animateScrollToPage(it.scrollIdx)
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             } finally {
                                 toHotViewModel.removeUserCard(it.removeIdx)
-                                Log.d("ToHot", "remove ${it.removeIdx}")
                             }
                         }
                     }
-                }catch (e :Exception) {
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -76,22 +89,27 @@ fun ToHotRoute(
         isShow = toHotState.reportMenuDialogShow,
         onReportClick = toHotViewModel::reportMenuReportEvent,
         onBlockClick = toHotViewModel::reportMenuBlockEvent,
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUseReportDialog(
         isShow = toHotState.reportDialogShow,
         reportReason = toHotState.reportReason,
-        onReportClick = { toHotViewModel.reportEvent(pagerState.currentPage) },
-        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage) },
+        onCancelClick = toHotViewModel::reportDialogDismissEvent,
+        onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUserBlockDialog(
         isShow = toHotState.blockDialogShow,
-        onBlockClick = { toHotViewModel.blockEvent(pagerState.currentPage) },
-        onCancelClick = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) },
-        onDismiss = { toHotViewModel.dialogDismissEvent(pagerState.currentPage) }
+        onBlockClick = { toHotViewModel.cardBlockEvent(pagerState.currentPage) },
+        onCancelClick = toHotViewModel::reportDialogDismissEvent,
+        onDismiss = toHotViewModel::reportDialogDismissEvent
+    )
+
+    ToHotHoldDialog(
+        isShow = toHotState.holdDialogShow,
+        onRestartClick = toHotViewModel::releaseHoldEvent
     )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
@@ -136,14 +154,25 @@ fun ToHotRoute(
             selectFinishListener = toHotViewModel::topicSelectFinishEvent
         ) {
             ToHotScreen(
+                modifier = Modifier
+                    .pointerInteropFilter {
+                        when (it.action) {
+                            MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
+                        }
+                        false
+                    },
                 cardList = toHotState.userList,
+                isEnterDelay = toHotState.isFirstPage,
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
+                cardMoveAllow = toHotState.cardMoveAllow,
                 topicIconUrl = toHotState.currentTopic?.iconUrl,
                 topicIconRes = toHotState.currentTopic?.iconRes,
                 topicTitle = toHotState.currentTopic?.title,
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
                 pageChanged = toHotViewModel::userChangeEvent,
@@ -155,10 +184,9 @@ fun ToHotRoute(
             )
         }
 
-        ThtCircularProgress(
-            modifier = Modifier.align(Alignment.Center),
-            dataLoading = { toHotState.loading },
-            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)
+        ToHotLoadingCard(
+            isVisible = { toHotState.loading },
+            message = stringResource(id = R.string.to_hot_user_card_loading)
         )
     }
 }
@@ -167,14 +195,18 @@ fun ToHotRoute(
 @Composable
 private fun ToHotScreen(
     modifier: Modifier = Modifier,
+    isEnterDelay: Boolean,
     pagerState: PagerState,
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
     currentUserIdx: Int,
+    cardMoveAllow: Boolean,
     topicIconUrl: String?,
     topicIconRes: Int?,
     topicTitle: String?,
     hasUnReadAlarm: Boolean,
+    fallingAnimationTargetIdx: Int,
+    onFallingAnimationFinish: (Int) -> Unit = { },
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
@@ -198,39 +230,54 @@ private fun ToHotScreen(
             )
         }
 
-        VerticalPager(
-            userScrollEnabled = false,
-            pageCount = cardList.list.size,
-            state = pagerState,
-            key = { cardList.list[it].nickname }
-        ) { idx ->
-            val card = cardList.list[idx]
-            ToHotCard(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
-                imageUrls = card.profileImgUrl,
-                name = card.nickname,
-                age = card.age,
-                address = card.address,
-                interests = card.interests,
-                idealTypes = card.idealTypes,
-                introduce = card.introduce,
-                maxTimeSec = timers.list[idx].maxSec,
-                currentSec = timers.list[idx].currentSec,
-                destinationSec = timers.list[idx].destinationSec,
-                enable = currentUserIdx == pagerState.currentPage && timers.list[idx].startAble,
-                userCardClick = { },
-                onReportMenuClick = onReportMenuClick,
-                ticChanged = { ticChanged(it, idx) },
-                onLikeClick = { onLikeClick(idx) },
-                onUnLikeClick = { onUnLikeClick(idx) },
-                loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
-            )
-        }
-        LaunchedEffect(key1 = pagerState) {
-            snapshotFlow { pagerState.currentPage }
-                .collect { pageChanged(it) }
+        when (cardList.list.isEmpty()) {
+            true -> {
+                if (isEnterDelay) {
+                    ToHotEnterCard()
+                } else {
+                    ToHotEmptyCard()
+                }
+            }
+
+            else -> {
+                VerticalPager(
+                    userScrollEnabled = false,
+                    pageCount = cardList.list.size,
+                    state = pagerState,
+                    key = { cardList.list[it].id }
+                ) { idx ->
+                    val card = cardList.list[idx]
+                    ToHotCard(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                        imageUrls = card.profileImgUrl,
+                        name = card.nickname,
+                        age = card.age,
+                        address = card.address,
+                        interests = card.interests,
+                        idealTypes = card.idealTypes,
+                        introduce = card.introduce,
+                        maxTimeSec = timers.list[idx].maxSec,
+                        currentSec = timers.list[idx].currentSec,
+                        destinationSec = timers.list[idx].destinationSec,
+                        enable = currentUserIdx == pagerState.currentPage &&
+                            timers.list[idx].startAble && cardMoveAllow,
+                        fallingAnimationEnable = idx == fallingAnimationTargetIdx,
+                        onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
+                        userCardClick = { },
+                        onReportMenuClick = onReportMenuClick,
+                        ticChanged = { ticChanged(it, idx) },
+                        onLikeClick = { onLikeClick(idx) },
+                        onUnLikeClick = { onUnLikeClick(idx) },
+                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
+                    )
+                }
+                LaunchedEffect(key1 = pagerState) {
+                    snapshotFlow { pagerState.currentPage }
+                        .collect { pageChanged(it) }
+                }
+            }
         }
     }
 }
