@@ -1,8 +1,8 @@
 package tht.feature.tohot.model
 
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Immutable
 import tht.feature.tohot.R
-import javax.annotation.concurrent.Immutable
 
 @Immutable
 data class TopicUiModel(

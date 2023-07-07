@@ -52,7 +52,6 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
 
     override fun observeData() {
         repeatOnStarted {
-
             launch {
                 viewModel.uiStateFlow.collect {
                     when (it) {
@@ -128,7 +127,8 @@ class BirthdayFragment : SignupRootBaseFragment<BirthdayViewModel, FragmentBirth
     private fun setDateTextColor(colorId: Int) {
         binding.tvDate.setTextColor(
             requireContext().resources.getColor(
-                colorId, null
+                colorId,
+                null
             )
         )
     }

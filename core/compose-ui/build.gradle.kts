@@ -54,4 +54,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:1.4.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
+
+    implementation("com.google.accompanist:accompanist-placeholder:0.30.1")
+
+    implementation("io.coil-kt:coil-compose:2.1.0")
 }

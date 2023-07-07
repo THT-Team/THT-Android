@@ -6,10 +6,14 @@ import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
@@ -92,8 +96,9 @@ class PhoneVerifyViewModel @Inject constructor(
     }
 
     fun verifyInputEvent(input: Char?, idx: Int) {
-        if (idx in 0 until VERIFY_SIZE)
+        if (idx in 0 until VERIFY_SIZE) {
             verify[idx] = input
+        }
 
         StringBuilder().let { sb ->
             verify.forEach { v ->
