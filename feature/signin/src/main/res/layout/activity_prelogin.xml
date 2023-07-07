@@ -8,11 +8,11 @@
     tools:context="tht.feature.signin.prelogin.PreloginActivity">
 
     <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_logo"
+        android:layout_width="130dp"
+        android:layout_height="159dp"
         android:contentDescription="@null"
-        android:src="@drawable/ic_logo"
+        android:src="@drawable/ic_app_logo"
         app:layout_constraintBottom_toTopOf="@id/btn_phone_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoImageView" />
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_kakao_login"
