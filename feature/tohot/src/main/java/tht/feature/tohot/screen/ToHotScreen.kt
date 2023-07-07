@@ -185,8 +185,13 @@ fun ToHotRoute(
         }
 
         ToHotLoadingCard(
-            isVisible = { toHotState.loading },
+            isVisible = { toHotState.cardLoading },
             message = stringResource(id = R.string.to_hot_user_card_loading)
+        )
+
+        ToHotLoadingCard(
+            isVisible = { toHotState.topicLoading },
+            message = stringResource(id = R.string.to_hot_topic_loading)
         )
     }
 }

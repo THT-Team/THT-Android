@@ -45,12 +45,6 @@ fun RowScope.ToHotToolBarContent(
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
             )
-
-            Image(
-                modifier = Modifier.padding(start = 8.dp),
-                painter = painterResource(id = R.drawable.ic_arrow_down),
-                contentDescription = "arrow_down"
-            )
         }
     }
     Spacer(modifier = Modifier.weight(1f))
@@ -69,7 +63,7 @@ fun ToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = false
         )
@@ -82,7 +76,7 @@ fun AlarmOnToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = true
         )
@@ -95,7 +89,7 @@ fun NoneTopicToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "",
-            topicIconRes = R.drawable.ic_topic_value_38,
+            topicIconRes = R.drawable.ic_topic_item_values_38,
             topicTitle = "휴식",
             hasUnReadAlarm = true
         )

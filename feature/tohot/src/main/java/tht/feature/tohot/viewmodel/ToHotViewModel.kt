@@ -65,7 +65,8 @@ class ToHotViewModel @Inject constructor(
                 timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
                 cardMoveAllow = true,
-                loading = false,
+                cardLoading = false,
+                topicLoading = false,
                 selectTopicKey = -1,
                 currentTopic = null,
                 topicModalShow = false,
@@ -117,7 +118,7 @@ class ToHotViewModel @Inject constructor(
 
     private fun fetchTopicList(openTopicList: Boolean) {
         viewModelScope.launch {
-            intent { reduce { it.copy(loading = true) } }
+            intent { reduce { it.copy(topicLoading = true) } }
             delay(500)
             intent {
                 reduce {
@@ -127,7 +128,7 @@ class ToHotViewModel @Inject constructor(
                         topicSelectRemainingTime = "24:00:00"
                     )
                 }
-                reduce { it.copy(loading = false) }
+                reduce { it.copy(topicLoading = false) }
             }
             toHotLogic()
         }
@@ -204,13 +205,13 @@ class ToHotViewModel @Inject constructor(
                     if (pagingLoading) {
                         intent {
                             reduce {
-                                it.copy(loading = true)
+                                it.copy(cardLoading = true)
                             }
                         }
                         fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
                         intent {
                             reduce {
-                                it.copy(loading = false)
+                                it.copy(cardLoading = false)
                             }
                             if ((currentIdx + 1) !in currentUserListRange) {
                                 return@intent
@@ -268,7 +269,7 @@ class ToHotViewModel @Inject constructor(
                                         )
                                     }
                             ),
-                            loading = false
+                            cardLoading = false
                         )
                     }
                 }
@@ -280,7 +281,7 @@ class ToHotViewModel @Inject constructor(
             else -> {
                 pagingCount = 0
                 pagingable = true
-                intent { reduce { it.copy(loading = true) } }
+                intent { reduce { it.copy(cardLoading = true) } }
                 delay(500)
                 intent {
                     reduce {
@@ -298,7 +299,7 @@ class ToHotViewModel @Inject constructor(
                                 }
                             ),
                             enableTimerIdx = 0,
-                            loading = false
+                            cardLoading = false
                         )
                     }
                 }
@@ -331,7 +332,7 @@ class ToHotViewModel @Inject constructor(
 
     fun topicSelectFinishEvent() {
         viewModelScope.launch {
-            intent { reduce { it.copy(loading = true) } }
+            intent { reduce { it.copy(cardLoading = true) } }
             delay(500)
             intent {
                 reduce {
@@ -340,7 +341,7 @@ class ToHotViewModel @Inject constructor(
                         currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
                     )
                 }
-                reduce { it.copy(loading = false) }
+                reduce { it.copy(cardLoading = false) }
             }
             clearUserCard()
             toHotLogic()
