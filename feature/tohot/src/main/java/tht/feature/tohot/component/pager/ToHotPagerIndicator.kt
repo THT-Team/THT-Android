@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -28,8 +29,10 @@ fun ToHotPagerIndicator(
     pageCount: Int,
     width: Dp,
     height: Dp,
-    backgroundColor: Color = Color(0xFFF9FAFA),
-    selectColor: Color = Color(0xFFF9CC2E)
+    backgroundColor: Color =
+        colorResource(id = tht.core.ui.R.color.white_f9fafa)
+            .copy(alpha = 0.5f),
+    selectColor: Color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
 ) {
     Row(
         modifier = modifier
@@ -61,4 +64,3 @@ private fun ToHotPagerIndicatorPreview() {
         height = 20.dp
     )
 }
-

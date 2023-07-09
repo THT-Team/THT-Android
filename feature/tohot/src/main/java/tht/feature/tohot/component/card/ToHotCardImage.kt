@@ -22,7 +22,7 @@ import tht.feature.tohot.userData
  */
 
 @Composable
-fun <T>ToHotCardImage(
+fun <T> ToHotCardImage(
     modifier: Modifier = Modifier,
     imageUrl: T,
     placeholder: Painter = painterResource(id = R.drawable.ic_user_card_placeholder),

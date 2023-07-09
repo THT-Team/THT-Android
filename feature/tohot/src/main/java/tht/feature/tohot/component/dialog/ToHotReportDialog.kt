@@ -63,7 +63,7 @@ fun ToHotUseReportDialog(
                         .clickable(
                             enabled = true,
                             onClick = { onReportClick(idx) }
-                        ),
+                        )
                 ) {
                     ThtSubtitle2(
                         modifier = if (idx == reportReason.size - 1) {

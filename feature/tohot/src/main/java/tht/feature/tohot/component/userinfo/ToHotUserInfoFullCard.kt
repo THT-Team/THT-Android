@@ -43,15 +43,14 @@ fun ToHotUserInfoFullCard(
     onReportClick: () -> Unit = { }
 ) {
     Box(
-        modifier = modifier
-        .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 338.dp)
                 .verticalScroll(rememberScrollState())
-                .clip(RoundedCornerShape(6.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(
                     color = Color(0xFF282828).copy(alpha = 0.5f)
                 )
@@ -93,8 +92,8 @@ fun ToHotUserInfoFullCard(
             ) {
                 idealTypes.list.forEach { ideal ->
                     ToHotEmojiChip(
-                       content = ideal.title,
-                       emojiCode = ideal.emojiCode
+                        content = ideal.title,
+                        emojiCode = ideal.emojiCode
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                 }
@@ -110,7 +109,7 @@ fun ToHotUserInfoFullCard(
             Box(
                 modifier = Modifier
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 12.dp)
-                    .clip(RoundedCornerShape(6.dp))
+                    .clip(RoundedCornerShape(14.dp))
                     .background(
                         color = Color(0xFF111111)
                     )

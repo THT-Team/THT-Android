@@ -43,7 +43,11 @@ fun ToHotCardManageRow(
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (userInfoButtonPressed) R.drawable.ic_user_info_pressed else R.drawable.ic_user_info_unpreseed
+                    id = if (userInfoButtonPressed) {
+                        R.drawable.ic_user_info_pressed
+                    } else {
+                        R.drawable.ic_user_info_unpreseed
+                    }
                 ),
                 contentDescription = "user_info_button_icon",
                 tint = Color.Unspecified
@@ -58,7 +62,11 @@ fun ToHotCardManageRow(
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (likeButtonPressed) R.drawable.ic_heart_pressed else R.drawable.ic_heart_unpressed
+                    id = if (likeButtonPressed) {
+                        R.drawable.ic_heart_pressed
+                    } else {
+                        R.drawable.ic_heart_unpressed
+                    }
                 ),
                 contentDescription = "user_info_button_icon",
                 tint = Color.Unspecified
@@ -66,13 +74,17 @@ fun ToHotCardManageRow(
         }
 
         IconButton(
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = 20.dp),
             interactionSource = unlikeButtonInteractionSource,
             onClick = onUnLikeClick
         ) {
             Icon(
                 painter = painterResource(
-                    id = if (unlikeButtonPressed) R.drawable.ic_unlike_pressed else R.drawable.ic_unlike_unpressed
+                    id = if (unlikeButtonPressed) {
+                        R.drawable.ic_unlike_pressed
+                    } else {
+                        R.drawable.ic_unlike_unpressed
+                    }
                 ),
                 contentDescription = "user_info_button_icon",
                 tint = Color.Unspecified

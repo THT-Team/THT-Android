@@ -8,13 +8,18 @@ import tht.feature.tohot.model.TopicUiModel
 
 @Immutable
 data class ToHotState(
-    val loading: Boolean,
+    val cardLoading: Boolean,
+    val topicLoading: Boolean,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
+    val isFirstPage: Boolean = true,
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int,
+    val fallingAnimationIdx: Int = -1,
+    val cardMoveAllow: Boolean,
     val reportMenuDialogShow: Boolean = false,
     val reportDialogShow: Boolean = false,
     val blockDialogShow: Boolean = false,
+    val holdDialogShow: Boolean = false,
     val reportReason: List<String> = listOf(
         "불쾌한 사진",
         "허위 프로필",
