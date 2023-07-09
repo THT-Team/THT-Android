@@ -6,12 +6,13 @@ import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
-import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
+import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,6 +98,15 @@ object UseCaseModule {
     )
 
     @Provides
+    fun provideCheckSignupStateUseCase(
+        repository: SignupRepository,
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
+        repository, tokenRepository, loginRepository
+    )
+
+    @Provides
     fun provideRequestVerifyUseCase(
         repository: SignupRepository,
         createSignupUserUseCase: CreateSignupUserUseCase,
@@ -140,8 +150,8 @@ object UseCaseModule {
     fun provideRequestFcmTokenLoginUseCase(
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
-    ): RequestFcmTokenLoginUseCase =
-        RequestFcmTokenLoginUseCase(tokenRepository, loginRepository)
+    ): RefreshFcmTokenLoginUseCase =
+        RefreshFcmTokenLoginUseCase(tokenRepository, loginRepository)
 
     @Provides
     fun provideFetchRegionCodeUseCase(
@@ -163,4 +173,10 @@ object UseCaseModule {
         repository: EmailRepository
     ): SendInquiryEmailUseCase =
         SendInquiryEmailUseCase(repository)
+
+    @Provides
+    fun provideFetchThtTokenUseCase(
+        repository: TokenRepository
+    ) : FetchThtTokenUseCase =
+        FetchThtTokenUseCase(repository)
 }

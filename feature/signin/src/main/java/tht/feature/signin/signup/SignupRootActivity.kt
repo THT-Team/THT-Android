@@ -14,6 +14,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
+import tht.feature.signin.prelogin.PreloginActivity
 
 @AndroidEntryPoint
 class SignupRootActivity : AppCompatActivity() {
@@ -77,7 +78,8 @@ class SignupRootActivity : AppCompatActivity() {
                             }
                         }
                         is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
-                            // TODO HomeActivity로 이동
+                            startActivity(PreloginActivity.getIntent(this@SignupRootActivity))
+                            finish()
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
                             showToast(it.message)

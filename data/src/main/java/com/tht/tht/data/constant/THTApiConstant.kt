@@ -12,11 +12,11 @@ object THTApiConstant {
         const val IDEAL_TYPE = "ideal-types"
 
         const val SIGNUP = "users/join/signup"
+
+        const val SIGNUP_CHECK = "/users/join/exist/user-info"
     }
 
     object Login {
-        const val LOGIN = "/auth/login"
-
         const val FCM_TOKEN_LOGIN = "/users/login/normal"
     }
 }

@@ -19,6 +19,7 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
+import tht.feature.signin.prelogin.PreloginActivity
 import tht.feature.signin.util.AnimatorUtil
 
 @AndroidEntryPoint
@@ -109,6 +110,10 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
                         is PhoneVerifyViewModel.VerifySideEffect.NavigateNextView -> {
                             startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
+                        }
+
+                        is PhoneVerifyViewModel.VerifySideEffect.NavigateMainView -> {
+                            startActivity(PreloginActivity.getIntent(this@PhoneVerifyActivity))
                         }
                     }
                 }

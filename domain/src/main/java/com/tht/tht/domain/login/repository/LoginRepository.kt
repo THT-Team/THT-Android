@@ -4,5 +4,5 @@ import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
 
 interface LoginRepository {
 
-    suspend fun requestFcmTokenLogin(fcmToken: String, phone: String): FcmTokenLoginResponseModel
+    suspend fun refreshFcmTokenLogin(fcmToken: String, phone: String): FcmTokenLoginResponseModel
 }

@@ -7,6 +7,7 @@ import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
+import com.tht.tht.data.remote.response.signup.SignupCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -35,4 +36,9 @@ interface THTSignupApi {
     suspend fun requestSignup(
         @Body body: SignupRequest,
     ): ThtResponse<SignupResponse>
+
+    @GET("${THTApiConstant.Signup.SIGNUP_CHECK}/{phone-number}")
+    suspend fun checkSignupState(
+        @Path("phone-number")phone: String
+    ): ThtResponse<SignupCheckResponse>
 }

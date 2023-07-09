@@ -4,9 +4,9 @@ import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.token.repository.TokenRepository
 
 /**
- * Fcm Token 이 갱신 되었을 때 호출
+ * 이미 로그인 한 유저가 Fcm Token 이 갱신 되었을 때 호출
  */
-class RequestFcmTokenLoginUseCase(
+class RefreshFcmTokenLoginUseCase(
     private val tokenRepository: TokenRepository,
     private val loginRepository: LoginRepository
 ) {
@@ -15,7 +15,7 @@ class RequestFcmTokenLoginUseCase(
             tokenRepository.updateFcmToken(fcmToken) // local 에 fcm token 저장
             val phone = tokenRepository.fetchPhone()
             requireNotNull(phone) { "before login" }
-            loginRepository.requestFcmTokenLogin(fcmToken, phone).let {
+            loginRepository.refreshFcmTokenLogin(fcmToken, phone).let {
                 tokenRepository.updateThtToken(
                     it.accessToken,
                     it.accessTokenExpiresIn,

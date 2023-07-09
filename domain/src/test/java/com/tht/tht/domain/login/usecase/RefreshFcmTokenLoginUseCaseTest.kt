@@ -14,9 +14,9 @@ import org.junit.Test
 
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-internal class RequestFcmTokenLoginUseCaseTest {
+internal class RefreshFcmTokenLoginUseCaseTest {
 
-    private lateinit var useCase: RequestFcmTokenLoginUseCase
+    private lateinit var useCase: RefreshFcmTokenLoginUseCase
     private lateinit var tokenRepository: TokenRepository
     private lateinit var loginRepository: LoginRepository
 
@@ -24,7 +24,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
     fun setUp() {
         tokenRepository = mockk(relaxed = true)
         loginRepository = mockk(relaxed = true)
-        useCase = RequestFcmTokenLoginUseCase(
+        useCase = RefreshFcmTokenLoginUseCase(
             tokenRepository, loginRepository
         )
     }
@@ -66,7 +66,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
     fun `useCase는 tokenRepository의 fetchPhone가 null이 아니면 loginRepository의 requestFcmTokenLogin를 호출한다`() = runTest {
         coEvery { tokenRepository.fetchPhone() } returns "phone"
         useCase("fcmToken")
-        coVerify(exactly = 1) { loginRepository.requestFcmTokenLogin(any(), any()) }
+        coVerify(exactly = 1) { loginRepository.refreshFcmTokenLogin(any(), any()) }
     }
 
     @Test
@@ -75,13 +75,13 @@ internal class RequestFcmTokenLoginUseCaseTest {
         val token = "fcmToken"
         coEvery { tokenRepository.fetchPhone() } returns phone
         useCase(token)
-        coVerify(exactly = 1) { loginRepository.requestFcmTokenLogin(token, phone) }
+        coVerify(exactly = 1) { loginRepository.refreshFcmTokenLogin(token, phone) }
     }
 
     @Test
     fun `useCase는 loginRepository의 requestFcmTokenLogin가 예외를 발생시키면 Result로 래핑해 리턴한다`() = runTest {
         val unitTestException = Exception("unit test")
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } throws unitTestException
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } throws unitTestException
 
         val actual = useCase("token")
 
@@ -96,7 +96,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
     @Test
     fun `useCase는 loginRepository의 requestFcmTokenLogin 완료되면 tokenRepository의 updateThtToken를 호출한다`() = runTest {
         coEvery { tokenRepository.fetchPhone() } returns "phone"
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
             "token", 1
         )
         useCase("fcmToken")
@@ -109,7 +109,7 @@ internal class RequestFcmTokenLoginUseCaseTest {
         val token = "token"
         val tokenExpires = 1L
         coEvery { tokenRepository.fetchPhone() } returns phone
-        coEvery { loginRepository.requestFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
+        coEvery { loginRepository.refreshFcmTokenLogin(any(), any()) } returns FcmTokenLoginResponseModel(
             token, tokenExpires
         )
         useCase("fcmToken")
