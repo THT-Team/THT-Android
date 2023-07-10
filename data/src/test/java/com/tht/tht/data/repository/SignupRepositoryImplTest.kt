@@ -6,7 +6,7 @@ import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
+import com.tht.tht.data.remote.datasource.signup.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse

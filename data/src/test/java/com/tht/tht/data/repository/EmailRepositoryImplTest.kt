@@ -1,6 +1,6 @@
 package com.tht.tht.data.repository
 
-import com.tht.tht.data.remote.datasource.EmailDataSource
+import com.tht.tht.data.remote.datasource.signup.EmailDataSource
 import com.tht.tht.domain.email.repository.EmailRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

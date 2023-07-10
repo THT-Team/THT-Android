@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.datasource
+package com.tht.tht.data.remote.datasource.signup
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.service.email.EmailService

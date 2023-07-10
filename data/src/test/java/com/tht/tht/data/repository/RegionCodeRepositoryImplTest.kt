@@ -1,7 +1,7 @@
 package com.tht.tht.data.repository
 
 import com.tht.tht.data.local.mapper.toModel
-import com.tht.tht.data.remote.datasource.RegionCodeDataSource
+import com.tht.tht.data.remote.datasource.signup.RegionCodeDataSource
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import io.mockk.coEvery

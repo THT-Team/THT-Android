@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.datasource
+package com.tht.tht.data.remote.datasource.signup
 
 interface EmailDataSource {
 

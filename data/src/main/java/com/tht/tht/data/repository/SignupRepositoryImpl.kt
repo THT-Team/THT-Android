@@ -5,7 +5,7 @@ import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
-import com.tht.tht.data.remote.datasource.SignupApiDataSource
+import com.tht.tht.data.remote.datasource.signup.SignupApiDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel

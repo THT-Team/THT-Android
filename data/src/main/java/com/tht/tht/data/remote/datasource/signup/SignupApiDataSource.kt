@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.datasource
+package com.tht.tht.data.remote.datasource.signup
 
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
