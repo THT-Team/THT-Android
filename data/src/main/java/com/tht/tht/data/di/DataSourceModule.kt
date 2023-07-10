@@ -16,6 +16,8 @@ import com.tht.tht.data.remote.datasource.RegionCodeDataSource
 import com.tht.tht.data.remote.datasource.RegionCodeDataSourceImpl
 import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.datasource.SignupApiDataSourceImpl
+import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSource
+import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSourceImpl
 import com.tht.tht.data.remote.datasource.login.LoginDataSource
 import com.tht.tht.data.remote.datasource.login.LoginDataSourceImpl
 import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSource
@@ -57,4 +59,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindDailyTopicDataSource(impl: DailyTopicDataSourceImpl): DailyTopicDataSource
+
+    @Binds
+    abstract fun bindDailyUserCardDataSource(impl: DailyUserCardDataSourceImpl): DailyUserCardDataSource
 }
