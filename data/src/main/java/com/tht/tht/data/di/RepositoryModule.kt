@@ -1,5 +1,6 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.repository.DailyTopicRepositoryImpl
 import com.tht.tht.data.repository.EmailRepositoryImpl
 import com.tht.tht.data.repository.ImageRepositoryImpl
 import com.tht.tht.data.repository.LocationRepositoryImpl
@@ -14,6 +15,7 @@ import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.topic.DailyTopicRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,4 +45,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindEmailRepository(impl: EmailRepositoryImpl): EmailRepository
+
+    @Binds
+    abstract fun bindDailyTopicRepository(impl: DailyTopicRepositoryImpl): DailyTopicRepository
 }
