@@ -18,6 +18,8 @@ import com.tht.tht.data.remote.datasource.SignupApiDataSource
 import com.tht.tht.data.remote.datasource.SignupApiDataSourceImpl
 import com.tht.tht.data.remote.datasource.login.LoginDataSource
 import com.tht.tht.data.remote.datasource.login.LoginDataSourceImpl
+import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSource
+import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -52,4 +54,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindEmailDataSource(impl: EmailDataSourceImpl): EmailDataSource
+
+    @Binds
+    abstract fun bindDailyTopicDataSource(impl: DailyTopicDataSourceImpl): DailyTopicDataSource
 }
