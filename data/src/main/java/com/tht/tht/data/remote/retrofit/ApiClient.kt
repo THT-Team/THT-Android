@@ -5,7 +5,7 @@ import com.tht.tht.data.constant.RegionCodeConstant
 import com.tht.tht.data.constant.THTApiConstant
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
 import com.tht.tht.data.remote.service.THTLoginApi
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -3,7 +3,7 @@ package com.tht.tht.data.remote.datasource
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

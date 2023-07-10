@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.service
+package com.tht.tht.data.remote.service.location
 
 import android.Manifest
 import android.content.Context
@@ -8,6 +8,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.tht.tht.data.remote.response.location.LocationResponse
+import com.tht.tht.data.remote.service.location.LocationService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.*

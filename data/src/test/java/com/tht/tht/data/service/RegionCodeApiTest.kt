@@ -5,7 +5,7 @@ import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse

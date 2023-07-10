@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.service
+package com.tht.tht.data.remote.service.location
 
 import com.tht.tht.data.remote.response.location.LocationResponse
 

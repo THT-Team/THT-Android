@@ -1,4 +1,4 @@
-package com.tht.tht.data.remote.service
+package com.tht.tht.data.remote.service.image
 
 import android.net.Uri
 

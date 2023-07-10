@@ -2,7 +2,7 @@ package com.tht.tht.data.datasource
 
 import com.tht.tht.data.remote.datasource.LocationDataSourceImpl
 import com.tht.tht.data.remote.response.location.LocationResponse
-import com.tht.tht.data.remote.service.LocationService
+import com.tht.tht.data.remote.service.location.LocationService
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

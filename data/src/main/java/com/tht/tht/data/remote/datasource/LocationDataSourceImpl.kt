@@ -2,7 +2,7 @@ package com.tht.tht.data.remote.datasource
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.remote.response.location.LocationResponse
-import com.tht.tht.data.remote.service.LocationService
+import com.tht.tht.data.remote.service.location.LocationService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -2,7 +2,7 @@ package com.tht.tht.data.remote.datasource
 
 import android.net.Uri
 import com.tht.tht.data.di.IODispatcher
-import com.tht.tht.data.remote.service.ImageService
+import com.tht.tht.data.remote.service.image.ImageService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

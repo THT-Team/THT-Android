@@ -1,10 +1,10 @@
 package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.remote.retrofit.ApiClient
-import com.tht.tht.data.remote.service.ImageService
-import com.tht.tht.data.remote.service.ImageServiceImpl
+import com.tht.tht.data.remote.service.image.ImageService
+import com.tht.tht.data.remote.service.image.ImageServiceImpl
 import com.tht.tht.data.remote.service.THTLoginApi
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
