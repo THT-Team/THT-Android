@@ -13,15 +13,20 @@ object THTApiConstant {
 
         const val SIGNUP = "users/join/signup"
 
-        const val SIGNUP_CHECK = "/users/join/exist/user-info"
+        const val SIGNUP_CHECK = "users/join/exist/user-info"
     }
 
     object Login {
-        const val FCM_TOKEN_LOGIN = "/users/login/normal"
+        const val FCM_TOKEN_LOGIN = "users/login/normal"
+    }
+
     object Topic {
         const val DAILY_TOPIC_LIST = "falling/daily-keyword"
 
         const val SELECT_DAILY_TOPIC = "falling/choice/daily-keyword/{daily-falling-idx}"
     }
+
+    object Card {
+        const val DAILY_USER_CARD = "main/daily-falling/users"
     }
 }
