@@ -6,6 +6,7 @@ import com.tht.tht.data.remote.service.ImageServiceImpl
 import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.RegionCodeApi
 import com.tht.tht.data.remote.service.THTSignupApi
+import com.tht.tht.data.remote.service.topic.DailyTopicApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,4 +44,10 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideImageService(): ImageService = ImageServiceImpl()
+
+    @Provides
+    @Singleton
+    fun provideDailyTopicApiService(
+        apiClient: ApiClient
+    ): DailyTopicApiService = apiClient.thtApiAdapter.create(DailyTopicApiService::class.java)
 }
