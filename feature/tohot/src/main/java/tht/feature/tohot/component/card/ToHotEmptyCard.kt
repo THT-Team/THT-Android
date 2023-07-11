@@ -22,6 +22,6 @@ fun ToHotEmptyCard(
 
 @Composable
 @Preview
-fun ToHotEmptyCardPreview() {
+private fun ToHotEmptyCardPreview() {
     ToHotEmptyCard()
 }

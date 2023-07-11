@@ -97,7 +97,7 @@ fun ToHotHoldDialog(
 
 @Composable
 @Preview
-fun ToHotHoldDialog() {
+private fun ToHotHoldDialog() {
     ToHotHoldDialog(
         isShow = true
     )

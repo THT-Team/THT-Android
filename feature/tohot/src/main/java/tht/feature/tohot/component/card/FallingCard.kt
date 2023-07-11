@@ -35,7 +35,7 @@ fun FallingCard(
 
 @Composable
 @Preview
-fun FallingCardPreview() {
+private fun FallingCardPreview() {
     FallingCard(
         modifier = Modifier.fillMaxSize(),
         fallingProgress = 0.5f

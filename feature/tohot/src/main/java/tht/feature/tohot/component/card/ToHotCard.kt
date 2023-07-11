@@ -123,7 +123,7 @@ fun ToHotCard(
 
 @Composable
 @Preview
-fun ToHotCardPreview() {
+private fun ToHotCardPreview() {
     ToHotCard(
         modifier = Modifier
             .fillMaxSize()

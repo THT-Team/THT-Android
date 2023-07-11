@@ -55,7 +55,7 @@ fun TopicSelectModel(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 @Preview
-fun TopicSelectModelPreview() {
+private fun TopicSelectModelPreview() {
     TopicSelectModel(
         modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded),
         remainingTime = "24:00:00",

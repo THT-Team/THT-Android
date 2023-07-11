@@ -30,6 +30,6 @@ fun ToHotToolBar(
 
 @Composable
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
-internal fun ToHotToolBarPreview() {
+private fun ToHotToolBarPreview() {
     ToHotToolBar()
 }

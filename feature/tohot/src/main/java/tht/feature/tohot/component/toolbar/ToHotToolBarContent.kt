@@ -59,7 +59,7 @@ fun RowScope.ToHotToolBarContent(
 
 @Composable
 @Preview
-fun ToHotToolBarContentPreview() {
+private fun ToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
@@ -72,7 +72,7 @@ fun ToHotToolBarContentPreview() {
 
 @Composable
 @Preview
-fun AlarmOnToHotToolBarContentPreview() {
+private fun AlarmOnToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "123",
@@ -85,7 +85,7 @@ fun AlarmOnToHotToolBarContentPreview() {
 
 @Composable
 @Preview
-fun NoneTopicToHotToolBarContentPreview() {
+private fun NoneTopicToHotToolBarContentPreview() {
     ToHotToolBar {
         ToHotToolBarContent(
             topicIconUrl = "",

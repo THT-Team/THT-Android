@@ -96,7 +96,7 @@ fun TopicWaitScreen(
 
 @Composable
 @Preview
-fun TopicWaitScreenPreview() {
+private fun TopicWaitScreenPreview() {
     TopicWaitScreen(
         remainingTime = "24:00:00"
     )

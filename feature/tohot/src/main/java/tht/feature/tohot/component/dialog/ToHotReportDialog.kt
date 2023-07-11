@@ -108,7 +108,7 @@ fun ToHotUseReportDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotUseReportDialogPreview() {
+private fun ToHotUseReportDialogPreview() {
     ToHotUseReportDialog(
         isShow = true,
         reportReason = listOf(

@@ -22,6 +22,6 @@ fun ToHotEnterCard(
 
 @Composable
 @Preview
-fun ToHotEnterCardPreview() {
+private fun ToHotEnterCardPreview() {
     ToHotEnterCard()
 }

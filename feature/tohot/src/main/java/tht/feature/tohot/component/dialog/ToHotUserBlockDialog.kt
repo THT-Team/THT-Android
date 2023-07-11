@@ -107,7 +107,7 @@ fun ToHotUserBlockDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotUserBlockDialogPreview() {
+private fun ToHotUserBlockDialogPreview() {
     ToHotUserBlockDialog(
         isShow = true,
         onDismiss = { }

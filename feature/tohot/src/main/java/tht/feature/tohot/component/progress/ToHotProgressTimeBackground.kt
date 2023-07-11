@@ -33,7 +33,7 @@ fun ToHotProgressTimeBackground(
 
 @Composable
 @Preview
-fun ToHotProgressTimeBackgroundPreview() {
+private fun ToHotProgressTimeBackgroundPreview() {
     ToHotProgressTimeBackground(
         color = colorResource(id = tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.5f),
         content = { }

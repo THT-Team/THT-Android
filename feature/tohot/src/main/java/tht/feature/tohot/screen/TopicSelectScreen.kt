@@ -115,7 +115,7 @@ fun TopicSelectScreen(
 
 @Composable
 @Preview
-fun TopicSelectScreenPreview() {
+private fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),

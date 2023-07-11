@@ -80,7 +80,7 @@ fun TopicSelectChip(
 
 @Composable
 @Preview
-fun TopicSelectItemPreview() {
+private fun TopicSelectItemPreview() {
     TopicSelectChip(
         imageUrl = "1F3AE",
         imageRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
@@ -93,7 +93,7 @@ fun TopicSelectItemPreview() {
 
 @Composable
 @Preview
-fun SelectTopicSelectItemPreview() {
+private fun SelectTopicSelectItemPreview() {
     TopicSelectChip(
         imageUrl = "1F3AE",
         imageRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,

@@ -95,7 +95,7 @@ fun ToHotNotifyCard(
 
 @Composable
 @Preview
-fun ToHotNotifyCardPreview() {
+private fun ToHotNotifyCardPreview() {
     ToHotNotifyCard(
         image = painterResource(id = R.drawable.ic_mudy_enter),
         title = "가나다라마바사",
