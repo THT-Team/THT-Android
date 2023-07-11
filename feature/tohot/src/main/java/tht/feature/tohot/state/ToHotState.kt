@@ -27,7 +27,7 @@ data class ToHotState(
         "욕설 및 비방",
         "불법 촬영물 공유"
     ),
-    val selectTopicKey: Long = -1,
+    val selectTopicKey: Int = -1,
     val currentTopic: TopicUiModel?,
     val topicList: ImmutableListWrapper<TopicUiModel>,
     val topicModalShow: Boolean,

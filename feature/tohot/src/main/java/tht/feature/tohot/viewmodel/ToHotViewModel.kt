@@ -320,7 +320,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun topicSelectEvent(topicKey: Long) {
+    fun topicSelectEvent(topicKey: Int) {
         intent {
             reduce {
                 it.copy(

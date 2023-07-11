@@ -8,7 +8,7 @@ import tht.feature.tohot.R
 data class TopicUiModel(
     val imageUrl: String?,
     @DrawableRes val imageRes: Int,
-    val key: Long,
+    val key: Int,
     val title: String,
     val content: String,
     val iconUrl: String,
