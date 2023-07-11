@@ -7,6 +7,8 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
+import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
+import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,19 +17,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.StringProvider
+import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
-import tht.feature.tohot.model.topics
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
-import tht.feature.tohot.userData
-import tht.feature.tohot.userData2
-import tht.feature.tohot.userData3
-import tht.feature.tohot.userData4
-import tht.feature.tohot.userData5
-import tht.feature.tohot.userData6
-import tht.feature.tohot.userData7
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -39,25 +34,15 @@ import javax.inject.Inject
  * - 손으로 드래그 중에 시간이 다 달면 예외 발생
  * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
  * - userList 가 비어 있을 때 modal 을 열면 fetchTopicList 가 호출 되면서 toHotLogic 도 호출돼 userList 가 호출 되는 문제
+ * TODO: API 적용 후 테스트 미진행
+ * TODO: 전체 로직 수정 필요
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
+    private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase,
+    private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
-    private val userList = listOf(
-        userData2,
-        userData3,
-        userData4,
-        userData
-    )
-    private val userList2 = listOf(
-        userData5,
-        userData6
-    )
-    private val userList3 = listOf(
-        userData7
-    )
-
     override val store: Store<ToHotState, ToHotSideEffect> =
         store(
             initialState = ToHotState(
@@ -80,8 +65,6 @@ class ToHotViewModel @Inject constructor(
     private var passedCardCountBetweenTouch = 0
     private val passedCardIdSet = mutableSetOf<String>()
 
-    private var pagingable = true // 임시 개발용 변수
-    private var pagingCount = 0 // 임시 개발용 변수
     private var pagingLoading = false
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
@@ -95,7 +78,8 @@ class ToHotViewModel @Inject constructor(
 
     /**
      *  UserList API 호출
-     *  - Topic 이 선택 되어 있지 않다고 리턴 되면 Topic 선택 화면
+     *  - Topic 이 선택 되어 있지 않다고 리턴(TopicIdx == -1) 되면 Topic API 호출
+     *  TODO: 로직 변경 필요
      */
     private fun toHotLogic() {
         with(store.state.value) {
@@ -109,7 +93,7 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
 
-                userList.list.isEmpty() -> viewModelScope.launch { fetchUserCard(isPaging = false) }
+                userList.list.isEmpty() -> viewModelScope.launch { fetchUserCard() }
 
                 else -> {}
             }
@@ -119,17 +103,21 @@ class ToHotViewModel @Inject constructor(
     private fun fetchTopicList(openTopicList: Boolean) {
         viewModelScope.launch {
             intent { reduce { it.copy(topicLoading = true) } }
-            delay(500)
-            intent {
-                reduce {
-                    it.copy(
-                        topicList = ImmutableListWrapper(topics),
-                        topicModalShow = if (openTopicList) true else it.topicModalShow,
-                        topicSelectRemainingTime = "24:00:00"
-                    )
+            fetchDailyTopicListUseCase()
+                .onSuccess { dailyTopic ->
+                    intent {
+                        reduce {
+                            it.copy(
+                                topicList = ImmutableListWrapper(dailyTopic.topics.map { t -> t.toUiModel() }),
+                                topicModalShow = if (openTopicList) true else it.topicModalShow,
+                                topicSelectRemainingTime = "24:00:00" //TODO: 매핑 필요
+                            )
+                        }
+                        reduce { it.copy(topicLoading = false) }
+                    }
+                }.onFailure {
+                    it.printStackTrace()
                 }
-                reduce { it.copy(topicLoading = false) }
-            }
             toHotLogic()
         }
     }
@@ -233,63 +221,23 @@ class ToHotViewModel @Inject constructor(
      * - 페이징 List 가 없다면?
      * - 페이징 로딩 중에 다음 카드로 넘어 가려 한다면 - 로딩 효과 표시, 페이징 완료 후 다음 리스트 표시
      */
-    private suspend fun fetchUserCard(isPaging: Boolean) {
-        when (isPaging) {
-            true -> {
-                pagingCount++
-                pagingLoading = true
-                if (!pagingable) {
-                    //TODO: 페이징 유저가 더 없는 경우. 처리 고민
-                    pagingLoading = false
-                    return
-                }
-                if (pagingCount > 2) {
-                    pagingable = false
-                    pagingLoading = false
-                    return
-                }
-                delay(1000)
-                intent {
-                    reduce {
-                        it.copy(
-                            userList = ImmutableListWrapper(
-                                store.state.value.userList.list + if (pagingCount == 1) userList2 else userList3
-                            ),
-                            isFirstPage = userList.isEmpty(),
-                            timers = ImmutableListWrapper(
-                                store.state.value.timers.list +
-                                    List(
-                                        if (pagingCount == 1) userList2.size else userList3.size
-                                    ) {
-                                        CardTimerUiModel(
-                                            maxSec = MAX_TIMER_SEC,
-                                            currentSec = MAX_TIMER_SEC,
-                                            destinationSec = MAX_TIMER_SEC,
-                                            startAble = false
-                                        )
-                                    }
-                            ),
-                            cardLoading = false
-                        )
-                    }
-                }
-                pagingLoading = false
-                delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
-                fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
-            }
-
-            else -> {
-                pagingCount = 0
-                pagingable = true
-                intent { reduce { it.copy(cardLoading = true) } }
-                delay(500)
-                intent {
-                    reduce {
-                        it.copy(
-                            userList = ImmutableListWrapper(userList),
-                            isFirstPage = userList.isEmpty(),
-                            timers = ImmutableListWrapper(
-                                List(userList.size) {
+    private suspend fun fetchUserCard(lastUserIdx: Int = -1) {
+        pagingLoading = lastUserIdx > 0
+        if (!pagingLoading) intent { reduce { it.copy(cardLoading = true) } }
+        fetchDailyUserCardUseCase(
+            passedUserIdList = passedUserCardStack.map { it.id }.toList(),
+            lastUserDailyFallingCourserIdx = lastUserIdx
+        ).onSuccess { dailyUserCardList ->
+            intent {
+                reduce {
+                    it.copy(
+                        userList = ImmutableListWrapper(
+                            store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                        ),
+                        isFirstPage = dailyUserCardList.cards.isEmpty(),
+                        timers = ImmutableListWrapper(
+                            store.state.value.timers.list +
+                                List(dailyUserCardList.cards.size) {
                                     CardTimerUiModel(
                                         maxSec = MAX_TIMER_SEC,
                                         currentSec = MAX_TIMER_SEC,
@@ -297,13 +245,19 @@ class ToHotViewModel @Inject constructor(
                                         startAble = false
                                     )
                                 }
-                            ),
-                            enableTimerIdx = 0,
-                            cardLoading = false
-                        )
-                    }
+                        ),
+                        enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
+                        cardLoading = false
+                    )
                 }
             }
+        }.onFailure {
+            it.printStackTrace()
+        }
+        if (pagingLoading) {
+            pagingLoading = false
+            delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
+            fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
         }
     }
 
@@ -358,10 +312,12 @@ class ToHotViewModel @Inject constructor(
         with(store.state.value) {
             if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
                 passedCardIdSet.add(userList.list[userIdx].id)
-                passedUserCardStack.push(userList.list[userIdx])
+                val passUser = passedUserCardStack.push(userList.list[userIdx])
                 passedCardCountBetweenTouch++
                 if (userIdx == currentUserListRange.last) {
-                    viewModelScope.launch { fetchUserCard(isPaging = true) }
+                    viewModelScope.launch {
+                        fetchUserCard(lastUserIdx = passUser.idx)
+                    }
                 }
             }
         }
