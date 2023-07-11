@@ -12,5 +12,6 @@ data class DailyUserCardModel(
     val age: Int,
     val address: String,
     val profileImgUrl: List<String>,
-    val introduce: String
+    val introduce: String,
+    val userDailyFallingCourserIdx: Int
 )

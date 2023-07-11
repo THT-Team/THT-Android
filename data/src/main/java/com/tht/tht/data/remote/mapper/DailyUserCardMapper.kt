@@ -33,7 +33,8 @@ fun DailyUserCardResponse.UserInfo.toModel(): DailyUserCardModel {
         age = age,
         address = address,
         profileImgUrl = userProfilePhotos.sortedBy { it.priority }.map { it.url },
-        introduce = introduction
+        introduce = introduction,
+        userDailyFallingCourserIdx = userDailyFallingCourserIdx
     )
 }
 
