@@ -29,8 +29,8 @@ fun TopicSelectModel(
     ),
     remainingTime: String,
     topics: ImmutableListWrapper<TopicUiModel>,
-    selectTopicKey: Long,
-    topicClickListener: (Long) -> Unit = { },
+    selectTopicKey: Int,
+    topicClickListener: (Int) -> Unit = { },
     selectFinishListener: () -> Unit = { },
     content: @Composable () -> Unit
 ) {
@@ -60,7 +60,7 @@ fun TopicSelectModelPreview() {
         modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded),
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),
-        selectTopicKey = 1L,
+        selectTopicKey = 1,
         content = { }
     )
 }

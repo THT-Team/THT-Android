@@ -34,7 +34,8 @@ internal val userData = ToHotUserUiModel(
         )
     ),
     introduce = "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다.\n" +
-        "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다."
+        "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다.",
+    idx = 0
 )
 
 internal val userData2 = userData.copy(
@@ -51,7 +52,8 @@ internal val userData2 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 2
 )
 
 internal val userData3 = userData.copy(
@@ -62,7 +64,8 @@ internal val userData3 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683308012779_2?" +
                 "alt=media&token=e0d7d0a2-26b2-48cb-99fd-9685af8a8589"
         )
-    )
+    ),
+    idx = 3
 )
 
 internal val userData4 = userData.copy(
@@ -73,7 +76,8 @@ internal val userData4 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683549332395_1?" +
                 "alt=media&token=b8f6d7a4-6cb3-4b79-85ea-1245304e4ed8"
         )
-    )
+    ),
+    idx = 4
 )
 internal val userData5 = userData.copy(
     id = "5",
@@ -89,7 +93,8 @@ internal val userData5 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 5
 )
 
 internal val userData6 = userData.copy(
@@ -106,7 +111,8 @@ internal val userData6 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 6
 )
 
 internal val userData7 = userData.copy(
@@ -123,5 +129,6 @@ internal val userData7 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683307361492_2?" +
                 "alt=media&token=fd9c27e5-1983-46cf-bc5b-d3f0ee65cbeb"
         )
-    )
+    ),
+    idx = 7
 )

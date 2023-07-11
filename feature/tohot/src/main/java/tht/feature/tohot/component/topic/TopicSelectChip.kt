@@ -29,10 +29,10 @@ fun TopicSelectChip(
     imageUrl: String?,
     @DrawableRes imageRes: Int,
     title: String,
-    key: Long,
+    key: Int,
     content: String,
     isSelect: Boolean,
-    topicClickListener: (Long) -> Unit = { }
+    topicClickListener: (Int) -> Unit = { }
 ) {
     Row(
         modifier = modifier
