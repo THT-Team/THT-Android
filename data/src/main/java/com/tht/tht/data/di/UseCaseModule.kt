@@ -15,6 +15,8 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -181,6 +183,12 @@ object UseCaseModule {
         repository: TokenRepository
     ): FetchThtTokenUseCase =
         FetchThtTokenUseCase(repository)
+
+    @Provides
+    fun provideFetchDailyTopicListUseCase(
+        repository: DailyTopicRepository
+    ): FetchDailyTopicListUseCase = FetchDailyTopicListUseCase(repository)
+
     @Provides
     fun provideFetchDailyUserCardUseCase(
         repository: DailyUserCardRepository
