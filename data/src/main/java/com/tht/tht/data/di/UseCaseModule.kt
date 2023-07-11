@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
+import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
@@ -179,4 +181,9 @@ object UseCaseModule {
         repository: TokenRepository
     ): FetchThtTokenUseCase =
         FetchThtTokenUseCase(repository)
+    @Provides
+    fun provideFetchDailyUserCardUseCase(
+        repository: DailyUserCardRepository
+    ): FetchDailyUserCardUseCase =
+        FetchDailyUserCardUseCase(repository)
 }
