@@ -6,9 +6,9 @@ import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 
 internal val userData = ToHotUserUiModel(
-    id = 0,
+    id = "0",
     nickname = "Harry",
-    birthday = "2022.02.03",
+    isBirthday = false,
     interests = ImmutableListWrapper(
         listOf(
             InterestModel("지적인", 1L, "1F9E0"),
@@ -38,7 +38,7 @@ internal val userData = ToHotUserUiModel(
 )
 
 internal val userData2 = userData.copy(
-    id = 2,
+    id = "2",
     nickname = "Suzume",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -55,7 +55,7 @@ internal val userData2 = userData.copy(
 )
 
 internal val userData3 = userData.copy(
-    id = 3,
+    id = "3",
     nickname = "ToToro",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -66,7 +66,7 @@ internal val userData3 = userData.copy(
 )
 
 internal val userData4 = userData.copy(
-    id = 4,
+    id = "4",
     nickname = "SpiderMan",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -76,7 +76,7 @@ internal val userData4 = userData.copy(
     )
 )
 internal val userData5 = userData.copy(
-    id = 5,
+    id = "5",
     nickname = "Suzume5",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -93,7 +93,7 @@ internal val userData5 = userData.copy(
 )
 
 internal val userData6 = userData.copy(
-    id = 6,
+    id = "6",
     nickname = "Suzume6",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -110,7 +110,7 @@ internal val userData6 = userData.copy(
 )
 
 internal val userData7 = userData.copy(
-    id = 7,
+    id = "7",
     nickname = "Suzume7",
     profileImgUrl = ImmutableListWrapper(
         listOf(

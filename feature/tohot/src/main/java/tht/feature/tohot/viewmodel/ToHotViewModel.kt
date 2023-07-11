@@ -78,7 +78,7 @@ class ToHotViewModel @Inject constructor(
         )
     private var passedUserCardStack = Stack<ToHotUserUiModel>()
     private var passedCardCountBetweenTouch = 0
-    private val passedCardIdSet = mutableSetOf<Int>()
+    private val passedCardIdSet = mutableSetOf<String>()
 
     private var pagingable = true // 임시 개발용 변수
     private var pagingCount = 0 // 임시 개발용 변수
