@@ -177,6 +177,6 @@ object UseCaseModule {
     @Provides
     fun provideFetchThtTokenUseCase(
         repository: TokenRepository
-    ) : FetchThtTokenUseCase =
+    ): FetchThtTokenUseCase =
         FetchThtTokenUseCase(repository)
 }
