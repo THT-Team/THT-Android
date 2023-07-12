@@ -2,7 +2,7 @@ package com.tht.tht.data.local.dao
 
 interface TokenDao {
 
-    suspend fun fetchFcmToken(): String?
+    suspend fun fetchFcmToken(): String
 
     fun updateFcmToken(token: String)
 
