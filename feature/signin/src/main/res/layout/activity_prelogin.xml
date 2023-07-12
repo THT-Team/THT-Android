@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="130dp"
-        android:layout_height="159dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@null"
-        android:src="@drawable/ic_falling_logo_105_width"
+        android:src="@drawable/ic_intro_logo"
         app:layout_constraintBottom_toTopOf="@id/btn_phone_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
