@@ -2,6 +2,9 @@ package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.local.dao.TokenDao
 import com.tht.tht.data.remote.retrofit.TokenRefreshAuthenticator
+import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
+import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,10 +23,16 @@ object OkHttpClientModule {
     fun provideOkHttpClientBuilder(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         authorizationInterceptor: Interceptor,
-        tokenDao: TokenDao,
+        refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>,
+        fetchThtTokenUseCase: FetchThtTokenUseCase,
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .authenticator(TokenRefreshAuthenticator(tokenDao))
+            .authenticator(
+                TokenRefreshAuthenticator(
+                    refreshFcmTokenLoginUseCase = refreshFcmTokenLoginUseCase,
+                    fetchThtTokenUseCase = fetchThtTokenUseCase,
+                )
+            )
             .addInterceptor(authorizationInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .connectTimeout(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)

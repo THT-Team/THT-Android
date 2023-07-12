@@ -1,11 +1,9 @@
 package com.tht.tht.data.remote.retrofit
 
 import com.tht.tht.data.local.dao.TokenDao
-import com.tht.tht.data.remote.request.login.FcmTokenLoginRequest
-import com.tht.tht.data.remote.response.base.BaseResponse
-import com.tht.tht.data.remote.response.base.ThtResponse
-import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
-import com.tht.tht.data.remote.service.THTLoginApi
+import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
+import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -15,7 +13,8 @@ import javax.inject.Inject
 
 
 class TokenRefreshAuthenticator @Inject constructor(
-    private val tokenDao: TokenDao,
+    private val refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>,
+    private val fetchThtTokenUseCase: FetchThtTokenUseCase,
 ) : Authenticator {
     @Inject
     lateinit var apiClient: ApiClient
@@ -43,35 +42,21 @@ class TokenRefreshAuthenticator @Inject constructor(
     private fun Response.createRequest(): Request? {
         return try {
             runBlocking {
-                val result = tokenDao.fetchFcmToken()?.let { token ->
-                    tokenDao.fetchPhone()?.let { phoneNumber ->
-                        reissueToken(token, phoneNumber)
+                fetchThtTokenUseCase().getOrNull()
+                    ?.let { token ->
+                        val accessToken = reissueToken(token)
+                        accessToken?.let { request.retry(it) }
                     }
-                }
-                when (result) {
-                    is BaseResponse.Success -> request.retry(result.response.accessToken)
-                    else -> null
-                }
             }
         } catch (e: Throwable) {
             null
         }
     }
 
-    private suspend fun reissueToken(
-        token: String,
-        phoneNumber: String
-    ): ThtResponse<FcmTokenLoginResponse> {
-        return apiClient.thtApiAdapter
-            .create(THTLoginApi::class.java).run {
-                refreshFcmTokenLogin(
-                    fcmTokenLoginRequest = FcmTokenLoginRequest(
-                        deviceKey = token,
-                        phoneNumber = phoneNumber,
-                    )
-                )
-            }
-    }
+    private suspend fun reissueToken(token: String): String? =
+        refreshFcmTokenLoginUseCase
+            .get().invoke(token)
+            .getOrNull()?.accessToken
 
     private fun Request.retry(accessToken: String) = this
         .newBuilder()
