@@ -33,7 +33,6 @@ class TokenRefreshAuthenticator @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
         return if (response.code == 401) {
             response.createRequest()
-            null
         } else if (response.retryCount > 2) {
             null
         } else {
