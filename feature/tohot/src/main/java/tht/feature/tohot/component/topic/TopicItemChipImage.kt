@@ -23,7 +23,7 @@ fun <T> TopicItemChipImage(
 ) {
     if (imageUrl == null) {
         Image(
-            modifier = Modifier,
+            modifier = modifier,
             painter = error,
             contentDescription = "topic_item"
         )
