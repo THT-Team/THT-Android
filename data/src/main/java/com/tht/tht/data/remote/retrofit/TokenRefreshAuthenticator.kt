@@ -1,6 +1,5 @@
 package com.tht.tht.data.remote.retrofit
 
-import com.tht.tht.data.local.dao.TokenDao
 import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import dagger.Lazy
@@ -9,15 +8,13 @@ import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
-import javax.inject.Inject
 
 
-class TokenRefreshAuthenticator @Inject constructor(
+class TokenRefreshAuthenticator(
     private val refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>,
     private val fetchThtTokenUseCase: FetchThtTokenUseCase,
 ) : Authenticator {
-    @Inject
-    lateinit var apiClient: ApiClient
+
     private val Response.retryCount: Int
         get() {
             var currentResponse = priorResponse
