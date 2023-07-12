@@ -13,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 @InstallIn(SingletonComponent::class)
 object OkHttpInterceptorModule {
 
-    // TODO Preference 추가해서 accesToken 연결작업하기
     @Provides
     fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()

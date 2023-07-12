@@ -19,7 +19,7 @@ class ApiClient @Inject constructor(
     private val okHttpClient: OkHttpClient
 ) {
 
-    private val thtApiAdapter: Retrofit by lazy {
+    val thtApiAdapter: Retrofit by lazy {
         createApiAdapter(THTApiConstant.BASE_URL)
     }
 
