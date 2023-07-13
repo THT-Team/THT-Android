@@ -11,7 +11,7 @@ class TokenDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : TokenDataSource {
 
-    override suspend fun fetchFcmToken(): String? {
+    override suspend fun fetchFcmToken(): String {
         return withContext(dispatcher) {
             tokenDao.fetchFcmToken()
         }

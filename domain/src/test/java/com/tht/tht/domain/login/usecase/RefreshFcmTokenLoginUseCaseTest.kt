@@ -49,6 +49,16 @@ internal class RefreshFcmTokenLoginUseCaseTest {
     }
 
     @Test
+    fun `useCase는 매개변수 fcmToken이 null이라면 tokenRepository의 fetchFcmToken를 호출해 사용한다`() = runTest {
+        val expect = "fcm_token"
+        coEvery { tokenRepository.fetchFcmToken() } returns expect
+        coEvery { tokenRepository.fetchPhone() } returns "phone"
+        useCase(null)
+        coVerify(exactly = 1) { tokenRepository.updateFcmToken(expect) }
+        coVerify(exactly = 1) { loginRepository.refreshFcmTokenLogin(expect, any()) }
+    }
+
+    @Test
     fun `useCase는 tokenRepository의 fetchPhone가 null을 리턴하면 발생하는 예외를 Result로 래핑해 리턴한다`() = runTest {
         coEvery { tokenRepository.fetchPhone() } returns null
 

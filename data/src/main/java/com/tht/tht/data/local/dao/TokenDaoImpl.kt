@@ -16,7 +16,7 @@ class TokenDaoImpl @Inject constructor(
 ) : TokenDao {
 
     // local 에 저장된 token 이 없다면 FirebaseInstance 에서 token 을 가져 오고, local 에 저장
-    override suspend fun fetchFcmToken(): String? {
+    override suspend fun fetchFcmToken(): String {
         return sp.getString(FCM_TOKEN_KEY, null) ?: suspendCancellableCoroutine { continuation ->
             firebaseMessaging
                 .token
