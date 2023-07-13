@@ -13,6 +13,7 @@ import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
@@ -194,4 +195,12 @@ object UseCaseModule {
         repository: DailyUserCardRepository
     ): FetchDailyUserCardUseCase =
         FetchDailyUserCardUseCase(repository)
+
+    @Provides
+    fun provideFetchToHotStateUseCase(
+        topicRepository: DailyTopicRepository,
+        userCardRepository: DailyUserCardRepository,
+        fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
+    ): FetchToHotStateUseCase =
+        FetchToHotStateUseCase(topicRepository, userCardRepository, fetchDailyTopicListUseCase)
 }
