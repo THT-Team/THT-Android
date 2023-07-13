@@ -5,7 +5,7 @@ class FetchDailyUserCardUseCase(
 ) {
     suspend operator fun invoke(
         passedUserIdList: List<String>,
-        lastUserDailyFallingCourserIdx: Int,
+        lastUserDailyFallingCourserIdx: Int?,
         size: Int = 10
     ): Result<DailyUserCardListModel> {
         return kotlin.runCatching {

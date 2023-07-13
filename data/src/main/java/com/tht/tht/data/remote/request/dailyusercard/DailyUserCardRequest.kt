@@ -9,5 +9,5 @@ data class DailyUserCardRequest(
     @SerializedName("size")
     val size: Int,
     @SerializedName("userDailyFallingCourserIdx")
-    val userDailyFallingCourserIdx: Int
+    val userDailyFallingCourserIdx: Int?
 )

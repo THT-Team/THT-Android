@@ -12,7 +12,7 @@ class DailyUserCardRepositoryImpl @Inject constructor(
 ) : DailyUserCardRepository {
     override suspend fun fetchDailyUserCard(
         passedUserIdList: List<String>,
-        lastUserDailyFallingCourserIdx: Int,
+        lastUserDailyFallingCourserIdx: Int?,
         size: Int
     ): DailyUserCardListModel {
         return dataSource.fetchDailyUserCard(

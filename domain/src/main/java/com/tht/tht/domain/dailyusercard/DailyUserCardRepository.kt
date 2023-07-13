@@ -3,7 +3,7 @@ package com.tht.tht.domain.dailyusercard
 interface DailyUserCardRepository {
     suspend fun fetchDailyUserCard(
         passedUserIdList: List<String>,
-        lastUserDailyFallingCourserIdx: Int,
+        lastUserDailyFallingCourserIdx: Int?,
         size: Int
     ): DailyUserCardListModel
 }
