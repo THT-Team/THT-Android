@@ -1,7 +1,6 @@
 package com.tht.tht.data.remote.retrofit
 
 import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
-import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -11,8 +10,7 @@ import okhttp3.Route
 
 
 class TokenRefreshAuthenticator(
-    private val refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>,
-    private val fetchThtTokenUseCase: FetchThtTokenUseCase,
+    private val refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>
 ) : Authenticator {
 
     private val Response.retryCount: Int
@@ -38,21 +36,15 @@ class TokenRefreshAuthenticator(
 
     private fun Response.createRequest(): Request? {
         return try {
-            runBlocking {
-                fetchThtTokenUseCase().getOrNull()
-                    ?.let { token ->
-                        val accessToken = reissueToken(token)
-                        accessToken?.let { request.retry(it) }
-                    }
-            }
+            runBlocking { reissueToken()?.let { request.retry(it) } }
         } catch (e: Throwable) {
+            e.printStackTrace()
             null
         }
     }
 
-    private suspend fun reissueToken(token: String): String? =
-        refreshFcmTokenLoginUseCase
-            .get().invoke(token)
+    private suspend fun reissueToken(): String? =
+        refreshFcmTokenLoginUseCase.get().invoke()
             .getOrNull()?.accessToken
 
     private fun Request.retry(accessToken: String) = this

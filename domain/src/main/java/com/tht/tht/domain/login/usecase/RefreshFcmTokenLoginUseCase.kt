@@ -11,12 +11,13 @@ class RefreshFcmTokenLoginUseCase(
     private val tokenRepository: TokenRepository,
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(fcmToken: String): Result<FcmTokenLoginResponseModel> {
+    suspend operator fun invoke(fcmToken: String? = null): Result<FcmTokenLoginResponseModel> {
         return kotlin.runCatching {
-            tokenRepository.updateFcmToken(fcmToken) // local 에 fcm token 저장
+            val fcmTokenNonNull = fcmToken ?: tokenRepository.fetchFcmToken()
+            tokenRepository.updateFcmToken(fcmTokenNonNull) // local 에 fcm token 저장
             val phone = tokenRepository.fetchPhone()
             requireNotNull(phone) { "before login" }
-            loginRepository.refreshFcmTokenLogin(fcmToken, phone).let {
+            loginRepository.refreshFcmTokenLogin(fcmTokenNonNull, phone).let {
                 tokenRepository.updateThtToken(
                     it.accessToken,
                     it.accessTokenExpiresIn,

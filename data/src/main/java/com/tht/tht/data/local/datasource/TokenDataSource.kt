@@ -2,7 +2,7 @@ package com.tht.tht.data.local.datasource
 
 interface TokenDataSource {
 
-    suspend fun fetchFcmToken(): String?
+    suspend fun fetchFcmToken(): String
 
     suspend fun updateFcmToken(token: String)
 

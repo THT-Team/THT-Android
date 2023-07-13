@@ -7,7 +7,7 @@ import javax.inject.Inject
 class TokenRepositoryImpl @Inject constructor(
     private val tokenDataSource: TokenDataSource
 ) : TokenRepository {
-    override suspend fun fetchFcmToken(): String? {
+    override suspend fun fetchFcmToken(): String {
         return tokenDataSource.fetchFcmToken()
     }
 
