@@ -13,7 +13,6 @@ fun DailyTopicResponse.toModel(): DailyTopicListModel {
 
 fun DailyTopicResponse.FallingTopic.toModel(): DailyTopicModel {
     return DailyTopicModel(
-        imageUrl = keywordImgUrl,
         key = keywordIdx,
         title = keyword,
         content = talkIssue,
