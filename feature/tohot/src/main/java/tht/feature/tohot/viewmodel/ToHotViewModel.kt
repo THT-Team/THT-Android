@@ -105,7 +105,9 @@ class ToHotViewModel @Inject constructor(
                         enableTimerIdx = 0,
                         topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
                         topicModalShow = toHotState.needSelectTopic,
-                        currentTopic = toHotState.topic.topics.find { t -> t.key == toHotState.selectTopicKey }?.toUiModel(),
+                        currentTopic = toHotState.topic.topics.find { t ->
+                            t.key == toHotState.selectTopicKey
+                        }?.toUiModel(),
                         topicSelectRemainingTime = "24:00:00" //TODO: state.topicResetTimeMill 로 매핑 필요
                     )
                 }

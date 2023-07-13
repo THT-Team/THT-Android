@@ -4,7 +4,6 @@ import com.tht.tht.domain.topic.DailyTopicModel
 import tht.feature.tohot.R
 import tht.feature.tohot.model.TopicUiModel
 
-
 fun DailyTopicModel.toUiModel(): TopicUiModel {
     return TopicUiModel(
         iconUrl = iconUrl,
