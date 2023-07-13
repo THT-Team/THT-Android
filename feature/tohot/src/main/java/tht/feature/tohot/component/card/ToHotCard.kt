@@ -49,7 +49,7 @@ fun ToHotCard(
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { },
     onReportMenuClick: () -> Unit = { },
-    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
+    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> }
 ) {
     val pagerState = rememberPagerState()
     var userInfoFullShow by remember { mutableStateOf(false) }

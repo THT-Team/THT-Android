@@ -219,7 +219,7 @@ private fun ToHotScreen(
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
-    loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
+    loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = modifier.fillMaxSize()

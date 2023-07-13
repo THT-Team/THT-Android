@@ -344,21 +344,19 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun userCardLoadFinishEvent(idx: Int, result: Boolean?, error: Throwable?) {
+    fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
-        result?.let {
-            intent {
-                reduce {
-                    it.copy(
-                        timers = ImmutableListWrapper(
-                            it.timers.list.toMutableList().apply {
-                                this[idx] = this[idx].copy(
-                                    startAble = true
-                                )
-                            }
-                        )
+        intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(
+                                startAble = true
+                            )
+                        }
                     )
-                }
+                )
             }
         }
     }
