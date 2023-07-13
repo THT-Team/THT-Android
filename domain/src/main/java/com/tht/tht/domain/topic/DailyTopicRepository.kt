@@ -6,4 +6,8 @@ interface DailyTopicRepository {
     suspend fun selectDailyTopic(
         topicIdx: Int
     ): Boolean
+
+    suspend fun fetchDailyTopicFromLocal(): DailyTopicListModel
+
+    suspend fun saveDailyTopic(topic: DailyTopicListModel)
 }

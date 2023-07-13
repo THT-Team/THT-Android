@@ -13,9 +13,29 @@ fun DailyTopicResponse.toModel(): DailyTopicListModel {
 
 fun DailyTopicResponse.FallingTopic.toModel(): DailyTopicModel {
     return DailyTopicModel(
+        idx = idx,
         key = keywordIdx,
         title = keyword,
         content = talkIssue,
         iconUrl = keywordImgUrl
     )
 }
+
+fun DailyTopicListModel.toEntity(): DailyTopicResponse {
+    return DailyTopicResponse(
+        expirationUnixTime = topicResetTimeMill,
+        fallingTopicList = topics.map { it.toEntity() }
+    )
+}
+
+fun DailyTopicModel.toEntity(): DailyTopicResponse.FallingTopic {
+    return DailyTopicResponse.FallingTopic(
+        idx = idx,
+        keyword = title,
+        keywordIdx = key,
+        keywordImgUrl = iconUrl,
+        talkIssue = content
+    )
+}
+
+
