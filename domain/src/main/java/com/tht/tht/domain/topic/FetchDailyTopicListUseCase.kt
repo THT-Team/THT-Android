@@ -5,7 +5,9 @@ class FetchDailyTopicListUseCase(
 ) {
     suspend operator fun invoke(): Result<DailyTopicListModel> {
         return kotlin.runCatching {
-            repository.fetchDailyTopic()
+            repository.fetchDailyTopic().also {
+                repository.saveDailyTopic(it)
+            }
         }
     }
 }
