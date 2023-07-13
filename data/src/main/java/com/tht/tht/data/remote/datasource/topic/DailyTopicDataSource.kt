@@ -8,4 +8,8 @@ interface DailyTopicDataSource {
     suspend fun selectDailyTopic(
         topicIdx: Int
     ): Boolean
+
+    suspend fun fetchDailyTopicFromLocal(): DailyTopicResponse
+
+    suspend fun saveDailyTopic(topic: DailyTopicResponse)
 }
