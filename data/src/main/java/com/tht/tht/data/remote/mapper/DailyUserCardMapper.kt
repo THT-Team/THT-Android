@@ -40,7 +40,7 @@ fun DailyUserCardResponse.UserInfo.toModel(): DailyUserCardModel {
 
 fun DailyUserCardResponse.toModel(): DailyUserCardListModel {
     return DailyUserCardListModel(
-        selectTopicIdx = selectDailyFallingIdx,
+        selectTopicKey = selectDailyFallingIdx,
         topicResetTimeMill = topicExpirationUnixTime,
         cards = userInfos.map { it.toModel() }
     )
