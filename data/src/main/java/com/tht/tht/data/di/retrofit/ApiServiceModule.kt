@@ -1,15 +1,15 @@
 package com.tht.tht.data.di.retrofit
 
-import com.tht.tht.data.remote.retrofit.ApiClient
 import com.tht.tht.data.remote.service.ImageService
 import com.tht.tht.data.remote.service.ImageServiceImpl
-import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -19,25 +19,25 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideTHTSignupApiService(
-        apiClient: ApiClient
+        @ThtBasicRetrofit retrofit: Retrofit
     ): THTSignupApi {
-        return apiClient.provideTHTSignupApi()
+        return retrofit.create(THTSignupApi::class.java)
     }
 
     @Provides
     @Singleton
     fun provideTHTLoginApiService(
-        apiClient: ApiClient
+        @ThtBasicRetrofit retrofit: Retrofit
     ): THTLoginApi {
-        return apiClient.provideTHTLoginApi()
+        return retrofit.create(THTLoginApi::class.java)
     }
 
     @Provides
     @Singleton
     fun provideRegionCodeApi(
-        apiClient: ApiClient
+        @RegionCodeRetrofit retrofit: Retrofit
     ): RegionCodeApi {
-        return apiClient.provideRegionCodeApi()
+        return retrofit.create(RegionCodeApi::class.java)
     }
 
     @Provides
