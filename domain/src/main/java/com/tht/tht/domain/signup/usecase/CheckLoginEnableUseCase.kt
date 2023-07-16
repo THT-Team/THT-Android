@@ -19,7 +19,7 @@ class CheckLoginEnableUseCase(
                 .also {
                     if (it.isSignup) {
                         loginRepository.refreshFcmTokenLogin(
-                            fcmToken = tokenRepository.fetchFcmToken()!!,
+                            fcmToken = tokenRepository.fetchFcmToken(),
                             phone = phone
                         ).let { tokenInfo ->
                             tokenRepository.updateThtToken(
