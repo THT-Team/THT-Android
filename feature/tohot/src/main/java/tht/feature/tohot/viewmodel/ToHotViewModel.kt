@@ -358,6 +358,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
+        error?.printStackTrace()
         intent {
             reduce {
                 it.copy(
