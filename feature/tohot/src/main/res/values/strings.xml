@@ -19,6 +19,7 @@
     <string name="waiting">기다리기</string>
     <string name="restart">다시 시작</string>
     <string name="reset">리셋</string>
+    <string name="retry">다시 시도</string>
 
     <string name="select_topic_title">오늘의 폴링</string>
 
@@ -26,6 +27,8 @@
     <string name="to_hot_empty_card_description">아직 무디들이 들어오고있어요.</string>
     <string name="to_hot_enter_card_title">주제어를 가장 먼저 선택하셨어요!</string>
     <string name="to_hot_enter_card_description">아직 무디들이 들어오고있어요.</string>
+    <string name="to_hot_error_card_description">무디들을 다시 불러올까요?</string>
+    <string name="to_hot_error_card_title">무디들을 불러오는데 문제가 발생했어요!</string>
 
     <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
     <string name="to_hot_topic_loading">"주제어 목록을 불러오고 있어요.."</string>
