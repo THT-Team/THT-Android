@@ -31,6 +31,7 @@ import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
+import tht.feature.tohot.component.card.ToHotErrorCard
 import tht.feature.tohot.component.card.ToHotLoadingCard
 import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
@@ -41,6 +42,7 @@ import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.state.ToHotCardState
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
@@ -162,7 +164,7 @@ fun ToHotRoute(
                         false
                     },
                 cardList = toHotState.userList,
-                isEnterDelay = toHotState.isFirstPage,
+                toHotCardState = toHotState.userCardState,
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
@@ -200,7 +202,7 @@ fun ToHotRoute(
 @Composable
 private fun ToHotScreen(
     modifier: Modifier = Modifier,
-    isEnterDelay: Boolean,
+    toHotCardState: ToHotCardState,
     pagerState: PagerState,
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
@@ -237,10 +239,10 @@ private fun ToHotScreen(
 
         when (cardList.list.isEmpty()) {
             true -> {
-                if (isEnterDelay) {
-                    ToHotEnterCard()
-                } else {
-                    ToHotEmptyCard()
+                when (toHotCardState) {
+                    ToHotCardState.Initialize -> ToHotEnterCard()
+                    ToHotCardState.Running -> ToHotEmptyCard()
+                    ToHotCardState.Error -> ToHotErrorCard()
                 }
             }
 

@@ -11,7 +11,7 @@ data class ToHotState(
     val cardLoading: Boolean,
     val topicLoading: Boolean,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
-    val isFirstPage: Boolean = true,
+    val userCardState: ToHotCardState, // Empty 일 경우 보여줄 View 를 정함 -> TODO: enum 으로 관리 해서 실패 처리도 포함?
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int,
     val fallingAnimationIdx: Int = -1,
@@ -35,3 +35,9 @@ data class ToHotState(
     val topicSelectRemainingTimeMill: Long,
     val hasUnReadAlarm: Boolean
 )
+
+enum class ToHotCardState {
+    Initialize,
+    Running,
+    Error
+}

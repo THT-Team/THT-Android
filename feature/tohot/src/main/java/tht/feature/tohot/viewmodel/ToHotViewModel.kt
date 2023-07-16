@@ -22,6 +22,7 @@ import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.state.ToHotCardState
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
 import java.time.Instant
@@ -32,11 +33,8 @@ import java.util.Stack
 import javax.inject.Inject
 
 /**
- * TODO: UserInfo 디자인 이상한 문제
- * TODO: Topic Remain Time 파싱, 타이머
- * TODO: API 예외 처리
- * TODO: Paging List Empty 처리
  * TODO: UseCase Test Code 작성
+ * TODO: 토큰 재발급 계속 실패할 경우?
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
@@ -49,6 +47,7 @@ class ToHotViewModel @Inject constructor(
         store(
             initialState = ToHotState(
                 userList = ImmutableListWrapper(emptyList()),
+                userCardState = ToHotCardState.Initialize,
                 timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
                 cardMoveAllow = true,
@@ -90,7 +89,7 @@ class ToHotViewModel @Inject constructor(
                         userList = ImmutableListWrapper(
                             store.state.value.userList.list + toHotState.cards.map { c -> c.toUiModel() }
                         ),
-                        isFirstPage = toHotState.cards.isEmpty(),
+                        userCardState = ToHotCardState.Initialize,
                         timers = ImmutableListWrapper(
                             store.state.value.timers.list +
                                 List(toHotState.cards.size) {
@@ -111,8 +110,13 @@ class ToHotViewModel @Inject constructor(
                         topicSelectRemainingTime = "24:00:00" //TODO: state.topicResetTimeMill 로 매핑 필요
                     )
                 }
-            }.onFailure {
-                it.printStackTrace()
+            }.onFailure { e ->
+                e.printStackTrace()
+                reduce {
+                    it.copy(
+                        userCardState = ToHotCardState.Error
+                    )
+                }
             }
             reduce { it.copy(topicLoading = false) }
         }
@@ -149,8 +153,8 @@ class ToHotViewModel @Inject constructor(
     }
 
     /**
+     * TODO: 미완성
      * 1 초 마다 LocalDateTime 객체, State 객체를 생성 하는 문제 존재
-     * 미완성
      * Topic Modal 을 두번째 부터 열때 타이머가 멈추며, fetchTopicList 가 호출되어 progress 가 돌아감
      */
     private lateinit var topicRemainingTimer: Job
@@ -213,15 +217,13 @@ class ToHotViewModel @Inject constructor(
                         ToHotSideEffect.Scroll(currentIdx + 1)
                     )
                 }
-                else -> removeAllCard() //TODO: 페이징 요청이 실패 했을 때 -> 실패 처리를 따로 할지, 아니면 그냥 다음 유저가 없다 할지?
+                else -> removeAllCard()
             }
         }
     }
 
     /**
      * 페이징 - 마지막 Index Card 에서 페이징 요청
-     * - 페이징 List 가 없다면?
-     * - 페이징 로딩 중에 다음 카드로 넘어 가려 한다면 - 로딩 효과 표시, 페이징 완료 후 다음 리스트 표시
      */
     private suspend fun fetchUserCard(lastUserIdx: Int? = null) {
         pagingLoading = lastUserIdx != null
@@ -237,7 +239,7 @@ class ToHotViewModel @Inject constructor(
                         userList = ImmutableListWrapper(
                             store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
                         ),
-                        isFirstPage = dailyUserCardList.cards.isEmpty(),
+                        userCardState = ToHotCardState.Running,
                         timers = ImmutableListWrapper(
                             store.state.value.timers.list +
                                 List(dailyUserCardList.cards.size) {
@@ -254,8 +256,16 @@ class ToHotViewModel @Inject constructor(
                     )
                 }
             }
-        }.onFailure {
-            it.printStackTrace()
+        }.onFailure { e ->
+            e.printStackTrace()
+            intent {
+                reduce {
+                    it.copy(
+                        userCardState = ToHotCardState.Error,
+                        cardLoading = false
+                    )
+                }
+            }
         }
         if (pagingLoading) {
             pagingLoading = false
