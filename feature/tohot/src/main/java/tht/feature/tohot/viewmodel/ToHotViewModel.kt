@@ -203,11 +203,9 @@ class ToHotViewModel @Inject constructor(
     private fun tryScrollToNext(currentIdx: Int) {
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
-                intent {
-                    reduce { it.copy(cardLoading = true) }
-                    fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
-                    reduce { it.copy(cardLoading = false) }
-                }
+                intent { reduce { it.copy(cardLoading = true) } }
+                fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
+                intent { reduce { it.copy(cardLoading = false) } }
             }
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
