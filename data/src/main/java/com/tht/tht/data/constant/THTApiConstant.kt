@@ -1,6 +1,8 @@
 package com.tht.tht.data.constant
 
 object THTApiConstant {
+    const val TIMEOUT_MILLIS = 5000L
+
     const val BASE_URL = "http://tht-talk.store/"
 
     object Signup {
