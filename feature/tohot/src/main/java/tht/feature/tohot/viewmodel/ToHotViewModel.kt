@@ -242,7 +242,7 @@ class ToHotViewModel @Inject constructor(
      * - 페이징 로딩 중에 다음 카드로 넘어 가려 한다면 - 로딩 효과 표시, 페이징 완료 후 다음 리스트 표시
      */
     private suspend fun fetchUserCard(lastUserIdx: Int? = null) {
-        pagingLoading = lastUserIdx == null
+        pagingLoading = lastUserIdx != null
         if (!pagingLoading) intent { reduce { it.copy(cardLoading = true) } }
         fetchDailyUserCardUseCase(
             passedUserIdList = passedUserCardStack.map { it.id }.toList(),
