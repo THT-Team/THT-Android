@@ -13,9 +13,9 @@ data class ToHotState(
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
     val userCardState: ToHotCardState, // Empty 일 경우 보여줄 View 를 정함 -> TODO: enum 으로 관리 해서 실패 처리도 포함?
     val timers: ImmutableListWrapper<CardTimerUiModel>,
-    val enableTimerIdx: Int,
-    val fallingAnimationIdx: Int = -1,
-    val cardMoveAllow: Boolean,
+    val enableTimerIdx: Int, // 현재 표시 되는 Card Idx -> 해당 Card 의 Timer 진행됨
+    val fallingAnimationIdx: Int = -1, // 신고, 차단 Animation Idx
+    val cardMoveAllow: Boolean, // card suspend 기능. false 일 경우 Timer 중단. Dialog 등이 표시 될 때 사용
     val reportMenuDialogShow: Boolean = false,
     val reportDialogShow: Boolean = false,
     val blockDialogShow: Boolean = false,
