@@ -1,8 +1,11 @@
 package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.BuildConfig
+import com.tht.tht.data.remote.retrofit.TokenRefreshAuthenticator
 import com.tht.tht.data.remote.retrofit.header.HttpHeaderKey
+import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,4 +40,9 @@ object OkHttpInterceptorModule {
             level =
                 if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
+
+    @Provides
+    fun provideTokenRefreshAuthenticator(
+        refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>
+    ): TokenRefreshAuthenticator = TokenRefreshAuthenticator(refreshFcmTokenLoginUseCase)
 }

@@ -1,17 +1,17 @@
 package com.tht.tht.data.di.retrofit
 
-import com.tht.tht.data.remote.retrofit.ApiClient
-import com.tht.tht.data.remote.service.image.ImageService
-import com.tht.tht.data.remote.service.image.ImageServiceImpl
 import com.tht.tht.data.remote.service.THTLoginApi
-import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
+import com.tht.tht.data.remote.service.image.ImageService
+import com.tht.tht.data.remote.service.image.ImageServiceImpl
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -21,25 +21,25 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideTHTSignupApiService(
-        apiClient: ApiClient
+        @ThtBasicRetrofit retrofit: Retrofit
     ): THTSignupApi {
-        return apiClient.provideTHTSignupApi()
+        return retrofit.create(THTSignupApi::class.java)
     }
 
     @Provides
     @Singleton
     fun provideTHTLoginApiService(
-        apiClient: ApiClient
+        @ThtBasicRetrofit retrofit: Retrofit
     ): THTLoginApi {
-        return apiClient.provideTHTLoginApi()
+        return retrofit.create(THTLoginApi::class.java)
     }
 
     @Provides
     @Singleton
     fun provideRegionCodeApi(
-        apiClient: ApiClient
+        @RegionCodeRetrofit retrofit: Retrofit
     ): RegionCodeApi {
-        return apiClient.provideRegionCodeApi()
+        return retrofit.create(RegionCodeApi::class.java)
     }
 
     @Provides
@@ -49,12 +49,12 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideDailyTopicApiService(
-        apiClient: ApiClient
-    ): DailyTopicApiService = apiClient.thtApiAdapter.create(DailyTopicApiService::class.java)
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): DailyTopicApiService = retrofit.create(DailyTopicApiService::class.java)
 
     @Provides
     @Singleton
     fun provideDailyUserCardApiService(
-        apiClient: ApiClient
-    ): DailyUserCardApiService = apiClient.thtApiAdapter.create(DailyUserCardApiService::class.java)
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): DailyUserCardApiService = retrofit.create(DailyUserCardApiService::class.java)
 }
