@@ -195,43 +195,27 @@ class ToHotViewModel @Inject constructor(
     }
 
     /**
-     * 다음 아이템 있다면 Scroll
-     * 다음 아이템이 없다면 페이징 로딩 여부 체크
-     * - 로딩 중 이라면 channel 을 통해 페이징 로딩이 끝나는 것을 대기
-     * - 로딩 중 이지 않다면 페이징 처리가 끝났는데 다음 Item이 없으므로 List Empty 처리
+     * 다음 아이템 없고, 페이징 중 이라면 페이징 대기
+     * 다음 Item 존재 하면 Scroll
+     * 없다면 removeAllCard -> 다음 유저가 없음 표시
+     * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
     private fun tryScrollToNext(currentIdx: Int) {
         viewModelScope.launch {
+            if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
+                intent {
+                    reduce { it.copy(cardLoading = true) }
+                    fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
+                    reduce { it.copy(cardLoading = false) }
+                }
+            }
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
                     postSideEffect(
                         ToHotSideEffect.Scroll(currentIdx + 1)
                     )
                 }
-
-                else -> {
-                    if (pagingLoading) {
-                        intent {
-                            reduce {
-                                it.copy(cardLoading = true)
-                            }
-                        }
-                        fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
-                        intent {
-                            reduce {
-                                it.copy(cardLoading = false)
-                            }
-                            if ((currentIdx + 1) !in currentUserListRange) {
-                                return@intent
-                            }
-                            postSideEffect(
-                                ToHotSideEffect.Scroll(currentIdx + 1)
-                            )
-                        }
-                    } else {
-                        removeAllCard()
-                    }
-                }
+                else -> removeAllCard() //TODO: 페이징 요청이 실패 했을 때 -> 실패 처리를 따로 할지, 아니면 그냥 다음 유저가 없다 할지?
             }
         }
     }
