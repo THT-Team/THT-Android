@@ -182,7 +182,8 @@ fun ToHotRoute(
                 loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
                 onLikeClick = toHotViewModel::likeCardEvent,
                 onUnLikeClick = toHotViewModel::unlikeCardEvent,
-                onReportMenuClick = toHotViewModel::reportMenuEvent
+                onReportMenuClick = toHotViewModel::reportMenuEvent,
+                onRefreshClick = toHotViewModel::refreshEvent
             )
         }
 
@@ -221,6 +222,7 @@ private fun ToHotScreen(
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
+    onRefreshClick: () -> Unit = { },
     loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
@@ -240,9 +242,9 @@ private fun ToHotScreen(
         when (cardList.list.isEmpty()) {
             true -> {
                 when (toHotCardState) {
-                    ToHotCardState.Initialize -> ToHotEnterCard()
-                    ToHotCardState.Running -> ToHotEmptyCard()
-                    ToHotCardState.Error -> ToHotErrorCard()
+                    ToHotCardState.Initialize -> ToHotEnterCard(onClick = onRefreshClick)
+                    ToHotCardState.Running -> ToHotEmptyCard(onClick = onRefreshClick)
+                    ToHotCardState.Error -> ToHotErrorCard(onClick = onRefreshClick)
                 }
             }
 

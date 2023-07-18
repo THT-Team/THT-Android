@@ -9,14 +9,16 @@ import tht.feature.tohot.R
 
 @Composable
 fun ToHotEnterCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
 ) {
     ToHotNotifyCard(
         modifier = modifier,
         image = painterResource(id = R.drawable.ic_mudy_enter),
         title = stringResource(id = R.string.to_hot_enter_card_title),
         description = stringResource(id = R.string.to_hot_enter_card_description),
-        buttonText = stringResource(id = R.string.waiting)
+        buttonText = stringResource(id = R.string.waiting),
+        onClick = onClick
     )
 }
 

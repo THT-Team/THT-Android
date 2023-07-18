@@ -222,6 +222,17 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    fun refreshEvent() {
+        if (store.state.value.cardLoading) return
+        viewModelScope.launch {
+            intent { reduce { it.copy(cardLoading = true) } }
+            fetchUserCard(
+                lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
+            )
+            intent { reduce { it.copy(cardLoading = false) } }
+        }
+    }
+
     /**
      * 페이징 - 마지막 Index Card 에서 페이징 요청
      */

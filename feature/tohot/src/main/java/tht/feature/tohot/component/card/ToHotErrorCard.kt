@@ -9,14 +9,16 @@ import tht.feature.tohot.R
 
 @Composable
 fun ToHotErrorCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
 ) {
     ToHotNotifyCard(
         modifier = modifier,
         image = painterResource(id = R.drawable.ic_mudy_error),
         title = stringResource(id = R.string.to_hot_error_card_title),
         description = stringResource(id = R.string.to_hot_error_card_description),
-        buttonText = stringResource(id = R.string.retry)
+        buttonText = stringResource(id = R.string.retry),
+        onClick = onClick
     )
 }
 
