@@ -18,6 +18,9 @@ import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -203,4 +206,16 @@ object UseCaseModule {
         fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
     ): FetchToHotStateUseCase =
         FetchToHotStateUseCase(topicRepository, userCardRepository, fetchDailyTopicListUseCase)
+
+    @Provides
+    fun provideReportUserUseCase(
+        repository: UserRepository
+    ): ReportUserUseCase =
+        ReportUserUseCase(repository)
+
+    @Provides
+    fun provideBlockUserUseCase(
+        repository: UserRepository
+    ): BlockUserUseCase =
+        BlockUserUseCase(repository)
 }
