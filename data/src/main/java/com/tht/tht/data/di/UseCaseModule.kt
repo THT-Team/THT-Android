@@ -18,6 +18,7 @@ import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.UserRepository
@@ -192,6 +193,11 @@ object UseCaseModule {
     fun provideFetchDailyTopicListUseCase(
         repository: DailyTopicRepository
     ): FetchDailyTopicListUseCase = FetchDailyTopicListUseCase(repository)
+
+    @Provides
+    fun provideSelectTopicUseCase(
+        repository: DailyTopicRepository
+    ): SelectTopicUseCase = SelectTopicUseCase(repository)
 
     @Provides
     fun provideFetchDailyUserCardUseCase(
