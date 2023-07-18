@@ -25,6 +25,7 @@ import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotCardState
+import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
 import java.time.Instant
@@ -55,8 +56,7 @@ class ToHotViewModel @Inject constructor(
                 timers = ImmutableListWrapper(emptyList()),
                 enableTimerIdx = 0,
                 cardMoveAllow = true,
-                cardLoading = false,
-                topicLoading = false,
+                loading = ToHotLoading.None,
                 selectTopicKey = -1,
                 currentTopic = null,
                 topicModalShow = false,
@@ -83,7 +83,7 @@ class ToHotViewModel @Inject constructor(
 
     private fun fetchToHotState() {
         intent {
-            reduce { it.copy(topicLoading = true) }
+            reduce { it.copy(loading = ToHotLoading.TopicList) }
             fetchToHotStateUseCase(
                 currentTimeMill = System.currentTimeMillis(),
                 size = CARD_SIZE
@@ -122,14 +122,14 @@ class ToHotViewModel @Inject constructor(
                     )
                 }
             }
-            reduce { it.copy(topicLoading = false) }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
     private fun fetchTopicList() {
         viewModelScope.launch {
             clearUserCard()
-            intent { reduce { it.copy(topicLoading = true) } }
+            intent { reduce { it.copy(loading = ToHotLoading.TopicList) } }
             fetchDailyTopicListUseCase()
                 .onSuccess { dailyTopic ->
                     intent {
@@ -140,7 +140,7 @@ class ToHotViewModel @Inject constructor(
                                 topicSelectRemainingTime = "24:00:00" //TODO: 매핑 필요
                             )
                         }
-                        reduce { it.copy(topicLoading = false) }
+                        reduce { it.copy(loading = ToHotLoading.None) }
                     }
                 }.onFailure {
                     it.printStackTrace()
@@ -211,9 +211,9 @@ class ToHotViewModel @Inject constructor(
     private fun tryScrollToNext(currentIdx: Int) {
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
-                intent { reduce { it.copy(cardLoading = true) } }
+                intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
                 fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
-                intent { reduce { it.copy(cardLoading = false) } }
+                intent { reduce { it.copy(loading = ToHotLoading.None) } }
             }
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
@@ -227,13 +227,13 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun refreshEvent() {
-        if (store.state.value.cardLoading) return
+        if (store.state.value.loading != ToHotLoading.None) return
         viewModelScope.launch {
-            intent { reduce { it.copy(cardLoading = true) } }
+            intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
             fetchUserCard(
                 lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
             )
-            intent { reduce { it.copy(cardLoading = false) } }
+            intent { reduce { it.copy(loading = ToHotLoading.None) } }
         }
     }
 
@@ -242,7 +242,7 @@ class ToHotViewModel @Inject constructor(
      */
     private suspend fun fetchUserCard(lastUserIdx: Int? = null) {
         pagingLoading = lastUserIdx != null
-        if (!pagingLoading) intent { reduce { it.copy(cardLoading = true) } }
+        if (!pagingLoading) intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
         fetchDailyUserCardUseCase(
             passedUserIdList = passedUserCardStack.map { it.id }.toList(),
             lastUserDailyFallingCourserIdx = lastUserIdx,
@@ -267,7 +267,7 @@ class ToHotViewModel @Inject constructor(
                                 }
                         ),
                         enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
-                        cardLoading = false
+                        loading = ToHotLoading.None
                     )
                 }
             }
@@ -277,7 +277,7 @@ class ToHotViewModel @Inject constructor(
                 reduce {
                     it.copy(
                         userCardState = ToHotCardState.Error,
-                        cardLoading = false
+                        loading = ToHotLoading.None
                     )
                 }
             }
@@ -314,7 +314,7 @@ class ToHotViewModel @Inject constructor(
 
     fun topicSelectFinishEvent() {
         viewModelScope.launch {
-            intent { reduce { it.copy(cardLoading = true) } }
+            intent { reduce { it.copy(loading = ToHotLoading.TopicSelect) } }
             delay(500)
             intent {
                 reduce {
@@ -323,7 +323,7 @@ class ToHotViewModel @Inject constructor(
                         currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
                     )
                 }
-                reduce { it.copy(cardLoading = false) }
+                reduce { it.copy(loading = ToHotLoading.TopicSelect) }
             }
             fetchToHotState()
         }
@@ -474,7 +474,7 @@ class ToHotViewModel @Inject constructor(
 
     fun cardReportEvent(userIdx: Int, reasonIdx: Int) {
         intent {
-            //loading 처리?
+            reduce { it.copy(loading = ToHotLoading.Report) }
             reportUserUseCase(
                 userUuid = store.state.value.userList.list[userIdx].id,
                 reason = store.state.value.reportReason[reasonIdx]
@@ -503,12 +503,13 @@ class ToHotViewModel @Inject constructor(
                     )
                 )
             }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
     fun cardBlockEvent(idx: Int) {
         intent {
-            //loading 처리?
+            reduce { it.copy(loading = ToHotLoading.Block) }
             blockUserUseCase(userUuid = store.state.value.userList.list[idx].id)
                 .onSuccess {
                     postSideEffect(
@@ -535,6 +536,7 @@ class ToHotViewModel @Inject constructor(
                         )
                     )
                 }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
@@ -630,6 +632,6 @@ class ToHotViewModel @Inject constructor(
 
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 
-        private const val CARD_SIZE = 7
+        private const val CARD_SIZE = 5
     }
 }

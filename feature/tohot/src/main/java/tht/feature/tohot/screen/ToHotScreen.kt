@@ -43,6 +43,7 @@ import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.state.ToHotCardState
+import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
@@ -188,13 +189,15 @@ fun ToHotRoute(
         }
 
         ToHotLoadingCard(
-            isVisible = { toHotState.cardLoading },
-            message = stringResource(id = R.string.to_hot_user_card_loading)
-        )
-
-        ToHotLoadingCard(
-            isVisible = { toHotState.topicLoading },
-            message = stringResource(id = R.string.to_hot_topic_loading)
+            isVisible = { toHotState.loading != ToHotLoading.None },
+            message = when (toHotState.loading) {
+                ToHotLoading.TopicList -> stringResource(id = R.string.to_hot_topic_list_loading)
+                ToHotLoading.TopicSelect -> stringResource(id = R.string.to_hot_topic_select_loading)
+                ToHotLoading.UserList -> stringResource(id = R.string.to_hot_user_card_loading)
+                ToHotLoading.Report -> stringResource(id = R.string.to_hot_user_report_loading)
+                ToHotLoading.Block -> stringResource(id = R.string.to_hot_user_block_loading)
+                else -> ""
+            }
         )
     }
 }

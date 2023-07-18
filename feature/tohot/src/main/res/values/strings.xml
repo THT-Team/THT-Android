@@ -31,7 +31,10 @@
     <string name="to_hot_error_card_title">무디들을 불러오는데 문제가 발생했어요!</string>
 
     <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
-    <string name="to_hot_topic_loading">"주제어 목록을 불러오고 있어요.."</string>
+    <string name="to_hot_user_report_loading">"무디를 신고 중 이예요.."</string>
+    <string name="to_hot_user_block_loading">"무디를 차단 중 이예요.."</string>
+    <string name="to_hot_topic_list_loading">"주제어 목록을 불러오고 있어요.."</string>
+    <string name="to_hot_topic_select_loading">"주제어를 선택하고 있어요.."</string>
 
     <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
     <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>
