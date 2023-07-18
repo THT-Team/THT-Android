@@ -97,7 +97,7 @@ fun ToHotRoute(
     ToHotUseReportDialog(
         isShow = toHotState.reportDialogShow,
         reportReason = toHotState.reportReason,
-        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage) },
+        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage, it) },
         onCancelClick = toHotViewModel::reportDialogDismissEvent,
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )

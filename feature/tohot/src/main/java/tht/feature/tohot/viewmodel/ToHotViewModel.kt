@@ -10,6 +10,8 @@ import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.ReportUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,6 +43,8 @@ class ToHotViewModel @Inject constructor(
     private val fetchToHotStateUseCase: FetchToHotStateUseCase,
     private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase,
     private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
+    private val reportUserUseCase: ReportUserUseCase,
+    private val blockUserUseCase: BlockUserUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     override val store: Store<ToHotState, ToHotSideEffect> =
@@ -468,20 +472,35 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun cardReportEvent(idx: Int) {
+    fun cardReportEvent(userIdx: Int, reasonIdx: Int) {
         intent {
-            postSideEffect(
-                ToHotSideEffect.ToastMessage(
-                    message = stringProvider.getString(
-                        StringProvider.ResId.ReportSuccess
+            //loading 처리?
+            reportUserUseCase(
+                userUuid = store.state.value.userList.list[userIdx].id,
+                reason = store.state.value.reportReason[reasonIdx]
+            ).onSuccess {
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        message = stringProvider.getString(
+                            StringProvider.ResId.ReportSuccess
+                        )
                     )
                 )
-            )
-            reduce {
-                it.copy(
-                    fallingAnimationIdx = idx,
-                    reportMenuDialogShow = false,
-                    reportDialogShow = false
+                reduce {
+                    it.copy(
+                        fallingAnimationIdx = userIdx,
+                        reportMenuDialogShow = false,
+                        reportDialogShow = false
+                    )
+                }
+            }.onFailure {
+                it.printStackTrace()
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        message = stringProvider.getString(
+                            StringProvider.ResId.ReportFail
+                        )
+                    )
                 )
             }
         }
@@ -489,20 +508,33 @@ class ToHotViewModel @Inject constructor(
 
     fun cardBlockEvent(idx: Int) {
         intent {
-            postSideEffect(
-                ToHotSideEffect.ToastMessage(
-                    message = stringProvider.getString(
-                        StringProvider.ResId.BlockSuccess
+            //loading 처리?
+            blockUserUseCase(userUuid = store.state.value.userList.list[idx].id)
+                .onSuccess {
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.BlockSuccess
+                            )
+                        )
                     )
-                )
-            )
-            reduce {
-                it.copy(
-                    fallingAnimationIdx = idx,
-                    reportMenuDialogShow = false,
-                    blockDialogShow = false
-                )
-            }
+                    reduce {
+                        it.copy(
+                            fallingAnimationIdx = idx,
+                            reportMenuDialogShow = false,
+                            blockDialogShow = false
+                        )
+                    }
+                }.onFailure {
+                    it.printStackTrace()
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.BlockFail
+                            )
+                        )
+                    )
+                }
         }
     }
 
