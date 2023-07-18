@@ -13,4 +13,14 @@ inline fun <reified T : Any, R : Any> ThtResponse<out T>.toUnwrap(action: (T) ->
     }
 }
 
+inline fun <reified T : Any> ThtResponse<out T>.toUnwrap(): T {
+    return when (this) {
+        is BaseResponse.Success -> response
+        is BaseResponse.SuccessNoBody -> Unit as T
+        is BaseResponse.ApiError -> throw Exception(errorResponse.message)
+        is BaseResponse.NetworkError -> throw Exception(exception.message)
+        is BaseResponse.UnknownError -> throw Exception(throwable.message)
+    }
+}
+
 
