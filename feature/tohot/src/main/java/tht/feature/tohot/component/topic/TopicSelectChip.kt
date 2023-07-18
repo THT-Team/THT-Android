@@ -33,7 +33,7 @@ fun TopicSelectChip(
     @DrawableRes iconRes: Int,
     iconSize: Dp = 48.dp,
     title: String,
-    key: Int,
+    key: Int, // key 네이밍이지만 topic ui model 의 idx 속성을 넣어줌
     content: String,
     isSelect: Boolean,
     topicClickListener: (Int) -> Unit = { }

@@ -81,7 +81,7 @@ fun TopicSelectScreen(
                 iconRes = it.iconRes,
                 title = it.title,
                 content = it.content,
-                key = it.key,
+                key = it.idx,
                 isSelect = selectTopicKey == it.key,
                 topicClickListener = topicClickListener
             )
