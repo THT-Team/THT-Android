@@ -31,4 +31,10 @@ object THTApiConstant {
     object Card {
         const val DAILY_USER_CARD = "main/daily-falling/users"
     }
+
+    object User {
+        const val REPORT = "user/report"
+
+        const val BLOCK = "/user/block/{block-user-uuid}"
+    }
 }
