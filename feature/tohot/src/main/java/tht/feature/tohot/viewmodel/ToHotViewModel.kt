@@ -10,6 +10,7 @@ import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,34 +39,34 @@ import javax.inject.Inject
 /**
  * TODO: UseCase Test Code 작성
  * TODO: 토큰 재발급 계속 실패할 경우?
+ * TODO: 토픽 재선택 UI Block -> clearUserCard 필요 여부 고민
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
     private val fetchToHotStateUseCase: FetchToHotStateUseCase,
     private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase,
+    private val selectTopicUseCase: SelectTopicUseCase,
     private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val reportUserUseCase: ReportUserUseCase,
     private val blockUserUseCase: BlockUserUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
-    override val store: Store<ToHotState, ToHotSideEffect> =
-        store(
-            initialState = ToHotState(
-                userList = ImmutableListWrapper(emptyList()),
-                userCardState = ToHotCardState.Initialize,
-                timers = ImmutableListWrapper(emptyList()),
-                enableTimerIdx = 0,
-                cardMoveAllow = true,
-                loading = ToHotLoading.None,
-                selectTopicKey = -1,
-                currentTopic = null,
-                topicModalShow = false,
-                topicList = ImmutableListWrapper(emptyList()),
-                topicSelectRemainingTime = "00:00:00",
-                topicSelectRemainingTimeMill = 0,
-                hasUnReadAlarm = false
-            )
-        )
+    private val initializeState get() = ToHotState(
+        userList = ImmutableListWrapper(emptyList()),
+        userCardState = ToHotCardState.Initialize,
+        timers = ImmutableListWrapper(emptyList()),
+        enableTimerIdx = 0,
+        cardMoveAllow = true,
+        loading = ToHotLoading.None,
+        selectTopicKey = -1,
+        currentTopic = null,
+        topicModalShow = false,
+        topicList = ImmutableListWrapper(emptyList()),
+        topicSelectRemainingTime = "00:00:00",
+        topicSelectRemainingTimeMill = 0,
+        hasUnReadAlarm = false
+    )
+    override val store: Store<ToHotState, ToHotSideEffect> = store(initialState = initializeState)
     private var passedUserCardStack = Stack<ToHotUserUiModel>()
     private var passedCardCountBetweenTouch = 0
     private val passedCardIdSet = mutableSetOf<String>()
@@ -194,9 +195,12 @@ class ToHotViewModel @Inject constructor(
         passedCardIdSet.clear()
         intent {
             reduce {
-                it.copy(
-                    userList = ImmutableListWrapper(emptyList()),
-                    timers = ImmutableListWrapper(emptyList())
+                initializeState.copy(
+                    topicList = it.topicList,
+                    selectTopicKey = it.selectTopicKey,
+                    currentTopic = it.currentTopic,
+                    topicSelectRemainingTime = it.topicSelectRemainingTime,
+                    topicSelectRemainingTimeMill = it.topicSelectRemainingTimeMill
                 )
             }
         }
@@ -313,19 +317,45 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun topicSelectFinishEvent() {
-        viewModelScope.launch {
-            intent { reduce { it.copy(loading = ToHotLoading.TopicSelect) } }
-            delay(500)
-            intent {
-                reduce {
-                    it.copy(
-                        topicModalShow = false,
-                        currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
+        val selectTopicIdx = with(store.state.value) {
+            topicList.list.indexOfFirst { it.key == selectTopicKey }
+        }
+        if (selectTopicIdx < 0) return
+
+        intent {
+            reduce { it.copy(loading = ToHotLoading.TopicSelect) }
+            selectTopicUseCase(topicIdx = selectTopicIdx)
+                .onSuccess {
+                    when (it) {
+                        true -> {
+                            reduce { state ->
+                                state.copy(
+                                    topicModalShow = false,
+                                    currentTopic = state.topicList.list.find { t -> t.key == state.selectTopicKey },
+                                    loading = ToHotLoading.None
+                                )
+                            }
+                            fetchToHotState()
+                        }
+                        else -> postSideEffect(
+                            ToHotSideEffect.ToastMessage(
+                                stringProvider.getString(
+                                    StringProvider.ResId.TopicSelectFail
+                                )
+                            )
+                        )
+                    }
+                }.onFailure {
+                    it.printStackTrace()
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            stringProvider.getString(
+                                StringProvider.ResId.TopicSelectFail
+                            ) + it.message
+                        )
                     )
                 }
-                reduce { it.copy(loading = ToHotLoading.TopicSelect) }
-            }
-            fetchToHotState()
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
