@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -80,7 +81,8 @@ fun TopicSelectChip(
                 modifier = Modifier.padding(top = 4.dp),
                 text = content,
                 fontWeight = FontWeight.Medium,
-                color = colorResource(id = R.color.white_f9fafa)
+                color = colorResource(id = R.color.white_f9fafa),
+                textAlign = TextAlign.Start
             )
         }
     }
@@ -106,7 +108,7 @@ private fun SelectTopicSelectItemPreview() {
         iconUrl = null,
         iconRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
         title = "게임",
-        content = "게임 좋아하시나요?",
+        content = "게임 좋아하시나요?게임 좋아하시나요?게임 좋아하시나요?게임 좋아하시나요?",
         key = 1,
         isSelect = true
     )
