@@ -41,7 +41,7 @@ fun DailyUserCardResponse.UserInfo.toModel(): DailyUserCardModel {
 fun DailyUserCardResponse.toModel(): DailyUserCardListModel {
     return DailyUserCardListModel(
         selectTopicKey = selectDailyFallingIdx,
-        topicResetTimeMill = topicExpirationUnixTime,
+        topicResetTimeMill = topicExpirationUnixTime * 1000L,
         cards = userInfos.map { it.toModel() }
     )
 }

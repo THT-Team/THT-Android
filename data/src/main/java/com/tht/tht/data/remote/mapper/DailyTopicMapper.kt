@@ -6,7 +6,7 @@ import com.tht.tht.domain.topic.DailyTopicModel
 
 fun DailyTopicResponse.toModel(): DailyTopicListModel {
     return DailyTopicListModel(
-        topicResetTimeMill = expirationUnixTime,
+        topicResetTimeMill = expirationUnixTime * 1000L,
         topics = fallingTopicList.map { it.toModel() }
     )
 }
@@ -23,7 +23,7 @@ fun DailyTopicResponse.FallingTopic.toModel(): DailyTopicModel {
 
 fun DailyTopicListModel.toEntity(): DailyTopicResponse {
     return DailyTopicResponse(
-        expirationUnixTime = topicResetTimeMill,
+        expirationUnixTime = topicResetTimeMill / 1000L,
         fallingTopicList = topics.map { it.toEntity() }
     )
 }
