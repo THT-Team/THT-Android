@@ -150,7 +150,7 @@ fun ToHotRoute(
     ) {
         TopicSelectModel(
             modalBottomSheetState = modalBottomSheetState,
-            remainingTime = toHotState.topicSelectRemainingTime,
+            remainingTime = toHotState.topicResetRemainingTime,
             topics = toHotState.topicList,
             selectTopicKey = toHotState.selectTopicKey,
             topicClickListener = toHotViewModel::topicSelectEvent,

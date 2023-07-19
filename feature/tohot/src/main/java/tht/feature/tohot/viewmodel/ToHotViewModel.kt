@@ -21,6 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.StringProvider
+import tht.feature.tohot.mapper.calculateInterval
 import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
@@ -29,16 +30,11 @@ import tht.feature.tohot.state.ToHotCardState
 import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Stack
 import javax.inject.Inject
 
 /**
  * TODO: UseCase Test Code 작성
- * TODO: 토큰 재발급 계속 실패할 경우?
  * TODO: 토픽 재선택 UI Block -> clearUserCard 필요 여부 고민
  */
 @HiltViewModel
@@ -62,8 +58,8 @@ class ToHotViewModel @Inject constructor(
         currentTopic = null,
         topicModalShow = false,
         topicList = ImmutableListWrapper(emptyList()),
-        topicSelectRemainingTime = "00:00:00",
-        topicSelectRemainingTimeMill = 0,
+        topicResetRemainingTime = "00:00:00",
+        topicResetTimeMill = 0,
         hasUnReadAlarm = false
     )
     override val store: Store<ToHotState, ToHotSideEffect> = store(initialState = initializeState)
@@ -112,7 +108,8 @@ class ToHotViewModel @Inject constructor(
                         currentTopic = toHotState.topic.topics.find { t ->
                             t.key == toHotState.selectTopicKey
                         }?.toUiModel(),
-                        topicSelectRemainingTime = "24:00:00" //TODO: state.topicResetTimeMill 로 매핑 필요
+                        topicResetRemainingTime = parseRemainingTime(toHotState.topicResetTimeMill),
+                        topicResetTimeMill = toHotState.topicResetTimeMill
                     )
                 }
             }.onFailure { e ->
@@ -138,7 +135,8 @@ class ToHotViewModel @Inject constructor(
                             it.copy(
                                 topicList = ImmutableListWrapper(dailyTopic.topics.map { t -> t.toUiModel() }),
                                 topicModalShow = true,
-                                topicSelectRemainingTime = "24:00:00" //TODO: 매핑 필요
+                                topicResetRemainingTime = parseRemainingTime(dailyTopic.topicResetTimeMill),
+                                topicResetTimeMill = dailyTopic.topicResetTimeMill
                             )
                         }
                         reduce { it.copy(loading = ToHotLoading.None) }
@@ -157,33 +155,37 @@ class ToHotViewModel @Inject constructor(
         if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
     }
 
+    private fun calculateRemainingTimeMill(timeMill: Long): Long = timeMill - System.currentTimeMillis()
+    private fun parseRemainingTime(timeMill: Long): String {
+        return timeMill.calculateInterval(System.currentTimeMillis())
+    }
+
+    private fun updateRemainingTime() {
+        with(store.state.value) {
+            intent {
+                reduce {
+                    it.copy(
+                        topicResetRemainingTime = parseRemainingTime(topicResetTimeMill)
+                    )
+                }
+            }
+        }
+    }
+
     /**
-     * TODO: 미완성
-     * 1 초 마다 LocalDateTime 객체, State 객체를 생성 하는 문제 존재
-     * Topic Modal 을 두번째 부터 열때 타이머가 멈추며, fetchTopicList 가 호출되어 progress 가 돌아감
+     * Timer Job 을 계속 돌리고 있을까..?
      */
     private lateinit var topicRemainingTimer: Job
     private fun startTopicRemainingTimer() {
         if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
         topicRemainingTimer = viewModelScope.launch(Dispatchers.IO) {
             with(store.state.value) {
-                while (isActive && topicSelectRemainingTimeMill >= 0) {
+                updateRemainingTime()
+                while (isActive && topicResetTimeMill >= 0) {
                     delay(1000)
-                    val remainingString = (topicSelectRemainingTimeMill - System.currentTimeMillis()).let {
-                        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
-                        date.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-                    }
-                    intent {
-                        reduce {
-                            it.copy(
-                                topicSelectRemainingTime = remainingString,
-                                topicSelectRemainingTimeMill = topicSelectRemainingTimeMill - 1000
-                            )
-                        }
-                    }
+                    updateRemainingTime()
                 }
-
-                if (topicSelectRemainingTimeMill < 0) {
+                if (calculateRemainingTimeMill(topicResetTimeMill) < 0) {
                     fetchTopicList()
                 }
             }
@@ -199,8 +201,8 @@ class ToHotViewModel @Inject constructor(
                     topicList = it.topicList,
                     selectTopicKey = it.selectTopicKey,
                     currentTopic = it.currentTopic,
-                    topicSelectRemainingTime = it.topicSelectRemainingTime,
-                    topicSelectRemainingTimeMill = it.topicSelectRemainingTimeMill
+                    topicResetRemainingTime = it.topicResetRemainingTime,
+                    topicResetTimeMill = it.topicResetTimeMill
                 )
             }
         }
@@ -271,7 +273,9 @@ class ToHotViewModel @Inject constructor(
                                 }
                         ),
                         enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
-                        loading = ToHotLoading.None
+                        loading = ToHotLoading.None,
+                        topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
+                        topicResetTimeMill = dailyUserCardList.topicResetTimeMill
                     )
                 }
             }

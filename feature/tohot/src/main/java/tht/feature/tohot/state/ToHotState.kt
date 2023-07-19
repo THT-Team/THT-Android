@@ -30,8 +30,8 @@ data class ToHotState(
     val currentTopic: TopicUiModel?,
     val topicList: ImmutableListWrapper<TopicUiModel>,
     val topicModalShow: Boolean,
-    val topicSelectRemainingTime: String,
-    val topicSelectRemainingTimeMill: Long,
+    val topicResetRemainingTime: String,
+    val topicResetTimeMill: Long,
     val hasUnReadAlarm: Boolean
 )
 
