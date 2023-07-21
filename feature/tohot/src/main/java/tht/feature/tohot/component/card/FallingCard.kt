@@ -27,7 +27,6 @@ fun FallingCard(
                 rotationZ = fallingProgress * maxAngle * direction
                 transformOrigin = TransformOrigin(0f, 1f)
             }
-            .background(Color.Blue)
     ) {
         content()
     }
@@ -35,9 +34,10 @@ fun FallingCard(
 
 @Composable
 @Preview
-fun FallingCardPreview() {
+private fun FallingCardPreview() {
     FallingCard(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .background(Color.Black),
         fallingProgress = 0.5f
     )
 }

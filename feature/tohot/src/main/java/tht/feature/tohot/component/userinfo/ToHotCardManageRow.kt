@@ -95,6 +95,6 @@ fun ToHotCardManageRow(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotCardManageRowPreview() {
+private fun ToHotCardManageRowPreview() {
     ToHotCardManageRow()
 }

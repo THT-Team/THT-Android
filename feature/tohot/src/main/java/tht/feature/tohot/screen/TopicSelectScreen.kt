@@ -35,9 +35,9 @@ fun TopicSelectScreen(
     modifier: Modifier = Modifier,
     remainingTime: String,
     topics: ImmutableListWrapper<TopicUiModel>,
-    selectTopicKey: Long,
+    selectTopicKey: Int,
     buttonEnabled: Boolean,
-    topicClickListener: (Long) -> Unit = { },
+    topicClickListener: (Int) -> Unit = { },
     selectFinishListener: () -> Unit = { }
 ) {
     Column(
@@ -77,8 +77,8 @@ fun TopicSelectScreen(
             TopicSelectChip(
                 modifier = Modifier
                     .padding(horizontal = 22.dp),
-                imageUrl = it.imageUrl,
-                imageRes = it.imageRes,
+                iconUrl = it.iconUrl,
+                iconRes = it.iconRes,
                 title = it.title,
                 content = it.content,
                 key = it.key,
@@ -115,11 +115,11 @@ fun TopicSelectScreen(
 
 @Composable
 @Preview
-fun TopicSelectScreenPreview() {
+private fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
         topics = ImmutableListWrapper(topics),
-        selectTopicKey = 1L,
+        selectTopicKey = 1,
         buttonEnabled = true
     )
 }

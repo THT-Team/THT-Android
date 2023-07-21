@@ -1,7 +1,7 @@
 package com.tht.tht.data.repository
 
 import com.tht.tht.data.local.mapper.toModel
-import com.tht.tht.data.remote.datasource.LocationDataSource
+import com.tht.tht.data.remote.datasource.signup.LocationDataSource
 import com.tht.tht.data.remote.response.location.LocationResponse
 import io.mockk.coEvery
 import io.mockk.mockk

@@ -31,6 +31,7 @@ import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
+import tht.feature.tohot.component.card.ToHotErrorCard
 import tht.feature.tohot.component.card.ToHotLoadingCard
 import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
@@ -41,6 +42,8 @@ import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.state.ToHotCardState
+import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
@@ -95,7 +98,7 @@ fun ToHotRoute(
     ToHotUseReportDialog(
         isShow = toHotState.reportDialogShow,
         reportReason = toHotState.reportReason,
-        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage) },
+        onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage, it) },
         onCancelClick = toHotViewModel::reportDialogDismissEvent,
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
@@ -147,7 +150,7 @@ fun ToHotRoute(
     ) {
         TopicSelectModel(
             modalBottomSheetState = modalBottomSheetState,
-            remainingTime = toHotState.topicSelectRemainingTime,
+            remainingTime = toHotState.topicResetRemainingTime,
             topics = toHotState.topicList,
             selectTopicKey = toHotState.selectTopicKey,
             topicClickListener = toHotViewModel::topicSelectEvent,
@@ -162,7 +165,7 @@ fun ToHotRoute(
                         false
                     },
                 cardList = toHotState.userList,
-                isEnterDelay = toHotState.isFirstPage,
+                toHotCardState = toHotState.userCardState,
                 pagerState = pagerState,
                 timers = toHotState.timers,
                 currentUserIdx = toHotState.enableTimerIdx,
@@ -180,18 +183,21 @@ fun ToHotRoute(
                 loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
                 onLikeClick = toHotViewModel::likeCardEvent,
                 onUnLikeClick = toHotViewModel::unlikeCardEvent,
-                onReportMenuClick = toHotViewModel::reportMenuEvent
+                onReportMenuClick = toHotViewModel::reportMenuEvent,
+                onRefreshClick = toHotViewModel::refreshEvent
             )
         }
 
         ToHotLoadingCard(
-            isVisible = { toHotState.cardLoading },
-            message = stringResource(id = R.string.to_hot_user_card_loading)
-        )
-
-        ToHotLoadingCard(
-            isVisible = { toHotState.topicLoading },
-            message = stringResource(id = R.string.to_hot_topic_loading)
+            isVisible = { toHotState.loading != ToHotLoading.None },
+            message = when (toHotState.loading) {
+                ToHotLoading.TopicList -> stringResource(id = R.string.to_hot_topic_list_loading)
+                ToHotLoading.TopicSelect -> stringResource(id = R.string.to_hot_topic_select_loading)
+                ToHotLoading.UserList -> stringResource(id = R.string.to_hot_user_card_loading)
+                ToHotLoading.Report -> stringResource(id = R.string.to_hot_user_report_loading)
+                ToHotLoading.Block -> stringResource(id = R.string.to_hot_user_block_loading)
+                else -> ""
+            }
         )
     }
 }
@@ -200,7 +206,7 @@ fun ToHotRoute(
 @Composable
 private fun ToHotScreen(
     modifier: Modifier = Modifier,
-    isEnterDelay: Boolean,
+    toHotCardState: ToHotCardState,
     pagerState: PagerState,
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
     timers: ImmutableListWrapper<CardTimerUiModel>,
@@ -219,7 +225,8 @@ private fun ToHotScreen(
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
-    loadFinishListener: (Int, Boolean?, Throwable?) -> Unit = { _, _, _ -> }
+    onRefreshClick: () -> Unit = { },
+    loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -237,10 +244,10 @@ private fun ToHotScreen(
 
         when (cardList.list.isEmpty()) {
             true -> {
-                if (isEnterDelay) {
-                    ToHotEnterCard()
-                } else {
-                    ToHotEmptyCard()
+                when (toHotCardState) {
+                    ToHotCardState.Initialize -> ToHotEnterCard(onClick = onRefreshClick)
+                    ToHotCardState.Running -> ToHotEmptyCard(onClick = onRefreshClick)
+                    ToHotCardState.Error -> ToHotErrorCard(onClick = onRefreshClick)
                 }
             }
 

@@ -6,9 +6,9 @@ import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 
 internal val userData = ToHotUserUiModel(
-    id = 0,
+    id = "0",
     nickname = "Harry",
-    birthday = "2022.02.03",
+    isBirthday = false,
     interests = ImmutableListWrapper(
         listOf(
             InterestModel("지적인", 1L, "1F9E0"),
@@ -34,11 +34,12 @@ internal val userData = ToHotUserUiModel(
         )
     ),
     introduce = "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다.\n" +
-        "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다."
+        "무엇을 위하여서 끝까지 것이다. 새가 위하여서, 싹이 우리의 석가는 위하여 그와 유소년에게서 것이다. 그러므로 불어 방황하였으며, 반짝이는 천하를 동산에는 뿐이다.",
+    idx = 0
 )
 
 internal val userData2 = userData.copy(
-    id = 2,
+    id = "2",
     nickname = "Suzume",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -51,32 +52,35 @@ internal val userData2 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 2
 )
 
 internal val userData3 = userData.copy(
-    id = 3,
+    id = "3",
     nickname = "ToToro",
     profileImgUrl = ImmutableListWrapper(
         listOf(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683308012779_2?" +
                 "alt=media&token=e0d7d0a2-26b2-48cb-99fd-9685af8a8589"
         )
-    )
+    ),
+    idx = 3
 )
 
 internal val userData4 = userData.copy(
-    id = 4,
+    id = "4",
     nickname = "SpiderMan",
     profileImgUrl = ImmutableListWrapper(
         listOf(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683549332395_1?" +
                 "alt=media&token=b8f6d7a4-6cb3-4b79-85ea-1245304e4ed8"
         )
-    )
+    ),
+    idx = 4
 )
 internal val userData5 = userData.copy(
-    id = 5,
+    id = "5",
     nickname = "Suzume5",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -89,11 +93,12 @@ internal val userData5 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 5
 )
 
 internal val userData6 = userData.copy(
-    id = 6,
+    id = "6",
     nickname = "Suzume6",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -106,11 +111,12 @@ internal val userData6 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1685205916506_0?" +
                 "alt=media&token=4b32f03a-bf43-4e54-8c67-a6de22b9cdb1"
         )
-    )
+    ),
+    idx = 6
 )
 
 internal val userData7 = userData.copy(
-    id = 7,
+    id = "7",
     nickname = "Suzume7",
     profileImgUrl = ImmutableListWrapper(
         listOf(
@@ -123,5 +129,6 @@ internal val userData7 = userData.copy(
             "https://firebasestorage.googleapis.com/v0/b/tht-android-a954a.appspot.com/o/1683307361492_2?" +
                 "alt=media&token=fd9c27e5-1983-46cf-bc5b-d3f0ee65cbeb"
         )
-    )
+    ),
+    idx = 7
 )

@@ -56,7 +56,7 @@ fun ToHotLoadingCard(
 
 @Composable
 @Preview
-fun ToHotLoadingCardPreview() {
+private fun ToHotLoadingCardPreview() {
     ToHotLoadingCard(
         message = stringResource(id = R.string.to_hot_user_card_loading),
         isVisible = { true }

@@ -1,7 +1,7 @@
 package com.tht.tht.data.datasource
 
-import com.tht.tht.data.remote.datasource.EmailDataSource
-import com.tht.tht.data.remote.datasource.EmailDataSourceImpl
+import com.tht.tht.data.remote.datasource.signup.EmailDataSource
+import com.tht.tht.data.remote.datasource.signup.EmailDataSourceImpl
 import com.tht.tht.data.remote.service.email.EmailService
 import io.mockk.coEvery
 import io.mockk.coVerify

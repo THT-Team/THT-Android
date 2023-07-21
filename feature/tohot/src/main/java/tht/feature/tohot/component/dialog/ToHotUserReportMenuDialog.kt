@@ -85,7 +85,7 @@ fun ToHotUserReportMenuDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotUserReportMenuDialogPreview() {
+private fun ToHotUserReportMenuDialogPreview() {
     ToHotUserReportMenuDialog(
         isShow = true,
         onDismiss = { }

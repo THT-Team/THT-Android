@@ -1,7 +1,7 @@
 package com.tht.tht.data.repository
 
 import android.net.Uri
-import com.tht.tht.data.remote.datasource.ImageDataSource
+import com.tht.tht.data.remote.datasource.signup.ImageDataSource
 import com.tht.tht.domain.image.ImageRepository
 import javax.inject.Inject
 

@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.tht.tht.data.remote.response.location.LocationResponse
-import com.tht.tht.data.remote.service.LocationService
-import com.tht.tht.data.remote.service.LocationServiceImpl
+import com.tht.tht.data.remote.service.location.LocationService
+import com.tht.tht.data.remote.service.location.LocationServiceImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler

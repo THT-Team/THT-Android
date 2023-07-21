@@ -153,7 +153,7 @@ fun TopicResetScreen(
 
 @Composable
 @Preview
-fun TopicResetScreenPreview() {
+private fun TopicResetScreenPreview() {
     TopicResetScreen(
         remainingTime = "24:00:00",
         animationStart = false

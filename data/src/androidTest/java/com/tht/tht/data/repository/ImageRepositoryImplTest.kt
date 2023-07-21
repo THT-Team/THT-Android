@@ -1,7 +1,7 @@
 package com.tht.tht.data.repository
 
 import android.net.Uri
-import com.tht.tht.data.remote.datasource.ImageDataSource
+import com.tht.tht.data.remote.datasource.signup.ImageDataSource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

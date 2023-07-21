@@ -38,6 +38,6 @@ fun ToHotEmptyTimeProgressContainer(
 
 @Composable
 @Preview
-fun ToHotEmptyTimeProgressContainerPreview() {
+private fun ToHotEmptyTimeProgressContainerPreview() {
     ToHotEmptyTimeProgressContainer()
 }

@@ -9,6 +9,9 @@ interface StringProvider {
     enum class ResId {
         Loading,
         ReportSuccess,
-        BlockSuccess
+        ReportFail,
+        BlockSuccess,
+        BlockFail,
+        TopicSelectFail
     }
 }

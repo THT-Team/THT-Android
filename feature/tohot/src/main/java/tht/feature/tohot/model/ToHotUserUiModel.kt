@@ -6,9 +6,10 @@ import com.tht.tht.domain.signup.model.InterestModel
 
 @Immutable
 data class ToHotUserUiModel(
-    val id: Int,
+    val id: String,
+    val idx: Int,
     val nickname: String,
-    val birthday: String,
+    val isBirthday: Boolean,
     val interests: ImmutableListWrapper<InterestModel>,
     val idealTypes: ImmutableListWrapper<IdealTypeModel>,
     val age: Int,

@@ -7,6 +7,12 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
+import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
+import com.tht.tht.domain.tohot.FetchToHotStateUseCase
+import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.topic.SelectTopicUseCase
+import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.ReportUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,73 +21,52 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tht.feature.tohot.StringProvider
+import tht.feature.tohot.mapper.calculateInterval
+import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
-import tht.feature.tohot.model.topics
+import tht.feature.tohot.state.ToHotCardState
+import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.state.ToHotState
-import tht.feature.tohot.userData
-import tht.feature.tohot.userData2
-import tht.feature.tohot.userData3
-import tht.feature.tohot.userData4
-import tht.feature.tohot.userData5
-import tht.feature.tohot.userData6
-import tht.feature.tohot.userData7
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Stack
 import javax.inject.Inject
 
 /**
- * - 손으로 드래그 중에 시간이 다 달면 예외 발생
- * - Topic Modal 이 열릴때 마다 fetchTopicList 를 호출 해서 list 를 최신화 해줘야 할지?
- * - userList 가 비어 있을 때 modal 을 열면 fetchTopicList 가 호출 되면서 toHotLogic 도 호출돼 userList 가 호출 되는 문제
+ * TODO: UseCase Test Code 작성
+ * TODO: 토픽 재선택 UI Block -> clearUserCard 필요 여부 고민
  */
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
+    private val fetchToHotStateUseCase: FetchToHotStateUseCase,
+    private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase,
+    private val selectTopicUseCase: SelectTopicUseCase,
+    private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
+    private val reportUserUseCase: ReportUserUseCase,
+    private val blockUserUseCase: BlockUserUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
-    private val userList = listOf(
-        userData2,
-        userData3,
-        userData4,
-        userData
+    private val initializeState get() = ToHotState(
+        userList = ImmutableListWrapper(emptyList()),
+        userCardState = ToHotCardState.Initialize,
+        timers = ImmutableListWrapper(emptyList()),
+        enableTimerIdx = 0,
+        cardMoveAllow = true,
+        loading = ToHotLoading.None,
+        selectTopicKey = -1,
+        currentTopic = null,
+        topicModalShow = false,
+        topicList = ImmutableListWrapper(emptyList()),
+        topicResetRemainingTime = "00:00:00",
+        topicResetTimeMill = 0,
+        hasUnReadAlarm = false
     )
-    private val userList2 = listOf(
-        userData5,
-        userData6
-    )
-    private val userList3 = listOf(
-        userData7
-    )
-
-    override val store: Store<ToHotState, ToHotSideEffect> =
-        store(
-            initialState = ToHotState(
-                userList = ImmutableListWrapper(emptyList()),
-                timers = ImmutableListWrapper(emptyList()),
-                enableTimerIdx = 0,
-                cardMoveAllow = true,
-                cardLoading = false,
-                topicLoading = false,
-                selectTopicKey = -1,
-                currentTopic = null,
-                topicModalShow = false,
-                topicList = ImmutableListWrapper(emptyList()),
-                topicSelectRemainingTime = "00:00:00",
-                topicSelectRemainingTimeMill = 0,
-                hasUnReadAlarm = false
-            )
-        )
+    override val store: Store<ToHotState, ToHotSideEffect> = store(initialState = initializeState)
     private var passedUserCardStack = Stack<ToHotUserUiModel>()
     private var passedCardCountBetweenTouch = 0
-    private val passedCardIdSet = mutableSetOf<Int>()
+    private val passedCardIdSet = mutableSetOf<String>()
 
-    private var pagingable = true // 임시 개발용 변수
-    private var pagingCount = 0 // 임시 개발용 변수
     private var pagingLoading = false
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
@@ -90,47 +75,75 @@ class ToHotViewModel @Inject constructor(
         get() = store.state.value.userList.list.indices
 
     init {
-        toHotLogic()
+        fetchToHotState()
     }
 
-    /**
-     *  UserList API 호출
-     *  - Topic 이 선택 되어 있지 않다고 리턴 되면 Topic 선택 화면
-     */
-    private fun toHotLogic() {
-        with(store.state.value) {
-            when {
-                topicList.list.isEmpty() -> fetchTopicList(true)
-
-                currentTopic == null -> {
-                    clearUserCard()
-                    intent {
-                        reduce { it.copy(topicModalShow = true) }
-                    }
+    private fun fetchToHotState() {
+        intent {
+            reduce { it.copy(loading = ToHotLoading.TopicList) }
+            fetchToHotStateUseCase(
+                currentTimeMill = System.currentTimeMillis(),
+                size = CARD_SIZE
+            ).onSuccess { toHotState ->
+                reduce {
+                    it.copy(
+                        userList = ImmutableListWrapper(
+                            store.state.value.userList.list + toHotState.cards.map { c -> c.toUiModel() }
+                        ),
+                        userCardState = ToHotCardState.Initialize,
+                        timers = ImmutableListWrapper(
+                            store.state.value.timers.list +
+                                List(toHotState.cards.size) {
+                                    CardTimerUiModel(
+                                        maxSec = MAX_TIMER_SEC,
+                                        currentSec = MAX_TIMER_SEC,
+                                        destinationSec = MAX_TIMER_SEC,
+                                        startAble = false
+                                    )
+                                }
+                        ),
+                        enableTimerIdx = 0,
+                        topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
+                        topicModalShow = toHotState.needSelectTopic,
+                        currentTopic = toHotState.topic.topics.find { t ->
+                            t.key == toHotState.selectTopicKey
+                        }?.toUiModel(),
+                        topicResetRemainingTime = parseRemainingTime(toHotState.topicResetTimeMill),
+                        topicResetTimeMill = toHotState.topicResetTimeMill
+                    )
                 }
-
-                userList.list.isEmpty() -> viewModelScope.launch { fetchUserCard(isPaging = false) }
-
-                else -> {}
+            }.onFailure { e ->
+                e.printStackTrace()
+                reduce {
+                    it.copy(
+                        userCardState = ToHotCardState.Error
+                    )
+                }
             }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
-    private fun fetchTopicList(openTopicList: Boolean) {
+    private fun fetchTopicList() {
         viewModelScope.launch {
-            intent { reduce { it.copy(topicLoading = true) } }
-            delay(500)
-            intent {
-                reduce {
-                    it.copy(
-                        topicList = ImmutableListWrapper(topics),
-                        topicModalShow = if (openTopicList) true else it.topicModalShow,
-                        topicSelectRemainingTime = "24:00:00"
-                    )
+            clearUserCard()
+            intent { reduce { it.copy(loading = ToHotLoading.TopicList) } }
+            fetchDailyTopicListUseCase()
+                .onSuccess { dailyTopic ->
+                    intent {
+                        reduce {
+                            it.copy(
+                                topicList = ImmutableListWrapper(dailyTopic.topics.map { t -> t.toUiModel() }),
+                                topicModalShow = true,
+                                topicResetRemainingTime = parseRemainingTime(dailyTopic.topicResetTimeMill),
+                                topicResetTimeMill = dailyTopic.topicResetTimeMill
+                            )
+                        }
+                        reduce { it.copy(loading = ToHotLoading.None) }
+                    }
+                }.onFailure {
+                    it.printStackTrace()
                 }
-                reduce { it.copy(topicLoading = false) }
-            }
-            toHotLogic()
         }
     }
 
@@ -142,154 +155,115 @@ class ToHotViewModel @Inject constructor(
         if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
     }
 
+    private fun calculateRemainingTimeMill(timeMill: Long): Long = timeMill - System.currentTimeMillis()
+    private fun parseRemainingTime(timeMill: Long): String {
+        return timeMill.calculateInterval(System.currentTimeMillis())
+    }
+
+    private fun updateRemainingTime() {
+        with(store.state.value) {
+            intent {
+                reduce {
+                    it.copy(
+                        topicResetRemainingTime = parseRemainingTime(topicResetTimeMill)
+                    )
+                }
+            }
+        }
+    }
+
     /**
-     * 1 초 마다 LocalDateTime 객체, State 객체를 생성 하는 문제 존재
-     * 미완성
-     * Topic Modal 을 두번째 부터 열때 타이머가 멈추며, fetchTopicList 가 호출되어 progress 가 돌아감
+     * Timer Job 을 계속 돌리고 있을까..?
      */
     private lateinit var topicRemainingTimer: Job
     private fun startTopicRemainingTimer() {
         if (::topicRemainingTimer.isInitialized) topicRemainingTimer.cancel()
         topicRemainingTimer = viewModelScope.launch(Dispatchers.IO) {
             with(store.state.value) {
-                while (isActive && topicSelectRemainingTimeMill >= 0) {
+                updateRemainingTime()
+                while (isActive && topicResetTimeMill >= 0) {
                     delay(1000)
-                    val remainingString = (topicSelectRemainingTimeMill - System.currentTimeMillis()).let {
-                        val date = LocalDateTime.ofInstant(Instant.ofEpochMilli(it), ZoneId.systemDefault())
-                        date.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-                    }
-                    intent {
-                        reduce {
-                            it.copy(
-                                topicSelectRemainingTime = remainingString,
-                                topicSelectRemainingTimeMill = topicSelectRemainingTimeMill - 1000
-                            )
-                        }
-                    }
+                    updateRemainingTime()
                 }
-
-                if (topicSelectRemainingTimeMill < 0) {
-                    fetchTopicList(false)
+                if (calculateRemainingTimeMill(topicResetTimeMill) < 0) {
+                    fetchTopicList()
                 }
             }
         }
     }
 
     private fun clearUserCard() {
+        passedCardIdSet.clear()
+        passedCardIdSet.clear()
         intent {
             reduce {
-                it.copy(
-                    userList = ImmutableListWrapper(emptyList()),
-                    timers = ImmutableListWrapper(emptyList())
+                initializeState.copy(
+                    topicList = it.topicList,
+                    selectTopicKey = it.selectTopicKey,
+                    currentTopic = it.currentTopic,
+                    topicResetRemainingTime = it.topicResetRemainingTime,
+                    topicResetTimeMill = it.topicResetTimeMill
                 )
             }
         }
     }
 
     /**
-     * 다음 아이템 있다면 Scroll
-     * 다음 아이템이 없다면 페이징 로딩 여부 체크
-     * - 로딩 중 이라면 channel 을 통해 페이징 로딩이 끝나는 것을 대기
-     * - 로딩 중 이지 않다면 페이징 처리가 끝났는데 다음 Item이 없으므로 List Empty 처리
+     * 다음 아이템 없고, 페이징 중 이라면 페이징 대기
+     * 다음 Item 존재 하면 Scroll
+     * 없다면 removeAllCard -> 다음 유저가 없음 표시
+     * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
     private fun tryScrollToNext(currentIdx: Int) {
         viewModelScope.launch {
+            if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
+                intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
+                fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
+                intent { reduce { it.copy(loading = ToHotLoading.None) } }
+            }
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
                     postSideEffect(
                         ToHotSideEffect.Scroll(currentIdx + 1)
                     )
                 }
-
-                else -> {
-                    if (pagingLoading) {
-                        intent {
-                            reduce {
-                                it.copy(cardLoading = true)
-                            }
-                        }
-                        fetchUserListPagingResultChannel.receive() // 페이징 완료 대기
-                        intent {
-                            reduce {
-                                it.copy(cardLoading = false)
-                            }
-                            if ((currentIdx + 1) !in currentUserListRange) {
-                                return@intent
-                            }
-                            postSideEffect(
-                                ToHotSideEffect.Scroll(currentIdx + 1)
-                            )
-                        }
-                    } else {
-                        removeAllCard()
-                    }
-                }
+                else -> removeAllCard()
             }
+        }
+    }
+
+    fun refreshEvent() {
+        if (store.state.value.loading != ToHotLoading.None) return
+        viewModelScope.launch {
+            intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
+            fetchUserCard(
+                lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
+            )
+            intent { reduce { it.copy(loading = ToHotLoading.None) } }
         }
     }
 
     /**
      * 페이징 - 마지막 Index Card 에서 페이징 요청
-     * - 페이징 List 가 없다면?
-     * - 페이징 로딩 중에 다음 카드로 넘어 가려 한다면 - 로딩 효과 표시, 페이징 완료 후 다음 리스트 표시
      */
-    private suspend fun fetchUserCard(isPaging: Boolean) {
-        when (isPaging) {
-            true -> {
-                pagingCount++
-                pagingLoading = true
-                if (!pagingable) {
-                    //TODO: 페이징 유저가 더 없는 경우. 처리 고민
-                    pagingLoading = false
-                    return
-                }
-                if (pagingCount > 2) {
-                    pagingable = false
-                    pagingLoading = false
-                    return
-                }
-                delay(1000)
-                intent {
-                    reduce {
-                        it.copy(
-                            userList = ImmutableListWrapper(
-                                store.state.value.userList.list + if (pagingCount == 1) userList2 else userList3
-                            ),
-                            isFirstPage = userList.isEmpty(),
-                            timers = ImmutableListWrapper(
-                                store.state.value.timers.list +
-                                    List(
-                                        if (pagingCount == 1) userList2.size else userList3.size
-                                    ) {
-                                        CardTimerUiModel(
-                                            maxSec = MAX_TIMER_SEC,
-                                            currentSec = MAX_TIMER_SEC,
-                                            destinationSec = MAX_TIMER_SEC,
-                                            startAble = false
-                                        )
-                                    }
-                            ),
-                            cardLoading = false
-                        )
-                    }
-                }
-                pagingLoading = false
-                delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
-                fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
-            }
-
-            else -> {
-                pagingCount = 0
-                pagingable = true
-                intent { reduce { it.copy(cardLoading = true) } }
-                delay(500)
-                intent {
-                    reduce {
-                        it.copy(
-                            userList = ImmutableListWrapper(userList),
-                            isFirstPage = userList.isEmpty(),
-                            timers = ImmutableListWrapper(
-                                List(userList.size) {
+    private suspend fun fetchUserCard(lastUserIdx: Int? = null) {
+        pagingLoading = lastUserIdx != null
+        if (!pagingLoading) intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
+        fetchDailyUserCardUseCase(
+            passedUserIdList = passedUserCardStack.map { it.id }.toList(),
+            lastUserDailyFallingCourserIdx = lastUserIdx,
+            size = CARD_SIZE
+        ).onSuccess { dailyUserCardList ->
+            intent {
+                reduce {
+                    it.copy(
+                        userList = ImmutableListWrapper(
+                            store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                        ),
+                        userCardState = ToHotCardState.Running,
+                        timers = ImmutableListWrapper(
+                            store.state.value.timers.list +
+                                List(dailyUserCardList.cards.size) {
                                     CardTimerUiModel(
                                         maxSec = MAX_TIMER_SEC,
                                         currentSec = MAX_TIMER_SEC,
@@ -297,13 +271,29 @@ class ToHotViewModel @Inject constructor(
                                         startAble = false
                                     )
                                 }
-                            ),
-                            enableTimerIdx = 0,
-                            cardLoading = false
-                        )
-                    }
+                        ),
+                        enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
+                        loading = ToHotLoading.None,
+                        topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
+                        topicResetTimeMill = dailyUserCardList.topicResetTimeMill
+                    )
                 }
             }
+        }.onFailure { e ->
+            e.printStackTrace()
+            intent {
+                reduce {
+                    it.copy(
+                        userCardState = ToHotCardState.Error,
+                        loading = ToHotLoading.None
+                    )
+                }
+            }
+        }
+        if (pagingLoading) {
+            pagingLoading = false
+            delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
+            fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
         }
     }
 
@@ -320,7 +310,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun topicSelectEvent(topicKey: Long) {
+    fun topicSelectEvent(topicKey: Int) {
         intent {
             reduce {
                 it.copy(
@@ -331,20 +321,45 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun topicSelectFinishEvent() {
-        viewModelScope.launch {
-            intent { reduce { it.copy(cardLoading = true) } }
-            delay(500)
-            intent {
-                reduce {
-                    it.copy(
-                        topicModalShow = false,
-                        currentTopic = it.topicList.list.find { t -> t.key == it.selectTopicKey }
+        val selectTopicIdx = with(store.state.value) {
+            topicList.list.indexOfFirst { it.key == selectTopicKey }
+        }
+        if (selectTopicIdx < 0) return
+
+        intent {
+            reduce { it.copy(loading = ToHotLoading.TopicSelect) }
+            selectTopicUseCase(topicIdx = selectTopicIdx)
+                .onSuccess {
+                    when (it) {
+                        true -> {
+                            reduce { state ->
+                                state.copy(
+                                    topicModalShow = false,
+                                    currentTopic = state.topicList.list.find { t -> t.key == state.selectTopicKey },
+                                    loading = ToHotLoading.None
+                                )
+                            }
+                            fetchToHotState()
+                        }
+                        else -> postSideEffect(
+                            ToHotSideEffect.ToastMessage(
+                                stringProvider.getString(
+                                    StringProvider.ResId.TopicSelectFail
+                                )
+                            )
+                        )
+                    }
+                }.onFailure {
+                    it.printStackTrace()
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            stringProvider.getString(
+                                StringProvider.ResId.TopicSelectFail
+                            ) + it.message
+                        )
                     )
                 }
-                reduce { it.copy(cardLoading = false) }
-            }
-            clearUserCard()
-            toHotLogic()
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
@@ -358,10 +373,12 @@ class ToHotViewModel @Inject constructor(
         with(store.state.value) {
             if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
                 passedCardIdSet.add(userList.list[userIdx].id)
-                passedUserCardStack.push(userList.list[userIdx])
+                val passUser = passedUserCardStack.push(userList.list[userIdx])
                 passedCardCountBetweenTouch++
                 if (userIdx == currentUserListRange.last) {
-                    viewModelScope.launch { fetchUserCard(isPaging = true) }
+                    viewModelScope.launch {
+                        fetchUserCard(lastUserIdx = passUser.idx)
+                    }
                 }
             }
         }
@@ -378,31 +395,30 @@ class ToHotViewModel @Inject constructor(
                         }
                     ),
                     enableTimerIdx = userIdx,
-                    cardMoveAllow = passedCardCountBetweenTouch <= cardCountAllowWithoutTouch,
+                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH,
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
-                    holdDialogShow = passedCardCountBetweenTouch > cardCountAllowWithoutTouch
+                    holdDialogShow = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
                 )
             }
         }
     }
 
-    fun userCardLoadFinishEvent(idx: Int, result: Boolean?, error: Throwable?) {
+    fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
-        result?.let {
-            intent {
-                reduce {
-                    it.copy(
-                        timers = ImmutableListWrapper(
-                            it.timers.list.toMutableList().apply {
-                                this[idx] = this[idx].copy(
-                                    startAble = true
-                                )
-                            }
-                        )
+        error?.printStackTrace()
+        intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(
+                                startAble = true
+                            )
+                        }
                     )
-                }
+                )
             }
         }
     }
@@ -490,41 +506,71 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun cardReportEvent(idx: Int) {
+    fun cardReportEvent(userIdx: Int, reasonIdx: Int) {
         intent {
-            postSideEffect(
-                ToHotSideEffect.ToastMessage(
-                    message = stringProvider.getString(
-                        StringProvider.ResId.ReportSuccess
+            reduce { it.copy(loading = ToHotLoading.Report) }
+            reportUserUseCase(
+                userUuid = store.state.value.userList.list[userIdx].id,
+                reason = store.state.value.reportReason[reasonIdx]
+            ).onSuccess {
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        message = stringProvider.getString(
+                            StringProvider.ResId.ReportSuccess
+                        )
                     )
                 )
-            )
-            reduce {
-                it.copy(
-                    fallingAnimationIdx = idx,
-                    reportMenuDialogShow = false,
-                    reportDialogShow = false
+                reduce {
+                    it.copy(
+                        fallingAnimationIdx = userIdx,
+                        reportMenuDialogShow = false,
+                        reportDialogShow = false
+                    )
+                }
+            }.onFailure {
+                it.printStackTrace()
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        message = stringProvider.getString(
+                            StringProvider.ResId.ReportFail
+                        )
+                    )
                 )
             }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
     fun cardBlockEvent(idx: Int) {
         intent {
-            postSideEffect(
-                ToHotSideEffect.ToastMessage(
-                    message = stringProvider.getString(
-                        StringProvider.ResId.BlockSuccess
+            reduce { it.copy(loading = ToHotLoading.Block) }
+            blockUserUseCase(userUuid = store.state.value.userList.list[idx].id)
+                .onSuccess {
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.BlockSuccess
+                            )
+                        )
                     )
-                )
-            )
-            reduce {
-                it.copy(
-                    fallingAnimationIdx = idx,
-                    reportMenuDialogShow = false,
-                    blockDialogShow = false
-                )
-            }
+                    reduce {
+                        it.copy(
+                            fallingAnimationIdx = idx,
+                            reportMenuDialogShow = false,
+                            blockDialogShow = false
+                        )
+                    }
+                }.onFailure {
+                    it.printStackTrace()
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.BlockFail
+                            )
+                        )
+                    )
+                }
+            reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
 
@@ -618,6 +664,8 @@ class ToHotViewModel @Inject constructor(
     companion object {
         private const val MAX_TIMER_SEC = 5
 
-        private const val cardCountAllowWithoutTouch = 3
+        private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
+
+        private const val CARD_SIZE = 5
     }
 }

@@ -20,7 +20,10 @@ class StringProviderImpl @Inject constructor(
         return when (id) {
             StringProvider.ResId.Loading -> R.string.loading
             StringProvider.ResId.ReportSuccess -> R.string.to_hot_report_success
+            StringProvider.ResId.ReportFail -> R.string.to_hot_report_fail
             StringProvider.ResId.BlockSuccess -> R.string.to_hot_block_success
+            StringProvider.ResId.BlockFail -> R.string.to_hot_block_fail
+            StringProvider.ResId.TopicSelectFail -> R.string.to_hot_topic_select_fail
         }
     }
 }

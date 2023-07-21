@@ -9,19 +9,21 @@ import tht.feature.tohot.R
 
 @Composable
 fun ToHotEmptyCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = { }
 ) {
     ToHotNotifyCard(
         modifier = modifier,
         image = painterResource(id = R.drawable.ic_mudy_empty),
         title = stringResource(id = R.string.to_hot_empty_card_title),
         description = stringResource(id = R.string.to_hot_empty_card_description),
-        buttonText = stringResource(id = R.string.waiting)
+        buttonText = stringResource(id = R.string.waiting),
+        onClick = onClick
     )
 }
 
 @Composable
 @Preview
-fun ToHotEmptyCardPreview() {
+private fun ToHotEmptyCardPreview() {
     ToHotEmptyCard()
 }

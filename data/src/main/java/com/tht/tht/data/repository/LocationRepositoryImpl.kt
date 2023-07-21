@@ -2,7 +2,7 @@ package com.tht.tht.data.repository
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.local.mapper.toModel
-import com.tht.tht.data.remote.datasource.LocationDataSource
+import com.tht.tht.data.remote.datasource.signup.LocationDataSource
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.repository.LocationRepository
 import kotlinx.coroutines.CoroutineDispatcher

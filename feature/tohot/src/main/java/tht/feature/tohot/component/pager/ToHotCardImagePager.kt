@@ -20,7 +20,7 @@ fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
     imageUrls: ImmutableListWrapper<String>,
-    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
+    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> }
 ) {
     Box(
         modifier = modifier

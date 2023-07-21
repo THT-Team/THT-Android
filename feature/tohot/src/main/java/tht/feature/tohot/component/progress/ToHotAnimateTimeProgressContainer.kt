@@ -111,7 +111,7 @@ fun ToHotAnimateTimeProgressContainer(
 
 @Composable
 @Preview
-fun ToHotAnimateTimeProgressContainerPreview() {
+private fun ToHotAnimateTimeProgressContainerPreview() {
     ToHotAnimateTimeProgressContainer(
         modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
         enable = true,

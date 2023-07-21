@@ -23,7 +23,7 @@ fun EmojiText(
 
 @Composable
 @Preview
-fun EmojiTextPreview() {
+private fun EmojiTextPreview() {
     EmojiText(
         emojiCode = "1F4DA",
         textSize = 38

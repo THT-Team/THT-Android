@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
+import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
@@ -11,8 +13,15 @@ import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.topic.SelectTopicUseCase
+import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -177,6 +186,42 @@ object UseCaseModule {
     @Provides
     fun provideFetchThtTokenUseCase(
         repository: TokenRepository
-    ) : FetchThtTokenUseCase =
+    ): FetchThtTokenUseCase =
         FetchThtTokenUseCase(repository)
+
+    @Provides
+    fun provideFetchDailyTopicListUseCase(
+        repository: DailyTopicRepository
+    ): FetchDailyTopicListUseCase = FetchDailyTopicListUseCase(repository)
+
+    @Provides
+    fun provideSelectTopicUseCase(
+        repository: DailyTopicRepository
+    ): SelectTopicUseCase = SelectTopicUseCase(repository)
+
+    @Provides
+    fun provideFetchDailyUserCardUseCase(
+        repository: DailyUserCardRepository
+    ): FetchDailyUserCardUseCase =
+        FetchDailyUserCardUseCase(repository)
+
+    @Provides
+    fun provideFetchToHotStateUseCase(
+        topicRepository: DailyTopicRepository,
+        userCardRepository: DailyUserCardRepository,
+        fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
+    ): FetchToHotStateUseCase =
+        FetchToHotStateUseCase(topicRepository, userCardRepository, fetchDailyTopicListUseCase)
+
+    @Provides
+    fun provideReportUserUseCase(
+        repository: UserRepository
+    ): ReportUserUseCase =
+        ReportUserUseCase(repository)
+
+    @Provides
+    fun provideBlockUserUseCase(
+        repository: UserRepository
+    ): BlockUserUseCase =
+        BlockUserUseCase(repository)
 }

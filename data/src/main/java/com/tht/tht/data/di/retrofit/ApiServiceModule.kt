@@ -1,10 +1,14 @@
 package com.tht.tht.data.di.retrofit
 
-import com.tht.tht.data.remote.service.ImageService
-import com.tht.tht.data.remote.service.ImageServiceImpl
-import com.tht.tht.data.remote.service.RegionCodeApi
 import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
+import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
+import com.tht.tht.data.remote.service.image.ImageService
+import com.tht.tht.data.remote.service.image.ImageServiceImpl
+import com.tht.tht.data.remote.service.location.RegionCodeApi
+import com.tht.tht.data.remote.service.topic.DailyTopicApiService
+import com.tht.tht.data.remote.service.user.UserBlockApiService
+import com.tht.tht.data.remote.service.user.UserReportApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,4 +47,28 @@ object ApiServiceModule {
     @Provides
     @Singleton
     fun provideImageService(): ImageService = ImageServiceImpl()
+
+    @Provides
+    @Singleton
+    fun provideDailyTopicApiService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): DailyTopicApiService = retrofit.create(DailyTopicApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDailyUserCardApiService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): DailyUserCardApiService = retrofit.create(DailyUserCardApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserReportApiService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): UserReportApiService = retrofit.create(UserReportApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserBlockApiService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): UserBlockApiService = retrofit.create(UserBlockApiService::class.java)
 }
