@@ -55,6 +55,7 @@ import tht.feature.tohot.state.ToHotLoading
 import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
+//TODO: Route, Screen 분리, Screen Preview
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ToHotRoute(
@@ -114,7 +115,7 @@ fun ToHotRoute(
                                 initialProgress = 0f,
                                 cancellationBehavior = LottieCancellationBehavior.OnIterationFinish
                             )
-                            toHotViewModel.userHeartAnimationFinishEvent(it.userIdx)
+                            toHotViewModel.userDislikeAnimationFinishEvent(it.userIdx)
                         }
                     }
                 } catch (e: Exception) {

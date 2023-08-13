@@ -72,7 +72,10 @@ class ToHotViewModel @Inject constructor(
     private val passedCardIdSet = mutableSetOf<String>()
 
     private var pagingLoading = false
+
     private var heartLoading = false
+    private val userHeartApiResultChanel = Channel<Boolean>()
+    private val userDislikeApiResultChanel = Channel<Boolean>()
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
 
@@ -457,19 +460,56 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    //TODO: Animation, API 를 동시에 실행, userHeartAnimationFinishEvent 여기서 API 호출 결과를 대기
     fun userHeartEvent(idx: Int) {
         if (heartLoading) return
-        heartLoading = true
-        intent {
+        viewModelScope.launch {
+            heartLoading = true
             sendHeartUseCase(
                 userUuid = store.state.value.userList.list[idx].id
             ).onSuccess {
-                postSideEffect(
-                    ToHotSideEffect.UserHeart(idx)
-                )
-                //TODO: 리턴 값에 따라 전체 화면 표기
+                userHeartApiResultChanel.send(true)
             }.onFailure {
                 it.printStackTrace()
+                userHeartApiResultChanel.send(false)
+            }
+        }
+        intent {
+            postSideEffect(
+                ToHotSideEffect.UserHeart(idx)
+            )
+        }
+    }
+
+    fun userDislikeEvent(idx: Int) {
+        if (heartLoading) return
+        viewModelScope.launch {
+            heartLoading = true
+            sendDislikeUseCase(
+                userUuid = store.state.value.userList.list[idx].id
+            ).onSuccess {
+                userDislikeApiResultChanel.send(true)
+            }.onFailure {
+                it.printStackTrace()
+                userDislikeApiResultChanel.send(false)
+            }
+        }
+        intent {
+            postSideEffect(
+                ToHotSideEffect.UserDislike(idx)
+            )
+        }
+    }
+
+    fun userHeartAnimationFinishEvent(idx: Int) {
+        intent {
+            reduce { it.copy(loading = ToHotLoading.UserList) } // TODO: Loading
+            val res = userHeartApiResultChanel.receive()
+            reduce { it.copy(loading = ToHotLoading.None) }
+            if (res) {
+                //TODO: 리턴 값에 따라 전체 화면 표기 or Scroll
+                tryScrollToNext(idx)
+            } else {
                 postSideEffect(
                     ToHotSideEffect.ToastMessage(
                         stringProvider.getString(
@@ -478,21 +518,18 @@ class ToHotViewModel @Inject constructor(
                     )
                 )
             }
+            heartLoading = false
         }
     }
 
-    fun userDislikeEvent(idx: Int) {
-        if (heartLoading) return
-        heartLoading = true
+    fun userDislikeAnimationFinishEvent(idx: Int) {
         intent {
-            sendHeartUseCase(
-                userUuid = store.state.value.userList.list[idx].id
-            ).onSuccess {
-                postSideEffect(
-                    ToHotSideEffect.UserDislike(idx)
-                )
-            }.onFailure {
-                it.printStackTrace()
+            reduce { it.copy(loading = ToHotLoading.UserList) } // TODO: Loading
+            val res = userDislikeApiResultChanel.receive()
+            reduce { it.copy(loading = ToHotLoading.None) }
+            if (res) {
+                tryScrollToNext(idx)
+            } else {
                 postSideEffect(
                     ToHotSideEffect.ToastMessage(
                         stringProvider.getString(
@@ -501,12 +538,8 @@ class ToHotViewModel @Inject constructor(
                     )
                 )
             }
+            heartLoading = false
         }
-    }
-
-    fun userHeartAnimationFinishEvent(idx: Int) {
-        tryScrollToNext(idx)
-        heartLoading = false
     }
 
     fun reportDialogDismissEvent() {

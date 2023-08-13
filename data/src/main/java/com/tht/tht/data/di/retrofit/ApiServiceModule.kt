@@ -99,7 +99,7 @@ object ApiServiceModule {
         @ThtAccessTokenRetrofit retrofit: Retrofit
     ): UserDislikeApiService = object : UserDislikeApiService {
         override suspend fun sendDislike(userUuid: String) {
-            delay(500)
+            delay(2000)
         }
     }
     // retrofit.create(UserDislikeApiService::class.java)
