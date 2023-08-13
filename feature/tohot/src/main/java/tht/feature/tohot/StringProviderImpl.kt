@@ -24,6 +24,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.BlockSuccess -> R.string.to_hot_block_success
             StringProvider.ResId.BlockFail -> R.string.to_hot_block_fail
             StringProvider.ResId.TopicSelectFail -> R.string.to_hot_topic_select_fail
+            StringProvider.ResId.HeartFail -> R.string.to_hot_heart_fail
+            StringProvider.ResId.DislikeFail -> R.string.to_hot_dislike_fail
         }
     }
 }

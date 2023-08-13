@@ -45,6 +45,8 @@
     <string name="to_hot_report_fail">신고를 실패했습니다</string>
     <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
     <string name="to_hot_block_fail">차단을 실패했습니다</string>
+    <string name="to_hot_heart_fail">좋아요 전송을 실패했습니다</string>
+    <string name="to_hot_dislike_fail">싫어요를 실패했습니다</string>
 
     <string name="to_hot_topic_reset_1">10분뒤</string>
     <string name="to_hot_topic_reset_2">핫 토픽들이</string>

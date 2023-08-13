@@ -13,6 +13,8 @@ import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.SendDislikeUseCase
+import com.tht.tht.domain.user.SendHeartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,6 +47,8 @@ class ToHotViewModel @Inject constructor(
     private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val reportUserUseCase: ReportUserUseCase,
     private val blockUserUseCase: BlockUserUseCase,
+    private val sendHeartUseCase: SendHeartUseCase,
+    private val sendDislikeUseCase: SendDislikeUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     private val initializeState get() = ToHotState(
@@ -456,22 +460,47 @@ class ToHotViewModel @Inject constructor(
     fun userHeartEvent(idx: Int) {
         if (heartLoading) return
         heartLoading = true
-        //TODO: APi Call
         intent {
-            postSideEffect(
-                ToHotSideEffect.UserHeart(idx)
-            )
+            sendHeartUseCase(
+                userUuid = store.state.value.userList.list[idx].id
+            ).onSuccess {
+                postSideEffect(
+                    ToHotSideEffect.UserHeart(idx)
+                )
+                //TODO: 리턴 값에 따라 전체 화면 표기
+            }.onFailure {
+                it.printStackTrace()
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        stringProvider.getString(
+                            StringProvider.ResId.HeartFail
+                        )
+                    )
+                )
+            }
         }
     }
 
     fun userDislikeEvent(idx: Int) {
         if (heartLoading) return
         heartLoading = true
-        //TODO: APi Call
         intent {
-            postSideEffect(
-                ToHotSideEffect.UserX(idx)
-            )
+            sendHeartUseCase(
+                userUuid = store.state.value.userList.list[idx].id
+            ).onSuccess {
+                postSideEffect(
+                    ToHotSideEffect.UserDislike(idx)
+                )
+            }.onFailure {
+                it.printStackTrace()
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        stringProvider.getString(
+                            StringProvider.ResId.DislikeFail
+                        )
+                    )
+                )
+            }
         }
     }
 
