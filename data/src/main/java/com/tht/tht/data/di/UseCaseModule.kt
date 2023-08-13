@@ -21,6 +21,8 @@ import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.SendDislikeUseCase
+import com.tht.tht.domain.user.SendHeartUseCase
 import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -224,4 +226,16 @@ object UseCaseModule {
         repository: UserRepository
     ): BlockUserUseCase =
         BlockUserUseCase(repository)
+
+    @Provides
+    fun provideSendHeartUseCase(
+        repository: UserRepository
+    ): SendHeartUseCase =
+        SendHeartUseCase(repository)
+
+    @Provides
+    fun provideSendDislikeUseCase(
+        repository: UserRepository
+    ): SendDislikeUseCase =
+        SendDislikeUseCase(repository)
 }
