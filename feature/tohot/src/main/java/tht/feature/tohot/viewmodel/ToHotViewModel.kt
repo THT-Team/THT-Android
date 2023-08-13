@@ -68,6 +68,7 @@ class ToHotViewModel @Inject constructor(
     private val passedCardIdSet = mutableSetOf<String>()
 
     private var pagingLoading = false
+    private var heartLoading = false
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
 
@@ -452,12 +453,31 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun likeCardEvent(idx: Int) {
-        tryScrollToNext(idx)
+    fun userHeartEvent(idx: Int) {
+        if (heartLoading) return
+        heartLoading = true
+        //TODO: APi Call
+        intent {
+            postSideEffect(
+                ToHotSideEffect.UserHeart(idx)
+            )
+        }
     }
 
-    fun unlikeCardEvent(idx: Int) {
+    fun userXEvent(idx: Int) {
+        if (heartLoading) return
+        heartLoading = true
+        //TODO: APi Call
+        intent {
+            postSideEffect(
+                ToHotSideEffect.UserX(idx)
+            )
+        }
+    }
+
+    fun userHeartAnimationFinishEvent(idx: Int) {
         tryScrollToNext(idx)
+        heartLoading = false
     }
 
     fun reportDialogDismissEvent() {

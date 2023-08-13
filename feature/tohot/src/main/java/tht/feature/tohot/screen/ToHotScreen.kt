@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -18,13 +19,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCancellationBehavior
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieAnimatable
+import com.airbnb.lottie.compose.rememberLottieComposition
 import kotlinx.coroutines.launch
 import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
@@ -56,6 +64,17 @@ fun ToHotRoute(
     val pagerState = rememberPagerState()
     val context = LocalContext.current
 
+    val userHeartLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.user_heart)
+    )
+    val userHeartLottieAnimatable = rememberLottieAnimatable()
+
+    val userXLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.user_x)
+    )
+    val userXLottieAnimatable = rememberLottieAnimatable()
+
+
     LaunchedEffect(key1 = toHotViewModel, key2 = context) {
         launch {
             toHotViewModel.store.sideEffect.collect {
@@ -79,6 +98,24 @@ fun ToHotRoute(
                             } finally {
                                 toHotViewModel.removeUserCard(it.removeIdx)
                             }
+                        }
+
+                        is ToHotSideEffect.UserHeart -> {
+                            userHeartLottieAnimatable.animate(
+                                composition = userHeartLottieComposition,
+                                initialProgress = 0f,
+                                cancellationBehavior = LottieCancellationBehavior.OnIterationFinish
+                            )
+                            toHotViewModel.userHeartAnimationFinishEvent(it.userIdx)
+                        }
+
+                        is ToHotSideEffect.UserX -> {
+                            userXLottieAnimatable.animate(
+                                composition = userXLottieComposition,
+                                initialProgress = 0f,
+                                cancellationBehavior = LottieCancellationBehavior.OnIterationFinish
+                            )
+                            toHotViewModel.userHeartAnimationFinishEvent(it.userIdx)
                         }
                     }
                 } catch (e: Exception) {
@@ -181,8 +218,8 @@ fun ToHotRoute(
                 pageChanged = toHotViewModel::userChangeEvent,
                 ticChanged = toHotViewModel::ticChangeEvent,
                 loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
-                onLikeClick = toHotViewModel::likeCardEvent,
-                onUnLikeClick = toHotViewModel::unlikeCardEvent,
+                onLikeClick = toHotViewModel::userHeartEvent,
+                onUnLikeClick = toHotViewModel::userXEvent,
                 onReportMenuClick = toHotViewModel::reportMenuEvent,
                 onRefreshClick = toHotViewModel::refreshEvent
             )
@@ -198,6 +235,24 @@ fun ToHotRoute(
                 ToHotLoading.Block -> stringResource(id = R.string.to_hot_user_block_loading)
                 else -> ""
             }
+        )
+
+        LottieAnimation(
+            modifier = Modifier
+                .size(300.dp)
+                .align(Alignment.Center),
+            composition = userHeartLottieComposition,
+            progress = { userHeartLottieAnimatable.progress },
+            contentScale = ContentScale.FillHeight
+        )
+
+        LottieAnimation(
+            modifier = Modifier
+                .size(300.dp)
+                .align(Alignment.Center),
+            composition = userXLottieComposition,
+            progress = { userXLottieAnimatable.progress },
+            contentScale = ContentScale.FillHeight
         )
     }
 }

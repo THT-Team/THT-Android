@@ -13,4 +13,11 @@ sealed class ToHotSideEffect {
         val scrollIdx: Int,
         val removeIdx: Int
     ) : ToHotSideEffect()
+
+    data class UserHeart(
+        val userIdx: Int
+    ) : ToHotSideEffect()
+    data class UserX(
+        val userIdx: Int
+    ) : ToHotSideEffect()
 }
