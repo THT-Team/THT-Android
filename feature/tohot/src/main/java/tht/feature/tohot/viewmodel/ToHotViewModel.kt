@@ -464,7 +464,7 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun userXEvent(idx: Int) {
+    fun userDislikeEvent(idx: Int) {
         if (heartLoading) return
         heartLoading = true
         //TODO: APi Call

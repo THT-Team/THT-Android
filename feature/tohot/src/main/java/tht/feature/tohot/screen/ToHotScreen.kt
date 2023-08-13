@@ -69,11 +69,10 @@ fun ToHotRoute(
     )
     val userHeartLottieAnimatable = rememberLottieAnimatable()
 
-    val userXLottieComposition by rememberLottieComposition(
+    val userDislikeLottieComposition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.user_x)
     )
-    val userXLottieAnimatable = rememberLottieAnimatable()
-
+    val userDislikeLottieAnimatable = rememberLottieAnimatable()
 
     LaunchedEffect(key1 = toHotViewModel, key2 = context) {
         launch {
@@ -109,9 +108,9 @@ fun ToHotRoute(
                             toHotViewModel.userHeartAnimationFinishEvent(it.userIdx)
                         }
 
-                        is ToHotSideEffect.UserX -> {
-                            userXLottieAnimatable.animate(
-                                composition = userXLottieComposition,
+                        is ToHotSideEffect.UserDislike -> {
+                            userDislikeLottieAnimatable.animate(
+                                composition = userDislikeLottieComposition,
                                 initialProgress = 0f,
                                 cancellationBehavior = LottieCancellationBehavior.OnIterationFinish
                             )
@@ -219,7 +218,7 @@ fun ToHotRoute(
                 ticChanged = toHotViewModel::ticChangeEvent,
                 loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
                 onLikeClick = toHotViewModel::userHeartEvent,
-                onUnLikeClick = toHotViewModel::userXEvent,
+                onUnLikeClick = toHotViewModel::userDislikeEvent,
                 onReportMenuClick = toHotViewModel::reportMenuEvent,
                 onRefreshClick = toHotViewModel::refreshEvent
             )
@@ -250,8 +249,8 @@ fun ToHotRoute(
             modifier = Modifier
                 .size(300.dp)
                 .align(Alignment.Center),
-            composition = userXLottieComposition,
-            progress = { userXLottieAnimatable.progress },
+            composition = userDislikeLottieComposition,
+            progress = { userDislikeLottieAnimatable.progress },
             contentScale = ContentScale.FillHeight
         )
     }

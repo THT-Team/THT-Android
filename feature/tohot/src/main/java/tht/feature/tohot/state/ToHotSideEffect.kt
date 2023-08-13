@@ -17,7 +17,7 @@ sealed class ToHotSideEffect {
     data class UserHeart(
         val userIdx: Int
     ) : ToHotSideEffect()
-    data class UserX(
+    data class UserDislike(
         val userIdx: Int
     ) : ToHotSideEffect()
 }
