@@ -56,6 +56,7 @@ import tht.feature.tohot.state.ToHotSideEffect
 import tht.feature.tohot.viewmodel.ToHotViewModel
 
 //TODO: Route, Screen 분리, Screen Preview
+//TODO: 다른 탭에 갔을 때 일시 정지
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun ToHotRoute(
@@ -233,6 +234,8 @@ fun ToHotRoute(
                 ToHotLoading.UserList -> stringResource(id = R.string.to_hot_user_card_loading)
                 ToHotLoading.Report -> stringResource(id = R.string.to_hot_user_report_loading)
                 ToHotLoading.Block -> stringResource(id = R.string.to_hot_user_block_loading)
+                ToHotLoading.Heart -> stringResource(id = R.string.to_hot_heart_loading)
+                ToHotLoading.Dislike -> stringResource(id = R.string.to_hot_dislike_loading)
                 else -> ""
             }
         )

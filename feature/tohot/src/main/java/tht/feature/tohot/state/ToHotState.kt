@@ -35,13 +35,15 @@ data class ToHotState(
     val hasUnReadAlarm: Boolean
 )
 
-enum class ToHotLoading() {
+enum class ToHotLoading {
     None,
     TopicList,
     TopicSelect,
     UserList,
     Report,
-    Block
+    Block,
+    Heart,
+    Dislike
 }
 
 enum class ToHotCardState {

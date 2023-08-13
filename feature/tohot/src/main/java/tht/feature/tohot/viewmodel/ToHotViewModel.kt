@@ -503,7 +503,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userHeartAnimationFinishEvent(idx: Int) {
         intent {
-            reduce { it.copy(loading = ToHotLoading.UserList) } // TODO: Loading
+            reduce { it.copy(loading = ToHotLoading.Heart) }
             val res = userHeartApiResultChanel.receive()
             reduce { it.copy(loading = ToHotLoading.None) }
             if (res) {
@@ -524,7 +524,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userDislikeAnimationFinishEvent(idx: Int) {
         intent {
-            reduce { it.copy(loading = ToHotLoading.UserList) } // TODO: Loading
+            reduce { it.copy(loading = ToHotLoading.Dislike) }
             val res = userDislikeApiResultChanel.receive()
             reduce { it.copy(loading = ToHotLoading.None) }
             if (res) {

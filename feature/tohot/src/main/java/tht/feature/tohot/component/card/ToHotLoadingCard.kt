@@ -28,6 +28,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle1
 import tht.feature.tohot.R
 
+//TODO: 첫 실행시 프레임에 안나오는 이유?
 @Composable
 fun ToHotLoadingCard(
     modifier: Modifier = Modifier,
@@ -62,11 +63,10 @@ fun ToHotLoadingCard(
             LottieAnimation(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .size(100.dp, 50.dp),
+                    .size(100.dp, 30.dp),
                 composition = loadingComposition,
                 progress = { loadingLottieAnimatable.progress },
-                contentScale = ContentScale.FillWidth,
-                alignment = Alignment.Center
+                contentScale = ContentScale.FillWidth
             )
             ThtSubtitle1(
                 modifier = Modifier
