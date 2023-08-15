@@ -1,4 +1,4 @@
-package tht.feature.tohot.screen
+package tht.feature.tohot.tohot.screen
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image

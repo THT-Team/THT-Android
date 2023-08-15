@@ -1,4 +1,4 @@
-package tht.feature.tohot
+package tht.feature.tohot.tohot.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

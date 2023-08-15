@@ -1,4 +1,4 @@
-package tht.feature.tohot.viewmodel
+package tht.feature.tohot.tohot.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -28,10 +28,10 @@ import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
-import tht.feature.tohot.state.ToHotCardState
-import tht.feature.tohot.state.ToHotLoading
-import tht.feature.tohot.state.ToHotSideEffect
-import tht.feature.tohot.state.ToHotState
+import tht.feature.tohot.tohot.state.ToHotCardState
+import tht.feature.tohot.tohot.state.ToHotLoading
+import tht.feature.tohot.tohot.state.ToHotSideEffect
+import tht.feature.tohot.tohot.state.ToHotState
 import java.util.Stack
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package tht.feature.tohot.screen
+package tht.feature.tohot.tohot.screen
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi

@@ -1,4 +1,4 @@
-package tht.feature.tohot.state
+package tht.feature.tohot.tohot.state
 
 import androidx.compose.runtime.Immutable
 import tht.feature.tohot.model.CardTimerUiModel

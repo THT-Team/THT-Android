@@ -19,7 +19,7 @@ import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
 import tht.feature.heart.HeartFragment
 import tht.feature.setting.MyFragment
-import tht.feature.tohot.ToHotFragment
+import tht.feature.tohot.tohot.fragment.ToHotFragment
 
 @SuppressLint("CommitTransaction")
 @AndroidEntryPoint

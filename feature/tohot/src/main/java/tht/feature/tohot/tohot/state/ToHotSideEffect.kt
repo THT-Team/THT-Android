@@ -1,4 +1,4 @@
-package tht.feature.tohot.state
+package tht.feature.tohot.tohot.state
 
 sealed class ToHotSideEffect {
     data class ToastMessage(
