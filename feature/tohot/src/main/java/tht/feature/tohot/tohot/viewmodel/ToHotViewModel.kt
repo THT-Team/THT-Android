@@ -27,6 +27,7 @@ import tht.feature.tohot.mapper.calculateInterval
 import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
@@ -74,7 +75,7 @@ class ToHotViewModel @Inject constructor(
     private var pagingLoading = false
 
     private var heartLoading = false
-    private val userHeartApiResultChanel = Channel<Boolean>()
+    private val userHeartApiResultChanel = Channel<Boolean?>()
     private val userDislikeApiResultChanel = Channel<Boolean>()
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
@@ -222,7 +223,7 @@ class ToHotViewModel @Inject constructor(
      * 없다면 removeAllCard -> 다음 유저가 없음 표시
      * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
-    private fun tryScrollToNext(currentIdx: Int) {
+    private fun tryScrollToNext(currentIdx: Int, animate: Boolean = true) {
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
                 intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
@@ -232,7 +233,7 @@ class ToHotViewModel @Inject constructor(
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
                     postSideEffect(
-                        ToHotSideEffect.Scroll(currentIdx + 1)
+                        ToHotSideEffect.Scroll(currentIdx + 1, animate)
                     )
                 }
                 else -> removeAllCard()
@@ -403,7 +404,8 @@ class ToHotViewModel @Inject constructor(
                         }
                     ),
                     enableTimerIdx = userIdx,
-                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH,
+                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
+                        it.matchingFullScreenUser == null,
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
@@ -460,7 +462,6 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    //TODO: Animation, API 를 동시에 실행, userHeartAnimationFinishEvent 여기서 API 호출 결과를 대기
     fun userHeartEvent(idx: Int) {
         if (heartLoading) return
         viewModelScope.launch {
@@ -468,10 +469,10 @@ class ToHotViewModel @Inject constructor(
             sendHeartUseCase(
                 userUuid = store.state.value.userList.list[idx].id
             ).onSuccess {
-                userHeartApiResultChanel.send(true)
+                userHeartApiResultChanel.send(it)
             }.onFailure {
                 it.printStackTrace()
-                userHeartApiResultChanel.send(false)
+                userHeartApiResultChanel.send(null)
             }
         }
         intent {
@@ -506,9 +507,18 @@ class ToHotViewModel @Inject constructor(
             reduce { it.copy(loading = ToHotLoading.Heart) }
             val res = userHeartApiResultChanel.receive()
             reduce { it.copy(loading = ToHotLoading.None) }
-            if (res) {
-                //TODO: 리턴 값에 따라 전체 화면 표기 or Scroll
-                tryScrollToNext(idx)
+            if (res != null) {
+                if (res) {
+                    val imageUrl = store.state.value.userList.list[idx].profileImgUrl.list.first()
+                    reduce {
+                        it.copy(
+                            matchingFullScreenUser = MatchingUserUiModel(imageUrl, idx),
+                            cardMoveAllow = false
+                        )
+                    }
+                    delay(300)
+                }
+                tryScrollToNext(idx, !res)
             } else {
                 postSideEffect(
                     ToHotSideEffect.ToastMessage(
@@ -540,6 +550,21 @@ class ToHotViewModel @Inject constructor(
             }
             heartLoading = false
         }
+    }
+
+    fun matchingUserFullScreenDismissEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    matchingFullScreenUser = null,
+                    cardMoveAllow = true
+                )
+            }
+        }
+    }
+
+    fun chatRequestEvent(idx: Int) {
+        //TODO: 구현 미정
     }
 
     fun reportDialogDismissEvent() {

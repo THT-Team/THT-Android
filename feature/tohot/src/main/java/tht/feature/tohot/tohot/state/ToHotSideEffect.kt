@@ -6,7 +6,8 @@ sealed class ToHotSideEffect {
     ) : ToHotSideEffect()
 
     data class Scroll(
-        val idx: Int
+        val idx: Int,
+        val animate: Boolean = true
     ) : ToHotSideEffect()
 
     data class RemoveAfterScroll(

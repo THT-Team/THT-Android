@@ -36,6 +36,7 @@ import tht.feature.tohot.component.card.ToHotLoadingCard
 import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
+import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotSideEffect
@@ -72,7 +73,11 @@ internal fun ToHotRoute(
 
                         is ToHotSideEffect.Scroll -> {
                             try {
-                                pagerState.animateScrollToPage(it.idx)
+                                if (it.animate) {
+                                    pagerState.animateScrollToPage(it.idx)
+                                } else {
+                                    pagerState.scrollToPage(it.idx)
+                                }
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
@@ -111,6 +116,15 @@ internal fun ToHotRoute(
                 }
             }
         }
+    }
+
+    toHotState.matchingFullScreenUser?.let {
+        ToHotUserMatchingDialog(
+            isShow = true,
+            onDismissRequest = toHotViewModel::matchingUserFullScreenDismissEvent,
+            imageUrl = it.imageUrl,
+            onChatClick = { toHotViewModel.chatRequestEvent(it.idx) }
+        )
     }
 
     ToHotUserReportMenuDialog(
