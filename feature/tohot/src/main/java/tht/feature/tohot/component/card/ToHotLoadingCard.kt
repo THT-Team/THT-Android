@@ -28,7 +28,6 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle1
 import tht.feature.tohot.R
 
-//TODO: 첫 실행시 프레임에 안나오는 이유?
 @Composable
 fun ToHotLoadingCard(
     modifier: Modifier = Modifier,

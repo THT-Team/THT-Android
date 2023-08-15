@@ -164,10 +164,10 @@ fun ToHotScreenPreview() {
         alarmClickListener = { },
         pageChanged = { },
         ticChanged = { _, _ -> },
-        loadFinishListener = { _, _, _-> },
+        loadFinishListener = { _, _, _ -> },
         onLikeClick = { },
         onUnLikeClick = { },
         onReportMenuClick = { },
-        onRefreshClick = { },
+        onRefreshClick = { }
     )
 }
