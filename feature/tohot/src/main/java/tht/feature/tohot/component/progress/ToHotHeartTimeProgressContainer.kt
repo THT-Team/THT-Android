@@ -2,7 +2,6 @@ package tht.feature.tohot.component.progress
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,32 +26,24 @@ fun ToHotHeartTimeProgressContainer(
         modifier = modifier,
         color = colorResource(id = R.color.black_1A1A1A).copy(alpha = 0.5f)
     ) {
-        Box(
+        Image(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(end = 12.dp)
-        ) {
-            Image(
-                painter = painterResource(id = tht.feature.tohot.R.drawable.ic_timer_heart),
-                contentDescription = "heart_timer"
-            )
-            Image(
-                modifier = Modifier.align(Alignment.Center),
-                painter = painterResource(id = tht.feature.tohot.R.drawable.ic_heart),
-                contentDescription = "heart"
-            )
-        }
+                .padding(end = 12.dp),
+            painter = painterResource(id = tht.feature.tohot.R.drawable.ic_timer_heart),
+            contentDescription = "heart_timer"
+        )
         val gradientBrush = Brush.horizontalGradient(
             colors = listOf(
                 colorResource(id = R.color.red_f9184e),
                 colorResource(id = R.color.orange_f9743d),
-                colorResource(id = R.color.yellow_f9cc2e),
+                colorResource(id = R.color.yellow_f9cc2e)
             ),
             startX = 0.0f,
-            endX = Float.POSITIVE_INFINITY,
+            endX = Float.POSITIVE_INFINITY
         )
         Canvas(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(ProgressIndicatorDefaults.StrokeWidth)
                 .align(Alignment.CenterVertically)
