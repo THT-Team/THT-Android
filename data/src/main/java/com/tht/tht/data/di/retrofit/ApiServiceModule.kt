@@ -20,6 +20,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.delay
 import retrofit2.Retrofit
+import java.util.Random
 import javax.inject.Singleton
 
 @Module
@@ -87,7 +88,7 @@ object ApiServiceModule {
             delay(500)
             return BaseResponse.Success(
                 statusCode = 200,
-                response = UserHeartResponse(false)
+                response = UserHeartResponse(Random().nextInt(2) == 0)
             )
         }
     }
