@@ -119,3 +119,55 @@ internal fun ToHotScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+@Preview
+fun ToHotScreenPreview() {
+    val toHotState = ToHotState(
+        userList = ImmutableListWrapper(mockUserList.toList()),
+        userCardState = ToHotCardState.Initialize,
+        timers = ImmutableListWrapper(
+            Array(mockUserList.size) {
+                CardTimerUiModel(
+                    maxSec = 5,
+                    currentSec = 0,
+                    destinationSec = 4,
+                    startAble = false
+                )
+            }.toList()
+        ),
+        enableTimerIdx = 0,
+        cardMoveAllow = true,
+        loading = ToHotLoading.None,
+        selectTopicKey = -1,
+        currentTopic = null,
+        topicModalShow = false,
+        topicList = ImmutableListWrapper(emptyList()),
+        topicResetRemainingTime = "00:00:00",
+        topicResetTimeMill = 0,
+        hasUnReadAlarm = false
+    )
+    ToHotScreen(
+        cardList = toHotState.userList,
+        toHotCardState = toHotState.userCardState,
+        pagerState = rememberPagerState(),
+        timers = toHotState.timers,
+        currentUserIdx = toHotState.enableTimerIdx,
+        cardMoveAllow = toHotState.cardMoveAllow,
+        topicIconUrl = toHotState.currentTopic?.iconUrl,
+        topicIconRes = toHotState.currentTopic?.iconRes,
+        topicTitle = toHotState.currentTopic?.title,
+        hasUnReadAlarm = toHotState.hasUnReadAlarm,
+        fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+        onFallingAnimationFinish = { },
+        topicSelectListener = { },
+        alarmClickListener = { },
+        pageChanged = { },
+        ticChanged = { _, _ -> },
+        loadFinishListener = { _, _, _-> },
+        onLikeClick = { },
+        onUnLikeClick = { },
+        onReportMenuClick = { },
+        onRefreshClick = { },
+    )
+}
