@@ -130,7 +130,7 @@ fun ToHotScreenPreview() {
             Array(mockUserList.size) {
                 CardTimerUiModel(
                     maxSec = 5,
-                    currentSec = 0,
+                    currentSec = 5,
                     destinationSec = 4,
                     startAble = false
                 )
