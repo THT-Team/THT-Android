@@ -476,6 +476,15 @@ class ToHotViewModel @Inject constructor(
             }
         }
         intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Heart)
+                        }
+                    )
+                )
+            }
             postSideEffect(
                 ToHotSideEffect.UserHeart(idx)
             )
@@ -496,6 +505,15 @@ class ToHotViewModel @Inject constructor(
             }
         }
         intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Dislike)
+                        }
+                    )
+                )
+            }
             postSideEffect(
                 ToHotSideEffect.UserDislike(idx)
             )

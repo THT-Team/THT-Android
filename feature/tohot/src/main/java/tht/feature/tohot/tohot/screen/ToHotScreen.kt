@@ -95,6 +95,7 @@ internal fun ToHotScreen(
                         interests = card.interests,
                         idealTypes = card.idealTypes,
                         introduce = card.introduce,
+                        timer = timers.list[idx].timerType,
                         maxTimeSec = timers.list[idx].maxSec,
                         currentSec = timers.list[idx].currentSec,
                         destinationSec = timers.list[idx].destinationSec,
