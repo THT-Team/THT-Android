@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,13 +59,23 @@ fun ToHotMatchingScreen(
                     .padding(top = 142.dp),
                 text = stringResource(id = R.string.to_hot_matching_title),
                 fontWeight = FontWeight.Bold,
-                color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+                color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
+                shadow = Shadow(
+                    color = Color.Black.copy(alpha = 0.12f),
+                    offset = Offset(1f, 1f),
+                    blurRadius = 4f
+                )
             )
             ThtSubtitle1(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.to_hot_matching_content),
                 fontWeight = FontWeight.SemiBold,
-                color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+                color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
+                shadow = Shadow(
+                    color = Color.Black.copy(alpha = 0.12f),
+                    offset = Offset(1f, 1f),
+                    blurRadius = 4f
+                )
             )
 
             androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(1f))
@@ -93,7 +106,12 @@ fun ToHotMatchingScreen(
                     .noRippleClickable { onCloseClick() },
                 text = stringResource(id = R.string.close),
                 fontWeight = FontWeight.Medium,
-                color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+                color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
+                shadow = Shadow(
+                    color = Color.Black.copy(alpha = 0.12f),
+                    offset = Offset(1f, 1f),
+                    blurRadius = 4f
+                )
             )
 
             Spacer(space = 80.dp)

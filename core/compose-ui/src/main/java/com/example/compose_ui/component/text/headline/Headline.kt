@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.compose_ui.component.font.pretendardFontStyle
@@ -37,6 +38,7 @@ fun ThtHeadline2(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    shadow: Shadow? = null
 ) {
     Text(
         modifier = modifier,
@@ -44,7 +46,8 @@ fun ThtHeadline2(
         text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 26.dpTextUnit
+            fontSize = 26.dpTextUnit,
+            shadow = shadow
         ),
         color = color,
     )
