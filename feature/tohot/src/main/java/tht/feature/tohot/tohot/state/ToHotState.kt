@@ -1,8 +1,9 @@
-package tht.feature.tohot.state
+package tht.feature.tohot.tohot.state
 
 import androidx.compose.runtime.Immutable
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.model.TopicUiModel
 
@@ -32,16 +33,19 @@ data class ToHotState(
     val topicModalShow: Boolean,
     val topicResetRemainingTime: String,
     val topicResetTimeMill: Long,
-    val hasUnReadAlarm: Boolean
+    val hasUnReadAlarm: Boolean,
+    val matchingFullScreenUser: MatchingUserUiModel? = null
 )
 
-enum class ToHotLoading() {
+enum class ToHotLoading {
     None,
     TopicList,
     TopicSelect,
     UserList,
     Report,
-    Block
+    Block,
+    Heart,
+    Dislike
 }
 
 enum class ToHotCardState {

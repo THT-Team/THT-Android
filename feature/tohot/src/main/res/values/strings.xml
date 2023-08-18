@@ -1,6 +1,7 @@
 <resources>
     <string name="loading">로딩중</string>
     <string name="cancel">취소</string>
+    <string name="close">닫기</string>
 
     <string name="user_info_interest_title">내 관심사</string>
     <string name="user_info_ideal_type_title">내 이상형</string>
@@ -46,6 +47,11 @@
     <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
     <string name="to_hot_block_fail">차단을 실패했습니다</string>
 
+    <string name="to_hot_heart_loading">좋아요를 보내는 중이예요..</string>
+    <string name="to_hot_heart_fail">좋아요 전송을 실패했습니다</string>
+    <string name="to_hot_dislike_loading">싫어요를 처리하는 중이예요..</string>
+    <string name="to_hot_dislike_fail">싫어요를 실패했습니다</string>
+
     <string name="to_hot_topic_reset_1">10분뒤</string>
     <string name="to_hot_topic_reset_2">핫 토픽들이</string>
     <string name="to_hot_topic_reset_3">됩니다!</string>
@@ -53,4 +59,8 @@
 
     <string name="to_hot_topic_wait">아직 주제어 변경 시간이 좀 남았네요!</string>
     <string name="to_hot_topic_wait_description">금방 더 흥미로운 주제를 가지고 올게요.</string>
+
+    <string name="to_hot_matching_title">무디와 매칭 되었어요!</string>
+    <string name="to_hot_matching_content">자유롭게 대화를 시작해보세요.</string>
+    <string name="to_hot_matching_btn">대화 시작하기</string>
 </resources>

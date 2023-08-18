@@ -24,7 +24,10 @@ import com.tht.tht.domain.signup.model.InterestModel
 import tht.feature.tohot.component.pager.ToHotCardImagePager
 import tht.feature.tohot.component.pager.ToHotPagerIndicator
 import tht.feature.tohot.component.progress.ToHotAnimateTimeProgressContainer
+import tht.feature.tohot.component.progress.ToHotEmptyTimeProgressContainer
+import tht.feature.tohot.component.progress.ToHotHeartTimeProgressContainer
 import tht.feature.tohot.component.userinfo.ToHotUserInfoCard
+import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,6 +41,7 @@ fun ToHotCard(
     interests: ImmutableListWrapper<InterestModel>,
     idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
+    timer: CardTimerUiModel.ToHotTimer,
     maxTimeSec: Int,
     currentSec: Int,
     destinationSec: Int,
@@ -77,16 +81,33 @@ fun ToHotCard(
             loadFinishListener = loadFinishListener
         )
 
-        ToHotAnimateTimeProgressContainer(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(horizontal = 13.dp, vertical = 12.dp),
-            enable = enable,
-            maxTimeSec = maxTimeSec,
-            currentSec = currentSec,
-            ticChanged = ticChanged,
-            destinationSec = destinationSec
-        )
+        val timerModifier = Modifier
+            .align(Alignment.TopCenter)
+            .padding(horizontal = 13.dp, vertical = 12.dp)
+        when (timer) {
+            CardTimerUiModel.ToHotTimer.Timer -> {
+                ToHotAnimateTimeProgressContainer(
+                    modifier = timerModifier,
+                    enable = enable,
+                    maxTimeSec = maxTimeSec,
+                    currentSec = currentSec,
+                    ticChanged = ticChanged,
+                    destinationSec = destinationSec
+                )
+            }
+
+            CardTimerUiModel.ToHotTimer.Heart -> {
+                ToHotHeartTimeProgressContainer(
+                    modifier = timerModifier
+                )
+            }
+
+            CardTimerUiModel.ToHotTimer.Dislike -> {
+                ToHotEmptyTimeProgressContainer(
+                    modifier = timerModifier
+                )
+            }
+        }
 
         ToHotUserInfoCard(
             modifier = Modifier
@@ -139,6 +160,59 @@ private fun ToHotCardPreview() {
         interests = ImmutableListWrapper(emptyList()),
         idealTypes = ImmutableListWrapper(emptyList()),
         introduce = "introduce",
+        timer = CardTimerUiModel.ToHotTimer.Timer,
+        maxTimeSec = 5,
+        currentSec = 5,
+        destinationSec = 4,
+        enable = true
+    )
+}
+
+@Composable
+@Preview
+private fun ToHotHeartCardPreview() {
+    ToHotCard(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+        imageUrls = ImmutableListWrapper(
+            listOf(
+                "https://profile"
+            )
+        ),
+        name = "nickname",
+        age = 1,
+        address = "address",
+        interests = ImmutableListWrapper(emptyList()),
+        idealTypes = ImmutableListWrapper(emptyList()),
+        introduce = "introduce",
+        timer = CardTimerUiModel.ToHotTimer.Heart,
+        maxTimeSec = 5,
+        currentSec = 5,
+        destinationSec = 4,
+        enable = true
+    )
+}
+
+@Composable
+@Preview
+private fun ToHotDislikeCardPreview() {
+    ToHotCard(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+        imageUrls = ImmutableListWrapper(
+            listOf(
+                "https://profile"
+            )
+        ),
+        name = "nickname",
+        age = 1,
+        address = "address",
+        interests = ImmutableListWrapper(emptyList()),
+        idealTypes = ImmutableListWrapper(emptyList()),
+        introduce = "introduce",
+        timer = CardTimerUiModel.ToHotTimer.Dislike,
         maxTimeSec = 5,
         currentSec = 5,
         destinationSec = 4,

@@ -165,3 +165,4 @@ app-compat-theme-adpater = { module = "com.google.accompanist:accompanist-themea
 
 #lottie
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }

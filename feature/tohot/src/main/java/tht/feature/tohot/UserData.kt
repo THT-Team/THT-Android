@@ -132,3 +132,13 @@ internal val userData7 = userData.copy(
     ),
     idx = 7
 )
+
+internal val mockUserList = arrayOf(
+    userData,
+    userData2,
+    userData3,
+    userData4,
+    userData5,
+    userData6,
+    userData7
+)

@@ -1,4 +1,4 @@
-package tht.feature.tohot.state
+package tht.feature.tohot.tohot.state
 
 sealed class ToHotSideEffect {
     data class ToastMessage(
@@ -6,11 +6,19 @@ sealed class ToHotSideEffect {
     ) : ToHotSideEffect()
 
     data class Scroll(
-        val idx: Int
+        val idx: Int,
+        val animate: Boolean = true
     ) : ToHotSideEffect()
 
     data class RemoveAfterScroll(
         val scrollIdx: Int,
         val removeIdx: Int
+    ) : ToHotSideEffect()
+
+    data class UserHeart(
+        val userIdx: Int
+    ) : ToHotSideEffect()
+    data class UserDislike(
+        val userIdx: Int
     ) : ToHotSideEffect()
 }

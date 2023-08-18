@@ -12,6 +12,8 @@ interface StringProvider {
         ReportFail,
         BlockSuccess,
         BlockFail,
-        TopicSelectFail
+        TopicSelectFail,
+        HeartFail,
+        DislikeFail
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.compose_ui.component.font.pretendardFontStyle
@@ -16,6 +17,7 @@ fun ThtSubtitle1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    shadow: Shadow? = null
 ) {
     Text(
         modifier = modifier,
@@ -23,7 +25,8 @@ fun ThtSubtitle1(
         text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 16.dpTextUnit
+            fontSize = 16.dpTextUnit,
+            shadow = shadow
         ),
         color = color,
     )
@@ -36,6 +39,7 @@ fun ThtSubtitle2(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    shadow: Shadow? = null
 ) {
     Text(
         modifier = modifier,
@@ -43,7 +47,8 @@ fun ThtSubtitle2(
         text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 15.dpTextUnit
+            fontSize = 15.dpTextUnit,
+            shadow = shadow
         ),
         color = color,
     )

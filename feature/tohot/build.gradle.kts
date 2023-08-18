@@ -69,4 +69,6 @@ dependencies {
     implementation(libs.jetpack.compose.viewmodel)
     implementation(libs.jetpack.compose.coil)
     implementation(libs.app.compat.theme.adpater)
+
+    implementation(libs.lottie.compose)
 }

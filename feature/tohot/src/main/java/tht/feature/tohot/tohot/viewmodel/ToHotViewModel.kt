@@ -1,4 +1,4 @@
-package tht.feature.tohot.viewmodel
+package tht.feature.tohot.tohot.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -13,6 +13,8 @@ import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.SendDislikeUseCase
+import com.tht.tht.domain.user.SendHeartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,11 +27,12 @@ import tht.feature.tohot.mapper.calculateInterval
 import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
-import tht.feature.tohot.state.ToHotCardState
-import tht.feature.tohot.state.ToHotLoading
-import tht.feature.tohot.state.ToHotSideEffect
-import tht.feature.tohot.state.ToHotState
+import tht.feature.tohot.tohot.state.ToHotCardState
+import tht.feature.tohot.tohot.state.ToHotLoading
+import tht.feature.tohot.tohot.state.ToHotSideEffect
+import tht.feature.tohot.tohot.state.ToHotState
 import java.util.Stack
 import javax.inject.Inject
 
@@ -45,6 +48,8 @@ class ToHotViewModel @Inject constructor(
     private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val reportUserUseCase: ReportUserUseCase,
     private val blockUserUseCase: BlockUserUseCase,
+    private val sendHeartUseCase: SendHeartUseCase,
+    private val sendDislikeUseCase: SendDislikeUseCase,
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     private val initializeState get() = ToHotState(
@@ -68,6 +73,10 @@ class ToHotViewModel @Inject constructor(
     private val passedCardIdSet = mutableSetOf<String>()
 
     private var pagingLoading = false
+
+    private var heartLoading = false
+    private val userHeartApiResultChanel = Channel<Boolean?>()
+    private val userDislikeApiResultChanel = Channel<Boolean>()
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
 
@@ -214,7 +223,7 @@ class ToHotViewModel @Inject constructor(
      * 없다면 removeAllCard -> 다음 유저가 없음 표시
      * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
-    private fun tryScrollToNext(currentIdx: Int) {
+    private fun tryScrollToNext(currentIdx: Int, animate: Boolean = true) {
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
                 intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
@@ -224,7 +233,7 @@ class ToHotViewModel @Inject constructor(
             when ((currentIdx + 1) in currentUserListRange) {
                 true -> intent {
                     postSideEffect(
-                        ToHotSideEffect.Scroll(currentIdx + 1)
+                        ToHotSideEffect.Scroll(currentIdx + 1, animate)
                     )
                 }
                 else -> removeAllCard()
@@ -395,7 +404,8 @@ class ToHotViewModel @Inject constructor(
                         }
                     ),
                     enableTimerIdx = userIdx,
-                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH,
+                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
+                        it.matchingFullScreenUser == null,
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
@@ -452,12 +462,127 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    fun likeCardEvent(idx: Int) {
-        tryScrollToNext(idx)
+    fun userHeartEvent(idx: Int) {
+        if (heartLoading) return
+        viewModelScope.launch {
+            heartLoading = true
+            sendHeartUseCase(
+                userUuid = store.state.value.userList.list[idx].id
+            ).onSuccess {
+                userHeartApiResultChanel.send(it)
+            }.onFailure {
+                it.printStackTrace()
+                userHeartApiResultChanel.send(null)
+            }
+        }
+        intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Heart)
+                        }
+                    )
+                )
+            }
+            postSideEffect(
+                ToHotSideEffect.UserHeart(idx)
+            )
+        }
     }
 
-    fun unlikeCardEvent(idx: Int) {
-        tryScrollToNext(idx)
+    fun userDislikeEvent(idx: Int) {
+        if (heartLoading) return
+        viewModelScope.launch {
+            heartLoading = true
+            sendDislikeUseCase(
+                userUuid = store.state.value.userList.list[idx].id
+            ).onSuccess {
+                userDislikeApiResultChanel.send(true)
+            }.onFailure {
+                it.printStackTrace()
+                userDislikeApiResultChanel.send(false)
+            }
+        }
+        intent {
+            reduce {
+                it.copy(
+                    timers = ImmutableListWrapper(
+                        it.timers.list.toMutableList().apply {
+                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Dislike)
+                        }
+                    )
+                )
+            }
+            postSideEffect(
+                ToHotSideEffect.UserDislike(idx)
+            )
+        }
+    }
+
+    fun userHeartAnimationFinishEvent(idx: Int) {
+        intent {
+            reduce { it.copy(loading = ToHotLoading.Heart) }
+            val res = userHeartApiResultChanel.receive()
+            reduce { it.copy(loading = ToHotLoading.None) }
+            if (res != null) {
+                if (res) {
+                    val imageUrl = store.state.value.userList.list[idx].profileImgUrl.list.first()
+                    reduce {
+                        it.copy(
+                            matchingFullScreenUser = MatchingUserUiModel(imageUrl, idx),
+                            cardMoveAllow = false
+                        )
+                    }
+                    delay(300)
+                }
+                tryScrollToNext(idx, !res)
+            } else {
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        stringProvider.getString(
+                            StringProvider.ResId.HeartFail
+                        )
+                    )
+                )
+            }
+            heartLoading = false
+        }
+    }
+
+    fun userDislikeAnimationFinishEvent(idx: Int) {
+        intent {
+            reduce { it.copy(loading = ToHotLoading.Dislike) }
+            val res = userDislikeApiResultChanel.receive()
+            reduce { it.copy(loading = ToHotLoading.None) }
+            if (res) {
+                tryScrollToNext(idx)
+            } else {
+                postSideEffect(
+                    ToHotSideEffect.ToastMessage(
+                        stringProvider.getString(
+                            StringProvider.ResId.DislikeFail
+                        )
+                    )
+                )
+            }
+            heartLoading = false
+        }
+    }
+
+    fun matchingUserFullScreenDismissEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    matchingFullScreenUser = null,
+                    cardMoveAllow = true
+                )
+            }
+        }
+    }
+
+    fun chatRequestEvent(idx: Int) {
+        //TODO: 구현 미정
     }
 
     fun reportDialogDismissEvent() {
