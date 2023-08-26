@@ -1,7 +1,9 @@
 package tht.feature.tohot.tohot.screen
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
@@ -13,19 +15,20 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tht.feature.tohot.component.blur.BlurContainer
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.card.ToHotErrorCard
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
+import tht.feature.tohot.mockUserList
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotState
-import tht.feature.tohot.mockUserList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -67,6 +70,7 @@ internal fun ToHotScreen(
             )
         }
 
+        val blurOn = true
         when (cardList.list.isEmpty()) {
             true -> {
                 when (toHotCardState) {
@@ -84,32 +88,43 @@ internal fun ToHotScreen(
                     key = { cardList.list[it].id }
                 ) { idx ->
                     val card = cardList.list[idx]
-                    ToHotCard(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
-                        imageUrls = card.profileImgUrl,
-                        name = card.nickname,
-                        age = card.age,
-                        address = card.address,
-                        interests = card.interests,
-                        idealTypes = card.idealTypes,
-                        introduce = card.introduce,
-                        timer = timers.list[idx].timerType,
-                        maxTimeSec = timers.list[idx].maxSec,
-                        currentSec = timers.list[idx].currentSec,
-                        destinationSec = timers.list[idx].destinationSec,
-                        enable = currentUserIdx == pagerState.currentPage &&
-                            timers.list[idx].startAble && cardMoveAllow,
-                        fallingAnimationEnable = idx == fallingAnimationTargetIdx,
-                        onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
-                        userCardClick = { },
-                        onReportMenuClick = onReportMenuClick,
-                        ticChanged = { ticChanged(it, idx) },
-                        onLikeClick = { onLikeClick(idx) },
-                        onUnLikeClick = { onUnLikeClick(idx) },
-                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
-                    )
+                    BlurContainer(
+                        modifier = Modifier.fillMaxSize(),
+                        padding = PaddingValues(3.dp),
+                        blurOn = blurOn,
+                        clickableBlurContent = false,
+                        onDoubleTab = {
+                            Log.d("TAG", "onDoubleTab")
+                        }
+                    ) {
+                        ToHotCard(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                            imageUrls = card.profileImgUrl,
+                            name = card.nickname,
+                            age = card.age,
+                            address = card.address,
+                            interests = card.interests,
+                            idealTypes = card.idealTypes,
+                            introduce = card.introduce,
+                            timer = timers.list[idx].timerType,
+                            maxTimeSec = timers.list[idx].maxSec,
+                            currentSec = timers.list[idx].currentSec,
+                            destinationSec = timers.list[idx].destinationSec,
+                            enable = currentUserIdx == pagerState.currentPage &&
+                                timers.list[idx].startAble && cardMoveAllow,
+                            fallingAnimationEnable = idx == fallingAnimationTargetIdx,
+                            userScrollEnabled = !blurOn,
+                            onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
+                            userCardClick = { },
+                            onReportMenuClick = onReportMenuClick,
+                            ticChanged = { ticChanged(it, idx) },
+                            onLikeClick = { onLikeClick(idx) },
+                            onUnLikeClick = { onUnLikeClick(idx) },
+                            loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
+                        )
+                    }
                 }
                 LaunchedEffect(key1 = pagerState) {
                     snapshotFlow { pagerState.currentPage }

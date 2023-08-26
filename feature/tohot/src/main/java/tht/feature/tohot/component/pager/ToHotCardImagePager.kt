@@ -20,6 +20,7 @@ fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
     imageUrls: ImmutableListWrapper<String>,
+    userScrollEnabled: Boolean = true,
     loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> }
 ) {
     Box(
@@ -28,6 +29,7 @@ fun ToHotCardImagePager(
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             pageCount = imageUrls.list.size,
+            userScrollEnabled = userScrollEnabled,
             state = pagerState
         ) { page ->
             ToHotCardImage(
