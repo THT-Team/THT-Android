@@ -45,6 +45,7 @@ internal fun ToHotScreen(
     topicTitle: String?,
     hasUnReadAlarm: Boolean,
     fallingAnimationTargetIdx: Int,
+    hold: Boolean,
     onFallingAnimationFinish: (Int) -> Unit = { },
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
@@ -54,6 +55,7 @@ internal fun ToHotScreen(
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
     onRefreshClick: () -> Unit = { },
+    onBlurDoubleTab: () -> Unit = { },
     loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
@@ -70,7 +72,6 @@ internal fun ToHotScreen(
             )
         }
 
-        val blurOn = true
         when (cardList.list.isEmpty()) {
             true -> {
                 when (toHotCardState) {
@@ -91,11 +92,9 @@ internal fun ToHotScreen(
                     BlurContainer(
                         modifier = Modifier.fillMaxSize(),
                         padding = PaddingValues(3.dp),
-                        blurOn = blurOn,
+                        blurOn = hold,
                         clickableBlurContent = false,
-                        onDoubleTab = {
-                            Log.d("TAG", "onDoubleTab")
-                        }
+                        onDoubleTab = onBlurDoubleTab
                     ) {
                         ToHotCard(
                             modifier = Modifier
@@ -115,7 +114,7 @@ internal fun ToHotScreen(
                             enable = currentUserIdx == pagerState.currentPage &&
                                 timers.list[idx].startAble && cardMoveAllow,
                             fallingAnimationEnable = idx == fallingAnimationTargetIdx,
-                            userScrollEnabled = !blurOn,
+                            userScrollEnabled = !hold,
                             onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
                             userCardClick = { },
                             onReportMenuClick = onReportMenuClick,
@@ -175,6 +174,7 @@ fun ToHotScreenPreview() {
         topicTitle = toHotState.currentTopic?.title,
         hasUnReadAlarm = toHotState.hasUnReadAlarm,
         fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+        hold = false,
         onFallingAnimationFinish = { },
         topicSelectListener = { },
         alarmClickListener = { },

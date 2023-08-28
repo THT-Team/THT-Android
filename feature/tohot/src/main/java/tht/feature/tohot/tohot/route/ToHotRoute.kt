@@ -149,10 +149,10 @@ internal fun ToHotRoute(
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
-    ToHotHoldDialog(
-        isShow = toHotState.holdDialogShow,
-        onRestartClick = toHotViewModel::releaseHoldEvent
-    )
+//    ToHotHoldDialog(
+//        isShow = toHotState.holdDialogShow,
+//        onRestartClick = toHotViewModel::releaseHoldEvent
+//    )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -214,6 +214,7 @@ internal fun ToHotRoute(
                 topicTitle = toHotState.currentTopic?.title,
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
                 fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                hold = toHotState.holdDialogShow,
                 onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
@@ -223,6 +224,7 @@ internal fun ToHotRoute(
                 onLikeClick = toHotViewModel::userHeartEvent,
                 onUnLikeClick = toHotViewModel::userDislikeEvent,
                 onReportMenuClick = toHotViewModel::reportMenuEvent,
+                onBlurDoubleTab = toHotViewModel::releaseHoldEvent,
                 onRefreshClick = toHotViewModel::refreshEvent
             )
         }

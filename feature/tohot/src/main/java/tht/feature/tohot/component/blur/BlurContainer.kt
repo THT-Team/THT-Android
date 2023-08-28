@@ -17,7 +17,7 @@ fun BlurContainer(
     content: @Composable () -> Unit
 ) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2) {
-        Android12BlurContainer(
+        Android12ContentBlur(
             modifier = modifier,
             padding = padding,
             blurOn = blurOn,
@@ -26,7 +26,14 @@ fun BlurContainer(
             content = content
         )
     } else {
-
+        Android12ContentBlur(
+            modifier = modifier,
+            padding = padding,
+            blurOn = blurOn,
+            clickableBlurContent = clickableBlurContent,
+            onDoubleTab = onDoubleTab,
+            content = content
+        )
     }
 }
 
