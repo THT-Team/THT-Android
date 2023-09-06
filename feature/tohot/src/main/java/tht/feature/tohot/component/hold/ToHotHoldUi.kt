@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun ToHotHoldUi(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 32.dp),
-            text = "잠시 쉬었다 가시겠어요?",
+            text = stringResource(id = R.string.to_hot_hold_card_title),
             fontWeight = FontWeight.SemiBold,
             color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
             shadow = Shadow(
@@ -52,7 +53,7 @@ fun ToHotHoldUi(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 4.dp),
-            text = "저희가 잠시 홀드해 놓을게요",
+            text = stringResource(id = R.string.to_hot_hold_card_content),
             fontWeight = FontWeight.SemiBold,
             color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
             shadow = Shadow(
@@ -68,7 +69,7 @@ fun ToHotHoldUi(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 20.dp),
-            text = "더블탭으로 다시 시작하기",
+            text = stringResource(id = R.string.to_hot_hold_card_resume_content),
             fontWeight = FontWeight.SemiBold,
             color = colorResource(id = tht.core.ui.R.color.white_f9fafa),
             shadow = Shadow(
