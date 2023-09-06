@@ -439,7 +439,7 @@ class ToHotViewModel @Inject constructor(
      * - timer 가 0이 아니면 timer 를 1 감소
      */
     fun ticChangeEvent(tic: Float, userIdx: Int) = with(store.state.value) {
-        Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
+        Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
         if (tic <= 0) {
             tryScrollToNext(userIdx)
@@ -791,7 +791,7 @@ class ToHotViewModel @Inject constructor(
     companion object {
         private const val MAX_TIMER_SEC = 5f
 
-        private const val TIMER_INTERVAL = 0.5f
+        private const val TIMER_INTERVAL = 1f
 
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 
