@@ -104,7 +104,7 @@ class ToHotViewModel @Inject constructor(
                             store.state.value.timers.list +
                                 List(toHotState.cards.size) {
                                     CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC,
+                                        maxSec = MAX_TIMER_SEC.toInt(),
                                         currentSec = MAX_TIMER_SEC,
                                         destinationSec = MAX_TIMER_SEC,
                                         startAble = false
@@ -274,7 +274,7 @@ class ToHotViewModel @Inject constructor(
                             store.state.value.timers.list +
                                 List(dailyUserCardList.cards.size) {
                                     CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC,
+                                        maxSec = MAX_TIMER_SEC.toInt(),
                                         currentSec = MAX_TIMER_SEC,
                                         destinationSec = MAX_TIMER_SEC,
                                         startAble = false
@@ -397,9 +397,9 @@ class ToHotViewModel @Inject constructor(
                     timers = ImmutableListWrapper(
                         it.timers.list.toMutableList().apply {
                             this[userIdx] = this[userIdx].copy(
-                                maxSec = MAX_TIMER_SEC,
+                                maxSec = MAX_TIMER_SEC.toInt(),
                                 currentSec = MAX_TIMER_SEC,
-                                destinationSec = MAX_TIMER_SEC - 1
+                                destinationSec = MAX_TIMER_SEC - TIMER_INTERVAL
                             )
                         }
                     ),
@@ -438,7 +438,7 @@ class ToHotViewModel @Inject constructor(
      * - timer 가 0이면 다음 유저 스크롤
      * - timer 가 0이 아니면 timer 를 1 감소
      */
-    fun ticChangeEvent(tic: Int, userIdx: Int) = with(store.state.value) {
+    fun ticChangeEvent(tic: Float, userIdx: Int) = with(store.state.value) {
         Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
         if (tic <= 0) {
@@ -453,7 +453,7 @@ class ToHotViewModel @Inject constructor(
                         it.timers.list.toMutableList().apply {
                             this[userIdx] = this[userIdx].copy(
                                 currentSec = this[userIdx].destinationSec,
-                                destinationSec = this[userIdx].destinationSec - 1
+                                destinationSec = this[userIdx].destinationSec - TIMER_INTERVAL
                             )
                         }
                     )
@@ -789,7 +789,9 @@ class ToHotViewModel @Inject constructor(
     }
 
     companion object {
-        private const val MAX_TIMER_SEC = 5
+        private const val MAX_TIMER_SEC = 5f
+
+        private const val TIMER_INTERVAL = 0.5f
 
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 

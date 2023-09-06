@@ -43,13 +43,13 @@ fun ToHotCard(
     introduce: String,
     timer: CardTimerUiModel.ToHotTimer,
     maxTimeSec: Int,
-    currentSec: Int,
-    destinationSec: Int,
+    currentSec: Float,
+    destinationSec: Float,
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
     isHoldCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
-    ticChanged: (Int) -> Unit = { },
+    ticChanged: (Float) -> Unit = { },
     userCardClick: () -> Unit = { },
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { },
@@ -168,8 +168,8 @@ private fun ToHotCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Timer,
         maxTimeSec = 5,
-        currentSec = 5,
-        destinationSec = 4,
+        currentSec = 5f,
+        destinationSec = 4f,
         enable = true,
         isHoldCard = false
     )
@@ -195,8 +195,8 @@ private fun ToHotCardHoldCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Timer,
         maxTimeSec = 5,
-        currentSec = 5,
-        destinationSec = 4,
+        currentSec = 5f,
+        destinationSec = 4f,
         enable = true,
         isHoldCard = true
     )
@@ -222,8 +222,8 @@ private fun ToHotHeartCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Heart,
         maxTimeSec = 5,
-        currentSec = 5,
-        destinationSec = 4,
+        currentSec = 5f,
+        destinationSec = 4f,
         enable = true,
         isHoldCard = false
     )
@@ -249,8 +249,8 @@ private fun ToHotDislikeCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Dislike,
         maxTimeSec = 5,
-        currentSec = 5,
-        destinationSec = 4,
+        currentSec = 5f,
+        destinationSec = 4f,
         enable = true,
         isHoldCard = false
     )

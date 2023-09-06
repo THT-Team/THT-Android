@@ -22,24 +22,29 @@ import androidx.compose.ui.unit.dp
  * 2. maxTime, destinationSec 로 목표 progress 산출
  * 3. 애니메이션 수행
  * 4. 애니메이션 수행 후 ticChanged 호출
+ *
+ * TODO: Timer 가 tic 마다 끊기는 듯한 UI 문제 확인
+ * - Release Build 테스트
+ * - Recomposition 최적화 확인
  */
 @Composable
 fun ToHotAnimateTimeProgressContainer(
     modifier: Modifier = Modifier,
     enable: Boolean,
     maxTimeSec: Int,
-    currentSec: Int,
-    destinationSec: Int,
+    currentSec: Float,
+    destinationSec: Float,
     progressColor: List<Color> = listOf(
         Color(0xFFF9CC2E),
         Color(0xFFF98F2E),
         Color(0xFFF93A2E)
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
-    duration: Int = (currentSec - destinationSec) * 1000,
-    ticChanged: (Int) -> Unit = { }
+    duration: Float = ((currentSec - destinationSec) * 1000),
+    ticChanged: (Float) -> Unit = { }
 ) {
-    val destinationProgress = destinationSec.toFloat() / maxTimeSec.toFloat()
+    Log.d("ToHot", "Timer => c[$currentSec], d[$destinationSec]")
+    val destinationProgress = destinationSec / maxTimeSec.toFloat()
     var color = progressColor.lastOrNull() ?: Color.Yellow
     for (i in progressColor.indices) {
         val value = progressColor.size - i - 1
@@ -50,10 +55,11 @@ fun ToHotAnimateTimeProgressContainer(
     }
     val animateProgressColor by animateColorAsState(
         targetValue = color,
-        animationSpec = tween(durationMillis = 1000)
+        animationSpec = tween(durationMillis = 1000),
+        label = "animateProgressColor"
     )
 
-    val progressAnimatable = remember { Animatable((currentSec.toFloat() / maxTimeSec.toFloat())) }
+    val progressAnimatable = remember { Animatable((currentSec / maxTimeSec.toFloat())) }
     LaunchedEffect(key1 = destinationSec, key2 = enable) {
         if (enable) {
             Log.d(
@@ -62,12 +68,12 @@ fun ToHotAnimateTimeProgressContainer(
                     " target : ${progressAnimatable.targetValue}, value : ${progressAnimatable.value}"
             )
             if (progressAnimatable.targetValue == destinationProgress) {
-                ticChanged((progressAnimatable.value * maxTimeSec).toInt())
+                ticChanged((progressAnimatable.value * maxTimeSec))
                 return@LaunchedEffect
             }
             if (destinationSec > progressAnimatable.value * maxTimeSec) {
                 progressAnimatable.animateTo(
-                    targetValue = currentSec.toFloat() / maxTimeSec.toFloat(),
+                    targetValue = currentSec / maxTimeSec.toFloat(),
                     animationSpec = tween(
                         durationMillis = 0,
                         easing = LinearEasing
@@ -77,11 +83,11 @@ fun ToHotAnimateTimeProgressContainer(
             progressAnimatable.animateTo(
                 targetValue = destinationProgress,
                 animationSpec = tween(
-                    durationMillis = duration,
+                    durationMillis = duration.toInt(),
                     easing = LinearEasing
                 )
             )
-            ticChanged((progressAnimatable.value * maxTimeSec).toInt())
+            ticChanged((progressAnimatable.value * maxTimeSec))
         }
     }
 
@@ -96,7 +102,7 @@ fun ToHotAnimateTimeProgressContainer(
             progressColor = animateProgressColor,
             backgroundColor = progressBackgroundColor,
             progress = 1 - progressAnimatable.value,
-            sec = currentSec
+            sec = currentSec.toInt()
         )
 
         ToHotTimeProgressBar(
@@ -116,8 +122,8 @@ private fun ToHotAnimateTimeProgressContainerPreview() {
         modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
         enable = true,
         maxTimeSec = 5,
-        currentSec = 5,
+        currentSec = 5f,
         ticChanged = {},
-        destinationSec = 4
+        destinationSec = 4f
     )
 }

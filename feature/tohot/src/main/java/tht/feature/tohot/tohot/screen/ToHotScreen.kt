@@ -47,7 +47,7 @@ internal fun ToHotScreen(
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
-    ticChanged: (Int, Int) -> Unit,
+    ticChanged: (Float, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
@@ -135,8 +135,8 @@ fun ToHotScreenPreview() {
             Array(mockUserList.size) {
                 CardTimerUiModel(
                     maxSec = 5,
-                    currentSec = 5,
-                    destinationSec = 4,
+                    currentSec = 5f,
+                    destinationSec = 4.5f,
                     startAble = false
                 )
             }.toList()
