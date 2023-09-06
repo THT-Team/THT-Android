@@ -85,8 +85,6 @@ fun ToHotCard(
             onHoldDoubleTab = onHoldDoubleTab
         )
 
-        if (isHoldCard) return@FallingCard
-
         val timerModifier = Modifier
             .align(Alignment.TopCenter)
             .padding(horizontal = 13.dp, vertical = 12.dp)
@@ -94,7 +92,7 @@ fun ToHotCard(
             CardTimerUiModel.ToHotTimer.Timer -> {
                 ToHotAnimateTimeProgressContainer(
                     modifier = timerModifier,
-                    enable = enable,
+                    enable = enable && !isHoldCard,
                     maxTimeSec = maxTimeSec,
                     currentSec = currentSec,
                     ticChanged = ticChanged,
@@ -114,6 +112,8 @@ fun ToHotCard(
                 )
             }
         }
+
+        if (isHoldCard) return@FallingCard
 
         ToHotUserInfoCard(
             modifier = Modifier
