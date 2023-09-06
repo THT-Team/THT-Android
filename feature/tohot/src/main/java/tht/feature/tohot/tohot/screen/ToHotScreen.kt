@@ -104,7 +104,6 @@ internal fun ToHotScreen(
                         enable = currentUserIdx == pagerState.currentPage &&
                             timers.list[idx].startAble && cardMoveAllow,
                         fallingAnimationEnable = idx == fallingAnimationTargetIdx,
-                        userScrollEnabled = !isHoldCard,
                         isHoldCard = isHoldCard,
                         onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
                         userCardClick = { },

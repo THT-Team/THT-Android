@@ -22,7 +22,6 @@ fun ToHotCardImagePager(
     pagerState: PagerState = rememberPagerState(),
     imageUrls: ImmutableListWrapper<String>,
     isHold: Boolean,
-    userScrollEnabled: Boolean = true,
     loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> },
     onHoldDoubleTab: () -> Unit = { }
 ) {
@@ -32,7 +31,6 @@ fun ToHotCardImagePager(
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
             pageCount = imageUrls.list.size,
-            userScrollEnabled = userScrollEnabled,
             state = pagerState
         ) { page ->
             ToHotHoldCard(

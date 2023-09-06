@@ -47,7 +47,6 @@ fun ToHotCard(
     destinationSec: Int,
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
-    userScrollEnabled: Boolean = true,
     isHoldCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
     ticChanged: (Int) -> Unit = { },
@@ -81,7 +80,6 @@ fun ToHotCard(
             modifier = Modifier.fillMaxSize(),
             pagerState = pagerState,
             imageUrls = imageUrls,
-            userScrollEnabled = userScrollEnabled,
             isHold = isHoldCard,
             loadFinishListener = loadFinishListener,
             onHoldDoubleTab = onHoldDoubleTab
