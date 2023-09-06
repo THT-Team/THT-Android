@@ -73,6 +73,7 @@ private fun ToHotHoldCardPreview() {
         onDoubleTab = {}
     ) {
         Image(
+            modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.ic_user_card_placeholder),
             contentDescription = "ic_user_card_placeholder"
         )
