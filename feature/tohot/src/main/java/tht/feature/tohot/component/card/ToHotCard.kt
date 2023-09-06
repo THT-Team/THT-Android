@@ -48,13 +48,15 @@ fun ToHotCard(
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
     userScrollEnabled: Boolean = true,
+    isHoldCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
     ticChanged: (Int) -> Unit = { },
     userCardClick: () -> Unit = { },
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { },
     onReportMenuClick: () -> Unit = { },
-    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> }
+    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> },
+    onHoldDoubleTab: () -> Unit = { }
 ) {
     val pagerState = rememberPagerState()
     var userInfoFullShow by remember { mutableStateOf(false) }
@@ -80,8 +82,12 @@ fun ToHotCard(
             pagerState = pagerState,
             imageUrls = imageUrls,
             userScrollEnabled = userScrollEnabled,
-            loadFinishListener = loadFinishListener
+            isHold = isHoldCard,
+            loadFinishListener = loadFinishListener,
+            onHoldDoubleTab = onHoldDoubleTab
         )
+
+        if (isHoldCard) return@FallingCard
 
         val timerModifier = Modifier
             .align(Alignment.TopCenter)
@@ -166,7 +172,35 @@ private fun ToHotCardPreview() {
         maxTimeSec = 5,
         currentSec = 5,
         destinationSec = 4,
-        enable = true
+        enable = true,
+        isHoldCard = false
+    )
+}
+
+@Composable
+@Preview
+private fun ToHotCardHoldCardPreview() {
+    ToHotCard(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+        imageUrls = ImmutableListWrapper(
+            listOf(
+                "https://profile"
+            )
+        ),
+        name = "nickname",
+        age = 1,
+        address = "address",
+        interests = ImmutableListWrapper(emptyList()),
+        idealTypes = ImmutableListWrapper(emptyList()),
+        introduce = "introduce",
+        timer = CardTimerUiModel.ToHotTimer.Timer,
+        maxTimeSec = 5,
+        currentSec = 5,
+        destinationSec = 4,
+        enable = true,
+        isHoldCard = true
     )
 }
 
@@ -192,7 +226,8 @@ private fun ToHotHeartCardPreview() {
         maxTimeSec = 5,
         currentSec = 5,
         destinationSec = 4,
-        enable = true
+        enable = true,
+        isHoldCard = false
     )
 }
 
@@ -218,6 +253,7 @@ private fun ToHotDislikeCardPreview() {
         maxTimeSec = 5,
         currentSec = 5,
         destinationSec = 4,
-        enable = true
+        enable = true,
+        isHoldCard = false
     )
 }

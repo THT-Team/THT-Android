@@ -409,7 +409,7 @@ class ToHotViewModel @Inject constructor(
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
-                    holdDialogShow = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
+                    holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
                 )
             }
         }
@@ -776,33 +776,16 @@ class ToHotViewModel @Inject constructor(
 
     fun releaseHoldEvent() {
         passedCardCountBetweenTouch = 0
-        if (store.state.value.holdDialogShow) {
+        store.state.value.holdCard.let { holdCard ->
             intent {
                 reduce {
                     it.copy(
-                        cardMoveAllow = true,
-                        holdDialogShow = false
-                    )
-                }
-            }
-        } else {
-            intent {
-                reduce {
-                    it.copy(
-                        cardMoveAllow = false,
-                        holdDialogShow = true
+                        cardMoveAllow = holdCard,
+                        holdCard = !holdCard
                     )
                 }
             }
         }
-//        intent {
-//            reduce {
-//                it.copy(
-//                    cardMoveAllow = true,
-//                    holdDialogShow = false
-//                )
-//            }
-//        }
     }
 
     companion object {

@@ -80,6 +80,7 @@ fun ThtHeadline4(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    shadow: Shadow? = null
 ) {
     Text(
         modifier = modifier,
@@ -87,7 +88,8 @@ fun ThtHeadline4(
         text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 19.dpTextUnit
+            fontSize = 19.dpTextUnit,
+            shadow = shadow
         ),
         color = color,
     )

@@ -1,5 +1,7 @@
-package tht.feature.tohot.component.blur
+package tht.feature.tohot.component.hold
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,40 +18,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.example.compose_ui.extensions.onDoubleTab
 import tht.feature.tohot.R
 
 /**
  * https://mashup-android.vercel.app/mashup-12th/hyunkuk/jetpackcompose-blur/
  */
 @Composable
-fun Android12ContentBlur(
+@RequiresApi(value = 32)
+fun BlurContent(
     modifier: Modifier = Modifier,
     padding: PaddingValues = PaddingValues(0.dp),
-    blurOn: Boolean,
-    clickableBlurContent: Boolean,
-    onDoubleTab: () -> Unit = {},
     content: @Composable () -> Unit
 ) {
-    if (!blurOn) {
-        Box(
-            modifier = modifier
-                .onDoubleTab(
-                    interceptTouchEvent = !clickableBlurContent,
-                    onDoubleTab = onDoubleTab
-                )
-        ) {
-            content()
-        }
-        return
-    }
-    Box(
-        modifier = modifier
-            .onDoubleTab(
-                interceptTouchEvent = !clickableBlurContent,
-                onDoubleTab = onDoubleTab
-            )
-    ) {
+    Box(modifier = modifier) {
         content()
         Box(
             modifier = Modifier
@@ -67,13 +48,14 @@ fun Android12ContentBlur(
                             .toPx(),
                         bottom = size.height - padding
                             .calculateBottomPadding()
-                            .toPx(),
+                            .toPx()
                     ) {
                         this@drawWithContent.drawContent()
                     }
                 }
                 .blur(
-                    radiusX = 25.dp, radiusY = 25.dp
+                    radiusX = 25.dp,
+                    radiusY = 25.dp
                 )
         ) {
             content()
@@ -81,14 +63,11 @@ fun Android12ContentBlur(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.S_V2)
 @Composable
 @Preview(apiLevel = 32)
 private fun Android12ContentBlurPreview() {
-    Android12ContentBlur(
-        modifier = Modifier.fillMaxSize(),
-        blurOn = true,
-        clickableBlurContent = false
-    ) {
+    BlurContent(modifier = Modifier.fillMaxSize()) {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = R.drawable.ic_user_card_placeholder),

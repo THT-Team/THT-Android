@@ -4,6 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.compose_ui.component.font.pretendardFontStyle
@@ -16,6 +17,7 @@ fun ThtP1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    shadow: Shadow? = null
 ) {
     Text(
         modifier = modifier,
@@ -23,7 +25,8 @@ fun ThtP1(
         text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 14.dpTextUnit
+            fontSize = 14.dpTextUnit,
+            shadow = shadow
         ),
         color = color,
     )

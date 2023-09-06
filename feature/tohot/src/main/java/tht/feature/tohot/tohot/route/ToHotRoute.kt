@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotLoadingCard
-import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
@@ -214,7 +213,7 @@ internal fun ToHotRoute(
                 topicTitle = toHotState.currentTopic?.title,
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
                 fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
-                hold = toHotState.holdDialogShow,
+                isHoldCard = toHotState.holdCard,
                 onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
@@ -224,7 +223,7 @@ internal fun ToHotRoute(
                 onLikeClick = toHotViewModel::userHeartEvent,
                 onUnLikeClick = toHotViewModel::userDislikeEvent,
                 onReportMenuClick = toHotViewModel::reportMenuEvent,
-                onBlurDoubleTab = toHotViewModel::releaseHoldEvent,
+                onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
                 onRefreshClick = toHotViewModel::refreshEvent
             )
         }
