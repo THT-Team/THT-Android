@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -30,27 +31,34 @@ fun RowScope.ToHotToolBarContent(
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { }
 ) {
-    if (topicIconRes != null && !topicTitle.isNullOrBlank()) {
-        Row(
-            modifier = Modifier
-                .noRippleClickable(topicSelectListener),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+    Row(
+        modifier = Modifier
+            .noRippleClickable(topicSelectListener),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (topicIconRes != null && !topicTitle.isNullOrBlank()) {
             TopicItemChipImage(
                 modifier = Modifier.size(topicIconSize),
                 imageUrl = topicIconUrl,
                 placeholder = painterResource(id = R.drawable.ic_topic_placeholder_38),
                 error = painterResource(id = topicIconRes)
             )
-
-            ThtHeadline4(
-                modifier = Modifier.padding(start = 12.dp),
-                text = topicTitle,
-                fontWeight = FontWeight.SemiBold,
-                color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+        } else {
+            Image(
+                modifier = Modifier.size(topicIconSize),
+                painter = painterResource(id = R.drawable.ic_topic_default),
+                contentDescription = "topic_default_item"
             )
         }
+
+        ThtHeadline4(
+            modifier = Modifier.padding(start = 12.dp),
+            text = topicTitle ?: stringResource(id = R.string.falling),
+            fontWeight = FontWeight.SemiBold,
+            color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+        )
     }
+
     Spacer(modifier = Modifier.weight(1f))
 
     val alarmRes = if (hasUnReadAlarm) R.drawable.ic_alarm_on else R.drawable.ic_alarm_default
@@ -61,6 +69,19 @@ fun RowScope.ToHotToolBarContent(
         painter = painterResource(id = alarmRes),
         contentDescription = "alarm"
     )
+}
+
+@Composable
+@Preview
+private fun DefaultTopicToHotToolBarContentPreview() {
+    ToHotToolBar {
+        ToHotToolBarContent(
+            topicIconUrl = null,
+            topicIconRes = null,
+            topicTitle = null,
+            hasUnReadAlarm = true
+        )
+    }
 }
 
 @Composable
