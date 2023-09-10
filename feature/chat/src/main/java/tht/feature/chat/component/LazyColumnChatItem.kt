@@ -7,12 +7,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun LazyColumnChatItem(
-    items: ImmutableList<String>,
+    items: ImmutableList<ChatListModel>,
     isLoading: Boolean,
     onClickItem: () -> Unit,
 ) {

@@ -5,6 +5,7 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
+import com.tht.tht.domain.chat.model.ChatListModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,19 +36,13 @@ internal class ChatDetailViewModel @Inject constructor() :
                 ChatDetailState.ChatList(
                     isLoading = false,
                     chatList = persistentListOf(
-                        "안녕하세요!",
-                        "만나서 반가워요~",
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-                        "만나서 반가워요~",
-                        "긴 텍스트 두줄 이상 문장은 이렇게 씁니다아아아아아아아아아",
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
+                        ChatListModel(
+                            chatRoomIdx = 1L,
+                            partnerName = "하하",
+                            partnerProfileUrl = "",
+                            currentMessage = "",
+                            messageTime = "",
+                        )
                     ),
                 )
             }

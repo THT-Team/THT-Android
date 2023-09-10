@@ -30,10 +30,11 @@ import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.p.ThtP2
+import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun ChatDetailList(items: ImmutableList<String>) {
+fun ChatDetailList(items: ImmutableList<ChatListModel>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -46,10 +47,10 @@ fun ChatDetailList(items: ImmutableList<String>) {
         }
         itemsIndexed(items) { index, item ->
             if (index % 2 == 0) {
-                Sender(text = item, updateTime = "3:13 PM")
+                Sender(text = item.currentMessage, updateTime = "3:13 PM")
             } else {
                 Receiver(
-                    text = item,
+                    text = item.currentMessage,
                     updateTime = "3:12 PM",
                     isShowProfile = true,
                     userName = "Stitch",
