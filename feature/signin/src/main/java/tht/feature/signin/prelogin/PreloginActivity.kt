@@ -32,7 +32,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Log.d("TAG", "onNewIntent PreloginActivity")
+        Log.d("TAG", "onNewIntent PreLoginActivity")
         setResult(RESULT_OK)
         finish()
     }
