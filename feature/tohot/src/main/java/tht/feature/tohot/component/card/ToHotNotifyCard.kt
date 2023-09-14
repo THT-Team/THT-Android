@@ -97,7 +97,7 @@ fun ToHotNotifyCard(
 @Preview
 private fun ToHotNotifyCardPreview() {
     ToHotNotifyCard(
-        image = painterResource(id = R.drawable.ic_mudy_enter),
+        image = painterResource(id = R.drawable.ic_mudy_none_initial_user),
         title = "가나다라마바사",
         description = "preview",
         buttonText = "테스트"

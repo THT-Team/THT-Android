@@ -8,26 +8,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import tht.feature.tohot.R
 
 /**
- * 이미 주제어를 선택한 상태로 앱에 접속
- * 유저 List가 보여지기 전에 보여지는 EnterCard
+ * 주제어에 더 이상 유저가 없는 경우
+ * - 기다리는 무디 조회 버튼
  */
 @Composable
-fun ToHotEnterCard(
+fun ToHotNoneNextUserCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { }
 ) {
     ToHotNotifyCard(
         modifier = modifier,
-        image = painterResource(id = R.drawable.ic_mudy_enter),
-        title = stringResource(id = R.string.to_hot_enter_card_title),
-        description = stringResource(id = R.string.to_hot_enter_card_description),
-        buttonText = stringResource(id = R.string.entering),
+        image = painterResource(id = R.drawable.ic_mudy_none_next),
+        title = stringResource(id = R.string.to_hot_none_next_user_card_title),
+        description = stringResource(id = R.string.to_hot_none_next_user_card_description),
+        buttonText = stringResource(id = R.string.waiting),
         onClick = onClick
     )
 }
 
 @Composable
 @Preview
-private fun ToHotEnterCardPreview() {
-    ToHotEnterCard()
+private fun ToHotNoneNextUserCardPreview() {
+    ToHotNoneNextUserCard()
 }
