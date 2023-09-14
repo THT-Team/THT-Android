@@ -1,8 +1,5 @@
 package com.tht.tht.data.di.retrofit
 
-import com.tht.tht.data.remote.response.base.BaseResponse
-import com.tht.tht.data.remote.response.base.ThtResponse
-import com.tht.tht.data.remote.response.user.UserHeartResponse
 import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
@@ -20,7 +17,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.delay
 import retrofit2.Retrofit
-import java.util.Random
 import javax.inject.Singleton
 
 @Module
@@ -83,16 +79,7 @@ object ApiServiceModule {
     @Singleton
     fun provideUserHeartApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
-    ): UserHeartApiService = object : UserHeartApiService {
-        override suspend fun sendHeart(userUuid: String): ThtResponse<UserHeartResponse> {
-            delay(500)
-            return BaseResponse.Success(
-                statusCode = 200,
-                response = UserHeartResponse(Random().nextInt(2) == 0)
-            )
-        }
-    }
-    // retrofit.create(UserHeartApiService::class.java)
+    ): UserHeartApiService = retrofit.create(UserHeartApiService::class.java)
 
     @Provides
     @Singleton

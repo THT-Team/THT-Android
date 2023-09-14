@@ -10,8 +10,14 @@ class UserHeartDataSourceImpl @Inject constructor(
     private val heartApiService: UserHeartApiService,
     private val dislikeApiService: UserDislikeApiService
 ) : UserHeartDataSource {
-    override suspend fun sendHeart(userUuid: String): UserHeartResponse {
-        return heartApiService.sendHeart(userUuid).toUnwrap()
+    override suspend fun sendHeart(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    ): UserHeartResponse {
+        return heartApiService.sendHeart(
+            userUuid,
+            selectDailyTopicIdx.toString()
+        ).toUnwrap()
     }
 
     override suspend fun sendDislike(userUuid: String) {

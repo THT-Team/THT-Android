@@ -20,8 +20,11 @@ class UserRepositoryImpl @Inject constructor(
         return userBlockDataSource.blockUser(userUuid)
     }
 
-    override suspend fun sendHeart(userUuid: String): Boolean {
-        return userHeartDataSource.sendHeart(userUuid).hearStatus
+    override suspend fun sendHeart(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    ): Boolean {
+        return userHeartDataSource.sendHeart(userUuid, selectDailyTopicIdx).isMatching
     }
 
     override suspend fun sendDislike(userUuid: String) {

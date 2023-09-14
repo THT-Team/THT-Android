@@ -36,5 +36,9 @@ object THTApiConstant {
         const val REPORT = "user/report"
 
         const val BLOCK = "/user/block/{block-user-uuid}"
+
+        const val Heart = "/i-like-you/{favorite-user-uuid}/{daily-topic-idx}"
+
+        const val DisLike = "/like/reject"
     }
 }
