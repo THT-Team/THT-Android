@@ -39,6 +39,6 @@ object THTApiConstant {
     }
 
     object Chat {
-        const val CHATLIST = "/chat/rooms"
+        const val CHAT_LIST = "/chat/rooms"
     }
 }

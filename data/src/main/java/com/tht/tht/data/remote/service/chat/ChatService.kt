@@ -6,6 +6,6 @@ import com.tht.tht.data.remote.response.chat.ChatListResponse
 import retrofit2.http.GET
 
 interface ChatService {
-    @GET(THTApiConstant.Chat.CHATLIST)
+    @GET(THTApiConstant.Chat.CHAT_LIST)
     suspend fun getChatList(): ThtResponse<List<ChatListResponse>>
 }
