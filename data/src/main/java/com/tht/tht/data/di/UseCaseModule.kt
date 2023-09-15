@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.chat.repository.ChatRepository
+import com.tht.tht.domain.chat.usecase.GetChatListUseCase
 import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
@@ -39,7 +41,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): CreateSignupUserUseCase = CreateSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -47,7 +50,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchIdealTypeUseCase = FetchIdealTypeUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -55,7 +59,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchInterestUseCase = FetchInterestUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -63,7 +68,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchSignupUserUseCase = FetchSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -71,7 +77,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchTermsUseCase = FetchTermsUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -79,7 +86,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): PatchSignupDataUseCase = PatchSignupDataUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -87,7 +95,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RemoveSignupUserUseCase = RemoveSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -95,7 +104,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestAuthenticationUseCase = RequestAuthenticationUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -105,7 +115,10 @@ object UseCaseModule {
         removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
-        repository, tokenRepository, removeSignupUserUseCase, dispatcher
+        repository,
+        tokenRepository,
+        removeSignupUserUseCase,
+        dispatcher
     )
 
     @Provides
@@ -114,7 +127,9 @@ object UseCaseModule {
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
     ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
-        repository, tokenRepository, loginRepository
+        repository,
+        tokenRepository,
+        loginRepository
     )
 
     @Provides
@@ -123,7 +138,9 @@ object UseCaseModule {
         createSignupUserUseCase: CreateSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
-        repository, createSignupUserUseCase, dispatcher
+        repository,
+        createSignupUserUseCase,
+        dispatcher
     )
 
     @Provides
@@ -184,6 +201,12 @@ object UseCaseModule {
         repository: EmailRepository
     ): SendInquiryEmailUseCase =
         SendInquiryEmailUseCase(repository)
+
+    @Provides
+    fun provideGetChatListUseCase(
+        repository: ChatRepository
+    ): GetChatListUseCase =
+        GetChatListUseCase(repository)
 
     @Provides
     fun provideFetchThtTokenUseCase(

@@ -9,22 +9,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tht.feature.chat.model.ChatListUiModel
 
 @Composable
 internal fun LazyColumnChatItem(
-    items: ImmutableList<String>,
+    items: ImmutableList<ChatListUiModel>,
     isLoading: Boolean,
-    onClickItem: () -> Unit,
+    onClickItem: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        state = rememberLazyListState(),
+        state = rememberLazyListState()
     ) {
         items(items) { item ->
             ChatItem(
                 item = item,
                 isLoading = isLoading,
-                onClickItem = onClickItem,
+                onClickItem = onClickItem
             )
         }
     }
@@ -36,6 +37,6 @@ internal fun LazyColumnChatItemPreview() {
     LazyColumnChatItem(
         items = persistentListOf(),
         isLoading = false,
-        onClickItem = {},
+        onClickItem = {}
     )
 }

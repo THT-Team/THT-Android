@@ -5,6 +5,7 @@ import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.user.UserHeartResponse
 import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
+import com.tht.tht.data.remote.service.chat.ChatService
 import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
 import com.tht.tht.data.remote.service.image.ImageService
 import com.tht.tht.data.remote.service.image.ImageServiceImpl
@@ -60,6 +61,12 @@ object ApiServiceModule {
     fun provideDailyTopicApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
     ): DailyTopicApiService = retrofit.create(DailyTopicApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideChatApiService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): ChatService = retrofit.create(ChatService::class.java)
 
     @Provides
     @Singleton

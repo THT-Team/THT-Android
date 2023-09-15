@@ -15,7 +15,7 @@ sealed class BaseResponse<out T : Any, out E : Any> {
 
     data class ApiError<E : Any>(
         val statusCode: Int,
-        val errorResponse: E,
+        val errorResponse: E
     ) : BaseResponse<Nothing, E>()
 
     data class NetworkError(val exception: IOException) : BaseResponse<Nothing, Nothing>()

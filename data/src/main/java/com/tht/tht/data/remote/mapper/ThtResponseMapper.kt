@@ -22,5 +22,3 @@ inline fun <reified T : Any> ThtResponse<out T>.toUnwrap(): T {
         is BaseResponse.UnknownError -> throw Exception(throwable.message)
     }
 }
-
-

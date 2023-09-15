@@ -31,9 +31,11 @@ internal class LocationDataSourceImplTest {
     }
 
     @Test
-    fun `fetchCurrentLocation은 LocationService의 fetchCurrentLocation의 결과를 리턴한다` () = runTest(testDispatcher) {
+    fun `fetchCurrentLocation은 LocationService의 fetchCurrentLocation의 결과를 리턴한다`() = runTest(testDispatcher) {
         val expect = LocationResponse(
-            0.0, 0.0, ""
+            0.0,
+            0.0,
+            ""
         )
         coEvery { locationService.fetchCurrentLocation() } returns expect
         val actual = dataSource.fetchCurrentLocation()
@@ -43,9 +45,11 @@ internal class LocationDataSourceImplTest {
     }
 
     @Test
-    fun `fetchLocationByAddress은 LocationService의 fetchLocationByAddress의 결과를 리턴한다` () = runTest(testDispatcher) {
+    fun `fetchLocationByAddress은 LocationService의 fetchLocationByAddress의 결과를 리턴한다`() = runTest(testDispatcher) {
         val expect = LocationResponse(
-            0.0, 0.0, ""
+            0.0,
+            0.0,
+            ""
         )
         coEvery { locationService.fetchLocationByAddress(expect.address) } returns expect
         val actual = dataSource.fetchLocationByAddress(expect.address)
@@ -53,5 +57,4 @@ internal class LocationDataSourceImplTest {
         assertThat(actual)
             .isEqualTo(expect)
     }
-
 }

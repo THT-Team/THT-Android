@@ -8,7 +8,6 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.tht.tht.data.remote.response.location.LocationResponse
-import com.tht.tht.data.remote.service.location.LocationService
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.*
@@ -30,8 +29,10 @@ class LocationServiceImpl @Inject constructor(
             throw SecurityException("Location permission not granted")
         }
 
-        val location = requireNotNull(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER))
+        val location = requireNotNull(
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        )
 
         val lat = location.latitude
         val lng = location.longitude
@@ -50,7 +51,9 @@ class LocationServiceImpl @Inject constructor(
         val location = if (Build.VERSION.SDK_INT >= 33) {
             suspendCancellableCoroutine { cancellableContinuation ->
                 geocoder.getFromLocation(
-                    lat, lng, 1
+                    lat,
+                    lng,
+                    1
                 ) { list ->
                     cancellableContinuation.resume(list)
                 }
@@ -68,7 +71,8 @@ class LocationServiceImpl @Inject constructor(
         val location = if (Build.VERSION.SDK_INT >= 33) {
             suspendCancellableCoroutine { cancellableContinuation ->
                 geocoder.getFromLocationName(
-                    locationName, 1
+                    locationName,
+                    1
                 ) { list ->
                     cancellableContinuation.resume(list)
                 }

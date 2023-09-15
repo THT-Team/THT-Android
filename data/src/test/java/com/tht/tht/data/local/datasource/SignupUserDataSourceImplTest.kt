@@ -14,14 +14,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
-
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
 internal class SignupUserDataSourceImplTest {
     private lateinit var dataSource: SignupUserDataSourceImpl
     private lateinit var dao: SignupUserDao
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
-
 
     @Before
     fun setup() {
@@ -73,6 +71,4 @@ internal class SignupUserDataSourceImplTest {
         dataSource.removeSignupUser("phone")
         coVerify { dao.removeSignupUser("phone") }
     }
-
 }
-

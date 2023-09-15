@@ -48,12 +48,17 @@ class EMailSender : Authenticator() {
         message.sender = InternetAddress(user)
         message.subject = subject
         message.dataHandler = handler
-        if (recipients.indexOf(',') > 0) message.setRecipients(
-            Message.RecipientType.TO,
-            InternetAddress.parse(recipients)
-        ) else message.setRecipient(
-            Message.RecipientType.TO, InternetAddress(recipients)
-        )
+        if (recipients.indexOf(',') > 0) {
+            message.setRecipients(
+                Message.RecipientType.TO,
+                InternetAddress.parse(recipients)
+            )
+        } else {
+            message.setRecipient(
+                Message.RecipientType.TO,
+                InternetAddress(recipients)
+            )
+        }
         Transport.send(message)
     }
 }
@@ -76,4 +81,3 @@ class ByteArrayDataSource(private var data: ByteArray, private var type: String?
         throw IOException("Not Supported")
     }
 }
-

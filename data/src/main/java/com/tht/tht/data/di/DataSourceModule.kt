@@ -6,6 +6,12 @@ import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.datasource.TermsDataSourceImpl
 import com.tht.tht.data.local.datasource.TokenDataSource
 import com.tht.tht.data.local.datasource.TokenDataSourceImpl
+import com.tht.tht.data.remote.datasource.chat.ChatDataSource
+import com.tht.tht.data.remote.datasource.chat.ChatDataSourceImpl
+import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSource
+import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSourceImpl
+import com.tht.tht.data.remote.datasource.login.LoginDataSource
+import com.tht.tht.data.remote.datasource.login.LoginDataSourceImpl
 import com.tht.tht.data.remote.datasource.signup.EmailDataSource
 import com.tht.tht.data.remote.datasource.signup.EmailDataSourceImpl
 import com.tht.tht.data.remote.datasource.signup.ImageDataSource
@@ -16,10 +22,6 @@ import com.tht.tht.data.remote.datasource.signup.RegionCodeDataSource
 import com.tht.tht.data.remote.datasource.signup.RegionCodeDataSourceImpl
 import com.tht.tht.data.remote.datasource.signup.SignupApiDataSource
 import com.tht.tht.data.remote.datasource.signup.SignupApiDataSourceImpl
-import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSource
-import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSourceImpl
-import com.tht.tht.data.remote.datasource.login.LoginDataSource
-import com.tht.tht.data.remote.datasource.login.LoginDataSourceImpl
 import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSource
 import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSourceImpl
 import dagger.Binds
@@ -62,4 +64,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindDailyUserCardDataSource(impl: DailyUserCardDataSourceImpl): DailyUserCardDataSource
+
+    @Binds
+    abstract fun bindChatDataSource(impl: ChatDataSourceImpl): ChatDataSource
 }

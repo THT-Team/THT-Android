@@ -34,7 +34,7 @@ interface THTSignupApi {
 
     @POST(THTApiConstant.Signup.SIGNUP)
     suspend fun requestSignup(
-        @Body body: SignupRequest,
+        @Body body: SignupRequest
     ): ThtResponse<SignupResponse>
 
     @GET("${THTApiConstant.Signup.SIGNUP_CHECK}/{phone-number}")

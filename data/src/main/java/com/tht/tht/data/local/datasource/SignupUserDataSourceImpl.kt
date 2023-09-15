@@ -1,9 +1,5 @@
 package com.tht.tht.data.local.datasource
 
-import android.content.SharedPreferences
-import androidx.core.content.edit
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.local.dao.SignupUserDao
 import com.tht.tht.data.local.entity.SignupUserEntity
@@ -16,7 +12,7 @@ class SignupUserDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : SignupUserDataSource {
     override suspend fun saveSignupUser(phone: String, user: SignupUserEntity): SignupUserEntity {
-        return withContext(dispatcher){
+        return withContext(dispatcher) {
             signupUserDao.saveSignupUser(phone, user)
         }
     }

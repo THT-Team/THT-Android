@@ -1,6 +1,6 @@
 [versions]
 #android
-android-gradle = "7.3.1"
+android-gradle = "7.4.2"
 android-material = "1.7.0"
 android-lifecycle-viewModel-KTX = "2.5.1"
 

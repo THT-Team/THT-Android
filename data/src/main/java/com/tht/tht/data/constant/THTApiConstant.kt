@@ -37,4 +37,8 @@ object THTApiConstant {
 
         const val BLOCK = "/user/block/{block-user-uuid}"
     }
+
+    object Chat {
+        const val CHAT_LIST = "/chat/rooms"
+    }
 }

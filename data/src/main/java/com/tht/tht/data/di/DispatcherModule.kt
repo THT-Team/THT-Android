@@ -17,7 +17,6 @@ object DispatcherModule {
     @IODispatcher
     @Provides
     fun provideIODispatcher() = Dispatchers.IO
-
 }
 
 @Qualifier

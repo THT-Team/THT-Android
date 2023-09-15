@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class SignupUserDaoImpl @Inject constructor(
     private val sp: SharedPreferences,
-    private val gson: Gson,
+    private val gson: Gson
 ) : SignupUserDao {
 
     companion object {

@@ -37,5 +37,3 @@ fun DailyTopicModel.toEntity(): DailyTopicResponse.FallingTopic {
         talkIssue = content
     )
 }
-
-
