@@ -15,7 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.R
 import com.example.compose_ui.common.viewmodel.collectAsState
 import tht.feature.chat.component.ChatTopAppBar
-import tht.feature.chat.viewmodel.ChatViewModel
+import tht.feature.chat.screen.chatlist.ChatListScreen
+import tht.feature.chat.viewmodel.chatlist.ChatViewModel
 import tht.feature.chat.viewmodel.state.ChatState
 
 @Composable

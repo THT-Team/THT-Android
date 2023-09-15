@@ -1,4 +1,4 @@
-package tht.feature.chat.screen
+package tht.feature.chat.screen.chatlist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

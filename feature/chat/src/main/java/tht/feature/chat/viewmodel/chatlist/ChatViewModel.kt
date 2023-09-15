@@ -1,6 +1,5 @@
-package tht.feature.chat.viewmodel
+package tht.feature.chat.viewmodel.chatlist
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.compose_ui.common.viewmodel.Container
@@ -11,6 +10,7 @@ import com.tht.tht.domain.chat.usecase.GetChatListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+import tht.feature.chat.mapper.toModel
 import tht.feature.chat.viewmodel.sideeffect.ChatSideEffect
 import tht.feature.chat.viewmodel.state.ChatState
 import tht.feature.chat.viewmodel.state.skeletonChatList
@@ -30,7 +30,7 @@ internal class ChatViewModel @Inject constructor(
                 reduce {
                     ChatState.ChatList(
                         isLoading = false,
-                        chatList = chatList.toImmutableList(),
+                        chatList = chatList.map { it.toModel() }.toImmutableList(),
                     )
                 }
             }
