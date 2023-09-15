@@ -30,11 +30,11 @@ import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
 import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.p.ThtP2
-import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.ImmutableList
+import tht.feature.chat.model.ChatListUiModel
 
 @Composable
-fun ChatDetailList(items: ImmutableList<ChatListModel>) {
+fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

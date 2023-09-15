@@ -5,12 +5,12 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
-import com.tht.tht.domain.chat.model.ChatListModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import tht.feature.chat.model.ChatListUiModel
 import tht.feature.chat.viewmodel.detail.sideeffect.ChatDetailSideEffect
 import tht.feature.chat.viewmodel.detail.state.ChatDetailState
 import tht.feature.chat.viewmodel.state.skeletonChatList
@@ -36,7 +36,7 @@ internal class ChatDetailViewModel @Inject constructor() :
                 ChatDetailState.ChatList(
                     isLoading = false,
                     chatList = persistentListOf(
-                        ChatListModel(
+                        ChatListUiModel(
                             chatRoomIdx = 1L,
                             partnerName = "하하",
                             partnerProfileUrl = "",

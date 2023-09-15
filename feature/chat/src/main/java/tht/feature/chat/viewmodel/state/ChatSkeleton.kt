@@ -1,10 +1,10 @@
 package tht.feature.chat.viewmodel.state
 
-import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.toImmutableList
+import tht.feature.chat.model.ChatListUiModel
 
 internal val skeletonChatList = (1..20).map {
-    ChatListModel(
+    ChatListUiModel(
         chatRoomIdx = it.toLong(),
         partnerName = it.toString(),
         partnerProfileUrl = "",

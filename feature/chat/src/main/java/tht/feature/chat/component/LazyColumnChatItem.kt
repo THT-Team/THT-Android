@@ -10,10 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import tht.feature.chat.model.ChatListUiModel
 
 @Composable
 internal fun LazyColumnChatItem(
-    items: ImmutableList<ChatListModel>,
+    items: ImmutableList<ChatListUiModel>,
     isLoading: Boolean,
     onClickItem: () -> Unit,
 ) {

@@ -21,10 +21,11 @@ import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
 import com.example.compose_ui.extensions.noRippleClickable
 import com.tht.tht.domain.chat.model.ChatListModel
+import tht.feature.chat.model.ChatListUiModel
 
 @Composable
 internal fun ChatItem(
-    item: ChatListModel,
+    item: ChatListUiModel,
     isLoading: Boolean,
     onClickItem: () -> Unit,
 ) {
@@ -74,7 +75,7 @@ internal fun ChatItem(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 internal fun ChatItemPreivew() {
     ChatItem(
-        item = ChatListModel(
+        item = ChatListUiModel(
             chatRoomIdx = 1L,
             partnerProfileUrl = "",
             partnerName = "스티치",
