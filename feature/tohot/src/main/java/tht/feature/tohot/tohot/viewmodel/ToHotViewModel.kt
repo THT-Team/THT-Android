@@ -104,7 +104,7 @@ class ToHotViewModel @Inject constructor(
                             store.state.value.timers.list +
                                 List(toHotState.cards.size) {
                                     CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC,
+                                        maxSec = MAX_TIMER_SEC.toInt(),
                                         currentSec = MAX_TIMER_SEC,
                                         destinationSec = MAX_TIMER_SEC,
                                         startAble = false
@@ -274,7 +274,7 @@ class ToHotViewModel @Inject constructor(
                             store.state.value.timers.list +
                                 List(dailyUserCardList.cards.size) {
                                     CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC,
+                                        maxSec = MAX_TIMER_SEC.toInt(),
                                         currentSec = MAX_TIMER_SEC,
                                         destinationSec = MAX_TIMER_SEC,
                                         startAble = false
@@ -397,9 +397,9 @@ class ToHotViewModel @Inject constructor(
                     timers = ImmutableListWrapper(
                         it.timers.list.toMutableList().apply {
                             this[userIdx] = this[userIdx].copy(
-                                maxSec = MAX_TIMER_SEC,
+                                maxSec = MAX_TIMER_SEC.toInt(),
                                 currentSec = MAX_TIMER_SEC,
-                                destinationSec = MAX_TIMER_SEC - 1
+                                destinationSec = MAX_TIMER_SEC - TIMER_INTERVAL
                             )
                         }
                     ),
@@ -409,7 +409,7 @@ class ToHotViewModel @Inject constructor(
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
-                    holdDialogShow = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
+                    holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
                 )
             }
         }
@@ -438,8 +438,8 @@ class ToHotViewModel @Inject constructor(
      * - timer 가 0이면 다음 유저 스크롤
      * - timer 가 0이 아니면 timer 를 1 감소
      */
-    fun ticChangeEvent(tic: Int, userIdx: Int) = with(store.state.value) {
-        Log.d("ToHot", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
+    fun ticChangeEvent(tic: Float, userIdx: Int) = with(store.state.value) {
+        Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
         if (tic <= 0) {
             tryScrollToNext(userIdx)
@@ -453,7 +453,7 @@ class ToHotViewModel @Inject constructor(
                         it.timers.list.toMutableList().apply {
                             this[userIdx] = this[userIdx].copy(
                                 currentSec = this[userIdx].destinationSec,
-                                destinationSec = this[userIdx].destinationSec - 1
+                                destinationSec = this[userIdx].destinationSec - TIMER_INTERVAL
                             )
                         }
                     )
@@ -776,18 +776,22 @@ class ToHotViewModel @Inject constructor(
 
     fun releaseHoldEvent() {
         passedCardCountBetweenTouch = 0
-        intent {
-            reduce {
-                it.copy(
-                    cardMoveAllow = true,
-                    holdDialogShow = false
-                )
+        store.state.value.holdCard.let { holdCard ->
+            intent {
+                reduce {
+                    it.copy(
+                        cardMoveAllow = holdCard,
+                        holdCard = !holdCard
+                    )
+                }
             }
         }
     }
 
     companion object {
-        private const val MAX_TIMER_SEC = 5
+        private const val MAX_TIMER_SEC = 5f
+
+        private const val TIMER_INTERVAL = 1f
 
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 

@@ -19,13 +19,13 @@ import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.card.ToHotErrorCard
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
+import tht.feature.tohot.mockUserList
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotState
-import tht.feature.tohot.mockUserList
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,15 +42,17 @@ internal fun ToHotScreen(
     topicTitle: String?,
     hasUnReadAlarm: Boolean,
     fallingAnimationTargetIdx: Int,
+    isHoldCard: Boolean,
     onFallingAnimationFinish: (Int) -> Unit = { },
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
-    ticChanged: (Int, Int) -> Unit,
+    ticChanged: (Float, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
     onRefreshClick: () -> Unit = { },
+    onHoldDoubleTab: () -> Unit = { },
     loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
 ) {
     Column(
@@ -102,13 +104,15 @@ internal fun ToHotScreen(
                         enable = currentUserIdx == pagerState.currentPage &&
                             timers.list[idx].startAble && cardMoveAllow,
                         fallingAnimationEnable = idx == fallingAnimationTargetIdx,
+                        isHoldCard = isHoldCard,
                         onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
                         userCardClick = { },
                         onReportMenuClick = onReportMenuClick,
                         ticChanged = { ticChanged(it, idx) },
                         onLikeClick = { onLikeClick(idx) },
                         onUnLikeClick = { onUnLikeClick(idx) },
-                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) }
+                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) },
+                        onHoldDoubleTab = onHoldDoubleTab
                     )
                 }
                 LaunchedEffect(key1 = pagerState) {
@@ -131,8 +135,8 @@ fun ToHotScreenPreview() {
             Array(mockUserList.size) {
                 CardTimerUiModel(
                     maxSec = 5,
-                    currentSec = 5,
-                    destinationSec = 4,
+                    currentSec = 5f,
+                    destinationSec = 4.5f,
                     startAble = false
                 )
             }.toList()
@@ -160,6 +164,7 @@ fun ToHotScreenPreview() {
         topicTitle = toHotState.currentTopic?.title,
         hasUnReadAlarm = toHotState.hasUnReadAlarm,
         fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+        isHoldCard = false,
         onFallingAnimationFinish = { },
         topicSelectListener = { },
         alarmClickListener = { },

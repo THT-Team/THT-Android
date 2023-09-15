@@ -2,6 +2,7 @@
     <string name="loading">로딩중</string>
     <string name="cancel">취소</string>
     <string name="close">닫기</string>
+    <string name="falling">Falling</string>
 
     <string name="user_info_interest_title">내 관심사</string>
     <string name="user_info_ideal_type_title">내 이상형</string>
@@ -41,6 +42,9 @@
 
     <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
     <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>
+    <string name="to_hot_hold_card_title">잠시 쉬었다 가시겠어요?</string>
+    <string name="to_hot_hold_card_content">저희가 잠시 홀드 해 놓을게요.</string>
+    <string name="to_hot_hold_card_resume_content">더블탭으로 다시 시작하기</string>
 
     <string name="to_hot_report_success">신고하기가 완료되었습니다. 해당 사용자와 서로 차단되며, 신고 사유는 검토 후 처리됩니다.</string>
     <string name="to_hot_report_fail">신고를 실패했습니다</string>

@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotLoadingCard
-import tht.feature.tohot.component.dialog.ToHotHoldDialog
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
@@ -149,10 +148,10 @@ internal fun ToHotRoute(
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
-    ToHotHoldDialog(
-        isShow = toHotState.holdDialogShow,
-        onRestartClick = toHotViewModel::releaseHoldEvent
-    )
+//    ToHotHoldDialog(
+//        isShow = toHotState.holdDialogShow,
+//        onRestartClick = toHotViewModel::releaseHoldEvent
+//    )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -214,6 +213,7 @@ internal fun ToHotRoute(
                 topicTitle = toHotState.currentTopic?.title,
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
                 fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                isHoldCard = toHotState.holdCard,
                 onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
@@ -223,6 +223,7 @@ internal fun ToHotRoute(
                 onLikeClick = toHotViewModel::userHeartEvent,
                 onUnLikeClick = toHotViewModel::userDislikeEvent,
                 onReportMenuClick = toHotViewModel::reportMenuEvent,
+                onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
                 onRefreshClick = toHotViewModel::refreshEvent
             )
         }

@@ -68,6 +68,9 @@ app-compat-theme-adpater = "0.28.0"
 #lottie
 lottie = "5.2.0"
 
+#compose-blur
+renderscript-intrinsics-replacement-toolkit = "b6363490c3"
+
 [plugins]
 #android
 application = { id = "com.android.application", version.ref = "android.gradle" }
@@ -166,3 +169,6 @@ app-compat-theme-adpater = { module = "com.google.accompanist:accompanist-themea
 #lottie
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+
+#compose-blur
+renderscript-intrinsics-replacement-toolkit = { module = "com.github.android:renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript-intrinsics-replacement-toolkit" }
