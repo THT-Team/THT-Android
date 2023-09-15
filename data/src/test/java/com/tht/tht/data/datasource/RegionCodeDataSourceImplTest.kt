@@ -61,7 +61,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 500,
             errorResponse = ErrorResponse(
-                0,"","ApiError","",""
+                0,
+                "",
+                "ApiError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect
@@ -80,7 +84,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 400,
             errorResponse = ErrorResponse(
-                0,"","NetworkError","",""
+                0,
+                "",
+                "NetworkError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect
@@ -99,7 +107,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 0,
             errorResponse = ErrorResponse(
-                0,"","UnknownError","",""
+                0,
+                "",
+                "UnknownError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect

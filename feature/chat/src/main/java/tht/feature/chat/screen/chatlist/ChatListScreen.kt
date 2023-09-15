@@ -10,7 +10,7 @@ import tht.feature.chat.viewmodel.state.ChatState
 @Composable
 internal fun ChatListScreen(
     navigateChatDetail: () -> Unit = { },
-    items: ChatState.ChatList,
+    items: ChatState.ChatList
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumnChatItem(
@@ -18,7 +18,7 @@ internal fun ChatListScreen(
             isLoading = items.isLoading,
             onClickItem = {
                 navigateChatDetail()
-            },
+            }
         )
     }
 }

@@ -20,7 +20,7 @@ object OkHttpInterceptorModule {
 
     @Provides
     fun provideHeaderInterceptor(
-        fetchThtTokenUseCase: FetchThtTokenUseCase,
+        fetchThtTokenUseCase: FetchThtTokenUseCase
     ): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()
             .header(HttpHeaderKey.CONTENT_TYPE_HEADER_KEY, HttpHeaderKey.CONTENT_TYPE_HEADER_VALUE)

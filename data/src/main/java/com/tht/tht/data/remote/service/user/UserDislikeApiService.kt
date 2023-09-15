@@ -7,4 +7,3 @@ interface UserDislikeApiService {
         @Path("dislike-user-uuid") userUuid: String
     )
 }
-

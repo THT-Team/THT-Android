@@ -7,5 +7,5 @@ data class ChatListResponse(
     @SerializedName("partnerName") val partnerName: String,
     @SerializedName("partnerProfileUrl") val partnerProfileUrl: String,
     @SerializedName("currentMessage") val currentMessage: String,
-    @SerializedName("messageTime") val messageTime: String,
+    @SerializedName("messageTime") val messageTime: String
 )

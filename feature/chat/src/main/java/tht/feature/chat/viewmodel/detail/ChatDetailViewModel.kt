@@ -24,8 +24,8 @@ internal class ChatDetailViewModel @Inject constructor() :
         store(
             initialState = ChatDetailState.ChatList(
                 isLoading = true,
-                chatList = skeletonChatList,
-            ),
+                chatList = skeletonChatList
+            )
         )
 
     private var _currentText: MutableStateFlow<String> = MutableStateFlow("")
@@ -41,9 +41,9 @@ internal class ChatDetailViewModel @Inject constructor() :
                             partnerName = "하하",
                             partnerProfileUrl = "",
                             currentMessage = "",
-                            messageTime = "",
+                            messageTime = ""
                         )
-                    ),
+                    )
                 )
             }
         }

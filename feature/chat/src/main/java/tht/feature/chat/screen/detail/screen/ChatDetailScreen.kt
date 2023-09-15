@@ -19,7 +19,7 @@ import tht.feature.chat.viewmodel.detail.state.ChatDetailState
 
 @Composable
 internal fun ChatDetailScreen(
-    viewModel: ChatDetailViewModel = hiltViewModel(),
+    viewModel: ChatDetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getChatList()
@@ -33,7 +33,7 @@ internal fun ChatDetailScreen(
                 title = "마음",
                 onClickBack = { },
                 onClickReport = {},
-                onClickLogout = {},
+                onClickLogout = {}
             )
             Box(modifier = Modifier.weight(1f)) {
                 when (state) {
@@ -44,7 +44,7 @@ internal fun ChatDetailScreen(
         ChatEditTextContainer(
             modifier = Modifier.align(Alignment.BottomCenter),
             text = currentText,
-            onChangedText = viewModel::updateCurrentText,
+            onChangedText = viewModel::updateCurrentText
         )
     }
 }

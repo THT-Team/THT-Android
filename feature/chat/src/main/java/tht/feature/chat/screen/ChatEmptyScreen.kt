@@ -22,36 +22,36 @@ import tht.feature.chat.R
 
 @Composable
 internal fun ChatEmptyScreen(
-    onClickChangeTitle: () -> Unit,
+    onClickChangeTitle: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_empty),
-                    contentDescription = null,
+                    contentDescription = null
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 ThtHeadline4(
                     text = "아직 매칭된 무디가 없어요",
                     fontWeight = FontWeight.W600,
-                    color = Color.White,
+                    color = Color.White
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 ThtP1(
                     text = "대화가 잘 통하는 무디를 찾아볼까요?",
                     fontWeight = FontWeight.W400,
-                    color = Color(0xFF8D8D8D),
+                    color = Color(0xFF8D8D8D)
                 )
             }
             ThtButton(
@@ -63,9 +63,9 @@ internal fun ChatEmptyScreen(
                         modifier = Modifier.padding(horizontal = 96.dp, vertical = 15.dp),
                         text = "주제 변경하기",
                         fontWeight = FontWeight.W700,
-                        color = Color.Black,
+                        color = Color.Black
                     )
-                },
+                }
             )
             Spacer(modifier = Modifier.height(56.dp))
         }

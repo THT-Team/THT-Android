@@ -8,6 +8,6 @@ sealed class ChatState {
     object Empty : ChatState()
     data class ChatList(
         val isLoading: Boolean,
-        val chatList: ImmutableList<ChatListUiModel> = persistentListOf(),
+        val chatList: ImmutableList<ChatListUiModel> = persistentListOf()
     ) : ChatState()
 }

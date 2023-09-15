@@ -54,6 +54,4 @@ internal class ImageRepositoryImplTest {
         repository.uploadImageWithIndex(uriString, "", 0)
         coVerify { dataSource.uploadImage(any(), any()) }
     }
-
 }
-

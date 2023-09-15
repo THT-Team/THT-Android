@@ -41,7 +41,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): CreateSignupUserUseCase = CreateSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -49,7 +50,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchIdealTypeUseCase = FetchIdealTypeUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -57,7 +59,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchInterestUseCase = FetchInterestUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -65,7 +68,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchSignupUserUseCase = FetchSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -73,7 +77,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchTermsUseCase = FetchTermsUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -81,7 +86,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): PatchSignupDataUseCase = PatchSignupDataUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -89,7 +95,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RemoveSignupUserUseCase = RemoveSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -97,7 +104,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestAuthenticationUseCase = RequestAuthenticationUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -107,7 +115,10 @@ object UseCaseModule {
         removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
-        repository, tokenRepository, removeSignupUserUseCase, dispatcher
+        repository,
+        tokenRepository,
+        removeSignupUserUseCase,
+        dispatcher
     )
 
     @Provides
@@ -116,7 +127,9 @@ object UseCaseModule {
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
     ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
-        repository, tokenRepository, loginRepository
+        repository,
+        tokenRepository,
+        loginRepository
     )
 
     @Provides
@@ -125,7 +138,9 @@ object UseCaseModule {
         createSignupUserUseCase: CreateSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
-        repository, createSignupUserUseCase, dispatcher
+        repository,
+        createSignupUserUseCase,
+        dispatcher
     )
 
     @Provides
@@ -189,7 +204,7 @@ object UseCaseModule {
 
     @Provides
     fun provideGetChatListUseCase(
-        repository: ChatRepository,
+        repository: ChatRepository
     ): GetChatListUseCase =
         GetChatListUseCase(repository)
 

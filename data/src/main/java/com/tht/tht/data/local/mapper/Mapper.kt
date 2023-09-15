@@ -83,11 +83,11 @@ fun LocationResponse.toModel(): LocationModel {
     val simpleAddress = StringBuilder()
     var isDetail = false
     address.split(" ").forEach { name ->
-        if(name.isEmpty()) return@forEach
-        if(name.first() == '(') isDetail = true
+        if (name.isEmpty()) return@forEach
+        if (name.first() == '(') isDetail = true
         if (isDetail) return@forEach
 
-        val newName = when(name) {
+        val newName = when (name) {
             "대한민국" -> return@forEach
             "경기" -> "경기도"
             "충북" -> "충청북도"

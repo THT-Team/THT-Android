@@ -11,5 +11,4 @@ interface TokenDataSource {
     suspend fun fetchThtToken(): String?
 
     suspend fun fetchPhone(): String?
-
 }

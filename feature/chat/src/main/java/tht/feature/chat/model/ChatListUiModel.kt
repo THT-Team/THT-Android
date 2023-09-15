@@ -5,5 +5,5 @@ data class ChatListUiModel(
     val partnerName: String,
     val partnerProfileUrl: String,
     val currentMessage: String,
-    val messageTime: String,
+    val messageTime: String
 )

@@ -38,7 +38,7 @@ fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp)
     ) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -53,7 +53,7 @@ fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
                     text = item.currentMessage,
                     updateTime = "3:12 PM",
                     isShowProfile = true,
-                    userName = "Stitch",
+                    userName = "Stitch"
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -73,7 +73,7 @@ fun ChatRandomTitle(title: String) {
         text = title,
         fontWeight = FontWeight.Normal,
         color = Color.White,
-        textAlign = TextAlign.Center,
+        textAlign = TextAlign.Center
     )
 }
 
@@ -82,13 +82,13 @@ fun Sender(text: String, updateTime: String) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.End,
+        horizontalArrangement = Arrangement.End
     ) {
         ThtCaption2(
             text = updateTime,
             fontWeight = FontWeight.Normal,
             color = Color(0xFFF9FAFA),
-            textAlign = TextAlign.End,
+            textAlign = TextAlign.End
         )
         Spacer(space = 8.dp)
         ThtP2(
@@ -100,7 +100,7 @@ fun Sender(text: String, updateTime: String) {
             text = text,
             fontWeight = FontWeight.Normal,
             color = Color.Black,
-            textAlign = TextAlign.Start,
+            textAlign = TextAlign.Start
         )
     }
 }
@@ -110,18 +110,18 @@ fun Receiver(
     isShowProfile: Boolean,
     userName: String,
     text: String,
-    updateTime: String,
+    updateTime: String
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.Start,
+        horizontalArrangement = Arrangement.Start
     ) {
         if (isShowProfile) {
             ThtImage(
                 modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
                 src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
-                size = DpSize(34.dp, 34.dp),
+                size = DpSize(34.dp, 34.dp)
             )
             Spacer(space = 10.dp)
         }
@@ -131,12 +131,12 @@ fun Receiver(
                 text = userName,
                 fontWeight = FontWeight.Normal,
                 color = Color(0xFF8D8D8D),
-                textAlign = TextAlign.Start,
+                textAlign = TextAlign.Start
             )
             Spacer(space = 8.dp)
             Row(
                 verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.End
             ) {
                 ThtP2(
                     modifier = Modifier
@@ -147,7 +147,7 @@ fun Receiver(
                     text = text,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFF9FAFA),
-                    textAlign = TextAlign.Start,
+                    textAlign = TextAlign.Start
                 )
                 Spacer(space = 8.dp)
                 ThtCaption2(
@@ -157,7 +157,7 @@ fun Receiver(
                     text = updateTime,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFF9FAFA),
-                    textAlign = TextAlign.Start,
+                    textAlign = TextAlign.Start
                 )
             }
         }
@@ -171,7 +171,7 @@ fun ReceiverPreview() {
         text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
         updateTime = "3:12 PM",
         isShowProfile = false,
-        userName = "stitch",
+        userName = "stitch"
     )
 }
 
@@ -182,7 +182,7 @@ fun ReceiverPreview2() {
         text = "긴 텍스트",
         updateTime = "3:12 PM",
         isShowProfile = false,
-        userName = "stitch",
+        userName = "stitch"
     )
 }
 
@@ -197,6 +197,6 @@ fun SenderPreview() {
 fun SenderPreview2() {
     Sender(
         text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-        updateTime = "3:12 PM",
+        updateTime = "3:12 PM"
     )
 }

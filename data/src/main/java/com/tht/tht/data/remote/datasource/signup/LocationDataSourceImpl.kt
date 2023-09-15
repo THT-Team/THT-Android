@@ -7,7 +7,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-
 class LocationDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher,
     private val locationService: LocationService

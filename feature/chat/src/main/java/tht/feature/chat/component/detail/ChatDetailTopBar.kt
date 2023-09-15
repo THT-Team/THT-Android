@@ -29,19 +29,19 @@ internal fun ChatDetailTopAppBar(
     title: String,
     onClickBack: () -> Unit,
     onClickReport: () -> Unit,
-    onClickLogout: () -> Unit,
+    onClickLogout: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 9.dp),
+            .padding(horizontal = 20.dp, vertical = 9.dp)
     ) {
         Image(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .noRippleClickable { onClickBack() },
             painter = painterResource(id = R.drawable.ic_back),
-            contentDescription = "뒤로가기 버튼",
+            contentDescription = "뒤로가기 버튼"
         )
         Column(
             modifier = Modifier
@@ -50,27 +50,27 @@ internal fun ChatDetailTopAppBar(
                 .align(Alignment.Center)
                 .background(Color(0xFF252525))
                 .padding(top = 4.dp, bottom = 2.dp, start = 33.dp, end = 33.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ThtCaption1(text = "우리가 통한 주제", fontWeight = FontWeight.Normal, color = Color.White)
             ThtP2(text = title, fontWeight = FontWeight.SemiBold, color = Color(0xFFF9CC2E))
         }
         Row(
             modifier = Modifier
-                .align(Alignment.CenterEnd),
+                .align(Alignment.CenterEnd)
         ) {
             Image(
                 modifier = Modifier
                     .noRippleClickable { onClickReport() },
                 painter = painterResource(id = R.drawable.ic_report),
-                contentDescription = "신고하기 버튼",
+                contentDescription = "신고하기 버튼"
             )
             Spacer(space = 20.dp)
             Image(
                 modifier = Modifier
                     .noRippleClickable { onClickLogout() },
                 painter = painterResource(id = R.drawable.ic_logout),
-                contentDescription = "로그아웃 버튼",
+                contentDescription = "로그아웃 버튼"
             )
         }
     }

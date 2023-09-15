@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tht.tht.domain.chat.model.ChatListModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tht.feature.chat.model.ChatListUiModel
@@ -16,17 +15,17 @@ import tht.feature.chat.model.ChatListUiModel
 internal fun LazyColumnChatItem(
     items: ImmutableList<ChatListUiModel>,
     isLoading: Boolean,
-    onClickItem: () -> Unit,
+    onClickItem: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        state = rememberLazyListState(),
+        state = rememberLazyListState()
     ) {
         items(items) { item ->
             ChatItem(
                 item = item,
                 isLoading = isLoading,
-                onClickItem = onClickItem,
+                onClickItem = onClickItem
             )
         }
     }
@@ -38,6 +37,6 @@ internal fun LazyColumnChatItemPreview() {
     LazyColumnChatItem(
         items = persistentListOf(),
         isLoading = false,
-        onClickItem = {},
+        onClickItem = {}
     )
 }

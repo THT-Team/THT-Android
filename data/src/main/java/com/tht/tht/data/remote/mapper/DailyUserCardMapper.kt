@@ -6,7 +6,6 @@ import com.tht.tht.domain.dailyusercard.DailyUserCardModel
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 
-
 fun DailyUserCardResponse.UserInfo.IdealTypeResponse.toModel(): IdealTypeModel {
     return IdealTypeModel(
         title = name,

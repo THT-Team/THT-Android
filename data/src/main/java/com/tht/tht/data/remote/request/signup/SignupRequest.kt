@@ -1,6 +1,5 @@
 package com.tht.tht.data.remote.request.signup
 
-
 import com.google.gson.annotations.SerializedName
 
 data class SignupRequest(

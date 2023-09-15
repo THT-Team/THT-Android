@@ -31,20 +31,24 @@ internal class LocationRepositoryImplTest {
     }
 
     @Test
-    fun `fetchCurrentLocation은 LocationDataSource의 fetchCurrentLocation의 결과를 LocationModel로 변환해 리턴한다`() = runTest(testDispatcher) {
+    fun `fetchCurrentLocation은 LocationDataSource의 fetchCurrentLocation의 결과를 LocationModel로 변환해 리턴한다`() = runTest(
+        testDispatcher
+    ) {
         val expect = mockk<LocationResponse>(relaxed = true)
         coEvery { dataSource.fetchCurrentLocation() } returns expect
         val actual = repository.fetchCurrentLocation()
-        assertThat(actual).
-            isEqualTo(expect.toModel())
+        assertThat(actual)
+            .isEqualTo(expect.toModel())
     }
 
     @Test
-    fun `fetchLocationByAddress LocationDataSource의 fetchLocationByAddress의 결과를 LocationModel로 변환해 리턴한다`() = runTest(testDispatcher) {
+    fun `fetchLocationByAddress LocationDataSource의 fetchLocationByAddress의 결과를 LocationModel로 변환해 리턴한다`() = runTest(
+        testDispatcher
+    ) {
         val expect = mockk<LocationResponse>(relaxed = true)
         coEvery { dataSource.fetchLocationByAddress(expect.address) } returns expect
         val actual = repository.fetchLocationByAddress(expect.address)
-        assertThat(actual).
-            isEqualTo(expect.toModel())
+        assertThat(actual)
+            .isEqualTo(expect.toModel())
     }
 }

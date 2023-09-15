@@ -22,7 +22,7 @@ import tht.feature.chat.viewmodel.state.ChatState
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
-    navigateChatDetail: () -> Unit = { },
+    navigateChatDetail: () -> Unit = { }
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getChatList()
@@ -36,16 +36,16 @@ internal fun ChatScreen(
                 Icon(
                     tint = Color.White,
                     painter = painterResource(id = R.drawable.ic_non_alert),
-                    contentDescription = null,
+                    contentDescription = null
                 )
-            },
+            }
         )
 
         Crossfade(
             modifier = Modifier.fillMaxSize(),
             targetState = state,
             animationSpec = tween(400),
-            label = "",
+            label = ""
         ) { state ->
             when (state) {
                 is ChatState.Empty -> ChatEmptyScreen(onClickChangeTitle = {})

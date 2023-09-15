@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ChatViewModel @Inject constructor(
-    private val getChatListUseCase: GetChatListUseCase,
+    private val getChatListUseCase: GetChatListUseCase
 ) : ViewModel(), Container<ChatState, ChatSideEffect> {
     override val store: Store<ChatState, ChatSideEffect> =
         store(initialState = ChatState.ChatList(isLoading = true, chatList = skeletonChatList))
@@ -30,7 +30,7 @@ internal class ChatViewModel @Inject constructor(
                 reduce {
                     ChatState.ChatList(
                         isLoading = false,
-                        chatList = chatList.map { it.toModel() }.toImmutableList(),
+                        chatList = chatList.map { it.toModel() }.toImmutableList()
                     )
                 }
             }
