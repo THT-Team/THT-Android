@@ -1,6 +1,6 @@
 [versions]
 #android
-android-gradle = "7.3.1"
+android-gradle = "7.4.2"
 android-material = "1.7.0"
 android-lifecycle-viewModel-KTX = "2.5.1"
 
@@ -15,8 +15,8 @@ androidx-navigation = "2.5.3"
 androidx-core-splash = "1.0.0"
 
 #kotlin
-kotlin = "1.8.20"
-kotlin-jvm = "1.8.20"
+kotlin = "1.8.10"
+kotlin-jvm = "1.8.10"
 collections-immutable = "0.3.5"
 
 #test
