@@ -15,8 +15,8 @@ androidx-navigation = "2.5.3"
 androidx-core-splash = "1.0.0"
 
 #kotlin
-kotlin = "1.8.10"
-kotlin-jvm = "1.8.10"
+kotlin = "1.8.20"
+kotlin-jvm = "1.8.20"
 collections-immutable = "0.3.5"
 
 #test
