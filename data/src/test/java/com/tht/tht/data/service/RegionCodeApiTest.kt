@@ -44,7 +44,8 @@ class RegionCodeApiTest {
 
     @Test
     fun `지역 코드를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/regioncode/region_code.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/regioncode/region_code.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
@@ -71,7 +72,8 @@ class RegionCodeApiTest {
 
     @Test
     fun `지역 코드를 가져올 수 없다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/regioncode/region_code_failure_400.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/regioncode/region_code_failure_400.json").readText()
         val response = MockResponse()
             .setResponseCode(400)
             .setBody(responseJson)

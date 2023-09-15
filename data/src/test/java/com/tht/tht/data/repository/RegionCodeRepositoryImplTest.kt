@@ -32,22 +32,23 @@ internal class RegionCodeRepositoryImplTest {
     }
 
     @Test
-    fun `fetchRegionCode는 RegionCodeDataSource의 fetchRegionCode의 결과를 RegionModel로 변환해 리턴한다`() = runTest(testDispatcher) {
-        val expect = RegionCodeResponse(
-            listOf(
-                RegionCodeResponse.StanReginCd(
-                    null
-                ),
-                RegionCodeResponse.StanReginCd(
-                    listOf(
-                        RegionCodeResponse.StanReginCd.Row("4113300000")
+    fun `fetchRegionCode는 RegionCodeDataSource의 fetchRegionCode의 결과를 RegionModel로 변환해 리턴한다`() =
+        runTest(testDispatcher) {
+            val expect = RegionCodeResponse(
+                listOf(
+                    RegionCodeResponse.StanReginCd(
+                        null
+                    ),
+                    RegionCodeResponse.StanReginCd(
+                        listOf(
+                            RegionCodeResponse.StanReginCd.Row("4113300000")
+                        )
                     )
                 )
             )
-        )
-        coEvery { apiDataSource.fetchRegionCode("경기도 성남시 중원구") } returns expect
-        val actual = repository.fetchRegionCode("경기도 성남시 중원구")
-        assertThat(actual)
-            .isEqualTo(expect.toModel())
-    }
+            coEvery { apiDataSource.fetchRegionCode("경기도 성남시 중원구") } returns expect
+            val actual = repository.fetchRegionCode("경기도 성남시 중원구")
+            assertThat(actual)
+                .isEqualTo(expect.toModel())
+        }
 }
