@@ -43,28 +43,31 @@ class NicknameViewModel @Inject constructor(
         _inputValue.debounce(500L)
             .filter { it.isNotBlank() && it != validInputValue.value }
             .onEach {
-                _dataLoading.value = true
-                checkNicknameDuplicateUseCase(it)
-                    .onSuccess { isDuplicate ->
-                        if (!isDuplicate) {
-                            _uiStateFlow.value = NicknameUiState.ValidInput
-                            validInputValue.value = it
-                        } else {
-                            _uiStateFlow.value = NicknameUiState.InvalidInput(
-                                stringProvider.getString(
-                                    StringProvider.ResId.DuplicateNickname
-                                )
-                            )
-                        }
-                    }.onFailure {
-                        _uiStateFlow.value = NicknameUiState.InvalidInput(
-                            stringProvider.getString(
-                                StringProvider.ResId.DuplicateCheckFail
-                            )
-                        )
-                    }.also { _ ->
-                        _dataLoading.value = false
-                    }
+                // 09.23 닉네임 중복 체크 기능 비활성화
+                _uiStateFlow.value = NicknameUiState.ValidInput
+                validInputValue.value = it
+//                _dataLoading.value = true
+//                checkNicknameDuplicateUseCase(it)
+//                    .onSuccess { isDuplicate ->
+//                        if (!isDuplicate) {
+//                            _uiStateFlow.value = NicknameUiState.ValidInput
+//                            validInputValue.value = it
+//                        } else {
+//                            _uiStateFlow.value = NicknameUiState.InvalidInput(
+//                                stringProvider.getString(
+//                                    StringProvider.ResId.DuplicateNickname
+//                                )
+//                            )
+//                        }
+//                    }.onFailure {
+//                        _uiStateFlow.value = NicknameUiState.InvalidInput(
+//                            stringProvider.getString(
+//                                StringProvider.ResId.DuplicateCheckFail
+//                            )
+//                        )
+//                    }.also { _ ->
+//                        _dataLoading.value = false
+//                    }
             }.launchIn(viewModelScope)
 
         _inputValue.filter { it.isNotBlank() }
