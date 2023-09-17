@@ -173,7 +173,7 @@ jobs:
               with:
                 appId: ${{secrets.FIREBASE_APP_ID}}
                 serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-                groups: android-developer
+                groups: android-developer, tht-team
                 file: app/build/outputs/apk/release/app-release-unsigned-signed.apk
                 releaseNotesFile: app/release_note.md
 
