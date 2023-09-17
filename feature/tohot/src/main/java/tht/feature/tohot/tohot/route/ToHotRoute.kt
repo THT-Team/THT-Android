@@ -214,6 +214,7 @@ internal fun ToHotRoute(
                 hasUnReadAlarm = toHotState.hasUnReadAlarm,
                 fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
                 isHoldCard = toHotState.holdCard,
+                isShakingCard = toHotState.shakingCard,
                 onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
                 topicSelectListener = toHotViewModel::topicChangeClickEvent,
                 alarmClickListener = toHotViewModel::alarmClickEvent,
