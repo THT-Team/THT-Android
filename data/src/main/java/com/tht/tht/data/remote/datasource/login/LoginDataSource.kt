@@ -1,9 +1,8 @@
 package com.tht.tht.data.remote.datasource.login
 
-import com.tht.tht.data.remote.request.login.LoginRequest
-import com.tht.tht.domain.login.model.AuthTokenModel
+import com.tht.tht.data.remote.request.login.FcmTokenLoginRequest
+import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
 
 interface LoginDataSource {
-
-    suspend fun requestLogin(loginRequest: LoginRequest): AuthTokenModel
+    suspend fun refreshFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse
 }

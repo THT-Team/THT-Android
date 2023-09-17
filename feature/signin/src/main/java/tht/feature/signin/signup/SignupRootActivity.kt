@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
+import tht.feature.signin.prelogin.PreloginActivity
 
 @AndroidEntryPoint
 class SignupRootActivity : AppCompatActivity() {
@@ -76,7 +78,8 @@ class SignupRootActivity : AppCompatActivity() {
                             }
                         }
                         is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
-                            // TODO HomeActivity로 이동
+                            startActivity(PreloginActivity.getIntent(this@SignupRootActivity))
+                            finish()
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
                             showToast(it.message)
@@ -92,6 +95,12 @@ class SignupRootActivity : AppCompatActivity() {
                             binding.pbSignup.setProgress(it.step.ordinal, true)
                         }
                     }
+                }
+            }
+
+            launch {
+                viewModel.dataLoading.collect {
+                    binding.progress.isVisible = it
                 }
             }
         }

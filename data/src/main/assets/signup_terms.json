@@ -2,6 +2,7 @@
     "body": [
         {
             "title": "이용 약관 동의",
+            "key": "serviceUseAgree",
             "description": "",
             "content": [
                 {
@@ -57,6 +58,7 @@
         },
         {
             "title": "개인 정보 수집 및 이용 동의",
+            "key": "personalPrivacyInfoAgree",
             "description": "",
             "content": [
                 {
@@ -68,6 +70,7 @@
         },
         {
             "title": "위치 기반 서비스 약관 동의",
+            "key": "locationServiceAgree",
             "description": "",
             "content": [
                 {
@@ -83,6 +86,7 @@
         },
         {
             "title": "마케팅 정보 수신 동의",
+            "key": "marketingAgree",
             "description": "THT에서 제공하는 이벤트/혜택 등 다양한 정보를 Push 알림으로 받아보실 수 있습니다.",
             "content": [],
             "require": "false"

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
@@ -18,6 +19,7 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
+import tht.feature.signin.prelogin.PreloginActivity
 import tht.feature.signin.util.AnimatorUtil
 
 @AndroidEntryPoint
@@ -74,10 +76,11 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
         textInputEditTexts.forEachIndexed { i, view ->
             view.setOnKeyListener(VerifyEditKeyEvent(view, if (i == 0) null else textInputEditTexts[i - 1]))
-            val nxtView = if (i in 0 until textInputEditTexts.size - 1)
+            val nxtView = if (i in 0 until textInputEditTexts.size - 1) {
                 textInputEditTexts[i + 1]
-            else
+            } else {
                 null
+            }
             view.addTextChangedListener(
                 VerifyEditTextWatcher(
                     nxtView,
@@ -107,6 +110,10 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
                         is PhoneVerifyViewModel.VerifySideEffect.NavigateNextView -> {
                             startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
+                        }
+
+                        is PhoneVerifyViewModel.VerifySideEffect.NavigateMainView -> {
+                            startActivity(PreloginActivity.getIntent(this@PhoneVerifyActivity))
                         }
                     }
                 }
@@ -167,11 +174,13 @@ class PhoneVerifyActivity : AppCompatActivity() {
         fun getIntent(
             context: Context,
             phone: String,
-            authNum: String
+            authNum: String,
+            signInType: SignInType
         ): Intent {
             return Intent(context, PhoneVerifyActivity::class.java).apply {
                 putExtra(PhoneVerifyViewModel.EXTRA_PHONE_KEY, phone)
                 putExtra(PhoneVerifyViewModel.EXTRA_AUTH_NUM_KEY, authNum)
+                putExtra(PhoneVerifyViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
             }
         }
     }

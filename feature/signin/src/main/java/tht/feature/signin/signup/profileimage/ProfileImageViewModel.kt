@@ -2,9 +2,11 @@ package tht.feature.signin.signup.profileimage
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
+import com.tht.tht.domain.signup.constant.SignupConstant
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupProfileImagesUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileImageViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val patchSignupProfileImagesUseCase: PatchSignupProfileImagesUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
+    private val removeImageUrlUseCase: RemoveImageUrlUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<ProfileImageUiState, ProfileImageSideEffect>() {
 
@@ -36,20 +39,30 @@ class ProfileImageViewModel @Inject constructor(
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
+    private val removeCachingUrl = mutableListOf<String>()
+
     fun fetchSavedData(phone: String) {
         if (phone.isBlank()) {
             _uiStateFlow.value = ProfileImageUiState.InvalidPhoneNumber(
                 stringProvider.getString(StringProvider.ResId.InvalidatePhone)
             )
         }
+        // clear image info
+        _imageArray.value = _imageArray.value.let { array ->
+            repeat(array.size) { idx ->
+                array[idx] = ImageUri(uri = null, url = null)
+            }
+            array.copyOf()
+        }
         // Local에 저장된 이미지를 불러와 size가 IMAGE_MAX_SIZE인 _imageList에 저장
         viewModelScope.launch(Dispatchers.Default) {
             _dataLoading.value = true
             fetchSignupUserUseCase(phone)
                 .onSuccess {
+                    Log.d("TAG", "fetch user => ${it.profileImgUrl}")
                     it.profileImgUrl
-                        .map { u ->
-                            ImageUri(null, u)
+                        .map { url ->
+                            ImageUri(null, url)
                         }.take(3)
                         .forEachIndexed { idx, imageUri ->
                             _imageArray.value = _imageArray.value.also { arr ->
@@ -66,7 +79,30 @@ class ProfileImageViewModel @Inject constructor(
     }
 
     fun imageClickEvent(idx: Int) {
+        when (_imageArray.value[idx].uri.isNullOrBlank() && imageArray.value[idx].url.isNullOrBlank()) {
+            true -> postSideEffect(ProfileImageSideEffect.RequestImageFromGallery(idx))
+            else -> postSideEffect(ProfileImageSideEffect.ShowModifyDialog(idx))
+        }
+    }
+
+    fun imageModifyEvent(idx: Int) {
         postSideEffect(ProfileImageSideEffect.RequestImageFromGallery(idx))
+    }
+
+    fun imageRemoveEvent(idx: Int) {
+        var newImageInfo = _imageArray.value[idx]
+        if (newImageInfo.uri != null) {
+            newImageInfo = newImageInfo.copy(uri = null)
+        }
+        if (newImageInfo.url != null) {
+            removeCachingUrl.add(newImageInfo.url!!)
+            newImageInfo = newImageInfo.copy(url = null)
+        }
+        _imageArray.value = _imageArray.value.let {
+            it[idx] = newImageInfo
+            it.copyOf()
+        }
+        checkRequireImageSelect()
     }
 
     fun imageSelectEvent(uri: String, idx: Int) {
@@ -77,6 +113,17 @@ class ProfileImageViewModel @Inject constructor(
         checkRequireImageSelect()
     }
 
+    fun nextEvent(phone: String) {
+        if (_dataLoading.value) {
+            emitMessage(
+                stringProvider.getString(StringProvider.ResId.Loading)
+            )
+        }
+        removeCachingUrl {
+            doPatchInputTask(phone)
+        }
+    }
+
     // 현재 선택된 이미지 개수에 따라 UiState 를 변경
     private fun checkRequireImageSelect() {
         val currentSelectImageCount = _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }
@@ -84,6 +131,41 @@ class ProfileImageViewModel @Inject constructor(
             true -> ProfileImageUiState.Accept
             else -> ProfileImageUiState.Empty
         }
+    }
+
+    // 캐싱된 제거할 Url들을 제거
+    private fun removeCachingUrl(completion: () -> Unit) {
+        if (removeCachingUrl.isEmpty()) {
+            completion()
+            return
+        }
+        viewModelScope.launch {
+            _dataLoading.value = true
+            removeImageUrlUseCase(removeCachingUrl)
+                .onSuccess {
+                    removeCachingUrl.clear()
+                }.onFailure {
+                    it.printStackTrace()
+                }.also {
+                    _dataLoading.value = false
+                    completion()
+                }
+        }
+    }
+
+    private fun doPatchInputTask(phone: String) {
+        _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
+            if (it < IMAGE_REQUIRE_SIZE) return
+        }
+        uploadProfileImageUris(
+            phone,
+            _imageArray.value.map {
+                it.uri
+            },
+            _imageArray.value.map {
+                it.url
+            }.toTypedArray()
+        )
     }
 
     // 이미지 업로드 Process. 완료되면 Patch Process 실행
@@ -131,47 +213,24 @@ class ProfileImageViewModel @Inject constructor(
     // 이미지 Url Array를 Local에 있는 SignupUserModel에 적용
     private suspend fun patchProfileImage(phone: String, profileImageUrls: List<String>) {
         _dataLoading.value = true
-        patchSignupProfileImagesUseCase(phone, profileImageUrls)
-            .onSuccess {
-                when (it) {
-                    true -> postSideEffect(ProfileImageSideEffect.NavigateNextView)
-                    else -> emitMessage(
-                        stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
-                    )
-                }
-            }.onFailure {
-                it.printStackTrace()
-                emitMessage(
-                    stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail) +
-                        it.toString()
+        patchSignupDataUseCase(phone) {
+            it.copy(profileImgUrl = profileImageUrls)
+        }.onSuccess {
+            when (it) {
+                true -> postSideEffect(ProfileImageSideEffect.NavigateNextView)
+                else -> emitMessage(
+                    stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail)
                 )
-            }.also {
-                _dataLoading.value = false
             }
-    }
-
-    fun nextEvent(phone: String) {
-        doPatchInputTask(phone)
-    }
-
-    private fun doPatchInputTask(phone: String) {
-        if (_dataLoading.value) {
+        }.onFailure {
+            it.printStackTrace()
             emitMessage(
-                stringProvider.getString(StringProvider.ResId.Loading)
+                stringProvider.getString(StringProvider.ResId.ProfileImagePatchFail) +
+                    it.toString()
             )
+        }.also {
+            _dataLoading.value = false
         }
-        _imageArray.value.count { !it.uri.isNullOrBlank() || !it.url.isNullOrBlank() }.let {
-            if (it < IMAGE_REQUIRE_SIZE) return
-        }
-        uploadProfileImageUris(
-            phone,
-            _imageArray.value.map {
-                it.uri
-            },
-            _imageArray.value.map {
-                it.url
-            }.toTypedArray()
-        )
     }
 
     private fun emitMessage(message: String) {
@@ -180,7 +239,7 @@ class ProfileImageViewModel @Inject constructor(
 
     companion object {
         private const val IMAGE_MAX_SIZE = 3
-        private const val IMAGE_REQUIRE_SIZE = 2
+        private const val IMAGE_REQUIRE_SIZE = SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE
     }
 }
 
@@ -194,5 +253,6 @@ sealed class ProfileImageSideEffect : SideEffect {
     data class RequestImageFromGallery(
         val idx: Int
     ) : ProfileImageSideEffect()
+    data class ShowModifyDialog(val idx: Int) : ProfileImageSideEffect()
     object NavigateNextView : ProfileImageSideEffect()
 }

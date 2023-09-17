@@ -9,17 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import tht.core.ui.base.BaseActivity
-import tht.core.ui.base.FragmentNavigator
-import tht.core.ui.delegate.viewBinding
 import com.tht.tht.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.ui.base.BaseActivity
+import tht.core.ui.base.FragmentNavigator
+import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
 import tht.feature.heart.HeartFragment
 import tht.feature.setting.MyFragment
-import tht.feature.tohot.ToHotFragment
-import tht.core.ui.extension.hideSoftInput
+import tht.feature.tohot.tohot.fragment.ToHotFragment
 
 @SuppressLint("CommitTransaction")
 @AndroidEntryPoint
@@ -67,6 +67,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     vm.navigationItemStateFlow.collect { navigation ->
+                        if (navigation.navigationMenuId < 0) return@collect
                         binding.bnvHome.selectedItemId = navigation.navigationMenuId
                     }
                 }

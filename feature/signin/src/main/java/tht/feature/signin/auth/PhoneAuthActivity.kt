@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
@@ -85,7 +87,8 @@ class PhoneAuthActivity : AppCompatActivity() {
                                 PhoneVerifyActivity.getIntent(
                                     this@PhoneAuthActivity,
                                     it.phone,
-                                    it.authNum
+                                    it.authNum,
+                                    it.signInType
                                 )
                             )
                     }
@@ -131,6 +134,8 @@ class PhoneAuthActivity : AppCompatActivity() {
             alpha = 0f
         }
         customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
+        customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
+            .setBackgroundResource(R.drawable.ic_toast_send_success)
         binding.layoutBackground.addView(customToastView)
 
         customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -166,8 +171,10 @@ class PhoneAuthActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun getIntent(context: Context): Intent {
-            return Intent(context, PhoneAuthActivity::class.java)
+        fun getIntent(context: Context, signInType: SignInType): Intent {
+            return Intent(context, PhoneAuthActivity::class.java).apply {
+                putExtra(PhoneAuthViewModel.EXTRA_SIGN_IN_TYPE_KEY, signInType)
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.tht.tht.data.local.entity
 
-
 import com.google.gson.annotations.SerializedName
 
 data class TermsEntity(
@@ -14,6 +13,8 @@ data class TermsEntity(
         val require: Boolean,
         @SerializedName("title")
         val title: String,
+        @SerializedName("key")
+        val key: String,
         @SerializedName("description")
         val description: String
     ) {

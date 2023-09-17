@@ -1,7 +1,12 @@
+import java.util.Properties
+import java.io.File
+import java.io.FileInputStream
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.jlleitschuh.gradle.ktlint")
     id("com.google.gms.google-services")
 }
 
@@ -15,6 +20,14 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        val prop = Properties().apply {
+            load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+        }
+        buildConfigField("String", "REGION_CODE_SERVICE_KEY", prop.getProperty("REGION_CODE_SERVICE_KEY"))
+        buildConfigField("String", "APP_EMAIL_ID", prop.getProperty("APP_EMAIL_ID"))
+        buildConfigField("String", "APP_EMAIL_PASSWORD", prop.getProperty("APP_EMAIL_PASSWORD"))
+        buildConfigField("String", "CEO_EMAIL", prop.getProperty("CEO_EMAIL"))
     }
 
     buildTypes {
@@ -74,6 +87,10 @@ dependencies {
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
 
+    //javax-mail
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+
     // Coroutines
     implementation(libs.coroutines.core)
     implementation(libs.viewmodel.ktx)
@@ -83,4 +100,5 @@ dependencies {
     // firebase
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
 }

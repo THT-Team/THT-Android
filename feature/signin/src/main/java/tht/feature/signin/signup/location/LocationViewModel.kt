@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupLocationUseCase
+import com.tht.tht.domain.signup.usecase.PatchLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,30 +19,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationViewModel @Inject constructor(
-    private val patchSignupLocationUseCase: PatchSignupLocationUseCase,
     private val fetchCurrentLocationUseCase: FetchCurrentLocationUseCase,
     private val fetchLocationByAddressUseCase: FetchLocationByAddressUseCase,
+    private val patchLocationUseCase: PatchLocationUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<LocationViewModel.LocationUiState, LocationViewModel.LocationSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<LocationUiState> =
         MutableStateFlow(LocationUiState.InvalidInput)
 
-    private val _location = MutableStateFlow(LocationModel(0.0, 0.0, "")).also { flow ->
+    private val fullLocation = MutableStateFlow(LocationModel(0.0, 0.0, "")).also { flow ->
         flow.onEach {
             checkValidInput(it.address)
+            setLocationValue(it.address)
         }.launchIn(viewModelScope)
     }
+
+    private val _location = MutableStateFlow("")
     val location = _location.asStateFlow()
 
     private val _dataLoading = MutableStateFlow(false)
     val dataLoading = _dataLoading.asStateFlow()
 
     fun checkLocationEvent() {
-        if (_location.value.address.isEmpty())
+        if (fullLocation.value.address.isEmpty()) {
             postSideEffect(LocationSideEffect.CheckPermission)
-        else
+        } else {
             postSideEffect(LocationSideEffect.ShowLocationDialog)
+        }
     }
 
     fun fetchCurrentLocation() {
@@ -50,13 +54,14 @@ class LocationViewModel @Inject constructor(
             _dataLoading.value = true
             fetchCurrentLocationUseCase()
                 .onSuccess { location ->
-                    _location.value = location
+                    fullLocation.value = location
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            stringProvider.getString(StringProvider.ResId.AutoLocationFetchFail)
                         )
                     )
+                    postSideEffect(LocationSideEffect.ShowLocationDialog)
                 }.also {
                     _dataLoading.value = false
                 }
@@ -68,11 +73,11 @@ class LocationViewModel @Inject constructor(
             _dataLoading.value = true
             fetchLocationByAddressUseCase(address)
                 .onSuccess { location ->
-                    _location.value = location
+                    fullLocation.value = location
                 }.onFailure {
                     _sideEffectFlow.emit(
                         LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            stringProvider.getString(StringProvider.ResId.FetchLocationFail)
                         )
                     )
                 }.also {
@@ -87,12 +92,22 @@ class LocationViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         viewModelScope.launch {
+            fullLocation.value.run {
+                if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
+                    _sideEffectFlow.emit(
+                        LocationSideEffect.ShowToast(
+                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                        )
+                    )
+                    return@launch
+                }
+            }
             _dataLoading.value = true
-            patchSignupLocationUseCase(
+            patchLocationUseCase(
                 phone,
-                location.value.lat,
-                location.value.lng,
-                location.value.address
+                fullLocation.value.lat,
+                fullLocation.value.lng,
+                fullLocation.value.address
             ).onSuccess {
                 _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
             }.onFailure {
@@ -107,12 +122,31 @@ class LocationViewModel @Inject constructor(
         }
     }
 
-    fun checkValidInput(location: String) {
-        if (location.isEmpty())
-            setUiState(LocationUiState.InvalidInput)
-        else
-            setUiState(LocationUiState.ValidInput)
+    private fun setLocationValue(address: String) {
+        _location.value = if (checkProvince(address)) {
+            address.split(" ").run {
+                takeLast(size - 1)
+            }.joinToString(" ")
+        } else {
+            address
+        }
     }
+
+    private fun checkValidInput(location: String) {
+        if (location.isEmpty()) {
+            setUiState(LocationUiState.InvalidInput)
+        } else {
+            setUiState(LocationUiState.ValidInput)
+        }
+    }
+
+    private fun checkProvince(address: String): Boolean =
+        when (address.split(" ")[0]) {
+            "부산광역시", "대구광역시", "인천광역시", "광주광역시",
+            "대전광역시", "울산광역시", "서울특별시" -> false
+
+            else -> true
+        }
 
     sealed class LocationUiState : UiState {
         object ValidInput : LocationUiState()

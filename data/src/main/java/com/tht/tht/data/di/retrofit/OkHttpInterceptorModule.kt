@@ -1,11 +1,16 @@
 package com.tht.tht.data.di.retrofit
 
 import com.tht.tht.data.BuildConfig
+import com.tht.tht.data.remote.retrofit.TokenRefreshAuthenticator
 import com.tht.tht.data.remote.retrofit.header.HttpHeaderKey
+import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
+import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -13,13 +18,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 @InstallIn(SingletonComponent::class)
 object OkHttpInterceptorModule {
 
-    // TODO Preference 추가해서 accesToken 연결작업하기
     @Provides
-    fun provideHeaderInterceptor(): Interceptor = Interceptor { chain ->
+    fun provideHeaderInterceptor(
+        fetchThtTokenUseCase: FetchThtTokenUseCase
+    ): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()
             .header(HttpHeaderKey.CONTENT_TYPE_HEADER_KEY, HttpHeaderKey.CONTENT_TYPE_HEADER_VALUE)
-        val accessToken = ""
-        if (accessToken.isNotEmpty()) {
+        val accessToken = runBlocking { fetchThtTokenUseCase().getOrNull() }
+        if (accessToken != null) {
             requestBuilder.header(
                 HttpHeaderKey.AUTHORIZATION_HEADER_KEY,
                 "${HttpHeaderKey.BEARER_PREFIX} $accessToken"
@@ -31,6 +37,12 @@ object OkHttpInterceptorModule {
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
+
+    @Provides
+    fun provideTokenRefreshAuthenticator(
+        refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>
+    ): TokenRefreshAuthenticator = TokenRefreshAuthenticator(refreshFcmTokenLoginUseCase)
 }

@@ -2,6 +2,7 @@ package tht.feature.signin.prelogin
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +20,9 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.gone
 import tht.core.ui.extension.showToast
 import tht.core.ui.extension.visible
+import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
+import tht.feature.signin.inquiry.InquiryActivity
 
 class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBinding>() {
 
@@ -27,15 +30,25 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
 
     override val binding by viewBinding(ActivityPreloginBinding::inflate)
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("TAG", "onNewIntent PreloginActivity")
+        setResult(RESULT_OK)
+        finish()
+    }
+
     override fun initViews() = with(binding) {
-        ivKakaoLoginButton.setOnClickListener {
+        btnKakaoLogin.setOnClickListener {
             vm.requestKakaoLogin()
         }
-        ivNumberLoginButton.setOnClickListener {
+        btnPhoneLogin.setOnClickListener {
             vm.requestNumberLogin()
         }
-        ivNaverLoginButton.setOnClickListener {
+        btnNaverLogin.setOnClickListener {
             vm.requestNaverLogin()
+        }
+        tvHelpLogin.setOnClickListener {
+            vm.navigateInquiry()
         }
     }
 
@@ -58,8 +71,12 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                             is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
                             is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
                             is PreloginSideEffect.ShowToast -> showToast(sideEffect.message)
-                            is PreloginSideEffect.NavigateSignUp -> { TODO("회원가입 화면 이동 처리") }
-                            is PreloginSideEffect.NavigatePhoneAuth -> navigatePhoneAuth(sideEffect)
+                            is PreloginSideEffect.NavigateSignUp ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
+                            is PreloginSideEffect.NavigatePhoneAuth ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
+                            is PreloginSideEffect.NavigateInquiry ->
+                                startActivity(InquiryActivity.getIntent(this@PreloginActivity))
                         }
                     }
                 }
@@ -81,7 +98,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
 
                 override fun onSuccess() {
                     NaverIdLoginSDK.getAccessToken()?.let { token ->
-                        vm.requestSignIn(signInType = SignInType.Naver, token)
+                        vm.requestSignIn(signInType = SignInType.NAVER, token)
                     }
                 }
             }
@@ -114,53 +131,45 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         }
     }
 
-    private fun navigatePhoneAuth(sideEffect: PreloginSideEffect.NavigatePhoneAuth) {
-//        startActivity(
-//            PhoneAuthActivity.getIntent(this).apply {
-//                intent.putExtra("token", sideEffect.token)
-//                intent.putExtra("signInType", sideEffect.signInType.name)
-//            }
-//        )
-    }
-
     private fun handleUninitialized() = with(binding) {
-        ivNumberLoginButton.isClickable = true
-        ivKakaoLoginButton.isClickable = true
-        ivGoogleLoginButton.isClickable = true
-        ivNumberLoginButton.isClickable = true
+        btnPhoneLogin.isClickable = true
+        btnKakaoLogin.isClickable = true
+        btnGoogleLogin.isClickable = true
+        btnNaverLogin.isClickable = true
         loadingContainer.gone()
     }
 
     private fun handleLoading() = with(binding) {
-        ivNumberLoginButton.isClickable = false
-        ivKakaoLoginButton.isClickable = false
-        ivGoogleLoginButton.isClickable = false
-        ivNumberLoginButton.isClickable = false
+        btnPhoneLogin.isClickable = false
+        btnKakaoLogin.isClickable = false
+        btnGoogleLogin.isClickable = false
+        btnNaverLogin.isClickable = false
         loadingContainer.visible()
     }
 
     private fun handleSuccess() = with(binding) {
-        ivNumberLoginButton.isClickable = false
-        ivKakaoLoginButton.isClickable = false
-        ivGoogleLoginButton.isClickable = false
-        ivNumberLoginButton.isClickable = false
+        btnPhoneLogin.isClickable = false
+        btnKakaoLogin.isClickable = false
+        btnGoogleLogin.isClickable = false
+        btnNaverLogin.isClickable = false
         loadingContainer.gone()
     }
 
     private fun handleError() = with(binding) {
-        ivNumberLoginButton.isClickable = true
-        ivKakaoLoginButton.isClickable = true
-        ivGoogleLoginButton.isClickable = true
-        ivNumberLoginButton.isClickable = true
+        btnPhoneLogin.isClickable = true
+        btnKakaoLogin.isClickable = true
+        btnGoogleLogin.isClickable = true
+        btnNaverLogin.isClickable = true
         loadingContainer.gone()
     }
 
     companion object {
-
         const val TAG = "PreloginActivity"
 
         fun getIntent(context: Context): Intent {
-            return Intent(context, PreloginActivity::class.java)
+            return Intent(context, PreloginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
         }
     }
 }

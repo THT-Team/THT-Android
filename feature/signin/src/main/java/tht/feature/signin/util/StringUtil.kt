@@ -11,7 +11,8 @@ object StringUtil {
             textView.text.toString(),
             range,
             textView.context.resources.getColor(
-                tht.core.ui.R.color.white_f9fafa, null
+                tht.core.ui.R.color.white_f9fafa,
+                null
             )
         )
     }

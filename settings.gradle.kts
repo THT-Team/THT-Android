@@ -14,6 +14,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url = uri("https://devrepo.kakao.com/nexus/content/groups/public/") }
+        maven { url = uri("https://jitpack.io") }
     }
     versionCatalogs {
         create("libs") {
@@ -35,3 +36,4 @@ include(":feature:signin")
 
 include(":core")
 include(":core:ui")
+include(":core:compose-ui")

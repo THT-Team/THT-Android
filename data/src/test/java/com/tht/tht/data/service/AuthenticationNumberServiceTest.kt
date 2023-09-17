@@ -18,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.io.File
 
-
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
 class AuthenticationNumberServiceTest {
@@ -45,7 +44,8 @@ class AuthenticationNumberServiceTest {
 
     @Test
     fun `인증번호 요청 Response값을 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/authentication/authentication_number.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/authentication/authentication_number.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
@@ -64,7 +64,9 @@ class AuthenticationNumberServiceTest {
 
     @Test
     fun `인증번호 요청을 실패 결과를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/authentication/authentication_number_failure_400.json").readText()
+        val responseJson = File(
+            "src/test/java/com/tht/tht/data/resources/authentication/authentication_number_failure_400.json"
+        ).readText()
         val response = MockResponse()
             .setResponseCode(400)
             .setBody(responseJson)

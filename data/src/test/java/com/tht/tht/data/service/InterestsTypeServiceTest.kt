@@ -44,7 +44,8 @@ class InterestsTypeServiceTest {
 
     @Test
     fun `관심사 정보를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/interests/interests.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/interests/interests.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
@@ -76,7 +77,8 @@ class InterestsTypeServiceTest {
 
     @Test
     fun `관심사 정보를 가져올 수 없다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/interests/interests_failure_404.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/interests/interests_failure_404.json").readText()
         val response = MockResponse()
             .setResponseCode(404)
             .setBody(responseJson)

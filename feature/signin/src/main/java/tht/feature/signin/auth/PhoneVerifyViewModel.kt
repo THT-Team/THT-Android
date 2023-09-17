@@ -2,13 +2,19 @@ package tht.feature.signin.auth
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.tht.tht.domain.signup.usecase.CheckLoginEnableUseCase
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
+import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
@@ -21,6 +27,7 @@ class PhoneVerifyViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val requestPhoneVerifyUseCase: RequestPhoneVerifyUseCase,
+    private val checkLoginEnableUseCase: CheckLoginEnableUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<PhoneVerifyViewModel.VerifyUiState, PhoneVerifyViewModel.VerifySideEffect>() {
 
@@ -28,6 +35,8 @@ class PhoneVerifyViewModel @Inject constructor(
 
     val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
     private val authNum = savedStateHandle.getStateFlow(EXTRA_AUTH_NUM_KEY, "")
+
+    private val signInType: SignInType = savedStateHandle[EXTRA_SIGN_IN_TYPE_KEY] ?: SignInType.NORMAL
 
     private var timerJob: Job? = null
     private val _time = MutableStateFlow(DEFAULT_TIME_MILL)
@@ -89,8 +98,9 @@ class PhoneVerifyViewModel @Inject constructor(
     }
 
     fun verifyInputEvent(input: Char?, idx: Int) {
-        if (idx in 0 until VERIFY_SIZE)
+        if (idx in 0 until VERIFY_SIZE) {
             verify[idx] = input
+        }
 
         StringBuilder().let { sb ->
             verify.forEach { v ->
@@ -109,18 +119,19 @@ class PhoneVerifyViewModel @Inject constructor(
         require(authNum.value.isNotBlank())
         viewModelScope.launch {
             _dataLoading.value = true
-            requestPhoneVerifyUseCase(authNum.value, phone.value, verify)
+            requestPhoneVerifyUseCase(authNum.value, phone.value, verify, signInType)
                 .onSuccess {
                     when (it) {
                         true -> {
                             stopTimer()
-                            _sideEffectFlow.emit(VerifySideEffect.NavigateNextView(phone.value))
+                            checkSignupState(phone.value)
                         }
                         false -> setUiState(
                             VerifyUiState.ErrorViewShow(stringProvider.getString(StringProvider.ResId.VerifyFail))
                         )
                     }
                 }.onFailure {
+                    it.printStackTrace()
                     setUiState(
                         VerifyUiState.ErrorViewShow(
                             stringProvider.getString(StringProvider.ResId.VerifyFail) + "\n$it"
@@ -130,6 +141,23 @@ class PhoneVerifyViewModel @Inject constructor(
                     _dataLoading.value = false
                 }
         }
+    }
+
+    private suspend fun checkSignupState(phone: String) {
+        checkLoginEnableUseCase(phone)
+            .onSuccess {
+                when (it) {
+                    true -> _sideEffectFlow.emit(VerifySideEffect.NavigateMainView)
+                    else -> _sideEffectFlow.emit(VerifySideEffect.NavigateNextView(phone))
+                }
+            }.onFailure {
+                it.printStackTrace()
+                setUiState(
+                    VerifyUiState.ErrorViewShow(
+                        stringProvider.getString(StringProvider.ResId.VerifyFail) + "\n$it"
+                    )
+                )
+            }
     }
 
     fun resendAuth() {
@@ -143,9 +171,10 @@ class PhoneVerifyViewModel @Inject constructor(
                     savedStateHandle[EXTRA_AUTH_NUM_KEY] = it
                     startTimer()
                 }.onFailure {
+                    it.printStackTrace()
                     _sideEffectFlow.emit(
                         VerifySideEffect.FinishView(
-                            (stringProvider.getString(StringProvider.ResId.SendAuthFail) + it.message)
+                            (stringProvider.getString(StringProvider.ResId.CheckSignupStateFail) + it.message)
                         )
                     )
                 }.also {
@@ -166,11 +195,14 @@ class PhoneVerifyViewModel @Inject constructor(
         data class FinishView(val message: String?) : VerifySideEffect()
         data class KeyboardVisible(val visible: Boolean) : VerifySideEffect()
         data class NavigateNextView(val phone: String) : VerifySideEffect()
+        object NavigateMainView : VerifySideEffect()
     }
     companion object {
         const val EXTRA_PHONE_KEY = "extra_phone_key"
 
         const val EXTRA_AUTH_NUM_KEY = "extra_auth_num_key"
+
+        const val EXTRA_SIGN_IN_TYPE_KEY = "extra_login_type_key"
 
         private const val VERIFY_SIZE = 6
 

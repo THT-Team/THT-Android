@@ -32,4 +32,41 @@
         <item name="android:textColor">@color/yellow_f9cc2e</item>
         <item name="android:fontWeight">700</item>
     </style>
+
+    <style name="InquiryTextInputLayoutStyle" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/gray_8d8d8d</item>  // unFocus 상태일때 밑줄 색.
+        <item name="colorControlActivated">@color/yellow_f9cc2e</item>
+        <item name="colorControlHighlight">@color/yellow_f9cc2e</item>
+        <item name="android:textCursorDrawable">@color/yellow_f9cc2e</item>  // cursor 색
+        <item name="hintEnabled">false</item>
+        <item name="errorEnabled">false</item>
+    </style>
+
+    <style name="InquiryEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColorHint">@color/brown_26241f</item>
+        <item name="android:textColor">@color/white_f9fafa</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="PreferredGenderButtonStyle" parent="H4SemiBoldBlackTextStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_preferred_gender</item>
+    </style>
+
+    <style name="GenderButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/selector_btn_gender</item>
+        <item name="android:textAppearance">@style/RadioButtonTextAppearance</item>
+    </style>
+
+    <style name="RadioButtonTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">19sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textColor">@color/black_111111</item>
+    </style>
+
+
 </resources>

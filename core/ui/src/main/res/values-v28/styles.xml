@@ -14,6 +14,10 @@
     <style name="H1BoldGrayTextStyle" parent="H1BoldTextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
+
+    <style name="H1BoldDisabledTextStyle" parent="H1BoldTextStyle">
+        <item name="android:textColor">@color/brown_26241f</item>
+    </style>
     <!--H1Bold-->
 
     <!--H2Bold-->
@@ -38,6 +42,10 @@
     <style name="H4SemiBoldTextStyle">
         <item name="android:textSize">19sp</item>
         <item name="android:textFontWeight">600</item>
+    </style>
+
+    <style name="H4SemiBoldYellowTextStyle" parent="H4SemiBoldTextStyle">
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
     </style>
 
     <style name="H4SemiBoldBlackTextStyle" parent="H4SemiBoldTextStyle">
@@ -319,15 +327,42 @@
     </style>
     <!--Ex1-->
 
+    <!--Pretendard 17-->
+    <style name="Pretendard17_500TextStyle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    <!--Pretendard 17-->
+
     <!--Pretendard 14-->
-    <style name="Pretendard14TextStyle">
+    <style name="Pretendard14_400TextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="Pretendard14_400YellowTextStyle" parent="Pretendard14_700TextStyle">
+        <item name="android:textColor">@color/yellow_f9cc2e</item>
+    </style>
+
+    <style name="Pretendard14_700TextStyle">
         <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">700</item>
     </style>
 
-    <style name="Pretendard14GrayTextStyle" parent="Pretendard14TextStyle">
+    <style name="Pretendard14_700GrayTextStyle" parent="Pretendard14_700TextStyle">
         <item name="android:textColor">@color/gray_666666</item>
     </style>
     <!--Pretendard 14-->
+
+    <!--Pretendard 13-->
+    <style name="Pretendard13_500TextStyle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="Pretendard13_500GrayTextStyle" parent="Pretendard13_500TextStyle">
+        <item name="android:textColor">@color/gray_8d8d8d</item>
+    </style>
+    <!--Pretendard 13-->
 
 </resources>

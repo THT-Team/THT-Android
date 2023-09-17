@@ -3,9 +3,14 @@ package tht.feature.signin.signup.nickname
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.CheckNicknameDuplicateUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
-import com.tht.tht.domain.signup.usecase.PatchSignupNickNameUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
@@ -17,7 +22,7 @@ import javax.inject.Inject
 class NicknameViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
-    private val patchSignupNickNameUseCase: PatchSignupNickNameUseCase,
+    private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<NicknameViewModel.NicknameUiState, NicknameViewModel.NicknameSideEffect>() {
 
@@ -38,28 +43,31 @@ class NicknameViewModel @Inject constructor(
         _inputValue.debounce(500L)
             .filter { it.isNotBlank() && it != validInputValue.value }
             .onEach {
-                _dataLoading.value = true
-                checkNicknameDuplicateUseCase(it)
-                    .onSuccess { isDuplicate ->
-                        if (!isDuplicate) {
-                            _uiStateFlow.value = NicknameUiState.ValidInput
-                            validInputValue.value = it
-                        } else {
-                            _uiStateFlow.value = NicknameUiState.InvalidInput(
-                                stringProvider.getString(
-                                    StringProvider.ResId.DuplicateNickname
-                                )
-                            )
-                        }
-                    }.onFailure {
-                        _uiStateFlow.value = NicknameUiState.InvalidInput(
-                            stringProvider.getString(
-                                StringProvider.ResId.DuplicateCheckFail
-                            )
-                        )
-                    }.also { _ ->
-                        _dataLoading.value = false
-                    }
+                // 09.23 닉네임 중복 체크 기능 비활성화
+                _uiStateFlow.value = NicknameUiState.ValidInput
+                validInputValue.value = it
+//                _dataLoading.value = true
+//                checkNicknameDuplicateUseCase(it)
+//                    .onSuccess { isDuplicate ->
+//                        if (!isDuplicate) {
+//                            _uiStateFlow.value = NicknameUiState.ValidInput
+//                            validInputValue.value = it
+//                        } else {
+//                            _uiStateFlow.value = NicknameUiState.InvalidInput(
+//                                stringProvider.getString(
+//                                    StringProvider.ResId.DuplicateNickname
+//                                )
+//                            )
+//                        }
+//                    }.onFailure {
+//                        _uiStateFlow.value = NicknameUiState.InvalidInput(
+//                            stringProvider.getString(
+//                                StringProvider.ResId.DuplicateCheckFail
+//                            )
+//                        )
+//                    }.also { _ ->
+//                        _dataLoading.value = false
+//                    }
             }.launchIn(viewModelScope)
 
         _inputValue.filter { it.isNotBlank() }
@@ -132,18 +140,19 @@ class NicknameViewModel @Inject constructor(
         postSideEffect(NicknameSideEffect.KeyboardVisible(false))
         viewModelScope.launch {
             _dataLoading.value = true
-            patchSignupNickNameUseCase(phone, text)
-                .onSuccess {
-                    _sideEffectFlow.emit(NicknameSideEffect.NavigateNextView)
-                }.onFailure {
-                    _sideEffectFlow.emit(
-                        NicknameSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.SendAuthFail)
-                        )
+            patchSignupDataUseCase(phone) {
+                it.copy(nickname = text)
+            }.onSuccess {
+                _sideEffectFlow.emit(NicknameSideEffect.NavigateNextView)
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    NicknameSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.SendAuthFail)
                     )
-                }.also {
-                    _dataLoading.value = false
-                }
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 

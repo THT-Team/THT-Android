@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.google.gson.Gson
-import com.tht.tht.data.local.dao.SignupUserDaoImpl
-import com.tht.tht.data.local.datasource.SignupUserDataSource
-import com.tht.tht.data.local.datasource.SignupUserDataSourceImpl
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.domain.signup.model.SignupUserModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +15,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
-
 @ExperimentalCoroutinesApi
 internal class SignupUserDaoImplTest {
     private lateinit var dao: SignupUserDaoImpl
@@ -26,7 +22,8 @@ internal class SignupUserDaoImplTest {
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
     private lateinit var context: Context
 
-    private val savedUser = SignupUserModel.getFromDefaultArgument().copy(phone = "savedUser").toEntity()
+    private val savedUser =
+        SignupUserModel.getFromDefaultArgument().copy(phone = "savedUser").toEntity()
 
     @Before
     fun setup() {
@@ -87,7 +84,4 @@ internal class SignupUserDaoImplTest {
         assertThat(actual)
             .isFalse
     }
-
-
 }
-

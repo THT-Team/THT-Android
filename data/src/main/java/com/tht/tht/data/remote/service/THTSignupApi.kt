@@ -1,16 +1,18 @@
 package com.tht.tht.data.remote.service
 
 import com.tht.tht.data.constant.THTApiConstant
+import com.tht.tht.data.remote.request.signup.SignupRequest
 import com.tht.tht.data.remote.response.authenticationnumber.AuthenticationNumberResponse
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.ideal.IdealTypeResponse
 import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
+import com.tht.tht.data.remote.response.signup.SignupCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
-import com.tht.tht.domain.signup.model.SignupUserModel
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface THTSignupApi {
 
@@ -30,8 +32,13 @@ interface THTSignupApi {
     @GET(THTApiConstant.Signup.INTERESTS)
     suspend fun fetchInterestsType(): ThtResponse<List<InterestTypeResponse>>
 
-    @GET(THTApiConstant.Signup.SIGNUP)
+    @POST(THTApiConstant.Signup.SIGNUP)
     suspend fun requestSignup(
-        @Query("user")user: SignupUserModel
+        @Body body: SignupRequest
     ): ThtResponse<SignupResponse>
+
+    @GET("${THTApiConstant.Signup.SIGNUP_CHECK}/{phone-number}")
+    suspend fun checkSignupState(
+        @Path("phone-number")phone: String
+    ): ThtResponse<SignupCheckResponse>
 }

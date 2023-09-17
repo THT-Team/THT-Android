@@ -1,0 +1,41 @@
+{
+    "StanReginCd": [
+        {
+            "head": [
+                {
+                    "totalCount": 1
+                },
+                {
+                    "numOfRows": "1",
+                    "pageNo": "1",
+                    "type": "JSON"
+                },
+                {
+                    "RESULT": {
+                        "resultCode": "INFO-0",
+                        "resultMsg": "NOMAL SERVICE"
+                    }
+                }
+            ]
+        },
+        {
+            "row": [
+                {
+                    "region_cd": "4113300000",
+                    "sido_cd": "41",
+                    "sgg_cd": "133",
+                    "umd_cd": "000",
+                    "ri_cd": "00",
+                    "locatjumin_cd": "4113300000",
+                    "locatjijuk_cd": "4113300000",
+                    "locatadd_nm": "경기도 성남시 중원구",
+                    "locat_order": 7,
+                    "locat_rm": "",
+                    "locathigh_cd": "4100000000",
+                    "locallow_nm": "중원구",
+                    "adpt_de": ""
+                }
+            ]
+        }
+    ]
+}
