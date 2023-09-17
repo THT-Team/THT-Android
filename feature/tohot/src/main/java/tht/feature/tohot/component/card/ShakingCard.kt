@@ -22,19 +22,19 @@ fun ShakingCard(
     modifier: Modifier = Modifier,
     shakingOn: Boolean,
     duration: Int = 1000,
+    shakingAngle: Float = 0.5f, // 0f ~ 360f
     content: @Composable BoxScope.() -> Unit = { }
 ) {
-    val shakingValue = 0.5f
     val infiniteTransition = rememberInfiniteTransition(label = "shaking_animation_transition")
 
     val shakingAnimation by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = shakingValue,
+        targetValue = shakingAngle,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = duration
-                shakingValue at duration / 3 with LinearEasing
-                -shakingValue at (duration / 3) * 2 with LinearEasing
+                shakingAngle at duration / 3 with LinearEasing
+                -shakingAngle at (duration / 3) * 2 with LinearEasing
                 0.0f at duration with LinearEasing
             },
             repeatMode = RepeatMode.Restart
