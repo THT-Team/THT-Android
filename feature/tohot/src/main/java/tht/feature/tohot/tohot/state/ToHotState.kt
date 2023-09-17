@@ -19,7 +19,8 @@ data class ToHotState(
     val reportMenuDialogShow: Boolean = false,
     val reportDialogShow: Boolean = false,
     val blockDialogShow: Boolean = false,
-    val holdCard: Boolean = false,
+    val holdCard: Boolean = false, // 일시정지 카드
+    val shakingCard: Boolean = false, // 흔들다리 효과 애니메이션. 3초에 시작
     val reportReason: List<String> = listOf(
         "불쾌한 사진",
         "허위 프로필",
