@@ -11,7 +11,7 @@ import tht.feature.tohot.model.TopicUiModel
 data class ToHotState(
     val loading: ToHotLoading,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
-    val userCardState: ToHotCardState, // Empty 일 경우 보여줄 View 를 정함
+    val userCardState: ToHotCardState = ToHotCardState.NoneSelectTopic, // Start, Empty 경우 보여줄 View 를 정함
     val timers: ImmutableListWrapper<CardTimerUiModel>,
     val enableTimerIdx: Int, // 현재 표시 되는 Card Idx -> 해당 Card 의 Timer 진행됨
     val fallingAnimationIdx: Int = -1, // 신고, 차단 Animation Idx
@@ -49,7 +49,11 @@ enum class ToHotLoading {
 }
 
 enum class ToHotCardState {
-    Initialize,
-    Running,
+    NoneSelectTopic, // Topic 선택 이전
+    Enter, // Topic 선택 후 앱 접속
+    NoneInitializeUser, // Topic 선택 후, 유저가 없는 경우
+    NoneNextUser, // 페이징 중 다음 유저 없는 경우
+    QuerySuccess, // 새로운 유저 조회 성공
+    Running, // 정상 동작
     Error
 }

@@ -1,6 +1,5 @@
 package com.example.compose_ui.extensions
 
-import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -35,7 +34,6 @@ fun Modifier.onDoubleTab(
         pointerInteropFilter {
             when (it.action) {
                 MotionEvent.ACTION_UP -> {
-                    Log.d("TAG", "onDoubleTab ACTION_UP")
                     System.currentTimeMillis().let { now ->
                         doubleTabTouchTimeMill = if (doubleTabTouchTimeMill != 0L && now - doubleTabTouchTimeMill <= doubleIntervalMill) {
                             onDoubleTab()

@@ -54,7 +54,6 @@ class ToHotViewModel @Inject constructor(
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     private val initializeState get() = ToHotState(
         userList = ImmutableListWrapper(emptyList()),
-        userCardState = ToHotCardState.Initialize,
         timers = ImmutableListWrapper(emptyList()),
         enableTimerIdx = 0,
         cardMoveAllow = true,
@@ -84,10 +83,12 @@ class ToHotViewModel @Inject constructor(
         get() = store.state.value.userList.list.indices
 
     init {
-        fetchToHotState()
+        fetchToHotState(autoRunToHot = false)
     }
 
-    private fun fetchToHotState() {
+    private fun fetchToHotState(
+        autoRunToHot: Boolean
+    ) {
         intent {
             reduce { it.copy(loading = ToHotLoading.TopicList) }
             fetchToHotStateUseCase(
@@ -95,21 +96,28 @@ class ToHotViewModel @Inject constructor(
                 size = CARD_SIZE
             ).onSuccess { toHotState ->
                 reduce {
+                    val newList = toHotState.cards.map { c -> c.toUiModel() }
+                    val cardState = if (toHotState.needSelectTopic) {
+                        ToHotCardState.NoneSelectTopic
+                    } else if (newList.isEmpty()) {
+                        ToHotCardState.NoneInitializeUser
+                    } else if (autoRunToHot) {
+                        ToHotCardState.Running
+                    } else {
+                        ToHotCardState.Enter
+                    }
                     it.copy(
-                        userList = ImmutableListWrapper(
-                            store.state.value.userList.list + toHotState.cards.map { c -> c.toUiModel() }
-                        ),
-                        userCardState = ToHotCardState.Initialize,
+                        userList = ImmutableListWrapper(newList),
+                        userCardState = cardState,
                         timers = ImmutableListWrapper(
-                            store.state.value.timers.list +
-                                List(toHotState.cards.size) {
-                                    CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC.toInt(),
-                                        currentSec = MAX_TIMER_SEC,
-                                        destinationSec = MAX_TIMER_SEC,
-                                        startAble = false
-                                    )
-                                }
+                            List(toHotState.cards.size) {
+                                CardTimerUiModel(
+                                    maxSec = MAX_TIMER_SEC.toInt(),
+                                    currentSec = MAX_TIMER_SEC,
+                                    destinationSec = MAX_TIMER_SEC,
+                                    startAble = false
+                                )
+                            }
                         ),
                         enableTimerIdx = 0,
                         topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
@@ -236,26 +244,97 @@ class ToHotViewModel @Inject constructor(
                         ToHotSideEffect.Scroll(currentIdx + 1, animate)
                     )
                 }
-                else -> removeAllCard()
+                else -> {
+                    intent {
+                        reduce {
+                            it.copy(
+                                userList = ImmutableListWrapper(emptyList()),
+                                timers = ImmutableListWrapper(emptyList()),
+                                userCardState = ToHotCardState.NoneNextUser,
+                                enableTimerIdx = 0
+                            )
+                        }
+                    }
+                }
             }
         }
     }
 
-    fun refreshEvent() {
+    fun enterEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    userCardState = ToHotCardState.Running
+                )
+            }
+        }
+    }
+
+    /**
+     * 20초동안 10초 간격 으로 2번 조회 시도
+     */
+    fun queryUserListEvent() {
         if (store.state.value.loading != ToHotLoading.None) return
-        viewModelScope.launch {
-            intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
-            fetchUserCard(
-                lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
-            )
-            intent { reduce { it.copy(loading = ToHotLoading.None) } }
+        val prevUserSize = store.state.value.userList.list.size
+        var queryCount = 0
+        intent {
+            reduce { it.copy(loading = ToHotLoading.UserList) }
+            while (true) {
+                queryUserCard()
+                if (store.state.value.userList.list.size != prevUserSize) {
+                    reduce { it.copy(userCardState = ToHotCardState.QuerySuccess) }
+                    break
+                }
+                if (++queryCount >= QUERY_USER_COUNT) {
+                    break
+                }
+                delay(QUERY_USER_SUSPEND_TIME_MILL)
+            }
+            reduce { it.copy(loading = ToHotLoading.None) }
+        }
+    }
+
+    /**
+     * 대기 하며 유저 조회
+     */
+    private suspend fun queryUserCard() {
+        val lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
+        fetchDailyUserCardUseCase(
+            passedUserIdList = passedUserCardStack.map { it.id }.toList(),
+            lastUserDailyFallingCourserIdx = lastUserIdx,
+            size = CARD_SIZE
+        ).onSuccess { dailyUserCardList ->
+            intent {
+                reduce {
+                    it.copy(
+                        userList = ImmutableListWrapper(
+                            store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                        ),
+                        timers = ImmutableListWrapper(
+                            store.state.value.timers.list +
+                                List(dailyUserCardList.cards.size) {
+                                    CardTimerUiModel(
+                                        maxSec = MAX_TIMER_SEC.toInt(),
+                                        currentSec = MAX_TIMER_SEC,
+                                        destinationSec = MAX_TIMER_SEC,
+                                        startAble = false
+                                    )
+                                }
+                        ),
+                        topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
+                        topicResetTimeMill = dailyUserCardList.topicResetTimeMill
+                    )
+                }
+            }
+        }.onFailure { e ->
+            e.printStackTrace()
         }
     }
 
     /**
      * 페이징 - 마지막 Index Card 에서 페이징 요청
      */
-    private suspend fun fetchUserCard(lastUserIdx: Int? = null) {
+    private suspend fun fetchNextUserCard(lastUserIdx: Int? = null) {
         pagingLoading = lastUserIdx != null
         if (!pagingLoading) intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
         fetchDailyUserCardUseCase(
@@ -348,7 +427,7 @@ class ToHotViewModel @Inject constructor(
                                     loading = ToHotLoading.None
                                 )
                             }
-                            fetchToHotState()
+                            fetchToHotState(autoRunToHot = true)
                         }
                         else -> postSideEffect(
                             ToHotSideEffect.ToastMessage(
@@ -386,7 +465,7 @@ class ToHotViewModel @Inject constructor(
                 passedCardCountBetweenTouch++
                 if (userIdx == currentUserListRange.last) {
                     viewModelScope.launch {
-                        fetchUserCard(lastUserIdx = passUser.idx)
+                        fetchNextUserCard(lastUserIdx = passUser.idx)
                     }
                 }
             }
@@ -722,18 +801,6 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    private fun removeAllCard() {
-        intent {
-            reduce {
-                it.copy(
-                    userList = ImmutableListWrapper(emptyList()),
-                    timers = ImmutableListWrapper(emptyList()),
-                    enableTimerIdx = 0
-                )
-            }
-        }
-    }
-
     fun removeUserCard(userIdx: Int) = with(store.state.value) {
         if (userIdx !in userList.list.indices) return
         intent {
@@ -796,5 +863,9 @@ class ToHotViewModel @Inject constructor(
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 
         private const val CARD_SIZE = 5
+
+        private const val QUERY_USER_SUSPEND_TIME_MILL = 5000L
+
+        private const val QUERY_USER_COUNT = 2
     }
 }

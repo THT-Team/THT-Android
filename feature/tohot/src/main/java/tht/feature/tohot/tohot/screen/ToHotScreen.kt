@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tht.feature.tohot.component.card.ToHotCard
-import tht.feature.tohot.component.card.ToHotEmptyCard
 import tht.feature.tohot.component.card.ToHotEnterCard
+import tht.feature.tohot.component.card.ToHotNoneNextUserCard
+import tht.feature.tohot.component.card.ToHotNoneInitialUserCard
 import tht.feature.tohot.component.card.ToHotErrorCard
+import tht.feature.tohot.component.card.ToHotQuerySuccessCard
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.mockUserList
@@ -51,6 +53,7 @@ internal fun ToHotScreen(
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
+    onEnterClick: () -> Unit = { },
     onRefreshClick: () -> Unit = { },
     onHoldDoubleTab: () -> Unit = { },
     loadFinishListener: (Int, Boolean, Throwable?) -> Unit = { _, _, _ -> }
@@ -69,16 +72,15 @@ internal fun ToHotScreen(
             )
         }
 
-        when (cardList.list.isEmpty()) {
-            true -> {
-                when (toHotCardState) {
-                    ToHotCardState.Initialize -> ToHotEnterCard(onClick = onRefreshClick)
-                    ToHotCardState.Running -> ToHotEmptyCard(onClick = onRefreshClick)
-                    ToHotCardState.Error -> ToHotErrorCard(onClick = onRefreshClick)
-                }
-            }
+        when (toHotCardState) {
+            ToHotCardState.NoneSelectTopic -> ToHotEnterCard()
+            ToHotCardState.Enter -> ToHotEnterCard(onClick = onEnterClick)
+            ToHotCardState.NoneInitializeUser -> ToHotNoneInitialUserCard(onClick = onRefreshClick)
+            ToHotCardState.NoneNextUser -> ToHotNoneNextUserCard(onClick = onRefreshClick)
+            ToHotCardState.QuerySuccess -> ToHotQuerySuccessCard(onClick = onEnterClick)
+            ToHotCardState.Error -> ToHotErrorCard(onClick = onRefreshClick)
 
-            else -> {
+            ToHotCardState.Running -> {
                 VerticalPager(
                     userScrollEnabled = false,
                     pageCount = cardList.list.size,
@@ -130,7 +132,7 @@ internal fun ToHotScreen(
 fun ToHotScreenPreview() {
     val toHotState = ToHotState(
         userList = ImmutableListWrapper(mockUserList.toList()),
-        userCardState = ToHotCardState.Initialize,
+        userCardState = ToHotCardState.Running,
         timers = ImmutableListWrapper(
             Array(mockUserList.size) {
                 CardTimerUiModel(
