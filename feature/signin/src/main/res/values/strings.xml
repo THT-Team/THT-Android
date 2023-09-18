@@ -122,4 +122,6 @@
     <string name="message_complete_back"><u>돌아가기</u></string>
     <string name="inquiry_complete_dialog">InquiryCompleteDialog</string>
 
+    <string name="signup_user_invalidate">회원가입 정보가 존재하지 않습니다</string>
+
 </resources>

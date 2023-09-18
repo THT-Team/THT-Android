@@ -41,6 +41,7 @@ interface StringProvider {
         RegionCodeFetchFail,
         SignupFail,
         InvalidDate,
-        EmailSendFail
+        EmailSendFail,
+        SignupUserInvalidate
     }
 }
