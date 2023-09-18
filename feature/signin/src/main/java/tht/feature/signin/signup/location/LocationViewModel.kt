@@ -93,16 +93,6 @@ class LocationViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         viewModelScope.launch {
-            fullLocation.value.run {
-                if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
-                    _sideEffectFlow.emit(
-                        LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
-                        )
-                    )
-                    return@launch
-                }
-            }
             _dataLoading.value = true
             patchLocationUseCase(
                 phone,
