@@ -103,25 +103,21 @@ class LocationViewModel @Inject constructor(
                 _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
             }.onFailure {
                 _sideEffectFlow.emit(
-                    when (it) {
-                        is SignupException.InvalidateLocationInfo -> {
-                            LocationSideEffect.ShowToast(
+                    LocationSideEffect.ShowToast(
+                        when (it) {
+                            is SignupException.InvalidateLocationInfo -> {
                                 stringProvider.getString(StringProvider.ResId.InvalidateLocation)
-                            )
-                        }
+                            }
 
-                        is SignupException.SignupUserInvalidateException -> {
-                            LocationSideEffect.ShowToast(
+                            is SignupException.SignupUserInvalidateException -> {
                                 stringProvider.getString(StringProvider.ResId.SignupUserInvalidate) + " $it"
-                            )
-                        }
+                            }
 
-                        else -> {
-                            LocationSideEffect.ShowToast(
+                            else -> {
                                 stringProvider.getString(StringProvider.ResId.LocationPatchFail) + " $it"
-                            )
+                            }
                         }
-                    }
+                    )
                 )
             }
             _dataLoading.value = false
