@@ -18,6 +18,9 @@ class PatchLocationUseCase(
         address: String
     ): Result<Boolean> {
         return kotlin.runCatching {
+            if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
+                throw SignupException.InvalidateLocationInfo()
+            }
             withContext(dispatcher) {
                 val regionCode = fetchRegionCodeUseCase(address).getOrThrow().regionCode
                 repository.patchSignupUser(

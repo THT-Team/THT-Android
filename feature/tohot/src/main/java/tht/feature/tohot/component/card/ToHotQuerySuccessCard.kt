@@ -8,22 +8,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import tht.feature.tohot.R
 
 @Composable
-fun ToHotEmptyCard(
+fun ToHotQuerySuccessCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = { }
 ) {
     ToHotNotifyCard(
         modifier = modifier,
-        image = painterResource(id = R.drawable.ic_mudy_empty),
-        title = stringResource(id = R.string.to_hot_empty_card_title),
-        description = stringResource(id = R.string.to_hot_empty_card_description),
-        buttonText = stringResource(id = R.string.waiting),
+        image = painterResource(id = R.drawable.ic_mudy_query_success),
+        title = stringResource(id = R.string.to_hot_query_success_card_title),
+        description = stringResource(id = R.string.to_hot_query_success_card_description),
+        buttonText = stringResource(id = R.string.starting),
         onClick = onClick
     )
 }
 
 @Composable
 @Preview
-private fun ToHotEmptyCardPreview() {
-    ToHotEmptyCard()
+private fun ToHotQuerySuccessCardPreview() {
+    ToHotQuerySuccessCard()
 }

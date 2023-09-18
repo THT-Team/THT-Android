@@ -2,6 +2,7 @@ package tht.feature.signin.signup.location
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
+import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
 import com.tht.tht.domain.signup.usecase.PatchLocationUseCase
@@ -92,16 +93,6 @@ class LocationViewModel @Inject constructor(
 
     fun nextEvent(phone: String) {
         viewModelScope.launch {
-            fullLocation.value.run {
-                if (lat < 0.0 || lng < 0.0 || address.isBlank()) {
-                    _sideEffectFlow.emit(
-                        LocationSideEffect.ShowToast(
-                            stringProvider.getString(StringProvider.ResId.InvalidateLocation)
-                        )
-                    )
-                    return@launch
-                }
-            }
             _dataLoading.value = true
             patchLocationUseCase(
                 phone,
@@ -113,12 +104,23 @@ class LocationViewModel @Inject constructor(
             }.onFailure {
                 _sideEffectFlow.emit(
                     LocationSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.LocationPatchFail)
+                        when (it) {
+                            is SignupException.InvalidateLocationInfo -> {
+                                stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            }
+
+                            is SignupException.SignupUserInvalidateException -> {
+                                stringProvider.getString(StringProvider.ResId.SignupUserInvalidate) + " $it"
+                            }
+
+                            else -> {
+                                stringProvider.getString(StringProvider.ResId.LocationPatchFail) + " $it"
+                            }
+                        }
                     )
                 )
-            }.also {
-                _dataLoading.value = false
             }
+            _dataLoading.value = false
         }
     }
 

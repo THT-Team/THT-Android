@@ -37,7 +37,7 @@ internal class PatchLocationUseCaseImpl {
 
     @Test
     fun `useCase는 FetchRegionCodeUseCase의 invoke()를 호출한다`() = runTest(testDispatcher) {
-        patchLocationUseCase("phone", 0.0, 0.0, "")
+        patchLocationUseCase("phone", 10.0, 127.0, "address")
         coVerify(exactly = 1) { fetchRegionCodeUseCase(any()) }
     }
 
@@ -46,7 +46,7 @@ internal class PatchLocationUseCaseImpl {
         val unitTestException = Exception("unit test")
         coEvery { fetchRegionCodeUseCase(any()) } throws unitTestException
 
-        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+        val actual = patchLocationUseCase("phone", 10.0, 127.0, "address")
 
         Assertions.assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -57,8 +57,20 @@ internal class PatchLocationUseCaseImpl {
     }
 
     @Test
+    fun `useCase는 lat, lng, address가 유효하지 않으면 InvalidateLocationInfo를 Result로 래핑해 리턴한다`() = runTest(testDispatcher) {
+        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+
+        Assertions.assertThat(actual)
+            .isInstanceOf(Result::class.java)
+
+        Assertions.assertThat(actual.exceptionOrNull())
+            .isNotNull
+            .isInstanceOf(SignupException.InvalidateLocationInfo::class.java)
+    }
+
+    @Test
     fun `useCase는 repository의 fetchSignupUser를 호출한다`() = runTest(testDispatcher) {
-        patchLocationUseCase("phone", 0.0, 0.0, "")
+        patchLocationUseCase("phone", 10.0, 127.0, "address")
         coEvery { fetchRegionCodeUseCase(any()) } returns kotlin.runCatching { RegionCodeModel("0") }
         coVerify(exactly = 1) { fetchRegionCodeUseCase(any()) }
     }
@@ -69,7 +81,7 @@ internal class PatchLocationUseCaseImpl {
         coEvery { fetchRegionCodeUseCase(any()) } returns kotlin.runCatching { RegionCodeModel("0") }
         coEvery { repository.fetchSignupUser(any()) } throws unitTestException
 
-        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+        val actual = patchLocationUseCase("phone", 10.0, 127.0, "address")
 
         Assertions.assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -86,7 +98,7 @@ internal class PatchLocationUseCaseImpl {
         }
         coEvery { repository.fetchSignupUser(any()) } returns null
 
-        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+        val actual = patchLocationUseCase("phone", 10.0, 127.0, "address")
 
         Assertions.assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -100,7 +112,7 @@ internal class PatchLocationUseCaseImpl {
     fun `useCase는 fetchSignupUser리턴 값이 유효하면 patchSignupUser를 호출한다`() = runTest(testDispatcher) {
         coEvery { fetchRegionCodeUseCase(any()) } returns kotlin.runCatching { RegionCodeModel("0") }
         coEvery { repository.fetchSignupUser(any()) } returns SignupUserModel.getFromDefaultArgument()
-        patchLocationUseCase("phone", 0.0, 0.0, "")
+        patchLocationUseCase("phone", 10.0, 127.0, "address")
         coVerify { repository.patchSignupUser(any(), any()) }
     }
 
@@ -110,7 +122,7 @@ internal class PatchLocationUseCaseImpl {
         coEvery { repository.patchSignupUser(any(), any()) } throws unitTestException
         coEvery { repository.fetchSignupUser(any()) } returns SignupUserModel.getFromDefaultArgument()
         coEvery { fetchRegionCodeUseCase(any()) } returns kotlin.runCatching { RegionCodeModel("0") }
-        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+        val actual = patchLocationUseCase("phone", 10.0, 127.0, "address")
 
         Assertions.assertThat(actual)
             .isInstanceOf(Result::class.java)
@@ -126,7 +138,7 @@ internal class PatchLocationUseCaseImpl {
         coEvery { repository.patchSignupUser(any(), any()) } returns expect
         coEvery { repository.fetchSignupUser(any()) } returns SignupUserModel.getFromDefaultArgument()
         coEvery { fetchRegionCodeUseCase(any()) } returns kotlin.runCatching { RegionCodeModel("0") }
-        val actual = patchLocationUseCase("phone", 0.0, 0.0, "")
+        val actual = patchLocationUseCase("phone", 10.0, 127.0, "address")
 
         Assertions.assertThat(actual)
             .isInstanceOf(Result::class.java)
