@@ -2,6 +2,7 @@ package tht.feature.signin.signup.location
 
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.model.LocationModel
+import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
 import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
 import com.tht.tht.domain.signup.usecase.PatchLocationUseCase
@@ -112,13 +113,28 @@ class LocationViewModel @Inject constructor(
                 _sideEffectFlow.emit(LocationSideEffect.NavigateNextView)
             }.onFailure {
                 _sideEffectFlow.emit(
-                    LocationSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.LocationPatchFail)
-                    )
+                    when (it) {
+                        is SignupException.InvalidateLocationInfo -> {
+                            LocationSideEffect.ShowToast(
+                                stringProvider.getString(StringProvider.ResId.InvalidateLocation)
+                            )
+                        }
+
+                        is SignupException.SignupUserInvalidateException -> {
+                            LocationSideEffect.ShowToast(
+                                stringProvider.getString(StringProvider.ResId.SignupUserInvalidate) + " $it"
+                            )
+                        }
+
+                        else -> {
+                            LocationSideEffect.ShowToast(
+                                stringProvider.getString(StringProvider.ResId.LocationPatchFail) + " $it"
+                            )
+                        }
+                    }
                 )
-            }.also {
-                _dataLoading.value = false
             }
+            _dataLoading.value = false
         }
     }
 
