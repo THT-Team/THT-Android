@@ -2,7 +2,7 @@ name: Android CD
 
 on:
     push:
-      branches: [main, qa, fix/TOP-83_patch_location_fail]
+      branches: [main, qa]
 
 jobs:
 
