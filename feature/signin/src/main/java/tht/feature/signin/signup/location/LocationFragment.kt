@@ -82,9 +82,11 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                             locationPermissionGrantEvent.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
                         LocationViewModel.LocationSideEffect.ShowLocationDialog -> {
-                            findNavController().navigate(
-                                LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment()
-                            )
+                            if (findNavController().currentDestination?.id == tht.feature.signin.R.id.locationFragment) {
+                                findNavController().navigate(
+                                    LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment()
+                                )
+                            }
                         }
                         LocationViewModel.LocationSideEffect.NavigateNextView -> {
                             rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION)
