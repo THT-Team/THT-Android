@@ -488,7 +488,8 @@ class ToHotViewModel @Inject constructor(
                     reportMenuDialogShow = false,
                     reportDialogShow = false,
                     blockDialogShow = false,
-                    holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH
+                    holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH,
+                    shakingCard = false
                 )
             }
         }
@@ -535,7 +536,8 @@ class ToHotViewModel @Inject constructor(
                                 destinationSec = this[userIdx].destinationSec - TIMER_INTERVAL
                             )
                         }
-                    )
+                    ),
+                    shakingCard = tic <= SHAKING_ANIMATION_START_TIC
                 )
             }
         }
@@ -561,7 +563,8 @@ class ToHotViewModel @Inject constructor(
                         it.timers.list.toMutableList().apply {
                             this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Heart)
                         }
-                    )
+                    ),
+                    shakingCard = false
                 )
             }
             postSideEffect(
@@ -590,7 +593,8 @@ class ToHotViewModel @Inject constructor(
                         it.timers.list.toMutableList().apply {
                             this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Dislike)
                         }
-                    )
+                    ),
+                    shakingCard = false
                 )
             }
             postSideEffect(
@@ -859,6 +863,8 @@ class ToHotViewModel @Inject constructor(
         private const val MAX_TIMER_SEC = 5f
 
         private const val TIMER_INTERVAL = 1f
+
+        private const val SHAKING_ANIMATION_START_TIC = 3f
 
         private const val CARD_COUNT_ALLOW_WITHOUT_TOUCH = 3
 

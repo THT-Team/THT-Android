@@ -48,6 +48,7 @@ fun ToHotCard(
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
     isHoldCard: Boolean,
+    isShakingCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
     ticChanged: (Float) -> Unit = { },
     userCardClick: () -> Unit = { },
@@ -81,6 +82,7 @@ fun ToHotCard(
             pagerState = pagerState,
             imageUrls = imageUrls,
             isHold = isHoldCard,
+            isShaking = isShakingCard && enable,
             loadFinishListener = loadFinishListener,
             onHoldDoubleTab = onHoldDoubleTab
         )
@@ -171,7 +173,8 @@ private fun ToHotCardPreview() {
         currentSec = 5f,
         destinationSec = 4f,
         enable = true,
-        isHoldCard = false
+        isHoldCard = false,
+        isShakingCard = false
     )
 }
 
@@ -198,7 +201,8 @@ private fun ToHotCardHoldCardPreview() {
         currentSec = 5f,
         destinationSec = 4f,
         enable = true,
-        isHoldCard = true
+        isHoldCard = true,
+        isShakingCard = false
     )
 }
 
@@ -225,7 +229,8 @@ private fun ToHotHeartCardPreview() {
         currentSec = 5f,
         destinationSec = 4f,
         enable = true,
-        isHoldCard = false
+        isHoldCard = false,
+        isShakingCard = false
     )
 }
 
@@ -252,6 +257,7 @@ private fun ToHotDislikeCardPreview() {
         currentSec = 5f,
         destinationSec = 4f,
         enable = true,
-        isHoldCard = false
+        isHoldCard = false,
+        isShakingCard = false
     )
 }
