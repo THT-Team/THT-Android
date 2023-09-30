@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.core.widget.addTextChangedListener
+import com.airbnb.lottie.LottieAnimationView
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -134,8 +134,8 @@ class PhoneAuthActivity : AppCompatActivity() {
             alpha = 0f
         }
         customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
-        customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
-            .setBackgroundResource(R.drawable.ic_toast_send_success)
+//        customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
+//            .setBackgroundResource(R.drawable.ic_toast_send_success)
         binding.layoutBackground.addView(customToastView)
 
         customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
@@ -155,19 +155,31 @@ class PhoneAuthActivity : AppCompatActivity() {
             .alpha(1f)
             .duration = shortAnimationDuration.toLong()
 
-        customToastView.postDelayed({
-            customToastView.apply {
-                animate()
-                    .alpha(0f)
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            binding.layoutBackground.removeView(customToastView)
-                            closeListener()
-                        }
-                    })
+        val lottieView = customToastView.findViewById<LottieAnimationView>(R.id.lottie_image_custom_toast)
+        lottieView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+                customToastView.postDelayed({
+                    customToastView.apply {
+                        animate()
+                            .alpha(0f)
+                            .setDuration(shortAnimationDuration.toLong())
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    binding.layoutBackground.removeView(customToastView)
+                                    closeListener()
+                                }
+                            })
+                    }
+                }, 100)
             }
-        }, 1000)
+
+            override fun onAnimationCancel(animation: Animator) {}
+
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+        lottieView.playAnimation()
     }
 
     companion object {
