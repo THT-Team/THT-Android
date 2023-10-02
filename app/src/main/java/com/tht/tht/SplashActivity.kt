@@ -3,7 +3,6 @@ package com.tht.tht
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -48,7 +47,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         val signupResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            Log.d("TAG", "signupResult => $it")
             binding.lottieView.isVisible = false
             when (it.resultCode) {
                 RESULT_OK -> viewModel.signupSuccessEvent()
