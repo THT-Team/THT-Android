@@ -410,8 +410,8 @@ class ToHotViewModel @Inject constructor(
 
     fun topicSelectFinishEvent() {
         val selectTopicIdx = with(store.state.value) {
-            topicList.list.indexOfFirst { it.key == selectTopicKey }
-        }
+            topicList.list.find { it.key == selectTopicKey }
+        }?.idx ?: -1
         if (selectTopicIdx < 0) return
 
         intent {
