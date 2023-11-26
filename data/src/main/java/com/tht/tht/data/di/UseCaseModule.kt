@@ -17,6 +17,7 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
 import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
@@ -213,6 +214,13 @@ object UseCaseModule {
         repository: TokenRepository
     ): FetchThtAccessTokenUseCase =
         FetchThtAccessTokenUseCase(repository)
+
+    @Provides
+    fun provideCheckThtAccessTokenExpiredUseCase(
+        repository: TokenRepository
+    ): CheckThtAccessTokenExpiredUseCase =
+        CheckThtAccessTokenExpiredUseCase(repository)
+
 
     @Provides
     fun provideFetchDailyTopicListUseCase(
