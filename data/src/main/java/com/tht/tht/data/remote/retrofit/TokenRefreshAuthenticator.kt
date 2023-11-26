@@ -56,6 +56,6 @@ class TokenRefreshAuthenticator @Inject constructor(
         .build()
 
     companion object {
-        private const val RETRY_COUNT = 2
+        private const val RETRY_COUNT = 1
     }
 }
