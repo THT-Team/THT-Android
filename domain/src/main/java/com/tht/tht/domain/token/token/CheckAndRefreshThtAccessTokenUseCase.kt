@@ -26,6 +26,6 @@ class CheckAndRefreshThtAccessTokenUseCase(
     }
 
     companion object {
-        private const val RETRY_COUNT = 1
+        private const val RETRY_COUNT = 0
     }
 }

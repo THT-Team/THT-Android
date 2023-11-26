@@ -37,7 +37,7 @@ class SplashViewModel @Inject constructor(
                 delay(500)
                 _loading.value = true
             }
-            checkAndRefreshThtAccessTokenUseCase(refreshRetryCount = 1)
+            checkAndRefreshThtAccessTokenUseCase()
                 .onSuccess {
                     when (it) {
                         true -> _sideEffect.emit(SplashSideEffect.Home)
