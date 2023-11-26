@@ -587,7 +587,7 @@ class ToHotViewModel @Inject constructor(
             sendDislikeUseCase(
                 userUuid = store.state.value.userList.list[idx].id
             ).unWrapTokenException()
-                    .onSuccess {
+                .onSuccess {
                     userDislikeApiResultChanel.send(true)
                 }.onFailure {
                     it.printStackTrace()
@@ -729,7 +729,7 @@ class ToHotViewModel @Inject constructor(
                 userUuid = store.state.value.userList.list[userIdx].id,
                 reason = store.state.value.reportReason[reasonIdx]
             ).unWrapTokenException()
-                    .onSuccess {
+                .onSuccess {
                     postSideEffect(
                         ToHotSideEffect.ToastMessage(
                             message = stringProvider.getString(

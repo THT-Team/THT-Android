@@ -27,4 +27,3 @@ fun ToHotLoginExpiredCard(
 private fun ToHotLoginExpiredCardPreview() {
     ToHotLoginExpiredCard()
 }
-
