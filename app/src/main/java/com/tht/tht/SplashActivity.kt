@@ -55,19 +55,26 @@ class SplashActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.sideEffect.collect {
-                when (it) {
-                    is SplashSideEffect.Signup -> {
-                        signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
-                    }
+            launch {
+                viewModel.loading.collect {
+                    binding.progress.isVisible = it
+                }
+            }
+            launch {
+                viewModel.sideEffect.collect {
+                    when (it) {
+                        is SplashSideEffect.Signup -> {
+                            signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
+                        }
 
-                    is SplashSideEffect.Home -> {
-                        startActivity(HomeActivity.newIntent(this@SplashActivity))
-                        finish()
-                    }
+                        is SplashSideEffect.Home -> {
+                            startActivity(HomeActivity.newIntent(this@SplashActivity))
+                            finish()
+                        }
 
-                    is SplashSideEffect.Cancel -> {
-                        finish()
+                        is SplashSideEffect.Cancel -> {
+                            finish()
+                        }
                     }
                 }
             }
