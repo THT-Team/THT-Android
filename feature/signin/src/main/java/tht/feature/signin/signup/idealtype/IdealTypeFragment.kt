@@ -116,11 +116,12 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     }
 
     private fun addChip(ideal: IdealTypeModel, idx: Int) {
-        val code = Integer.decode("0x${ideal.emojiCode}")
-        val emoji = String(Character.toChars(code))
+        val emoji = StringUtil.parseEmoji(ideal.emojiCode).let {
+            if (it.isNullOrBlank()) "" else "$it "
+        }
         binding.groupChip.addView(
             getIdealChip().apply {
-                "$emoji ${ideal.title}".let {
+                "$emoji${ideal.title}".let {
                     text = it
                 }
                 setOnClickListener {

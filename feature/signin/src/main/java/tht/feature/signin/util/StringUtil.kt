@@ -6,6 +6,16 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 
 object StringUtil {
+    fun parseEmoji(emojiCode: String): String? {
+        return try {
+            val code = Integer.decode("0x${emojiCode}")
+            String(Character.toChars(code))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun setWhiteTextColor(textView: TextView, range: IntRange) {
         textView.text = setTextColor(
             textView.text.toString(),
