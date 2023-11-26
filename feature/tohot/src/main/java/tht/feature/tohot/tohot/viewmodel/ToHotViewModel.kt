@@ -9,6 +9,7 @@ import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
+import com.tht.tht.domain.token.model.TokenException
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
@@ -94,49 +95,50 @@ class ToHotViewModel @Inject constructor(
             fetchToHotStateUseCase(
                 currentTimeMill = System.currentTimeMillis(),
                 size = CARD_SIZE
-            ).onSuccess { toHotState ->
-                reduce {
-                    val newList = toHotState.cards.map { c -> c.toUiModel() }
-                    val cardState = if (toHotState.needSelectTopic) {
-                        ToHotCardState.NoneSelectTopic
-                    } else if (newList.isEmpty()) {
-                        ToHotCardState.NoneInitializeUser
-                    } else if (autoRunToHot) {
-                        ToHotCardState.Running
-                    } else {
-                        ToHotCardState.Enter
+            ).unWrapTokenException()
+                .onSuccess { toHotState ->
+                    reduce {
+                        val newList = toHotState.cards.map { c -> c.toUiModel() }
+                        val cardState = if (toHotState.needSelectTopic) {
+                            ToHotCardState.NoneSelectTopic
+                        } else if (newList.isEmpty()) {
+                            ToHotCardState.NoneInitializeUser
+                        } else if (autoRunToHot) {
+                            ToHotCardState.Running
+                        } else {
+                            ToHotCardState.Enter
+                        }
+                        it.copy(
+                            userList = ImmutableListWrapper(newList),
+                            userCardState = cardState,
+                            timers = ImmutableListWrapper(
+                                List(toHotState.cards.size) {
+                                    CardTimerUiModel(
+                                        maxSec = MAX_TIMER_SEC.toInt(),
+                                        currentSec = MAX_TIMER_SEC,
+                                        destinationSec = MAX_TIMER_SEC,
+                                        startAble = false
+                                    )
+                                }
+                            ),
+                            enableTimerIdx = 0,
+                            topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
+                            topicModalShow = toHotState.needSelectTopic,
+                            currentTopic = toHotState.topic.topics.find { t ->
+                                t.key == toHotState.selectTopicKey
+                            }?.toUiModel(),
+                            topicResetRemainingTime = parseRemainingTime(toHotState.topicResetTimeMill),
+                            topicResetTimeMill = toHotState.topicResetTimeMill
+                        )
                     }
-                    it.copy(
-                        userList = ImmutableListWrapper(newList),
-                        userCardState = cardState,
-                        timers = ImmutableListWrapper(
-                            List(toHotState.cards.size) {
-                                CardTimerUiModel(
-                                    maxSec = MAX_TIMER_SEC.toInt(),
-                                    currentSec = MAX_TIMER_SEC,
-                                    destinationSec = MAX_TIMER_SEC,
-                                    startAble = false
-                                )
-                            }
-                        ),
-                        enableTimerIdx = 0,
-                        topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
-                        topicModalShow = toHotState.needSelectTopic,
-                        currentTopic = toHotState.topic.topics.find { t ->
-                            t.key == toHotState.selectTopicKey
-                        }?.toUiModel(),
-                        topicResetRemainingTime = parseRemainingTime(toHotState.topicResetTimeMill),
-                        topicResetTimeMill = toHotState.topicResetTimeMill
-                    )
+                }.onFailure { e ->
+                    e.printStackTrace()
+                    reduce {
+                        it.copy(
+                            userCardState = ToHotCardState.Error
+                        )
+                    }
                 }
-            }.onFailure { e ->
-                e.printStackTrace()
-                reduce {
-                    it.copy(
-                        userCardState = ToHotCardState.Error
-                    )
-                }
-            }
             reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
@@ -146,6 +148,7 @@ class ToHotViewModel @Inject constructor(
             clearUserCard()
             intent { reduce { it.copy(loading = ToHotLoading.TopicList) } }
             fetchDailyTopicListUseCase()
+                .unWrapTokenException()
                 .onSuccess { dailyTopic ->
                     intent {
                         reduce {
@@ -303,32 +306,33 @@ class ToHotViewModel @Inject constructor(
             passedUserIdList = passedUserCardStack.map { it.id }.toList(),
             lastUserDailyFallingCourserIdx = lastUserIdx,
             size = CARD_SIZE
-        ).onSuccess { dailyUserCardList ->
-            intent {
-                reduce {
-                    it.copy(
-                        userList = ImmutableListWrapper(
-                            store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
-                        ),
-                        timers = ImmutableListWrapper(
-                            store.state.value.timers.list +
-                                List(dailyUserCardList.cards.size) {
-                                    CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC.toInt(),
-                                        currentSec = MAX_TIMER_SEC,
-                                        destinationSec = MAX_TIMER_SEC,
-                                        startAble = false
-                                    )
-                                }
-                        ),
-                        topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
-                        topicResetTimeMill = dailyUserCardList.topicResetTimeMill
-                    )
+        ).unWrapTokenException()
+            .onSuccess { dailyUserCardList ->
+                intent {
+                    reduce {
+                        it.copy(
+                            userList = ImmutableListWrapper(
+                                store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                            ),
+                            timers = ImmutableListWrapper(
+                                store.state.value.timers.list +
+                                    List(dailyUserCardList.cards.size) {
+                                        CardTimerUiModel(
+                                            maxSec = MAX_TIMER_SEC.toInt(),
+                                            currentSec = MAX_TIMER_SEC,
+                                            destinationSec = MAX_TIMER_SEC,
+                                            startAble = false
+                                        )
+                                    }
+                            ),
+                            topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
+                            topicResetTimeMill = dailyUserCardList.topicResetTimeMill
+                        )
+                    }
                 }
+            }.onFailure { e ->
+                e.printStackTrace()
             }
-        }.onFailure { e ->
-            e.printStackTrace()
-        }
     }
 
     /**
@@ -341,43 +345,44 @@ class ToHotViewModel @Inject constructor(
             passedUserIdList = passedUserCardStack.map { it.id }.toList(),
             lastUserDailyFallingCourserIdx = lastUserIdx,
             size = CARD_SIZE
-        ).onSuccess { dailyUserCardList ->
-            intent {
-                reduce {
-                    it.copy(
-                        userList = ImmutableListWrapper(
-                            store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
-                        ),
-                        userCardState = ToHotCardState.Running,
-                        timers = ImmutableListWrapper(
-                            store.state.value.timers.list +
-                                List(dailyUserCardList.cards.size) {
-                                    CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC.toInt(),
-                                        currentSec = MAX_TIMER_SEC,
-                                        destinationSec = MAX_TIMER_SEC,
-                                        startAble = false
-                                    )
-                                }
-                        ),
-                        enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
-                        loading = ToHotLoading.None,
-                        topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
-                        topicResetTimeMill = dailyUserCardList.topicResetTimeMill
-                    )
+        ).unWrapTokenException()
+            .onSuccess { dailyUserCardList ->
+                intent {
+                    reduce {
+                        it.copy(
+                            userList = ImmutableListWrapper(
+                                store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                            ),
+                            userCardState = ToHotCardState.Running,
+                            timers = ImmutableListWrapper(
+                                store.state.value.timers.list +
+                                    List(dailyUserCardList.cards.size) {
+                                        CardTimerUiModel(
+                                            maxSec = MAX_TIMER_SEC.toInt(),
+                                            currentSec = MAX_TIMER_SEC,
+                                            destinationSec = MAX_TIMER_SEC,
+                                            startAble = false
+                                        )
+                                    }
+                            ),
+                            enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
+                            loading = ToHotLoading.None,
+                            topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
+                            topicResetTimeMill = dailyUserCardList.topicResetTimeMill
+                        )
+                    }
+                }
+            }.onFailure { e ->
+                e.printStackTrace()
+                intent {
+                    reduce {
+                        it.copy(
+                            userCardState = ToHotCardState.Error,
+                            loading = ToHotLoading.None
+                        )
+                    }
                 }
             }
-        }.onFailure { e ->
-            e.printStackTrace()
-            intent {
-                reduce {
-                    it.copy(
-                        userCardState = ToHotCardState.Error,
-                        loading = ToHotLoading.None
-                    )
-                }
-            }
-        }
         if (pagingLoading) {
             pagingLoading = false
             delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
@@ -417,6 +422,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce { it.copy(loading = ToHotLoading.TopicSelect) }
             selectTopicUseCase(topicIdx = selectTopicIdx)
+                .unWrapTokenException()
                 .onSuccess {
                     when (it) {
                         true -> {
@@ -549,12 +555,13 @@ class ToHotViewModel @Inject constructor(
             heartLoading = true
             sendHeartUseCase(
                 userUuid = store.state.value.userList.list[idx].id
-            ).onSuccess {
-                userHeartApiResultChanel.send(it)
-            }.onFailure {
-                it.printStackTrace()
-                userHeartApiResultChanel.send(null)
-            }
+            ).unWrapTokenException()
+                .onSuccess {
+                    userHeartApiResultChanel.send(it)
+                }.onFailure {
+                    it.printStackTrace()
+                    userHeartApiResultChanel.send(null)
+                }
         }
         intent {
             reduce {
@@ -579,12 +586,13 @@ class ToHotViewModel @Inject constructor(
             heartLoading = true
             sendDislikeUseCase(
                 userUuid = store.state.value.userList.list[idx].id
-            ).onSuccess {
-                userDislikeApiResultChanel.send(true)
-            }.onFailure {
-                it.printStackTrace()
-                userDislikeApiResultChanel.send(false)
-            }
+            ).unWrapTokenException()
+                    .onSuccess {
+                    userDislikeApiResultChanel.send(true)
+                }.onFailure {
+                    it.printStackTrace()
+                    userDislikeApiResultChanel.send(false)
+                }
         }
         intent {
             reduce {
@@ -720,31 +728,32 @@ class ToHotViewModel @Inject constructor(
             reportUserUseCase(
                 userUuid = store.state.value.userList.list[userIdx].id,
                 reason = store.state.value.reportReason[reasonIdx]
-            ).onSuccess {
-                postSideEffect(
-                    ToHotSideEffect.ToastMessage(
-                        message = stringProvider.getString(
-                            StringProvider.ResId.ReportSuccess
+            ).unWrapTokenException()
+                    .onSuccess {
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.ReportSuccess
+                            )
                         )
                     )
-                )
-                reduce {
-                    it.copy(
-                        fallingAnimationIdx = userIdx,
-                        reportMenuDialogShow = false,
-                        reportDialogShow = false
+                    reduce {
+                        it.copy(
+                            fallingAnimationIdx = userIdx,
+                            reportMenuDialogShow = false,
+                            reportDialogShow = false
+                        )
+                    }
+                }.onFailure {
+                    it.printStackTrace()
+                    postSideEffect(
+                        ToHotSideEffect.ToastMessage(
+                            message = stringProvider.getString(
+                                StringProvider.ResId.ReportFail
+                            )
+                        )
                     )
                 }
-            }.onFailure {
-                it.printStackTrace()
-                postSideEffect(
-                    ToHotSideEffect.ToastMessage(
-                        message = stringProvider.getString(
-                            StringProvider.ResId.ReportFail
-                        )
-                    )
-                )
-            }
             reduce { it.copy(loading = ToHotLoading.None) }
         }
     }
@@ -753,6 +762,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce { it.copy(loading = ToHotLoading.Block) }
             blockUserUseCase(userUuid = store.state.value.userList.list[idx].id)
+                .unWrapTokenException()
                 .onSuccess {
                     postSideEffect(
                         ToHotSideEffect.ToastMessage(
@@ -854,6 +864,21 @@ class ToHotViewModel @Inject constructor(
                         cardMoveAllow = holdCard,
                         holdCard = !holdCard
                     )
+                }
+            }
+        }
+    }
+
+    fun logoutEvent() {
+        //TODO: 로그아웃 어떻게 시키지?
+    }
+
+    private fun <T> Result<T>.unWrapTokenException(): Result<T> {
+        return this.onFailure { throwable ->
+            Log.d("cwj", "unWrapTokenException => $throwable")
+            when (throwable) {
+                is TokenException.AccessTokenRefreshFailException -> {
+                    intent { reduce { it.copy(loginAvailable = false) } }
                 }
             }
         }
