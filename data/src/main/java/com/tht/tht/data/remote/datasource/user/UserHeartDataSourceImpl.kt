@@ -20,7 +20,13 @@ class UserHeartDataSourceImpl @Inject constructor(
         ).toUnwrap()
     }
 
-    override suspend fun sendDislike(userUuid: String) {
-        return dislikeApiService.sendDislike(userUuid)
+    override suspend fun sendDislike(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    ) {
+        return dislikeApiService.sendDislike(
+            userUuid,
+            selectDailyTopicIdx.toString()
+        )
     }
 }

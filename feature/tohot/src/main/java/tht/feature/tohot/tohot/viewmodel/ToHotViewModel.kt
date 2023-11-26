@@ -497,7 +497,8 @@ class ToHotViewModel @Inject constructor(
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
-                userUuid = store.state.value.userList.list[idx].id
+                userUuid = store.state.value.userList.list[idx].id,
+                selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).onSuccess {
                 userDislikeApiResultChanel.send(true)
             }.onFailure {

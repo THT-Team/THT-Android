@@ -10,5 +10,8 @@ interface UserRepository {
         selectDailyTopicIdx: Int
     ): Boolean
 
-    suspend fun sendDislike(userUuid: String)
+    suspend fun sendDislike(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    )
 }

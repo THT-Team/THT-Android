@@ -15,7 +15,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.delay
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -85,10 +84,5 @@ object ApiServiceModule {
     @Singleton
     fun provideUserDisLikeApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
-    ): UserDislikeApiService = object : UserDislikeApiService {
-        override suspend fun sendDislike(userUuid: String) {
-            delay(2000)
-        }
-    }
-    // retrofit.create(UserDislikeApiService::class.java)
+    ): UserDislikeApiService = retrofit.create(UserDislikeApiService::class.java)
 }

@@ -8,5 +8,8 @@ interface UserHeartDataSource {
         selectDailyTopicIdx: Int
     ): UserHeartResponse
 
-    suspend fun sendDislike(userUuid: String)
+    suspend fun sendDislike(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    )
 }

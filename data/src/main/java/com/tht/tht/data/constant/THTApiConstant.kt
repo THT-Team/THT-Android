@@ -39,6 +39,6 @@ object THTApiConstant {
 
         const val Heart = "/i-like-you/{favorite-user-uuid}/{daily-topic-idx}"
 
-        const val DisLike = "/like/reject"
+        const val DisLike = "/i-dont-like-you/{dont-favorite-user-uuid}/{daily-topic-idx}"
     }
 }

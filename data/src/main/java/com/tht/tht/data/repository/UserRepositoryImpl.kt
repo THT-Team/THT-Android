@@ -27,7 +27,10 @@ class UserRepositoryImpl @Inject constructor(
         return userHeartDataSource.sendHeart(userUuid, selectDailyTopicIdx).isMatching
     }
 
-    override suspend fun sendDislike(userUuid: String) {
-        return userHeartDataSource.sendDislike(userUuid)
+    override suspend fun sendDislike(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    ) {
+        return userHeartDataSource.sendDislike(userUuid, selectDailyTopicIdx)
     }
 }
