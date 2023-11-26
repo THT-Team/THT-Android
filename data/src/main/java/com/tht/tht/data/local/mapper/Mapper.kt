@@ -1,5 +1,6 @@
 package com.tht.tht.data.local.mapper
 
+import com.tht.tht.data.local.entity.AccessTokenEntity
 import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.remote.response.location.LocationResponse
@@ -8,6 +9,7 @@ import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.model.RegionCodeModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
+import com.tht.tht.domain.token.model.AccessTokenModel
 
 // 확장 함수
 fun TermsEntity.Body.toModel(): TermsModel {
@@ -120,5 +122,12 @@ fun LocationResponse.toModel(): LocationModel {
 fun RegionCodeResponse.toModel(): RegionCodeModel {
     return RegionCodeModel(
         stanReginCd[1].row!![0].regionCode
+    )
+}
+
+fun AccessTokenEntity.toModel(): AccessTokenModel {
+    return AccessTokenModel(
+        accessToken = accessToken,
+        expiredTime = expiredTime
     )
 }

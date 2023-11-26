@@ -1,6 +1,8 @@
 package com.tht.tht.data.repository
 
 import com.tht.tht.data.local.datasource.TokenDataSource
+import com.tht.tht.data.local.mapper.toModel
+import com.tht.tht.domain.token.model.AccessTokenModel
 import com.tht.tht.domain.token.repository.TokenRepository
 import javax.inject.Inject
 
@@ -19,8 +21,8 @@ class TokenRepositoryImpl @Inject constructor(
         tokenDataSource.updateThtToken(token, accessTokenExpiresIn, phone)
     }
 
-    override suspend fun fetchThtToken(): String? {
-        return tokenDataSource.fetchThtToken()
+    override suspend fun fetchThtToken(): AccessTokenModel {
+        return tokenDataSource.fetchThtToken().toModel()
     }
 
     override suspend fun fetchPhone(): String? {
