@@ -1,6 +1,7 @@
 package com.tht.tht.data.remote.retrofit
 
 import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
+import com.tht.tht.domain.token.model.TokenException
 import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -24,19 +25,20 @@ class TokenRefreshAuthenticator @Inject constructor(
             return result
         }
 
+    /**
+     * null 을 리턴 하면 본래 request 를 마저 수행
+     */
     override fun authenticate(route: Route?, response: Response): Request? {
-        return if (response.code == 401) {
-            response.createRequest()
-        } else if (response.retryCount > 2) {
-            null
-        } else {
-            null
-        }
+        return when {
+            response.retryCount > (RETRY_COUNT - 1) -> null
+            response.code == 401 -> response.createRequest()
+            else -> null
+        } ?: throw TokenException.AccessTokenRefreshFailException()
     }
 
     private fun Response.createRequest(): Request? {
         return try {
-            runBlocking { reissueToken()?.let { request.retry(it) } }
+            runBlocking { reissueToken()?.let { request.retry(it) } } ?: request
         } catch (e: Throwable) {
             e.printStackTrace()
             null
@@ -52,4 +54,8 @@ class TokenRefreshAuthenticator @Inject constructor(
         .removeHeader("Authorization")
         .addHeader("Authorization", "Bearer $accessToken")
         .build()
+
+    companion object {
+        private const val RETRY_COUNT = 1
+    }
 }

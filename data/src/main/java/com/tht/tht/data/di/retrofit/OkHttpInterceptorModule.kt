@@ -4,7 +4,7 @@ import com.tht.tht.data.BuildConfig
 import com.tht.tht.data.remote.retrofit.TokenRefreshAuthenticator
 import com.tht.tht.data.remote.retrofit.header.HttpHeaderKey
 import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
-import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
 import dagger.Lazy
 import dagger.Module
 import dagger.Provides
@@ -20,11 +20,11 @@ object OkHttpInterceptorModule {
 
     @Provides
     fun provideHeaderInterceptor(
-        fetchThtTokenUseCase: FetchThtTokenUseCase
+        fetchThtAccessTokenUseCase: FetchThtAccessTokenUseCase
     ): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()
             .header(HttpHeaderKey.CONTENT_TYPE_HEADER_KEY, HttpHeaderKey.CONTENT_TYPE_HEADER_VALUE)
-        val accessToken = runBlocking { fetchThtTokenUseCase().getOrNull() }
+        val accessToken = runBlocking { fetchThtAccessTokenUseCase().getOrNull() }
         if (accessToken != null) {
             requestBuilder.header(
                 HttpHeaderKey.AUTHORIZATION_HEADER_KEY,

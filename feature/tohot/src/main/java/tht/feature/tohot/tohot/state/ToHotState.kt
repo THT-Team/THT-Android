@@ -35,7 +35,8 @@ data class ToHotState(
     val topicResetRemainingTime: String,
     val topicResetTimeMill: Long,
     val hasUnReadAlarm: Boolean,
-    val matchingFullScreenUser: MatchingUserUiModel? = null
+    val matchingFullScreenUser: MatchingUserUiModel? = null,
+    val loginAvailable: Boolean = true // 로그인 유효성
 )
 
 enum class ToHotLoading {

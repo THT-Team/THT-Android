@@ -23,10 +23,14 @@
     <string name="restart">다시 시작</string>
     <string name="reset">리셋</string>
     <string name="retry">다시 시도</string>
+    <string name="logout">로그아웃</string>
 
     <string name="select_topic_title">오늘의 폴링</string>
 
     <string name="to_hot_topic_select_fail">토픽을 선택할 수 없어요..</string>
+
+    <string name="to_hot_login_expired_card_title">로그인 정보가 만료되었어요!</string>
+    <string name="to_hot_login_expired_card_description">다시 로그인 해주세요</string>
 
     <string name="to_hot_none_next_user_card_title">무디들을 모두 만나봤어요!</string>
     <string name="to_hot_none_next_user_card_description">아직 무디들이 들어오고있어요.</string>

@@ -17,7 +17,9 @@ import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
-import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
+import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
@@ -209,10 +211,26 @@ object UseCaseModule {
         GetChatListUseCase(repository)
 
     @Provides
-    fun provideFetchThtTokenUseCase(
+    fun provideFetchThtAccessTokenUseCase(
         repository: TokenRepository
-    ): FetchThtTokenUseCase =
-        FetchThtTokenUseCase(repository)
+    ): FetchThtAccessTokenUseCase =
+        FetchThtAccessTokenUseCase(repository)
+
+    @Provides
+    fun provideCheckThtAccessTokenExpiredUseCase(
+        repository: TokenRepository
+    ): CheckThtAccessTokenExpiredUseCase =
+        CheckThtAccessTokenExpiredUseCase(repository)
+
+    @Provides
+    fun provideCheckAndRefreshThtAccessTokenUseCase(
+        refreshFcmTokenLoginUseCase: RefreshFcmTokenLoginUseCase,
+        checkThtAccessTokenExpiredUseCase: CheckThtAccessTokenExpiredUseCase
+    ): CheckAndRefreshThtAccessTokenUseCase =
+        CheckAndRefreshThtAccessTokenUseCase(
+            refreshFcmTokenLoginUseCase,
+            checkThtAccessTokenExpiredUseCase
+        )
 
     @Provides
     fun provideFetchDailyTopicListUseCase(

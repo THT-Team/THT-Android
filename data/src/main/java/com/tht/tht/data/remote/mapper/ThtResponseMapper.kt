@@ -8,8 +8,8 @@ inline fun <reified T : Any, R : Any> ThtResponse<out T>.toUnwrap(action: (T) ->
         is BaseResponse.Success -> action(response)
         is BaseResponse.SuccessNoBody -> action(Unit as T)
         is BaseResponse.ApiError -> throw Exception(errorResponse.message)
-        is BaseResponse.NetworkError -> throw Exception(exception.message)
-        is BaseResponse.UnknownError -> throw Exception(throwable.message)
+        is BaseResponse.NetworkError -> throw exception
+        is BaseResponse.UnknownError -> throw throwable
     }
 }
 
@@ -18,7 +18,7 @@ inline fun <reified T : Any> ThtResponse<out T>.toUnwrap(): T {
         is BaseResponse.Success -> response
         is BaseResponse.SuccessNoBody -> Unit as T
         is BaseResponse.ApiError -> throw Exception(errorResponse.message)
-        is BaseResponse.NetworkError -> throw Exception(exception.message)
-        is BaseResponse.UnknownError -> throw Exception(throwable.message)
+        is BaseResponse.NetworkError -> throw exception
+        is BaseResponse.UnknownError -> throw throwable
     }
 }
