@@ -9,18 +9,22 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
-import tht.feature.signin.prelogin.PreloginActivity
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignupRootActivity : AppCompatActivity() {
 
     private val viewModel: SignupRootViewModel by viewModels()
     private val binding: ActivitySignupRootBinding by viewBinding(ActivitySignupRootBinding::inflate)
+
+    @Inject
+    lateinit var homeNavigation: HomeNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +82,7 @@ class SignupRootActivity : AppCompatActivity() {
                             }
                         }
                         is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
-                            startActivity(PreloginActivity.getIntent(this@SignupRootActivity))
+                            homeNavigation.navigateHome(this@SignupRootActivity)
                             finish()
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {

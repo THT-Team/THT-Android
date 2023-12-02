@@ -2,7 +2,6 @@ package tht.feature.signin.prelogin
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -29,13 +28,6 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
     override val vm by viewModels<PreloginViewModel>()
 
     override val binding by viewBinding(ActivityPreloginBinding::inflate)
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        Log.d("TAG", "onNewIntent PreLoginActivity")
-        setResult(RESULT_OK)
-        finish()
-    }
 
     override fun initViews() = with(binding) {
         btnKakaoLogin.setOnClickListener {
