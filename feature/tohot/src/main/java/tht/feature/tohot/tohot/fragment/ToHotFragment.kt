@@ -9,7 +9,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.appcompat.AppCompatTheme
 import dagger.hilt.android.AndroidEntryPoint
-import tht.core.navigation.HomeNavigation
 import tht.core.navigation.SignupNavigation
 import tht.feature.tohot.navigation.ToHotNavigation
 import javax.inject.Inject

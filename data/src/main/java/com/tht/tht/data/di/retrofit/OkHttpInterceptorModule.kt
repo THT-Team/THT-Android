@@ -32,7 +32,7 @@ object OkHttpInterceptorModule {
                 "${HttpHeaderKey.BEARER_PREFIX} $accessToken"
             )
         }
-        chain.proceed(requestBuilder.build()).also {  response ->
+        chain.proceed(requestBuilder.build()).also { response ->
             when (response.code) {
                 500 -> throw TokenException.RefreshTokenExpiredException()
             }

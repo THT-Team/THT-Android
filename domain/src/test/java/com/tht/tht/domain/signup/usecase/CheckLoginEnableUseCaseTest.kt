@@ -1,10 +1,8 @@
 package com.tht.tht.domain.signup.usecase
 
-import com.tht.tht.domain.login.repository.LoginRepository
+import com.tht.tht.domain.login.usecase.LoginUseCase
 import com.tht.tht.domain.signup.model.SignupCheckModel
 import com.tht.tht.domain.signup.repository.SignupRepository
-import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
-import com.tht.tht.domain.token.repository.TokenRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -22,19 +20,16 @@ import org.junit.Test
 internal class CheckLoginEnableUseCaseTest {
     private lateinit var useCase: CheckLoginEnableUseCase
     private lateinit var signupRepository: SignupRepository
-    private lateinit var tokenRepository: TokenRepository
-    private lateinit var loginRepository: LoginRepository
+    private lateinit var loginUseCase: LoginUseCase
     private val testDispatcher = StandardTestDispatcher(TestCoroutineScheduler())
 
     @Before
     fun setupTest() {
         signupRepository = mockk(relaxed = true)
-        tokenRepository = mockk(relaxed = true)
-        loginRepository = mockk(relaxed = true)
+        loginUseCase = mockk(relaxed = true)
         useCase = CheckLoginEnableUseCase(
             signupRepository,
-            tokenRepository,
-            loginRepository
+            loginUseCase
         )
     }
 
@@ -45,49 +40,10 @@ internal class CheckLoginEnableUseCaseTest {
     }
 
     @Test
-    fun `useCase는 signupRespotiroy의 checkSignupState의 결과의 isSignup이 true라면 tokenRepository의 fetchFcmToken를 호출한다`() = runTest(testDispatcher) {
+    fun `useCase는 checkSignupState의 결과가 true이면 loginUseCase를 호출한다`() = runTest(testDispatcher) {
         coEvery { signupRepository.checkSignupState(any()) } returns SignupCheckModel(true, emptyList())
         useCase("phone")
-        coVerify { tokenRepository.fetchFcmToken() }
-    }
-
-    @Test
-    fun `useCase는 checkSignupState의 결과가 true고 fetchFcmToken의 결과가 null이 아니면 loginRepository의 requestFcmTokenLogin를 호출한다`() = runTest(testDispatcher) {
-        coEvery { signupRepository.checkSignupState(any()) } returns SignupCheckModel(true, emptyList())
-        coEvery { tokenRepository.fetchFcmToken() } returns "token"
-        useCase("phone")
-        coVerify { loginRepository.refreshFcmTokenLogin(any(), any()) }
-    }
-
-    @Test
-    fun `useCase는 checkSignupState의 결과가 true고 fetchFcmToken의 결과가 null이 아니면 tokenRepository의 updateThtToken를 호출한다`() = runTest(testDispatcher) {
-        coEvery { signupRepository.checkSignupState(any()) } returns SignupCheckModel(true, emptyList())
-        coEvery { tokenRepository.fetchFcmToken() } returns "token"
-        useCase("phone")
-        coVerify { tokenRepository.updateThtToken(any(), any(), any()) }
-    }
-
-    @Test
-    fun `useCase는 checkSignupState의 isSignup이 true라면 fetchFcmToken와 매개변수 phone을 매개변수로 requestFcmTokenLogin를 호출한다`() = runTest(testDispatcher) {
-        val phone = "phone"
-        val token = "token"
-        coEvery { signupRepository.checkSignupState(phone) } returns SignupCheckModel(true, emptyList())
-        coEvery { tokenRepository.fetchFcmToken() } returns token
-        useCase(phone)
-        coVerify { loginRepository.refreshFcmTokenLogin(token, phone) }
-    }
-
-    @Test
-    fun `useCase는 checkSignupState의 isSignup이 true라면 매개변수 phone과 requestFcmTokenLogin의 결과인 token과 accessTokenExpiresIn로 updateThtToken를 호출한다`() = runTest(testDispatcher) {
-        val phone = "phone"
-        val fcmToken = "fcmToken"
-        val token = "token"
-        val accessTokenExpiresIn = 1L
-        coEvery { signupRepository.checkSignupState(phone) } returns SignupCheckModel(true, emptyList())
-        coEvery { tokenRepository.fetchFcmToken() } returns fcmToken
-        coEvery { loginRepository.refreshFcmTokenLogin(fcmToken, phone) } returns FcmTokenLoginResponseModel(token, accessTokenExpiresIn)
-        useCase(phone)
-        coVerify { tokenRepository.updateThtToken(token, accessTokenExpiresIn, phone) }
+        coVerify { loginUseCase(any()) }
     }
 
     @Test

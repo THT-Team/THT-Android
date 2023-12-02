@@ -139,7 +139,8 @@ object UseCaseModule {
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
     ): LoginUseCase = LoginUseCase(
-        tokenRepository, loginRepository
+        tokenRepository,
+        loginRepository
     )
 
     @Provides

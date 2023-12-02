@@ -71,7 +71,7 @@ internal fun ToHotRoute(
                 try {
                     when (it) {
                         is ToHotSideEffect.Logout -> navigateLogout()
-                        
+
                         is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
 
                         is ToHotSideEffect.Scroll -> {

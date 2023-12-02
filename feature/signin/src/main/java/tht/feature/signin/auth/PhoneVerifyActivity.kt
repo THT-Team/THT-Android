@@ -20,7 +20,6 @@ import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
-import tht.feature.signin.prelogin.PreloginActivity
 import tht.feature.signin.util.AnimatorUtil
 import javax.inject.Inject
 
