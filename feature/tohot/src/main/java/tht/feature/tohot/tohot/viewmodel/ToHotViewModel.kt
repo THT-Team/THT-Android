@@ -550,18 +550,19 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun userHeartEvent(idx: Int) {
-        if (heartLoading) return
+        if (heartLoading || store.state.value.currentTopic == null) return
         viewModelScope.launch {
             heartLoading = true
             sendHeartUseCase(
-                userUuid = store.state.value.userList.list[idx].id
+                userUuid = store.state.value.userList.list[idx].id,
+                selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
-                .onSuccess {
-                    userHeartApiResultChanel.send(it)
-                }.onFailure {
-                    it.printStackTrace()
-                    userHeartApiResultChanel.send(null)
-                }
+            .onSuccess {
+            userHeartApiResultChanel.send(it)
+        }.onFailure {
+            it.printStackTrace()
+            userHeartApiResultChanel.send(null)
+        }
         }
         intent {
             reduce {
@@ -585,10 +586,11 @@ class ToHotViewModel @Inject constructor(
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
-                userUuid = store.state.value.userList.list[idx].id
+                userUuid = store.state.value.userList.list[idx].id,
+                selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
-                    userDislikeApiResultChanel.send(true)
+                userDislikeApiResultChanel.send(true)
                 }.onFailure {
                     it.printStackTrace()
                     userDislikeApiResultChanel.send(false)

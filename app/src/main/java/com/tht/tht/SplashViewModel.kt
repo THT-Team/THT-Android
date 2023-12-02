@@ -27,10 +27,6 @@ class SplashViewModel @Inject constructor(
         checkAutoLogin()
     }
 
-    fun signupSuccessEvent() {
-        checkAutoLogin()
-    }
-
     private fun checkAutoLogin() {
         viewModelScope.launch {
             launch {
@@ -50,16 +46,9 @@ class SplashViewModel @Inject constructor(
             _loading.value = false
         }
     }
-
-    fun signupCancelEvent() {
-        viewModelScope.launch {
-            _sideEffect.emit(SplashSideEffect.Cancel)
-        }
-    }
 }
 
 sealed class SplashSideEffect {
     object Signup : SplashSideEffect()
     object Home : SplashSideEffect()
-    object Cancel : SplashSideEffect()
 }
