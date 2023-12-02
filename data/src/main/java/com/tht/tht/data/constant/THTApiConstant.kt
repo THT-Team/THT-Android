@@ -33,6 +33,8 @@ object THTApiConstant {
     }
 
     object User {
+        const val ACCESS_TOKEN_REFRESH = "users/login/refresh"
+
         const val REPORT = "user/report"
 
         const val BLOCK = "/user/block/{block-user-uuid}"

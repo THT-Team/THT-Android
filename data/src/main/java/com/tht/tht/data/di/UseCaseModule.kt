@@ -20,6 +20,7 @@ import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
 import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
 import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
@@ -132,6 +133,11 @@ object UseCaseModule {
         repository,
         tokenRepository,
         loginRepository
+    @Provides
+    fun provideRefreshThtAccessTokenUseCase(
+        tokenRepository: TokenRepository
+    ): RefreshThtAccessTokenUseCase = RefreshThtAccessTokenUseCase(
+        tokenRepository
     )
 
     @Provides

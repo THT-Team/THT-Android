@@ -13,4 +13,6 @@ interface TokenRepository {
     suspend fun fetchThtToken(): AccessTokenModel
 
     suspend fun fetchPhone(): String?
+
+    suspend fun refreshAccessToken(): AccessTokenModel
 }
