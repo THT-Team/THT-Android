@@ -117,11 +117,12 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
     }
 
     private fun addChip(interest: InterestModel, idx: Int) {
-        val code = Integer.decode("0x${interest.emojiCode}")
-        val emoji = String(Character.toChars(code))
+        val emoji = StringUtil.parseEmoji(interest.emojiCode).let {
+            if (it.isNullOrBlank()) "" else "$it "
+        }
         binding.groupChip.addView(
             getInterestChip().apply {
-                "$emoji ${interest.title}".let {
+                "$emoji${interest.title}".let {
                     text = it
                 }
                 setOnClickListener {
