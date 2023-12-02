@@ -21,4 +21,6 @@ sealed class ToHotSideEffect {
     data class UserDislike(
         val userIdx: Int
     ) : ToHotSideEffect()
+
+    object Logout : ToHotSideEffect()
 }

@@ -9,7 +9,7 @@ import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
-import com.tht.tht.domain.token.model.TokenException
+import com.tht.tht.domain.token.model.NeedLogoutException
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
@@ -872,14 +872,14 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun logoutEvent() {
-        //TODO: 로그아웃 어떻게 시키지?
+        intent { postSideEffect(ToHotSideEffect.Logout) }
     }
 
     private fun <T> Result<T>.unWrapTokenException(): Result<T> {
         return this.onFailure { throwable ->
             Log.d("cwj", "unWrapTokenException => $throwable")
             when (throwable) {
-                is TokenException.AccessTokenRefreshFailException -> {
+                is NeedLogoutException -> {
                     intent { reduce { it.copy(loginAvailable = false) } }
                 }
             }

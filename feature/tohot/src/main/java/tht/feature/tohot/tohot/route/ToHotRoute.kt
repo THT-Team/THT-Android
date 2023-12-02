@@ -48,7 +48,8 @@ import tht.feature.tohot.tohot.viewmodel.ToHotViewModel
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun ToHotRoute(
-    toHotViewModel: ToHotViewModel = hiltViewModel()
+    toHotViewModel: ToHotViewModel = hiltViewModel(),
+    navigateLogout: () -> Unit
 ) {
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState()
@@ -69,6 +70,8 @@ internal fun ToHotRoute(
             toHotViewModel.store.sideEffect.collect {
                 try {
                     when (it) {
+                        is ToHotSideEffect.Logout -> navigateLogout()
+                        
                         is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
 
                         is ToHotSideEffect.Scroll -> {
