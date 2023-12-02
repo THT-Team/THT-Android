@@ -557,12 +557,12 @@ class ToHotViewModel @Inject constructor(
                 userUuid = store.state.value.userList.list[idx].id,
                 selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
-            .onSuccess {
-            userHeartApiResultChanel.send(it)
-        }.onFailure {
-            it.printStackTrace()
-            userHeartApiResultChanel.send(null)
-        }
+                .onSuccess {
+                    userHeartApiResultChanel.send(it)
+                }.onFailure {
+                    it.printStackTrace()
+                    userHeartApiResultChanel.send(null)
+                }
         }
         intent {
             reduce {
@@ -590,7 +590,7 @@ class ToHotViewModel @Inject constructor(
                 selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
-                userDislikeApiResultChanel.send(true)
+                    userDislikeApiResultChanel.send(true)
                 }.onFailure {
                     it.printStackTrace()
                     userDislikeApiResultChanel.send(false)
