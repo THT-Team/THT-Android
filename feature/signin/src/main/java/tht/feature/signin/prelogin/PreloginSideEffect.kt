@@ -11,8 +11,6 @@ sealed class PreLoginSideEffect : SideEffect {
 
     data class ShowToast(val message: String) : PreLoginSideEffect()
 
-    object NavigateSignUp : PreLoginSideEffect()
-
     data class NavigatePhoneAuth(val token: String?, val signInType: SignInType) : PreLoginSideEffect()
 
     object NavigateInquiry : PreLoginSideEffect()

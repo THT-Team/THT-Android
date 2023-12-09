@@ -11,20 +11,22 @@ import com.example.compose_ui.component.font.pretendardFontStyle
 
 @Composable
 fun ThtText(
-    modifier: Modifier = Modifier,
-    textAlign: TextAlign,
     text: String,
     fontWeight: FontWeight,
     textSize: TextUnit,
     color: Color,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         modifier = modifier,
-        text = text,
         textAlign = textAlign,
+        text = text,
         style = pretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize =textSize
+            fontSize = textSize,
+            lineHeight = lineHeight
         ),
         color = color,
     )

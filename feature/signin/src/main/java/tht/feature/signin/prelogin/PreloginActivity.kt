@@ -2,7 +2,11 @@ package tht.feature.signin.prelogin
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -14,62 +18,46 @@ import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.tht.tht.domain.type.SignInType
 import kotlinx.coroutines.launch
-import tht.core.ui.base.BaseStateActivity
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.gone
 import tht.core.ui.extension.showToast
-import tht.core.ui.extension.visible
 import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
 import tht.feature.signin.inquiry.InquiryActivity
+import tht.feature.signin.prelogin.composable.PreLoginScreen
 
-class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBinding>() {
+class PreLoginActivity : AppCompatActivity() {
 
-    override val vm by viewModels<PreLoginViewModel>()
+    private val vm by viewModels<PreLoginViewModel>()
+    private val binding by viewBinding(ActivityPreloginBinding::inflate)
 
-    override val binding by viewBinding(ActivityPreloginBinding::inflate)
-
-    override fun initViews() = with(binding) {
-        btnKakaoLogin.setOnClickListener {
-            vm.requestKakaoLogin()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.composeView.setContent {
+            val state by vm.uiStateFlow.collectAsState()
+            PreLoginScreen(
+                loading = state.loading,
+                onPhoneSignupClick = vm::requestNumberLogin,
+                onKakaoSignupClick = vm::requestKakaoLogin,
+                onGoogleSignupClick = vm::requestGoogleLogin,
+                onNaverSignupClick = vm::requestNaverLogin,
+                onLoginIssueClick = vm::navigateInquiry
+            )
         }
-        btnPhoneLogin.setOnClickListener {
-            vm.requestNumberLogin()
-        }
-        btnNaverLogin.setOnClickListener {
-            vm.requestNaverLogin()
-        }
-        tvHelpLogin.setOnClickListener {
-            vm.navigateInquiry()
-        }
+        observeData()
     }
 
-    override fun observeData() {
+    private fun observeData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    vm.uiStateFlow.collect { state ->
-                        when (state) {
-                            PreLoginState.Uninitialized -> handleUninitialized()
-                            PreLoginState.Loading -> handleLoading()
-                            PreLoginState.Success -> handleSuccess()
-                            PreLoginState.Error -> handleError()
-                        }
-                    }
-                }
-                launch {
-                    vm.sideEffectFlow.collect { sideEffect ->
-                        when (sideEffect) {
-                            is PreLoginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
-                            is PreLoginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
-                            is PreLoginSideEffect.ShowToast -> showToast(sideEffect.message)
-                            is PreLoginSideEffect.NavigateSignUp ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreLoginActivity, SignInType.NORMAL))
-                            is PreLoginSideEffect.NavigatePhoneAuth ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreLoginActivity, SignInType.NORMAL))
-                            is PreLoginSideEffect.NavigateInquiry ->
-                                startActivity(InquiryActivity.getIntent(this@PreLoginActivity))
-                        }
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is PreLoginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
+                        is PreLoginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
+                        is PreLoginSideEffect.ShowToast -> showToast(sideEffect.message)
+                        is PreLoginSideEffect.NavigatePhoneAuth ->
+                            startActivity(PhoneAuthActivity.getIntent(this@PreLoginActivity, SignInType.NORMAL))
+                        is PreLoginSideEffect.NavigateInquiry ->
+                            startActivity(InquiryActivity.getIntent(this@PreLoginActivity))
                     }
                 }
             }
@@ -81,11 +69,11 @@ class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBi
             context = this,
             callback = object : OAuthLoginCallback {
                 override fun onError(errorCode: Int, message: String) {
-                    handleUninitialized()
+                    vm.onError("[$errorCode] $message")
                 }
 
                 override fun onFailure(httpStatus: Int, message: String) {
-                    handleUninitialized()
+                    vm.onCancel()
                 }
 
                 override fun onSuccess() {
@@ -100,7 +88,7 @@ class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBi
     private fun handleRequestKakaoLogin() {
         val kakaoAccountCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
-                handleUninitialized()
+                vm.onError(error.message ?: "Kakao Login Error")
             } else if (token != null) {
                 vm.requestSignIn(signInType = SignInType.KAKAO, token.accessToken)
             }
@@ -110,7 +98,7 @@ class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBi
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 if (error != null) {
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
-                        handleUninitialized()
+                        vm.onCancel()
                         return@loginWithKakaoTalk
                     }
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = kakaoAccountCallback)
@@ -123,40 +111,8 @@ class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBi
         }
     }
 
-    private fun handleUninitialized() = with(binding) {
-        btnPhoneLogin.isClickable = true
-        btnKakaoLogin.isClickable = true
-        btnGoogleLogin.isClickable = true
-        btnNaverLogin.isClickable = true
-        loadingContainer.gone()
-    }
-
-    private fun handleLoading() = with(binding) {
-        btnPhoneLogin.isClickable = false
-        btnKakaoLogin.isClickable = false
-        btnGoogleLogin.isClickable = false
-        btnNaverLogin.isClickable = false
-        loadingContainer.visible()
-    }
-
-    private fun handleSuccess() = with(binding) {
-        btnPhoneLogin.isClickable = false
-        btnKakaoLogin.isClickable = false
-        btnGoogleLogin.isClickable = false
-        btnNaverLogin.isClickable = false
-        loadingContainer.gone()
-    }
-
-    private fun handleError() = with(binding) {
-        btnPhoneLogin.isClickable = true
-        btnKakaoLogin.isClickable = true
-        btnGoogleLogin.isClickable = true
-        btnNaverLogin.isClickable = true
-        loadingContainer.gone()
-    }
-
     companion object {
-        const val TAG = "PreloginActivity"
+        const val TAG = "PreLoginActivity"
 
         fun getIntent(context: Context): Intent {
             return Intent(context, PreLoginActivity::class.java).apply {

@@ -11,28 +11,50 @@ import javax.inject.Inject
 @HiltViewModel
 class PreLoginViewModel @Inject constructor() : BaseStateViewModel<PreLoginState, PreLoginSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<PreLoginState> = MutableStateFlow(PreLoginState.Uninitialized)
+    override val _uiStateFlow = MutableStateFlow(PreLoginState(loading = false))
+    private val isLoading: Boolean
+        get() = _uiStateFlow.value.loading
+
+    fun onCancel() {
+        setUiState(PreLoginState(false))
+    }
+
+    fun onError(errorMessage: String) {
+        setUiState(PreLoginState(false))
+        postSideEffect(PreLoginSideEffect.ShowToast(errorMessage))
+    }
 
     fun requestNumberLogin() {
+        if (isLoading) return
+        setUiState(PreLoginState(true))
         postSideEffect(PreLoginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.NORMAL))
+        setUiState(PreLoginState(false))
     }
 
     fun requestNaverLogin() {
-        setUiState(PreLoginState.Loading)
+        if (isLoading) return
+        setUiState(PreLoginState(true))
         postSideEffect(PreLoginSideEffect.RequestNaverLogin)
     }
 
     fun requestKakaoLogin() {
-        setUiState(PreLoginState.Loading)
+        if (isLoading) return
+        setUiState(PreLoginState(true))
         postSideEffect(PreLoginSideEffect.RequestKakaoLogin)
     }
 
-    fun requestSignIn(signInType: SignInType, token: String) = viewModelScope.launch {
-        setUiState(PreLoginState.Loading)
-        postSideEffect(PreLoginSideEffect.NavigatePhoneAuth(token = token, signInType = signInType))
-        setUiState(PreLoginState.Uninitialized)
+    fun requestGoogleLogin() {
+        if (isLoading) return
+        postSideEffect(PreLoginSideEffect.ShowToast("UnSupport"))
     }
 
+    fun requestSignIn(signInType: SignInType, token: String) {
+        setUiState(PreLoginState(false))
+        viewModelScope.launch {
+            postSideEffect(PreLoginSideEffect.NavigatePhoneAuth(token = token, signInType = signInType))
+        }
+
+    }
     fun navigateInquiry() {
         postSideEffect(PreLoginSideEffect.NavigateInquiry)
     }

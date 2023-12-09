@@ -38,12 +38,17 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
     }
 }
 
 dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
+    implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
 
     implementation(libs.androidx.core)
@@ -72,4 +77,16 @@ dependencies {
 
     implementation("com.kakao.sdk:v2-user:2.12.1")
     implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
+
+    implementation(libs.jetpack.compose.material)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    testImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
+    implementation(libs.jetpack.compose.hilt.navigation)
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.jetpack.compose.viewmodel)
+    implementation(libs.jetpack.compose.coil)
+
+    implementation(libs.lottie.compose)
 }

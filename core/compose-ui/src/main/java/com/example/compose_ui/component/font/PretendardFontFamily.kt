@@ -25,10 +25,12 @@ val pretendardFontFamily = FontFamily(
 fun pretendardFontStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     shadow: Shadow? = null
 ) = TextStyle(
     fontFamily = pretendardFontFamily,
     fontWeight = fontWeight,
     fontSize = fontSize,
-    shadow = shadow
+    shadow = shadow,
+    lineHeight = lineHeight
 )
