@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="help_login"><u>로그인에 어려움이 있으신가요?</u></string>
-
     <string name="signup">회원가입</string>
     <string name="login">로그인</string>
     <string name="next">다음</string>
@@ -12,7 +10,7 @@
     <string name="day">일</string>
     <string name="confirm">확인</string>
 
-    <string name="message_login_issue"><u>로그인에 어려움이 있으신가요?</u></string>
+    <string name="message_login_issue"><u>계정에 문제가 있나요?</u></string>
 
     <string name="message_invalidate_phone">유효하지 않은 핸드폰 번호입니다</string>
     <string name="message_invalidate_signup_process">가입 프로세스가 유효하지 않습니다</string>
