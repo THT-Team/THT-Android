@@ -3,17 +3,17 @@ package tht.feature.signin.prelogin
 import com.tht.tht.domain.type.SignInType
 import tht.core.ui.base.SideEffect
 
-sealed class PreloginSideEffect : SideEffect {
+sealed class PreLoginSideEffect : SideEffect {
 
-    object RequestNaverLogin : PreloginSideEffect()
+    object RequestNaverLogin : PreLoginSideEffect()
 
-    object RequestKakaoLogin : PreloginSideEffect()
+    object RequestKakaoLogin : PreLoginSideEffect()
 
-    data class ShowToast(val message: String) : PreloginSideEffect()
+    data class ShowToast(val message: String) : PreLoginSideEffect()
 
-    object NavigateSignUp : PreloginSideEffect()
+    object NavigateSignUp : PreLoginSideEffect()
 
-    data class NavigatePhoneAuth(val token: String?, val signInType: SignInType) : PreloginSideEffect()
+    data class NavigatePhoneAuth(val token: String?, val signInType: SignInType) : PreLoginSideEffect()
 
-    object NavigateInquiry : PreloginSideEffect()
+    object NavigateInquiry : PreLoginSideEffect()
 }

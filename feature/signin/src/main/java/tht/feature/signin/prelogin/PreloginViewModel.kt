@@ -9,31 +9,31 @@ import tht.core.ui.base.BaseStateViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PreloginViewModel @Inject constructor() : BaseStateViewModel<PreloginState, PreloginSideEffect>() {
+class PreLoginViewModel @Inject constructor() : BaseStateViewModel<PreLoginState, PreLoginSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<PreloginState> = MutableStateFlow(PreloginState.Uninitialized)
+    override val _uiStateFlow: MutableStateFlow<PreLoginState> = MutableStateFlow(PreLoginState.Uninitialized)
 
     fun requestNumberLogin() {
-        postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.NORMAL))
+        postSideEffect(PreLoginSideEffect.NavigatePhoneAuth(token = null, signInType = SignInType.NORMAL))
     }
 
     fun requestNaverLogin() {
-        setUiState(PreloginState.Loading)
-        postSideEffect(PreloginSideEffect.RequestNaverLogin)
+        setUiState(PreLoginState.Loading)
+        postSideEffect(PreLoginSideEffect.RequestNaverLogin)
     }
 
     fun requestKakaoLogin() {
-        setUiState(PreloginState.Loading)
-        postSideEffect(PreloginSideEffect.RequestKakaoLogin)
+        setUiState(PreLoginState.Loading)
+        postSideEffect(PreLoginSideEffect.RequestKakaoLogin)
     }
 
     fun requestSignIn(signInType: SignInType, token: String) = viewModelScope.launch {
-        setUiState(PreloginState.Loading)
-        postSideEffect(PreloginSideEffect.NavigatePhoneAuth(token = token, signInType = signInType))
-        setUiState(PreloginState.Uninitialized)
+        setUiState(PreLoginState.Loading)
+        postSideEffect(PreLoginSideEffect.NavigatePhoneAuth(token = token, signInType = signInType))
+        setUiState(PreLoginState.Uninitialized)
     }
 
     fun navigateInquiry() {
-        postSideEffect(PreloginSideEffect.NavigateInquiry)
+        postSideEffect(PreLoginSideEffect.NavigateInquiry)
     }
 }

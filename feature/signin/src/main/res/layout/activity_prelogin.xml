@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_161616"
-    tools:context="tht.feature.signin.prelogin.PreloginActivity">
+    tools:context="tht.feature.signin.prelogin.PreLoginActivity">
 
     <ImageView
         android:id="@+id/iv_logo"

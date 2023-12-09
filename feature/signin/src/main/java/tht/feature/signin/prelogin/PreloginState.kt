@@ -2,13 +2,13 @@ package tht.feature.signin.prelogin
 
 import tht.core.ui.base.UiState
 
-sealed class PreloginState : UiState {
+sealed class PreLoginState : UiState {
 
-    object Uninitialized : PreloginState()
+    object Uninitialized : PreLoginState()
 
-    object Loading : PreloginState()
+    object Loading : PreLoginState()
 
-    object Success : PreloginState()
+    object Success : PreLoginState()
 
-    object Error : PreloginState()
+    object Error : PreLoginState()
 }

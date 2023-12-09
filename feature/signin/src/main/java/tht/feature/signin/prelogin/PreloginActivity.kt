@@ -23,9 +23,9 @@ import tht.feature.signin.auth.PhoneAuthActivity
 import tht.feature.signin.databinding.ActivityPreloginBinding
 import tht.feature.signin.inquiry.InquiryActivity
 
-class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBinding>() {
+class PreLoginActivity : BaseStateActivity<PreLoginViewModel, ActivityPreloginBinding>() {
 
-    override val vm by viewModels<PreloginViewModel>()
+    override val vm by viewModels<PreLoginViewModel>()
 
     override val binding by viewBinding(ActivityPreloginBinding::inflate)
 
@@ -50,25 +50,25 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
                 launch {
                     vm.uiStateFlow.collect { state ->
                         when (state) {
-                            PreloginState.Uninitialized -> handleUninitialized()
-                            PreloginState.Loading -> handleLoading()
-                            PreloginState.Success -> handleSuccess()
-                            PreloginState.Error -> handleError()
+                            PreLoginState.Uninitialized -> handleUninitialized()
+                            PreLoginState.Loading -> handleLoading()
+                            PreLoginState.Success -> handleSuccess()
+                            PreLoginState.Error -> handleError()
                         }
                     }
                 }
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
-                            is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
-                            is PreloginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
-                            is PreloginSideEffect.ShowToast -> showToast(sideEffect.message)
-                            is PreloginSideEffect.NavigateSignUp ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
-                            is PreloginSideEffect.NavigatePhoneAuth ->
-                                startActivity(PhoneAuthActivity.getIntent(this@PreloginActivity, SignInType.NORMAL))
-                            is PreloginSideEffect.NavigateInquiry ->
-                                startActivity(InquiryActivity.getIntent(this@PreloginActivity))
+                            is PreLoginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
+                            is PreLoginSideEffect.RequestNaverLogin -> handleRequestNaverLogin()
+                            is PreLoginSideEffect.ShowToast -> showToast(sideEffect.message)
+                            is PreLoginSideEffect.NavigateSignUp ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreLoginActivity, SignInType.NORMAL))
+                            is PreLoginSideEffect.NavigatePhoneAuth ->
+                                startActivity(PhoneAuthActivity.getIntent(this@PreLoginActivity, SignInType.NORMAL))
+                            is PreLoginSideEffect.NavigateInquiry ->
+                                startActivity(InquiryActivity.getIntent(this@PreLoginActivity))
                         }
                     }
                 }
@@ -159,7 +159,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         const val TAG = "PreloginActivity"
 
         fun getIntent(context: Context): Intent {
-            return Intent(context, PreloginActivity::class.java).apply {
+            return Intent(context, PreLoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
         }
