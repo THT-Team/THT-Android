@@ -162,7 +162,7 @@ private fun PhoneAuthTextFieldLayout(
     value: String,
     onValueChange: (String) -> Unit,
     underLineColor: Color,
-    onDone : () -> Unit,
+    onDone: () -> Unit,
     onClear: () -> Unit,
     hint: String,
     modifier: Modifier = Modifier,
@@ -215,7 +215,7 @@ private fun PhoneAuthTextField(
     val textStyle = pretendardFontStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp,
-        lineHeight = 33.8.sp,
+        lineHeight = 33.8.sp
     )
     Box(
         modifier = modifier

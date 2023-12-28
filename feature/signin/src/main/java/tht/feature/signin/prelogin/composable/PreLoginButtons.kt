@@ -55,7 +55,6 @@ fun PhoneSignUpButton(
     }
 }
 
-
 @Composable
 fun KakaoSignUpButton(
     onClick: () -> Unit,
@@ -86,7 +85,6 @@ fun KakaoSignUpButton(
         )
     }
 }
-
 
 @Composable
 fun GoogleSignUpButton(
