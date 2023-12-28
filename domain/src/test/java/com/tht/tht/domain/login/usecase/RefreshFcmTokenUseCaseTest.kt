@@ -3,6 +3,7 @@ package com.tht.tht.domain.login.usecase
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -14,9 +15,9 @@ import org.junit.Test
 
 @Suppress("NonAsciiCharacters")
 @ExperimentalCoroutinesApi
-internal class RefreshFcmTokenLoginUseCaseTest {
+internal class RefreshFcmTokenUseCaseTest {
 
-    private lateinit var useCase: RefreshFcmTokenLoginUseCase
+    private lateinit var useCase: RefreshFcmTokenUseCase
     private lateinit var tokenRepository: TokenRepository
     private lateinit var loginRepository: LoginRepository
 
@@ -24,7 +25,7 @@ internal class RefreshFcmTokenLoginUseCaseTest {
     fun setUp() {
         tokenRepository = mockk(relaxed = true)
         loginRepository = mockk(relaxed = true)
-        useCase = RefreshFcmTokenLoginUseCase(
+        useCase = RefreshFcmTokenUseCase(
             tokenRepository, loginRepository
         )
     }

@@ -8,6 +8,7 @@ import com.tht.tht.data.remote.service.image.ImageService
 import com.tht.tht.data.remote.service.image.ImageServiceImpl
 import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
+import com.tht.tht.data.remote.service.user.AccessTokenRefreshService
 import com.tht.tht.data.remote.service.user.UserBlockApiService
 import com.tht.tht.data.remote.service.user.UserDislikeApiService
 import com.tht.tht.data.remote.service.user.UserHeartApiService
@@ -92,4 +93,10 @@ object ApiServiceModule {
     fun provideUserDisLikeApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
     ): UserDislikeApiService = retrofit.create(UserDislikeApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAccessTokenRefreshService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): AccessTokenRefreshService = retrofit.create(AccessTokenRefreshService::class.java)
 }

@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.remote.datasource.user.AccessTokenRefreshDataSource
+import com.tht.tht.data.remote.datasource.user.AccessTokenRefreshDataSourceImpl
 import com.tht.tht.data.remote.datasource.user.UserBlockDataSource
 import com.tht.tht.data.remote.datasource.user.UserBlockDataSourceImpl
 import com.tht.tht.data.remote.datasource.user.UserHeartDataSource
@@ -16,6 +18,11 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UserModule {
+
+    @Binds
+    abstract fun bindAccessTokenRefreshDataSource(
+        impl: AccessTokenRefreshDataSourceImpl
+    ): AccessTokenRefreshDataSource
 
     @Binds
     abstract fun bindUserReportDataSource(impl: UserReportDataSourceImpl): UserReportDataSource

@@ -1,7 +1,7 @@
 package com.tht.tht.data.remote.retrofit
 
-import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
 import com.tht.tht.domain.token.model.TokenException
+import com.tht.tht.domain.token.token.RefreshThtAccessTokenUseCase
 import dagger.Lazy
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -11,7 +11,7 @@ import okhttp3.Route
 import javax.inject.Inject
 
 class TokenRefreshAuthenticator @Inject constructor(
-    private val refreshFcmTokenLoginUseCase: Lazy<RefreshFcmTokenLoginUseCase>
+    private val refreshFcmTokenUseCase: Lazy<RefreshThtAccessTokenUseCase>
 ) : Authenticator {
 
     private val Response.retryCount: Int
@@ -28,7 +28,7 @@ class TokenRefreshAuthenticator @Inject constructor(
     /**
      * null 을 리턴 하면 본래 request 를 마저 수행
      */
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request {
         return when {
             response.retryCount > (RETRY_COUNT - 1) -> null
             response.code == 401 -> response.createRequest()
@@ -46,7 +46,7 @@ class TokenRefreshAuthenticator @Inject constructor(
     }
 
     private suspend fun reissueToken(): String? =
-        refreshFcmTokenLoginUseCase.get().invoke()
+        refreshFcmTokenUseCase.get().invoke()
             .getOrNull()?.accessToken
 
     private fun Request.retry(accessToken: String) = this
