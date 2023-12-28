@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -114,7 +115,9 @@ fun PhoneAuthScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             Button(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .imePadding(),
                 shape = RoundedCornerShape(16.dp),
                 enabled = phoneValidation == PhoneAuthUiState.PhoneValidation.VALIDATE,
                 onClick = onClick,

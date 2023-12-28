@@ -16,6 +16,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.WindowCompat
 import androidx.core.view.updateLayoutParams
 import com.airbnb.lottie.LottieAnimationView
 import com.tht.tht.domain.type.SignInType
@@ -37,6 +38,7 @@ class PhoneAuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setToolbar()
+        WindowCompat.setDecorFitsSystemWindows(window, false) // for imePadding()
         binding.composeView.setContent {
             val keyboard = LocalSoftwareKeyboardController.current
             LaunchedEffect(key1 = Unit) {
