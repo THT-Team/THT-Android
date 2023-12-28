@@ -1,6 +1,7 @@
 package com.example.compose_ui.component.font
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -26,8 +27,10 @@ fun pretendardFontStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
     lineHeight: TextUnit = TextUnit.Unspecified,
+    color: Color = Color.Unspecified,
     shadow: Shadow? = null
 ) = TextStyle(
+    color = color,
     fontFamily = pretendardFontFamily,
     fontWeight = fontWeight,
     fontSize = fontSize,

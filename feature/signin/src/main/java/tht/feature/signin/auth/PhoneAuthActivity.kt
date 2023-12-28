@@ -8,20 +8,23 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.core.widget.addTextChangedListener
 import com.airbnb.lottie.LottieAnimationView
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.getPxFromDp
-import tht.core.ui.extension.repeatOnStarted
-import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
+import tht.feature.signin.auth.composable.PhoneAuthScreen
 import tht.feature.signin.databinding.ActivityPhoneAuthBinding
 import kotlin.math.roundToInt
 
@@ -30,47 +33,14 @@ class PhoneAuthActivity : AppCompatActivity() {
     private val viewModel: PhoneAuthViewModel by viewModels()
     private val binding: ActivityPhoneAuthBinding by viewBinding(ActivityPhoneAuthBinding::inflate)
 
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setToolbar()
-        initView()
-        setListener()
-        observeData()
-    }
-
-    private fun setToolbar() {
-        binding.itemSignupToolBar.toolBar.apply {
-            setNavigationIcon(R.drawable.ic_left_arrow)
-            setSupportActionBar(this)
-            setNavigationOnClickListener {
-                viewModel.backEvent()
-            }
-        }
-        title = null
-    }
-
-    private fun initView() {
-        binding.layoutEtPhone.setEndIconTintList(null)
-    }
-
-    private fun setListener() {
-        binding.layoutBackground.setOnClickListener {
-            viewModel.backgroundTouchEvent()
-        }
-
-        binding.etPhone.addTextChangedListener {
-            viewModel.textInputEvent(it?.toString())
-        }
-
-        binding.btnAuth.setOnClickListener {
-            viewModel.authEvent(binding.etPhone.text?.toString())
-        }
-    }
-
-    private fun observeData() {
-        repeatOnStarted {
-            launch {
-                viewModel.sideEffectFlow.collect {
+        binding.composeView.setContent {
+            val keyboard = LocalSoftwareKeyboardController.current
+            LaunchedEffect(key1 = Unit) {
+                viewModel.store.sideEffect.collect {
                     when (it) {
                         is PhoneAuthViewModel.PhoneAuthSideEffect.ShowToast -> showToast(it.message)
 
@@ -79,8 +49,9 @@ class PhoneAuthActivity : AppCompatActivity() {
 
                         is PhoneAuthViewModel.PhoneAuthSideEffect.Back -> finish()
 
-                        is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible ->
-                            binding.etPhone.setSoftKeyboardVisible(it.visible)
+                        is PhoneAuthViewModel.PhoneAuthSideEffect.KeyboardVisible -> {
+                            if (it.visible) keyboard?.show() else keyboard?.hide()
+                        }
 
                         is PhoneAuthViewModel.PhoneAuthSideEffect.NavigateVerifyView ->
                             startActivity(
@@ -95,33 +66,29 @@ class PhoneAuthActivity : AppCompatActivity() {
                 }
             }
 
-            launch {
-                viewModel.uiStateFlow.collect {
-                    when (it) {
-                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumCorrect -> {
-                            binding.layoutEtPhone.error = null
-                            binding.btnAuth.isEnabled = true
-                        }
+            val state by viewModel.store.state.collectAsState()
+            PhoneAuthScreen(
+                modifier = Modifier.fillMaxSize(),
+                phone = state.phone,
+                phoneValidation = state.phoneValidation,
+                onEditPhoneNum = viewModel::textInputEvent,
+                onClick = viewModel::authEvent,
+                onClear = viewModel::clearEvent,
+                loading = state.loading,
+                onBackgroundClick = viewModel::backgroundTouchEvent
+            )
+        }
+    }
 
-                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumEmpty -> {
-                            binding.layoutEtPhone.error = null
-                            binding.btnAuth.isEnabled = false
-                        }
-
-                        is PhoneAuthViewModel.PhoneAuthUiState.InputPhoneNumError -> {
-                            binding.layoutEtPhone.error = getString(R.string.message_phone_input_error)
-                            binding.btnAuth.isEnabled = false
-                        }
-                    }
-                }
-            }
-
-            launch {
-                viewModel.dataLoading.collect {
-                    binding.progress.isVisible = it
-                }
+    private fun setToolbar() {
+        binding.itemSignupToolBar.toolBar.apply {
+            setNavigationIcon(R.drawable.ic_left_arrow)
+            setSupportActionBar(this)
+            setNavigationOnClickListener {
+                viewModel.backEvent()
             }
         }
+        title = null
     }
 
     private fun showSuccessToast(message: String, closeListener: () -> Unit = { }) {

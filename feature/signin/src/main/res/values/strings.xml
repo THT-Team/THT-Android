@@ -8,7 +8,8 @@
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="day">일</string>
-    <string name="confirm">확인</string>
+    <string name="confirm">확인</string>기
+    <string name="do_auth">인증하기</string>
 
     <string name="message_login_issue"><u>계정에 문제가 있나요?</u></string>
 
@@ -18,7 +19,7 @@
 
     <string name="phone_auth">핸드폰 번호 인증</string>
     <string name="hint_phone_input">01012345678</string>
-    <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다.\n핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
+    <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다. 핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
     <string name="message_phone_input_error">핸드폰 번호를 다시 확인해 주세요</string>
     <string name="message_send_auth_success">인증 코드 전송 완료</string>
     <string name="message_send_auth_fail">인증 코드 전송 실패</string>
