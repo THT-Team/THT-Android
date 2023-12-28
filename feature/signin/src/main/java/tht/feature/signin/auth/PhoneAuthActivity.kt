@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
@@ -21,6 +23,7 @@ import androidx.core.view.updateLayoutParams
 import com.airbnb.lottie.LottieAnimationView
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.showToast
@@ -36,11 +39,11 @@ class PhoneAuthActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setToolbar()
         WindowCompat.setDecorFitsSystemWindows(window, false) // for imePadding()
+        super.onCreate(savedInstanceState)
         binding.composeView.setContent {
             val keyboard = LocalSoftwareKeyboardController.current
+            val focusRequester = remember { FocusRequester() }
             LaunchedEffect(key1 = Unit) {
                 viewModel.store.sideEffect.collect {
                     when (it) {
@@ -77,20 +80,17 @@ class PhoneAuthActivity : AppCompatActivity() {
                 onClick = viewModel::authEvent,
                 onClear = viewModel::clearEvent,
                 loading = state.loading,
-                onBackgroundClick = viewModel::backgroundTouchEvent
+                onBackgroundClick = viewModel::backgroundTouchEvent,
+                onBackClick = viewModel::backEvent,
+                focusRequester = focusRequester
             )
-        }
-    }
 
-    private fun setToolbar() {
-        binding.itemSignupToolBar.toolBar.apply {
-            setNavigationIcon(R.drawable.ic_left_arrow)
-            setSupportActionBar(this)
-            setNavigationOnClickListener {
-                viewModel.backEvent()
+            LaunchedEffect(key1 = Unit) {
+                focusRequester.requestFocus()
+                delay(100)
+                keyboard?.show()
             }
         }
-        title = null
     }
 
     private fun showSuccessToast(message: String, closeListener: () -> Unit = { }) {

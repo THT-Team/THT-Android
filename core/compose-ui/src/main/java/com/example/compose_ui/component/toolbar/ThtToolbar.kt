@@ -1,10 +1,14 @@
 package com.example.compose_ui.component.toolbar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -12,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +48,34 @@ fun ThtToolbar(
         }
         Spacer(modifier = Modifier.width(16.dp))
         content()
+    }
+}
+
+/**
+ * TODO: signup toolbar랑 이랑 미묘하게 다른 부분 조정 필요
+ */
+@Composable
+fun ThtToolbar(
+    modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .systemBarsPadding()
+            .height(WindowInsets.statusBars.getTop(LocalDensity.current).dp)
+    ) {
+        if (onBackClick != null) {
+            IconButton(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                onClick = onBackClick
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_left_arrow),
+                    contentDescription = "ic_left_arrow"
+                )
+            }
+        }
     }
 }
 

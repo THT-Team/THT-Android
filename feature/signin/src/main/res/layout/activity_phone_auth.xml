@@ -7,12 +7,8 @@
     tools:context=".auth.PhoneAuthActivity"
     android:id="@+id/layout_background">
 
-    <include
-        android:id="@+id/item_signup_tool_bar"
-        layout="@layout/item_signup_tool_bar" />
-
     <androidx.compose.ui.platform.ComposeView
-        app:layout_constraintTop_toBottomOf="@id/item_signup_tool_bar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
