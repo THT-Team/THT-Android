@@ -159,7 +159,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, ActivityPreloginBi
         const val TAG = "PreloginActivity"
 
         fun getIntent(context: Context): Intent {
-            return Intent(context, PreloginActivity::class.java)
+            return Intent(context, PreloginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
         }
     }
 }

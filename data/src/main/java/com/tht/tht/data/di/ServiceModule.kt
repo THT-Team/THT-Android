@@ -1,7 +1,7 @@
 package com.tht.tht.data.di
 
-import com.tht.tht.data.remote.service.LocationService
-import com.tht.tht.data.remote.service.LocationServiceImpl
+import com.tht.tht.data.remote.service.location.LocationService
+import com.tht.tht.data.remote.service.location.LocationServiceImpl
 import com.tht.tht.data.remote.service.email.EmailService
 import com.tht.tht.data.remote.service.email.EmailServiceImpl
 import dagger.Binds

@@ -5,7 +5,7 @@ import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
 import com.tht.tht.data.remote.retrofit.callAdapter.ApiCallAdapterFactory
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -44,7 +44,8 @@ class RegionCodeApiTest {
 
     @Test
     fun `지역 코드를 가져올 수 있다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/regioncode/region_code.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/regioncode/region_code.json").readText()
         val response = MockResponse().setBody(responseJson)
         mockWebServer.enqueue(response)
 
@@ -71,7 +72,8 @@ class RegionCodeApiTest {
 
     @Test
     fun `지역 코드를 가져올 수 없다`() = runTest {
-        val responseJson = File("src/test/java/com/tht/tht/data/resources/regioncode/region_code_failure_400.json").readText()
+        val responseJson =
+            File("src/test/java/com/tht/tht/data/resources/regioncode/region_code_failure_400.json").readText()
         val response = MockResponse()
             .setResponseCode(400)
             .setBody(responseJson)

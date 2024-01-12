@@ -1,6 +1,5 @@
 package tht.feature.tohot.component.userinfo
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,11 +13,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,15 +45,14 @@ fun ToHotUserInfoFullCard(
     onReportClick: () -> Unit = { }
 ) {
     Box(
-        modifier = modifier
-        .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 338.dp)
                 .verticalScroll(rememberScrollState())
-                .clip(RoundedCornerShape(6.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(
                     color = Color(0xFF282828).copy(alpha = 0.5f)
                 )
@@ -93,8 +94,8 @@ fun ToHotUserInfoFullCard(
             ) {
                 idealTypes.list.forEach { ideal ->
                     ToHotEmojiChip(
-                       content = ideal.title,
-                       emojiCode = ideal.emojiCode
+                        content = ideal.title,
+                        emojiCode = ideal.emojiCode
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                 }
@@ -110,7 +111,7 @@ fun ToHotUserInfoFullCard(
             Box(
                 modifier = Modifier
                     .padding(start = 12.dp, top = 4.dp, end = 12.dp, bottom = 12.dp)
-                    .clip(RoundedCornerShape(6.dp))
+                    .clip(RoundedCornerShape(14.dp))
                     .background(
                         color = Color(0xFF111111)
                     )
@@ -126,17 +127,18 @@ fun ToHotUserInfoFullCard(
             }
         }
 
-        Image(
+        IconButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 12.dp, end = 12.dp)
-                .clickable(
-                    enabled = true,
-                    onClick = onReportClick
-                ),
-            painter = painterResource(id = R.drawable.ic_report),
-            contentDescription = "report_user"
-        )
+                .padding(top = 12.dp, end = 12.dp),
+            onClick = onReportClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_report),
+                contentDescription = "report_user",
+                tint = colorResource(id = tht.core.ui.R.color.white_f9fafa)
+            )
+        }
     }
 }
 

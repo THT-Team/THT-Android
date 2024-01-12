@@ -2,6 +2,7 @@ package com.tht.tht.domain.signup.repository
 
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
+import com.tht.tht.domain.signup.model.SignupCheckModel
 import com.tht.tht.domain.signup.model.SignupResponseModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.model.TermsModel
@@ -26,4 +27,6 @@ interface SignupRepository {
     suspend fun fetchIdealType(): List<IdealTypeModel>
 
     suspend fun requestSignup(user: SignupUserModel): SignupResponseModel
+
+    suspend fun checkSignupState(phone: String): SignupCheckModel
 }

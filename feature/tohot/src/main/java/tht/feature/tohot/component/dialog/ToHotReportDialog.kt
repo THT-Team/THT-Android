@@ -63,7 +63,7 @@ fun ToHotUseReportDialog(
                         .clickable(
                             enabled = true,
                             onClick = { onReportClick(idx) }
-                        ),
+                        )
                 ) {
                     ThtSubtitle2(
                         modifier = if (idx == reportReason.size - 1) {
@@ -108,7 +108,7 @@ fun ToHotUseReportDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotUseReportDialogPreview() {
+private fun ToHotUseReportDialogPreview() {
     ToHotUseReportDialog(
         isShow = true,
         reportReason = listOf(

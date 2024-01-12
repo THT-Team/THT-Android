@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -39,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
@@ -67,4 +70,8 @@ dependencies {
     implementation(libs.jetpack.compose.viewmodel)
     implementation(libs.jetpack.compose.coil)
     implementation(libs.app.compat.theme.adpater)
+
+    implementation(libs.lottie.compose)
+
+    implementation(libs.renderscript.intrinsics.replacement.toolkit)
 }

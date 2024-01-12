@@ -3,7 +3,6 @@ package com.tht.tht.domain.signup.usecase
 import com.tht.tht.domain.signup.constant.SignupConstant
 import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.repository.SignupRepository
-import com.tht.tht.domain.token.model.TokenException
 import com.tht.tht.domain.token.repository.TokenRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -47,14 +46,10 @@ class RequestSignupUseCase(
                     user.introduce.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("introduce")
 
                     user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("ideal")
-
-                    fcmToken.isNullOrBlank() -> throw TokenException.NoneTokenException()
                 }
 
                 signupRepository.requestSignup(
-                    user.copy(
-                        fcmToken = fcmToken!!
-                    )
+                    user.copy(fcmToken = fcmToken)
                 ).let {
                     removeSignupUserUseCase(phone)
                     tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone)

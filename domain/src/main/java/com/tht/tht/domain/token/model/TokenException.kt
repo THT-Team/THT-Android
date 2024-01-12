@@ -1,10 +1,22 @@
 package com.tht.tht.domain.token.model
 
-import com.tht.tht.domain.signup.model.SignupException
+import java.io.IOException
 
-sealed interface TokenException {
+interface NeedLogoutException
 
-    data class NoneTokenException(
-        override val message: String? = "none token exception"
-    ): TokenException, Exception()
+sealed class TokenException(
+    override val message: String
+) : IOException() {
+
+    data class AccessTokenRefreshFailException(
+        override val message: String = "Access Token Refresh Request Fail"
+    ) : TokenException(message), NeedLogoutException
+
+    data class AccessTokenExpiredException(
+        override val message: String = "Access Token Expired"
+    ) : TokenException(message)
+
+    data class RefreshTokenExpiredException(
+        override val message: String = "Refresh Token Expired"
+    ) : TokenException(message), NeedLogoutException
 }

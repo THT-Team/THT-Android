@@ -17,7 +17,7 @@ class TermsDaoImpl @Inject constructor(
             val inputStream = context.resources.assets.open("signup_terms.json")
             val reader = inputStream.bufferedReader()
             Gson().fromJson(reader, TermsEntity::class.java)
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             throw e
         }

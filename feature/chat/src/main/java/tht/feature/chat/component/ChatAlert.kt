@@ -16,14 +16,14 @@ import com.example.compose_ui.component.text.caption.ThtCaption1
 
 @Composable
 internal fun ChatAlert(
-    number: Int,
+    number: Int
 ) {
     Box(
         modifier = Modifier
             .size(18.dp)
             .clip(RoundedCornerShape(size = 50.dp))
             .background(Color(0xFFEF4444)),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         ThtCaption1(text = "$number", fontWeight = FontWeight.Normal, color = Color(0xFFF9FAFA))
     }

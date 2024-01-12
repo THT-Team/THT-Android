@@ -29,7 +29,7 @@ import tht.feature.chat.R
 fun ChatEditTextContainer(
     modifier: Modifier,
     text: String,
-    onChangedText: (String) -> Unit,
+    onChangedText: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -41,32 +41,32 @@ fun ChatEditTextContainer(
                     color = Color(0xFF222222),
                     strokeWidth = 1f,
                     start = Offset(0f, 0f),
-                    end = Offset(size.width, 0f),
+                    end = Offset(size.width, 0f)
                 )
             }
             .padding(horizontal = 17.dp, vertical = 12.dp)
             .then(modifier),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Center
     ) {
         Image(
             modifier = Modifier
                 .noRippleClickable { },
             painter = painterResource(id = R.drawable.ic_attachment),
-            contentDescription = "파일 첨부 버튼",
+            contentDescription = "파일 첨부 버튼"
         )
         Spacer(space = 10.dp)
         ChatEditText(
             modifier = Modifier.weight(1f),
             text = text,
-            onChangedText = onChangedText,
+            onChangedText = onChangedText
         )
         Spacer(space = 10.dp)
         Image(
             modifier = Modifier
                 .noRippleClickable { },
             painter = painterResource(id = R.drawable.ic_sent),
-            contentDescription = "보내기 버튼",
+            contentDescription = "보내기 버튼"
         )
     }
 }
@@ -75,7 +75,7 @@ fun ChatEditTextContainer(
 fun ChatEditText(
     modifier: Modifier,
     text: String,
-    onChangedText: (String) -> Unit,
+    onChangedText: (String) -> Unit
 ) {
     BasicTextField(
         modifier = Modifier
@@ -86,7 +86,7 @@ fun ChatEditText(
             .then(modifier),
         value = text,
         onValueChange = onChangedText,
-        textStyle = TextStyle(color = Color.White),
+        textStyle = TextStyle(color = Color.White)
     )
 }
 
@@ -96,6 +96,6 @@ fun ChatEditTextContainer() {
     ChatEditTextContainer(
         modifier = Modifier,
         text = "테스트",
-        onChangedText = {},
+        onChangedText = {}
     )
 }

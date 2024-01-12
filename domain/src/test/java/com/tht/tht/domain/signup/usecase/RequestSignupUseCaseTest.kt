@@ -4,7 +4,6 @@ import com.tht.tht.domain.signup.model.SignupException
 import com.tht.tht.domain.signup.model.SignupResponseModel
 import com.tht.tht.domain.signup.model.SignupUserModel
 import com.tht.tht.domain.signup.repository.SignupRepository
-import com.tht.tht.domain.token.model.TokenException
 import com.tht.tht.domain.token.repository.TokenRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -211,17 +210,6 @@ internal class RequestSignupUseCaseTest {
         assertThat(actual)
             .isNotNull
             .isInstanceOf(SignupException.SignupUserInfoInvalidateException::class.java)
-    }
-
-    @Test
-    fun `useCase는 SignupUser가 유효하고 TokenRepository의 fetchFcmToken 값이 유효하지 않으면 NoneTokenException를 Reuslt로 래핑해 리턴한다`() = runTest(testDispatcher) {
-        coEvery { repository.fetchSignupUser(any()) } returns validSignupUser
-        coEvery { tokenRepository.fetchFcmToken() } returns null
-        val actual = useCase("test").exceptionOrNull()
-
-        assertThat(actual)
-            .isNotNull
-            .isInstanceOf(TokenException.NoneTokenException::class.java)
     }
 
     @Test

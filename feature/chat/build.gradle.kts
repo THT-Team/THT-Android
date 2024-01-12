@@ -4,6 +4,8 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -23,7 +25,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+                "proguard-rules.pro"
             )
         }
     }
@@ -43,6 +45,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
@@ -56,12 +59,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso)
     implementation(libs.kotlin.collections.immutable)
 
-    implementation("androidx.activity:activity-compose:1.7.1")
-    implementation("androidx.compose.material:material:1.4.3")
-    implementation("androidx.compose.animation:animation:1.4.3")
-    implementation("androidx.compose.ui:ui-tooling:1.4.3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.jetpack.compose.material)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    implementation(libs.jetpack.compose.viewmodel)
+    androidTestImplementation(libs.jetpack.compose.ui.tooling.test)
+
+    implementation(libs.hilt)
+    testImplementation(libs.hilt.android.testing)
+    kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
+    implementation(libs.jetpack.compose.hilt.navigation)
 }

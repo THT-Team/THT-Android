@@ -3,6 +3,7 @@ package com.tht.tht.data.local.dao
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tht.tht.data.local.entity.AccessTokenEntity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,7 +17,7 @@ class TokenDaoImpl @Inject constructor(
 ) : TokenDao {
 
     // local 에 저장된 token 이 없다면 FirebaseInstance 에서 token 을 가져 오고, local 에 저장
-    override suspend fun fetchFcmToken(): String? {
+    override suspend fun fetchFcmToken(): String {
         return sp.getString(FCM_TOKEN_KEY, null) ?: suspendCancellableCoroutine { continuation ->
             firebaseMessaging
                 .token
@@ -43,8 +44,11 @@ class TokenDaoImpl @Inject constructor(
         sp.edit { putString(THT_PHONE_KEY, phone) }
     }
 
-    override fun fetchThtToken(): String? {
-        return sp.getString(THT_TOKEN_KEY, null)
+    override fun fetchThtToken(): AccessTokenEntity {
+        return AccessTokenEntity(
+            accessToken = sp.getString(THT_TOKEN_KEY, null),
+            expiredTime = sp.getLong(THT_TOKEN_EXPIRES_KEY, 0L)
+        )
     }
 
     override fun fetchPhone(): String? {

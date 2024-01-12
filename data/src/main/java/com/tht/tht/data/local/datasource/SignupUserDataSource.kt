@@ -9,5 +9,4 @@ interface SignupUserDataSource {
     suspend fun fetchSignupUser(phone: String): SignupUserEntity?
 
     suspend fun removeSignupUser(phone: String): Boolean
-
 }

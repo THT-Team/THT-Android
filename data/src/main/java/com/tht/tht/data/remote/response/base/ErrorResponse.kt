@@ -5,5 +5,5 @@ data class ErrorResponse(
     val error: String,
     val message: String,
     val timestamp: String,
-    val path: String,
+    val path: String
 )

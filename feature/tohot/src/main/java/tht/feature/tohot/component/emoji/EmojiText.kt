@@ -10,9 +10,9 @@ import com.example.compose_ui.extensions.dpTextUnit
 fun EmojiText(
     modifier: Modifier = Modifier,
     emojiCode: String,
-    textSize: Int,
+    textSize: Int
 ) {
-    val code = Integer.decode("0x${emojiCode}")
+    val code = Integer.decode("0x$emojiCode")
     val emoji = String(Character.toChars(code))
     Text(
         modifier = modifier,
@@ -23,7 +23,7 @@ fun EmojiText(
 
 @Composable
 @Preview
-fun EmojiTextPreview() {
+private fun EmojiTextPreview() {
     EmojiText(
         emojiCode = "1F4DA",
         textSize = 38

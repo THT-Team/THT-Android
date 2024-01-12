@@ -15,12 +15,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.R
 import com.example.compose_ui.common.viewmodel.collectAsState
 import tht.feature.chat.component.ChatTopAppBar
-import tht.feature.chat.viewmodel.ChatViewModel
+import tht.feature.chat.screen.chatlist.ChatListScreen
+import tht.feature.chat.viewmodel.chatlist.ChatViewModel
 import tht.feature.chat.viewmodel.state.ChatState
 
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
+    navigateChatDetail: () -> Unit = { }
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getChatList()
@@ -34,20 +36,20 @@ internal fun ChatScreen(
                 Icon(
                     tint = Color.White,
                     painter = painterResource(id = R.drawable.ic_non_alert),
-                    contentDescription = null,
+                    contentDescription = null
                 )
-            },
+            }
         )
 
         Crossfade(
             modifier = Modifier.fillMaxSize(),
             targetState = state,
             animationSpec = tween(400),
-            label = "",
+            label = ""
         ) { state ->
             when (state) {
                 is ChatState.Empty -> ChatEmptyScreen(onClickChangeTitle = {})
-                is ChatState.ChatList -> ChatListScreen(items = state)
+                is ChatState.ChatList -> ChatListScreen(items = state, navigateChatDetail = navigateChatDetail)
             }
         }
     }

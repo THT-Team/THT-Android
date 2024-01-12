@@ -2,6 +2,7 @@ package com.tht.tht.data.local.datasource
 
 import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.local.dao.TokenDao
+import com.tht.tht.data.local.entity.AccessTokenEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -11,7 +12,7 @@ class TokenDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : TokenDataSource {
 
-    override suspend fun fetchFcmToken(): String? {
+    override suspend fun fetchFcmToken(): String {
         return withContext(dispatcher) {
             tokenDao.fetchFcmToken()
         }
@@ -29,7 +30,7 @@ class TokenDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchThtToken(): String? {
+    override suspend fun fetchThtToken(): AccessTokenEntity {
         return withContext(dispatcher) {
             tokenDao.fetchThtToken()
         }

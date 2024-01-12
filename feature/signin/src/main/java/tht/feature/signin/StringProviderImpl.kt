@@ -24,6 +24,7 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.InvalidateSignupProcess -> R.string.message_invalidate_signup_process
             StringProvider.ResId.SendAuthSuccess -> R.string.message_send_auth_success
             StringProvider.ResId.SendAuthFail -> R.string.message_send_auth_fail
+            StringProvider.ResId.CheckSignupStateFail -> R.string.message_check_signup_state_fail
             StringProvider.ResId.AuthTimeout -> R.string.message_auth_timeout
             StringProvider.ResId.ResendAuthSuccess -> R.string.message_resend_auth_success
             StringProvider.ResId.VerifyFail -> R.string.message_verify_error
@@ -52,6 +53,7 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.SignupFail -> R.string.message_signup_fail
             StringProvider.ResId.InvalidDate -> R.string.message_invalidate_date
             StringProvider.ResId.EmailSendFail -> R.string.message_email_send_fail
+            StringProvider.ResId.SignupUserInvalidate -> R.string.signup_user_invalidate
         }
     }
 }

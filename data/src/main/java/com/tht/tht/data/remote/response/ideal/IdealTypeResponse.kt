@@ -7,4 +7,4 @@ data class IdealTypeResponse(
     @SerializedName("name") override val name: String,
     @SerializedName("emojiCode") override val emojiCode: String,
     @SerializedName("idx") override val idx: Long
-): TypeResponse
+) : TypeResponse

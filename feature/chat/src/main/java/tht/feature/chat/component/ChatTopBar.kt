@@ -18,16 +18,16 @@ import tht.feature.chat.R
 @Composable
 internal fun ChatTopAppBar(
     title: String,
-    rightIcons: @Composable () -> Unit,
+    rightIcons: @Composable () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 20.dp,
-                vertical = (15.5).dp,
+                vertical = (15.5).dp
             ),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ThtHeadline4(text = title, fontWeight = FontWeight.SemiBold, color = Color(0xFFF9FAFA))
         rightIcons()

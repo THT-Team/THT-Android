@@ -11,7 +11,7 @@ data class RegionCodeResponse(
     ) {
         data class Row(
             @SerializedName("region_cd")
-            val regionCode: String,
+            val regionCode: String
         )
     }
 }

@@ -13,6 +13,7 @@ interface StringProvider {
         InvalidateSignupProcess,
         SendAuthSuccess,
         SendAuthFail,
+        CheckSignupStateFail,
         AuthTimeout,
         ResendAuthSuccess,
         VerifyFail,
@@ -40,6 +41,7 @@ interface StringProvider {
         RegionCodeFetchFail,
         SignupFail,
         InvalidDate,
-        EmailSendFail
+        EmailSendFail,
+        SignupUserInvalidate
     }
 }

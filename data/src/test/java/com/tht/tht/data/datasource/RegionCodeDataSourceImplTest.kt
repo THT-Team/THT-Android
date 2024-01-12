@@ -1,11 +1,11 @@
 package com.tht.tht.data.datasource
 
-import com.tht.tht.data.remote.datasource.RegionCodeDataSourceImpl
+import com.tht.tht.data.remote.datasource.signup.RegionCodeDataSourceImpl
 import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.base.BaseResponse
 import com.tht.tht.data.remote.response.base.ErrorResponse
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
-import com.tht.tht.data.remote.service.RegionCodeApi
+import com.tht.tht.data.remote.service.location.RegionCodeApi
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,8 +13,6 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -63,7 +61,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 500,
             errorResponse = ErrorResponse(
-                0,"","ApiError","",""
+                0,
+                "",
+                "ApiError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect
@@ -82,7 +84,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 400,
             errorResponse = ErrorResponse(
-                0,"","NetworkError","",""
+                0,
+                "",
+                "NetworkError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect
@@ -101,7 +107,11 @@ internal class RegionCodeDataSourceImplTest {
         val expect = BaseResponse.ApiError(
             statusCode = 0,
             errorResponse = ErrorResponse(
-                0,"","UnknownError","",""
+                0,
+                "",
+                "UnknownError",
+                "",
+                ""
             )
         )
         coEvery { regionCodeApi.fetchRegionCode("") } returns expect

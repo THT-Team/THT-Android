@@ -1,17 +1,35 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.domain.chat.repository.ChatRepository
+import com.tht.tht.domain.chat.usecase.GetChatListUseCase
+import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
+import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
-import com.tht.tht.domain.login.usecase.RequestFcmTokenLoginUseCase
+import com.tht.tht.domain.login.usecase.LoginUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
+import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
+import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
+import com.tht.tht.domain.token.token.RefreshThtAccessTokenUseCase
+import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
+import com.tht.tht.domain.topic.SelectTopicUseCase
+import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.ReportUserUseCase
+import com.tht.tht.domain.user.SendDislikeUseCase
+import com.tht.tht.domain.user.SendHeartUseCase
+import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,7 +45,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): CreateSignupUserUseCase = CreateSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -35,7 +54,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchIdealTypeUseCase = FetchIdealTypeUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -43,7 +63,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchInterestUseCase = FetchInterestUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -51,7 +72,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchSignupUserUseCase = FetchSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -59,7 +81,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): FetchTermsUseCase = FetchTermsUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -67,7 +90,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): PatchSignupDataUseCase = PatchSignupDataUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -75,7 +99,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RemoveSignupUserUseCase = RemoveSignupUserUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -83,7 +108,8 @@ object UseCaseModule {
         repository: SignupRepository,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestAuthenticationUseCase = RequestAuthenticationUseCase(
-        repository, dispatcher
+        repository,
+        dispatcher
     )
 
     @Provides
@@ -93,7 +119,35 @@ object UseCaseModule {
         removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
-        repository, tokenRepository, removeSignupUserUseCase, dispatcher
+        repository,
+        tokenRepository,
+        removeSignupUserUseCase,
+        dispatcher
+    )
+
+    @Provides
+    fun provideCheckSignupStateUseCase(
+        repository: SignupRepository,
+        loginUseCase: LoginUseCase
+    ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
+        repository,
+        loginUseCase
+    )
+
+    @Provides
+    fun provideLoginUseCase(
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): LoginUseCase = LoginUseCase(
+        tokenRepository,
+        loginRepository
+    )
+
+    @Provides
+    fun provideRefreshThtAccessTokenUseCase(
+        tokenRepository: TokenRepository
+    ): RefreshThtAccessTokenUseCase = RefreshThtAccessTokenUseCase(
+        tokenRepository
     )
 
     @Provides
@@ -102,7 +156,9 @@ object UseCaseModule {
         createSignupUserUseCase: CreateSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestPhoneVerifyUseCase = RequestPhoneVerifyUseCase(
-        repository, createSignupUserUseCase, dispatcher
+        repository,
+        createSignupUserUseCase,
+        dispatcher
     )
 
     @Provides
@@ -137,11 +193,11 @@ object UseCaseModule {
         FetchLocationByAddressUseCase(repository, dispatcher)
 
     @Provides
-    fun provideRequestFcmTokenLoginUseCase(
+    fun provideRefreshFcmTokenUseCase(
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
-    ): RequestFcmTokenLoginUseCase =
-        RequestFcmTokenLoginUseCase(tokenRepository, loginRepository)
+    ): RefreshFcmTokenUseCase =
+        RefreshFcmTokenUseCase(tokenRepository, loginRepository)
 
     @Provides
     fun provideFetchRegionCodeUseCase(
@@ -163,4 +219,80 @@ object UseCaseModule {
         repository: EmailRepository
     ): SendInquiryEmailUseCase =
         SendInquiryEmailUseCase(repository)
+
+    @Provides
+    fun provideGetChatListUseCase(
+        repository: ChatRepository
+    ): GetChatListUseCase =
+        GetChatListUseCase(repository)
+
+    @Provides
+    fun provideFetchThtAccessTokenUseCase(
+        repository: TokenRepository
+    ): FetchThtAccessTokenUseCase =
+        FetchThtAccessTokenUseCase(repository)
+
+    @Provides
+    fun provideCheckThtAccessTokenExpiredUseCase(
+        repository: TokenRepository
+    ): CheckThtAccessTokenExpiredUseCase =
+        CheckThtAccessTokenExpiredUseCase(repository)
+
+    @Provides
+    fun provideCheckAndRefreshThtAccessTokenUseCase(
+        refreshThtAccessTokenUseCase: RefreshThtAccessTokenUseCase,
+        checkThtAccessTokenExpiredUseCase: CheckThtAccessTokenExpiredUseCase
+    ): CheckAndRefreshThtAccessTokenUseCase =
+        CheckAndRefreshThtAccessTokenUseCase(
+            refreshThtAccessTokenUseCase,
+            checkThtAccessTokenExpiredUseCase
+        )
+
+    @Provides
+    fun provideFetchDailyTopicListUseCase(
+        repository: DailyTopicRepository
+    ): FetchDailyTopicListUseCase = FetchDailyTopicListUseCase(repository)
+
+    @Provides
+    fun provideSelectTopicUseCase(
+        repository: DailyTopicRepository
+    ): SelectTopicUseCase = SelectTopicUseCase(repository)
+
+    @Provides
+    fun provideFetchDailyUserCardUseCase(
+        repository: DailyUserCardRepository
+    ): FetchDailyUserCardUseCase =
+        FetchDailyUserCardUseCase(repository)
+
+    @Provides
+    fun provideFetchToHotStateUseCase(
+        topicRepository: DailyTopicRepository,
+        userCardRepository: DailyUserCardRepository,
+        fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
+    ): FetchToHotStateUseCase =
+        FetchToHotStateUseCase(topicRepository, userCardRepository, fetchDailyTopicListUseCase)
+
+    @Provides
+    fun provideReportUserUseCase(
+        repository: UserRepository
+    ): ReportUserUseCase =
+        ReportUserUseCase(repository)
+
+    @Provides
+    fun provideBlockUserUseCase(
+        repository: UserRepository
+    ): BlockUserUseCase =
+        BlockUserUseCase(repository)
+
+    @Provides
+    fun provideSendHeartUseCase(
+        repository: UserRepository
+    ): SendHeartUseCase =
+        SendHeartUseCase(repository)
+
+    @Provides
+    fun provideSendDislikeUseCase(
+        repository: UserRepository
+    ): SendDislikeUseCase =
+        SendDislikeUseCase(repository)
 }

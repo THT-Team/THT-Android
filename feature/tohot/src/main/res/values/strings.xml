@@ -1,6 +1,8 @@
 <resources>
     <string name="loading">로딩중</string>
     <string name="cancel">취소</string>
+    <string name="close">닫기</string>
+    <string name="falling">Falling</string>
 
     <string name="user_info_interest_title">내 관심사</string>
     <string name="user_info_ideal_type_title">내 이상형</string>
@@ -15,7 +17,63 @@
     <string name="block_dialog_content">"해당 사용자와 서로 차단됩니다.?</string>
     <string name="block_dialog_block">차단하기</string>
 
+    <string name="entering">입장하기</string>
     <string name="starting">시작하기</string>
+    <string name="waiting">기다리기</string>
+    <string name="restart">다시 시작</string>
+    <string name="reset">리셋</string>
+    <string name="retry">다시 시도</string>
+    <string name="logout">로그아웃</string>
 
     <string name="select_topic_title">오늘의 폴링</string>
+
+    <string name="to_hot_topic_select_fail">토픽을 선택할 수 없어요..</string>
+
+    <string name="to_hot_login_expired_card_title">로그인 정보가 만료되었어요!</string>
+    <string name="to_hot_login_expired_card_description">다시 로그인 해주세요</string>
+
+    <string name="to_hot_none_next_user_card_title">무디들을 모두 만나봤어요!</string>
+    <string name="to_hot_none_next_user_card_description">아직 무디들이 들어오고있어요.</string>
+    <string name="to_hot_none_initial_user_card_title">주제어를 가장 먼저 선택하셨어요!</string>
+    <string name="to_hot_none_initial_user_card_description">아직 무디들이 들어오고있어요.</string>
+    <string name="to_hot_error_card_description">무디들을 다시 불러올까요?</string>
+    <string name="to_hot_error_card_title">무디들을 불러오는데 문제가 발생했어요!</string>
+    <string name="to_hot_enter_card_title">무디들을 만나러 가볼까요?</string>
+    <string name="to_hot_enter_card_description">버튼을 눌러 시작하기</string>
+    <string name="to_hot_query_success_card_title">무디들이 들어왔어요!</string>
+    <string name="to_hot_query_success_card_description">바로 무디들을 만나볼까요?</string>
+
+    <string name="to_hot_user_card_loading">"같은 주제어를 선택한\n무디들을 찾고 있어요.."</string>
+    <string name="to_hot_user_report_loading">"무디를 신고 중 이예요.."</string>
+    <string name="to_hot_user_block_loading">"무디를 차단 중 이예요.."</string>
+    <string name="to_hot_topic_list_loading">"주제어 목록을 불러오고 있어요.."</string>
+    <string name="to_hot_topic_select_loading">"주제어를 선택하고 있어요.."</string>
+
+    <string name="to_hot_hold_dialog_title">잠시 자리를 비우셨나요?</string>
+    <string name="to_hot_hold_dialog_content">저희가 잠시 홀드 해 놓을게요.</string>
+    <string name="to_hot_hold_card_title">잠시 쉬었다 가시겠어요?</string>
+    <string name="to_hot_hold_card_content">저희가 잠시 홀드 해 놓을게요.</string>
+    <string name="to_hot_hold_card_resume_content">더블탭으로 다시 시작하기</string>
+
+    <string name="to_hot_report_success">신고하기가 완료되었습니다. 해당 사용자와 서로 차단되며, 신고 사유는 검토 후 처리됩니다.</string>
+    <string name="to_hot_report_fail">신고를 실패했습니다</string>
+    <string name="to_hot_block_success">차단하기가 완료되었습니다. 해당 사용자와 서로 차단되며 설정에서 확인 가능합니다. </string>
+    <string name="to_hot_block_fail">차단을 실패했습니다</string>
+
+    <string name="to_hot_heart_loading">좋아요를 보내는 중이예요..</string>
+    <string name="to_hot_heart_fail">좋아요 전송을 실패했습니다</string>
+    <string name="to_hot_dislike_loading">싫어요를 처리하는 중이예요..</string>
+    <string name="to_hot_dislike_fail">싫어요를 실패했습니다</string>
+
+    <string name="to_hot_topic_reset_1">10분뒤</string>
+    <string name="to_hot_topic_reset_2">핫 토픽들이</string>
+    <string name="to_hot_topic_reset_3">됩니다!</string>
+    <string name="to_hot_topic_reset_description">새로운 무디들을 만나보실 준비 되셨나요?</string>
+
+    <string name="to_hot_topic_wait">아직 주제어 변경 시간이 좀 남았네요!</string>
+    <string name="to_hot_topic_wait_description">금방 더 흥미로운 주제를 가지고 올게요.</string>
+
+    <string name="to_hot_matching_title">무디와 매칭 되었어요!</string>
+    <string name="to_hot_matching_content">자유롭게 대화를 시작해보세요.</string>
+    <string name="to_hot_matching_btn">대화 시작하기</string>
 </resources>

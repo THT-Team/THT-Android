@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
@@ -20,6 +21,7 @@ import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
 import tht.feature.signin.util.AnimatorUtil
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PhoneVerifyActivity : AppCompatActivity() {
@@ -28,6 +30,9 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
     private val textInputLayouts = mutableListOf<TextInputLayout>()
     private val textInputEditTexts = mutableListOf<TextInputEditText>()
+
+    @Inject
+    lateinit var homeNavigation: HomeNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +114,10 @@ class PhoneVerifyActivity : AppCompatActivity() {
 
                         is PhoneVerifyViewModel.VerifySideEffect.NavigateNextView -> {
                             startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
+                        }
+
+                        is PhoneVerifyViewModel.VerifySideEffect.NavigateMainView -> {
+                            homeNavigation.navigateHome(this@PhoneVerifyActivity)
                         }
                     }
                 }

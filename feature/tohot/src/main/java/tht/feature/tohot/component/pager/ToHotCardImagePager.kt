@@ -10,6 +10,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import tht.feature.tohot.component.card.ShakingCard
+import tht.feature.tohot.component.card.ToHotHoldCard
 import tht.feature.tohot.component.card.ToHotCardImage
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.userData
@@ -20,7 +22,10 @@ fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
     pagerState: PagerState = rememberPagerState(),
     imageUrls: ImmutableListWrapper<String>,
-    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
+    isHold: Boolean,
+    isShaking: Boolean,
+    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> },
+    onHoldDoubleTab: () -> Unit = { }
 ) {
     Box(
         modifier = modifier
@@ -30,11 +35,23 @@ fun ToHotCardImagePager(
             pageCount = imageUrls.list.size,
             state = pagerState
         ) { page ->
-            ToHotCardImage(
-                modifier = Modifier.fillMaxHeight(),
-                imageUrl = imageUrls.list[page],
-                loadFinishListener = loadFinishListener
-            )
+            ToHotHoldCard(
+                modifier = Modifier.fillMaxSize(),
+                isHold = isHold,
+                clickableContent = false,
+                onDoubleTab = onHoldDoubleTab
+            ) {
+                ShakingCard(
+                    modifier = Modifier.fillMaxHeight(),
+                    shakingOn = !isHold && isShaking
+                ) {
+                    ToHotCardImage(
+                        modifier = Modifier.fillMaxHeight(),
+                        imageUrl = imageUrls.list[page],
+                        loadFinishListener = loadFinishListener
+                    )
+                }
+            }
         }
     }
 }
@@ -44,6 +61,19 @@ fun ToHotCardImagePager(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 private fun ToHotCardImagePagerPreview() {
     ToHotCardImagePager(
-        imageUrls = userData.profileImgUrl
+        imageUrls = userData.profileImgUrl,
+        isHold = false,
+        isShaking = false
+    )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+@Preview(showBackground = true, backgroundColor = 0xFF000000)
+private fun ToHotCardImagePagerBlurPreview() {
+    ToHotCardImagePager(
+        imageUrls = userData.profileImgUrl,
+        isHold = true,
+        isShaking = false
     )
 }

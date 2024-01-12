@@ -1,12 +1,15 @@
 package tht.feature.tohot.component.topic
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,23 +17,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
 import tht.core.ui.R
-import tht.feature.tohot.component.emoji.EmojiText
 
 @Composable
 fun TopicSelectChip(
     modifier: Modifier = Modifier,
-    emojiCode: String,
+    iconUrl: String?,
+    @DrawableRes iconRes: Int,
+    iconSize: Dp = 48.dp,
     title: String,
-    key: Long,
+    key: Int, // key 네이밍이지만 topic ui model 의 idx 속성을 넣어줌
     content: String,
     isSelect: Boolean,
-    topicClickListener: (Long) -> Unit = { }
+    topicClickListener: (Int) -> Unit = { }
 ) {
     Row(
         modifier = modifier
@@ -46,13 +53,17 @@ fun TopicSelectChip(
                 shape = RoundedCornerShape(36.dp)
             )
     ) {
-        EmojiText(
+        Box(
             modifier = Modifier
+                .align(Alignment.CenterVertically)
                 .padding(start = 24.dp, top = 16.dp, bottom = 16.dp)
-                .align(Alignment.CenterVertically),
-            emojiCode = emojiCode,
-            textSize = 38
-        )
+        ) {
+            TopicItemChipImage(
+                modifier = Modifier.size(iconSize),
+                imageUrl = iconUrl,
+                error = painterResource(id = iconRes)
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -70,7 +81,8 @@ fun TopicSelectChip(
                 modifier = Modifier.padding(top = 4.dp),
                 text = content,
                 fontWeight = FontWeight.Medium,
-                color = colorResource(id = R.color.white_f9fafa)
+                color = colorResource(id = R.color.white_f9fafa),
+                textAlign = TextAlign.Start
             )
         }
     }
@@ -78,9 +90,10 @@ fun TopicSelectChip(
 
 @Composable
 @Preview
-fun TopicSelectItemPreview() {
+private fun TopicSelectItemPreview() {
     TopicSelectChip(
-        emojiCode = "1F3AE",
+        iconUrl = null,
+        iconRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
         title = "게임",
         content = "게임 좋아하시나요?",
         key = 1,
@@ -90,11 +103,12 @@ fun TopicSelectItemPreview() {
 
 @Composable
 @Preview
-fun SelectTopicSelectItemPreview() {
+private fun SelectTopicSelectItemPreview() {
     TopicSelectChip(
-        emojiCode = "1F3AE",
+        iconUrl = null,
+        iconRes = tht.feature.tohot.R.drawable.ic_topic_item_fun_48,
         title = "게임",
-        content = "게임 좋아하시나요?",
+        content = "게임 좋아하시나요?게임 좋아하시나요?게임 좋아하시나요?게임 좋아하시나요?",
         key = 1,
         isSelect = true
     )

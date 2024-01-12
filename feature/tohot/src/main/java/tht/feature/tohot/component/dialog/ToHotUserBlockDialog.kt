@@ -24,7 +24,6 @@ import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle2
 import tht.feature.tohot.R
 
-
 @Composable
 fun ToHotUserBlockDialog(
     modifier: Modifier = Modifier,
@@ -108,7 +107,7 @@ fun ToHotUserBlockDialog(
 
 @Composable
 @Preview(showBackground = true)
-fun ToHotUserBlockDialogPreview() {
+private fun ToHotUserBlockDialogPreview() {
     ToHotUserBlockDialog(
         isShow = true,
         onDismiss = { }

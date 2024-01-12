@@ -12,6 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.tht.tht.databinding.ActivityHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.navigation.ToHotNavigation
 import tht.core.ui.base.BaseActivity
 import tht.core.ui.base.FragmentNavigator
 import tht.core.ui.delegate.viewBinding
@@ -19,7 +20,8 @@ import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
 import tht.feature.like.like.LikeFragment
 import tht.feature.setting.MyFragment
-import tht.feature.tohot.ToHotFragment
+import tht.feature.tohot.tohot.fragment.ToHotFragment
+import javax.inject.Inject
 
 @SuppressLint("CommitTransaction")
 @AndroidEntryPoint
@@ -27,6 +29,9 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
     override val vm by viewModels<HomeViewModel>()
     override val binding by viewBinding(ActivityHomeBinding::inflate)
+
+    @Inject
+    lateinit var toHotNavigation: ToHotNavigation
 
     override fun initViews() {
         initNavigationBar()
@@ -42,7 +47,10 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         binding.bnvHome.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_tohot -> {
-                    showFragment(ToHotFragment.TAG)
+                    toHotNavigation.navigateToHot(
+                        supportFragmentManager,
+                        R.id.fragment_container
+                    )
                     true
                 }
                 R.id.menu_heart -> {

@@ -10,6 +10,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import tht.feature.chat.model.ChatListUiModel
 import tht.feature.chat.viewmodel.detail.sideeffect.ChatDetailSideEffect
 import tht.feature.chat.viewmodel.detail.state.ChatDetailState
 import tht.feature.chat.viewmodel.state.skeletonChatList
@@ -23,8 +24,8 @@ internal class ChatDetailViewModel @Inject constructor() :
         store(
             initialState = ChatDetailState.ChatList(
                 isLoading = true,
-                chatList = skeletonChatList,
-            ),
+                chatList = skeletonChatList
+            )
         )
 
     private var _currentText: MutableStateFlow<String> = MutableStateFlow("")
@@ -35,20 +36,14 @@ internal class ChatDetailViewModel @Inject constructor() :
                 ChatDetailState.ChatList(
                     isLoading = false,
                     chatList = persistentListOf(
-                        "안녕하세요!",
-                        "만나서 반가워요~",
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-                        "만나서 반가워요~",
-                        "긴 텍스트 두줄 이상 문장은 이렇게 씁니다아아아아아아아아아",
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                        "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아.아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아", // ktlint-disable max-line-length
-                    ),
+                        ChatListUiModel(
+                            chatRoomIdx = 1L,
+                            partnerName = "하하",
+                            partnerProfileUrl = "",
+                            currentMessage = "",
+                            messageTime = ""
+                        )
+                    )
                 )
             }
         }

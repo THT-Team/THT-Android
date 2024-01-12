@@ -22,12 +22,12 @@ import tht.feature.tohot.userData
  */
 
 @Composable
-fun <T>ToHotCardImage(
+fun <T> ToHotCardImage(
     modifier: Modifier = Modifier,
     imageUrl: T,
     placeholder: Painter = painterResource(id = R.drawable.ic_user_card_placeholder),
     error: Painter = painterResource(id = R.drawable.ic_user_card_error),
-    loadFinishListener: (Boolean?, Throwable?) -> Unit = { _, _ -> }
+    loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> }
 ) {
     val model = ImageRequest.Builder(LocalContext.current)
         .data(imageUrl)
@@ -44,7 +44,7 @@ fun <T>ToHotCardImage(
         error = error,
         contentScale = ContentScale.Crop,
         onSuccess = { loadFinishListener(true, null) },
-        onError = { loadFinishListener(null, it.result.throwable) }
+        onError = { loadFinishListener(false, it.result.throwable) }
     )
 }
 

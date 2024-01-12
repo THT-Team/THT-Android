@@ -24,6 +24,7 @@
     <string name="message_phone_input_error">핸드폰 번호를 다시 확인해 주세요</string>
     <string name="message_send_auth_success">인증 코드 전송 완료</string>
     <string name="message_send_auth_fail">인증 코드 전송 실패</string>
+    <string name="message_check_signup_state_fail">회원가입 이력 조회 실패</string>
 
     <string name="title_verify">인증 코드 입력</string>
     <string name="message_verify">%1s 으로\n전송된 코드를 입력해주세요</string>
@@ -120,5 +121,7 @@
     <string name="message_complete_content">답변에는 하루 정도의 시간이 걸릴 수 있어요.\n답변이 안온다면, 스팸 메일함을 확인해주세요.</string>
     <string name="message_complete_back"><u>돌아가기</u></string>
     <string name="inquiry_complete_dialog">InquiryCompleteDialog</string>
+
+    <string name="signup_user_invalidate">회원가입 정보가 존재하지 않습니다</string>
 
 </resources>
