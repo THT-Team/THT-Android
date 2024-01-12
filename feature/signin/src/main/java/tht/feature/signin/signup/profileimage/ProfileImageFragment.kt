@@ -1,12 +1,9 @@
 package tht.feature.signin.signup.profileimage
 
-import android.app.AlertDialog
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -18,7 +15,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.getPxFromDp
+import tht.core.ui.dialog.showCustomAlertDialog
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
@@ -26,7 +23,6 @@ import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
 import tht.feature.signin.util.StringUtil
-import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>() {
@@ -78,9 +74,11 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                             context?.showToast(it.message)
                             rootViewModel.backEvent()
                         }
+
                         is ProfileImageUiState.Empty -> {
                             binding.btnNext.isEnabled = false
                         }
+
                         is ProfileImageUiState.Accept -> {
                             binding.btnNext.isEnabled = true
                         }
@@ -126,11 +124,13 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
                                 imageViews[idx].setImageURI(Uri.parse(imageUri.uri))
                                 return@forEachIndexed
                             }
+
                             !imageUri.url.isNullOrBlank() -> {
                                 Log.d("TAG", "try to load image => idx[$idx], url[${imageUri.url}]")
                                 loadUrl(imageViews[idx], imageUri.url)
                                 return@forEachIndexed
                             }
+
                             else -> {
                                 imageViews[idx].background = null
                                 imageViews[idx].setImageBitmap(null)
@@ -168,36 +168,23 @@ class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, Fragm
             .into(imageView)
     }
 
-    private fun showImageModifyDialog(idx: Int) {
-        val menus = arrayOf(
-            requireContext().getString(R.string.menu_profile_image_modify),
-            requireContext().getString(R.string.menu_profile_image_remove)
-        )
-
-        AlertDialog.Builder(requireContext(), R.style.ProfileImageModifyDialogStyle)
-            .setAdapter(
-                ArrayAdapter(
-                    requireContext(),
-                    R.layout.item_profile_image_dialog_item,
-                    menus
-                )
-            ) { dialog, which ->
-                when (which) {
-                    0 -> viewModel.imageModifyEvent(idx)
-                    1 -> viewModel.imageRemoveEvent(idx)
-                }
-                dialog.dismiss()
+    private fun showImageModifyDialog(idx: Int) =
+        showCustomAlertDialog(
+            requireContext(),
+            requireActivity(),
+            arrayOf(
+                requireContext().getString(R.string.menu_profile_image_modify),
+                requireContext().getString(R.string.menu_profile_image_remove)
+            ),
+            R.layout.item_profile_image_dialog_item,
+            true
+        ) { dialog, which ->
+            when (which) {
+                0 -> viewModel.imageModifyEvent(idx)
+                1 -> viewModel.imageRemoveEvent(idx)
             }
-            .create()
-            .apply {
-                listView.divider = ColorDrawable(
-                    resources.getColor(tht.core.ui.R.color.gray_666666, null)
-                )
-                listView.dividerHeight = requireContext().getPxFromDp(1.5f).roundToInt()
-                listView.setFooterDividersEnabled(false)
-                listView.addFooterView(View(requireContext()))
-            }.show()
-    }
+            dialog.dismiss()
+        }
 
     companion object {
         val TAG = ProfileImageFragment::class.simpleName.toString()

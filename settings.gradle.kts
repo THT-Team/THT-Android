@@ -29,7 +29,7 @@ include(":data")
 include(":domain")
 
 include(":feature:tohot")
-include(":feature:heart")
+include(":feature:like")
 include(":feature:chat")
 include(":feature:setting")
 include(":feature:signin")

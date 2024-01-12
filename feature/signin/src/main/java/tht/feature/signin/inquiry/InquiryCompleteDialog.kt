@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.resizeDialogFragment
+import tht.core.ui.dialog.resizeDialogFragment
 import tht.feature.signin.databinding.DialogInquiryCompleteBinding
 
 class InquiryCompleteDialog : DialogFragment() {

@@ -59,7 +59,7 @@ dependencies {
     implementation(project(":data"))
 
     implementation(project(":feature:chat"))
-    implementation(project(":feature:heart"))
+    implementation(project(":feature:like"))
     implementation(project(":feature:setting"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:tohot"))

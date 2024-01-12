@@ -18,7 +18,7 @@ import tht.core.ui.base.FragmentNavigator
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
-import tht.feature.heart.HeartFragment
+import tht.feature.like.like.LikeFragment
 import tht.feature.setting.MyFragment
 import tht.feature.tohot.tohot.fragment.ToHotFragment
 import javax.inject.Inject
@@ -54,7 +54,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
                     true
                 }
                 R.id.menu_heart -> {
-                    showFragment(HeartFragment.TAG)
+                    showFragment(LikeFragment.TAG)
                     true
                 }
                 R.id.menu_chat -> {
@@ -123,7 +123,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     private fun getFragmentByTag(tag: String): Fragment? {
         return when (tag) {
             ToHotFragment.TAG -> ToHotFragment.newInstance()
-            HeartFragment.TAG -> HeartFragment.newInstance()
+            LikeFragment.TAG -> LikeFragment.newInstance()
             ChatFragment.TAG -> ChatFragment.newInstance()
             MyFragment.TAG -> MyFragment.newInstance()
             else -> null
