@@ -8,7 +8,7 @@ import android.widget.TextView
 object StringUtil {
     fun parseEmoji(emojiCode: String): String? {
         return try {
-            val code = Integer.decode("0x$emojiCode")
+            val code = Integer.decode("0x${emojiCode.removePrefix("U+")}")
             String(Character.toChars(code))
         } catch (e: Exception) {
             e.printStackTrace()
