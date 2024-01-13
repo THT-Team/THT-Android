@@ -1,6 +1,5 @@
 package com.tht.tht.data.remote.retrofit
 
-import android.util.Log
 import com.google.gson.Gson
 import com.tht.tht.data.remote.response.base.ErrorResponse
 import com.tht.tht.data.remote.retrofit.header.HttpHeaderKey
@@ -45,7 +44,7 @@ class ThtHeaderInterceptor @Inject constructor(
     private fun parseErrorResponse(errorJson: String): ErrorResponse? {
         return try {
             gson.fromJson(errorJson, ErrorResponse::class.java)
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
             null
         }
@@ -60,7 +59,6 @@ class ThtHeaderInterceptor @Inject constructor(
                 response.code == 500 -> {
                 throw TokenException.RefreshTokenExpiredException()
             }
-
         }
     }
 }
