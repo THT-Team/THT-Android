@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.appcompat.AppCompatTheme
 import tht.feature.setting.navigation.SettingNavigation
 
-class MyFragment : Fragment() {
+class MyPageFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,8 +27,8 @@ class MyFragment : Fragment() {
 
     companion object {
 
-        val TAG = MyFragment::class.simpleName.toString()
+        val TAG = MyPageFragment::class.simpleName.toString()
 
-        fun newInstance() = MyFragment()
+        fun newInstance() = MyPageFragment()
     }
 }

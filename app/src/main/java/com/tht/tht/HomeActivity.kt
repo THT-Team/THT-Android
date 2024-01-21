@@ -19,7 +19,7 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.hideSoftInput
 import tht.feature.chat.ChatFragment
 import tht.feature.like.like.LikeFragment
-import tht.feature.setting.MyFragment
+import tht.feature.setting.MyPageFragment
 import tht.feature.tohot.tohot.fragment.ToHotFragment
 import javax.inject.Inject
 
@@ -62,7 +62,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
                     true
                 }
                 R.id.menu_my -> {
-                    showFragment(MyFragment.TAG)
+                    showFragment(MyPageFragment.TAG)
                     true
                 }
                 else -> false
@@ -125,7 +125,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             ToHotFragment.TAG -> ToHotFragment.newInstance()
             LikeFragment.TAG -> LikeFragment.newInstance()
             ChatFragment.TAG -> ChatFragment.newInstance()
-            MyFragment.TAG -> MyFragment.newInstance()
+            MyPageFragment.TAG -> MyPageFragment.newInstance()
             else -> null
         }
     }
