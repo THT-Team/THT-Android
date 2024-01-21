@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.toolbar.ThtToolbar
@@ -29,8 +30,7 @@ fun SettingScreen(
     ) {
         ThtToolbar(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
             onBackPressed = onBackPressed,
             content = {
                 ThtHeadline4(
@@ -43,13 +43,19 @@ fun SettingScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            SettingRowItem(
-                title = "계정 관리",
-                onClick = onAccountManageClick
-            )
-        }
+        SettingRowItem(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            title = "계정 관리",
+            onClick = onAccountManageClick
+        )
     }
+}
+
+@Composable
+@Preview
+private fun SettingScreenPreview() {
+    SettingScreen(
+        onBackPressed = {},
+        onAccountManageClick = {}
+    )
 }
