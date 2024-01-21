@@ -11,12 +11,22 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginDataSource: LoginDataSource
 ) : LoginRepository {
 
-    override suspend fun refreshFcmTokenLogin(fcmToken: String, phone: String): FcmTokenLoginResponseModel {
+    override suspend fun refreshFcmTokenLogin(
+        fcmToken: String,
+        phone: String
+    ): FcmTokenLoginResponseModel {
         return loginDataSource.refreshFcmTokenLogin(
             FcmTokenLoginRequest(
                 fcmToken,
                 phone
             )
         ).toModel()
+    }
+
+    override suspend fun userDisActive(reason: String, feedback: String) {
+        loginDataSource.userDisActive(
+            reason = reason,
+            feedback = feedback
+        )
     }
 }

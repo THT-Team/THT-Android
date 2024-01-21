@@ -39,4 +39,10 @@ class TokenDataSourceImpl @Inject constructor(
     override suspend fun fetchPhone(): String? {
         return tokenDao.fetchPhone()
     }
+
+    override suspend fun clear() {
+        return withContext(dispatcher) {
+            tokenDao.clear()
+        }
+    }
 }

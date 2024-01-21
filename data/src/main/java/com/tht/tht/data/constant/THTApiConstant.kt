@@ -20,6 +20,7 @@ object THTApiConstant {
 
     object Login {
         const val FCM_TOKEN_LOGIN = "users/login/normal"
+        const val USER_DIS_ACTIVE = "user/account-withdrawal"
     }
 
     object Topic {

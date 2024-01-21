@@ -25,6 +25,10 @@ class DailyTopicDaoImpl @Inject constructor(
         }
     }
 
+    override fun clear() {
+        sp.edit { remove(DAILY_TOPIC_STATE_KEY) }
+    }
+
     companion object {
         private const val DAILY_TOPIC_STATE_KEY = "daily_topic_state_key"
     }

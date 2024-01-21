@@ -55,6 +55,15 @@ class TokenDaoImpl @Inject constructor(
         return sp.getString(THT_PHONE_KEY, null)
     }
 
+    override fun clear() {
+        sp.edit {
+            remove(FCM_TOKEN_KEY)
+            remove(THT_TOKEN_KEY)
+            remove(THT_TOKEN_EXPIRES_KEY)
+            remove(THT_PHONE_KEY)
+        }
+    }
+
     companion object {
         private const val FCM_TOKEN_KEY = "fcm_token_key"
 

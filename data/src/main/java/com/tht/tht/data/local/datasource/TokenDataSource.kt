@@ -13,4 +13,6 @@ interface TokenDataSource {
     suspend fun fetchThtToken(): AccessTokenEntity
 
     suspend fun fetchPhone(): String?
+
+    suspend fun clear()
 }

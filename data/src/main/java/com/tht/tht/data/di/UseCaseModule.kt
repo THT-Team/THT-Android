@@ -26,9 +26,11 @@ import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.LogoutUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.SendDislikeUseCase
 import com.tht.tht.domain.user.SendHeartUseCase
+import com.tht.tht.domain.user.UserDisActiveUseCase
 import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -295,4 +297,18 @@ object UseCaseModule {
         repository: UserRepository
     ): SendDislikeUseCase =
         SendDislikeUseCase(repository)
+
+    @Provides
+    fun provideLogoutUseCase(
+        tokenRepository: TokenRepository,
+        topicRepository: DailyTopicRepository
+    ): LogoutUseCase =
+        LogoutUseCase(tokenRepository, topicRepository)
+
+    @Provides
+    fun provideUserDisActiveUseCase(
+        logoutUseCase: LogoutUseCase,
+        loginRepository: LoginRepository
+    ): UserDisActiveUseCase =
+        UserDisActiveUseCase(logoutUseCase, loginRepository)
 }

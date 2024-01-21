@@ -35,4 +35,8 @@ class TokenRepositoryImpl @Inject constructor(
     override suspend fun refreshAccessToken(): AccessTokenModel {
         return refreshAccessTokenRefreshDataSource.refreshAccessToken().toAccessTokenModel()
     }
+
+    override suspend fun clearSavedToken() {
+        return tokenDataSource.clear()
+    }
 }
