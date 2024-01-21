@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +38,7 @@ fun SettingRoute(
             onSettingItemClick = viewModel::onSettingItemClick
         )
         ThtCircularProgress(
+            modifier = Modifier.align(Alignment.Center),
             color = colorResource(id = R.color.yellow_ffee54),
             dataLoading = { state.loading }
         )
