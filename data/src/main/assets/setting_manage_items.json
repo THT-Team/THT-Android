@@ -10,6 +10,17 @@
                     "title": "연동된 SNS",
                     "content": null,
                     "key": "Sns"
+                },
+                {
+                    "type": "SettingContentItemItemEntity",
+                    "title": "핸드폰 번호",
+                    "content": null,
+                    "key": "Phone"
+                },{
+                    "type": "SettingContentItemItemEntity",
+                    "title": "이메일",
+                    "content": null,
+                    "key": "Email"
                 }
             ]
         },

@@ -15,6 +15,8 @@ class ParseSettingManageEventDelegateImpl @Inject constructor(
 ) : ParseSettingManageEventDelegate {
     override fun parseEvent(key: String): SettingManageEvent {
         return when (key) {
+            SettingManageEvent.Phone.name -> SettingManageEvent.Phone
+            SettingManageEvent.Email.name -> SettingManageEvent.Email
             SettingManageEvent.Sns.name -> SettingManageEvent.Sns
             SettingManageEvent.ContactBlock.name -> SettingManageEvent.ContactBlock
             SettingManageEvent.Location.name -> SettingManageEvent.Location

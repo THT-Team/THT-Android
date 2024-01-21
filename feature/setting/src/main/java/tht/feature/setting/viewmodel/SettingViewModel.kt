@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tht.feature.setting.delegate.ParseSettingManageEventDelegate
 import tht.feature.setting.uimodel.SettingListItemUiModel
-import tht.feature.setting.uimodel.event.SettingManageEvent
 import tht.feature.setting.uimodel.SettingSectionUiModel
+import tht.feature.setting.uimodel.event.SettingManageEvent
 import tht.feature.setting.uimodel.mapper.toUiModel
 import javax.inject.Inject
 
@@ -70,6 +70,8 @@ class SettingViewModel @Inject constructor(
             parseEvent(item.key)
         }.onSuccess {
             when (it) {
+                SettingManageEvent.Phone -> onPhone()
+                SettingManageEvent.Email -> onEmail()
                 SettingManageEvent.Sns -> onSnsEvent()
                 SettingManageEvent.ContactBlock -> onContactBlockEvent()
                 SettingManageEvent.Location -> onLocationEvent()
@@ -87,6 +89,10 @@ class SettingViewModel @Inject constructor(
             it.printStackTrace()
         }
     }
+
+    private fun onPhone() {}
+
+    private fun onEmail() {}
 
     private fun onSnsEvent() {}
 
