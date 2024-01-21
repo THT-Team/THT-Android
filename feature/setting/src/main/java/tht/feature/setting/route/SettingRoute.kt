@@ -33,6 +33,7 @@ fun SettingRoute(
     Box {
         SettingScreen(
             modifier = Modifier.fillMaxSize(),
+            title = "설정 관리",
             items = state.items,
             onBackPressed = navigateMyPage,
             onSettingItemClick = viewModel::onSettingItemClick

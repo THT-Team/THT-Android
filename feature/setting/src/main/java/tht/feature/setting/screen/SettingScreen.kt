@@ -28,6 +28,7 @@ import tht.feature.setting.uimodel.SettingSectionUiModel
 
 @Composable
 fun SettingScreen(
+    title: String,
     items: ImmutableList<SettingSectionUiModel>,
     onBackPressed: () -> Unit,
     onSettingItemClick: (SettingListItemUiModel) -> Unit,
@@ -43,7 +44,7 @@ fun SettingScreen(
             onBackPressed = onBackPressed,
             content = {
                 ThtHeadline4(
-                    text = "설정 관리",
+                    text = title,
                     fontWeight = FontWeight.SemiBold,
                     color = colorResource(id = R.color.white_f9fafa)
                 )
@@ -80,6 +81,7 @@ fun SettingScreen(
 @Preview
 private fun SettingScreenPreview() {
     SettingScreen(
+        title = "설정",
         items = persistentListOf(),
         onBackPressed = {},
         onSettingItemClick = {}
