@@ -2,7 +2,7 @@
     "items": [
         {
             "type": "SettingItemSectionEntity",
-            "title": "계정 설정",
+            "title": "계정 관리",
             "description": null,
             "items": [
                 {
