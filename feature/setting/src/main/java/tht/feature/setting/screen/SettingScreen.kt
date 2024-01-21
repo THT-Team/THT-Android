@@ -35,9 +35,7 @@ fun SettingScreen(
     scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
-        modifier = modifier
-            .background(color = colorResource(id = R.color.black_161616))
-            .verticalScroll(scrollState, true)
+        modifier.background(color = colorResource(id = R.color.black_161616))
     ) {
         ThtToolbar(
             modifier = Modifier
@@ -51,25 +49,28 @@ fun SettingScreen(
                 )
             }
         )
-
-        items.forEachIndexed { index, section ->
-            when (section) {
-                is SettingItemSectionUiModel -> {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    SettingSection(
-                        section = section,
-                        onClick = onSettingItemClick
-                    )
+        Column(
+            modifier = modifier.verticalScroll(scrollState, true)
+        ) {
+            items.forEachIndexed { index, section ->
+                when (section) {
+                    is SettingItemSectionUiModel -> {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        SettingSection(
+                            section = section,
+                            onClick = onSettingItemClick
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                    is SettingImageBannerItemUiModel -> {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        SettingImageBanner(imageBanner = section)
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                }
+                if (index == items.size - 1) {
                     Spacer(modifier = Modifier.height(12.dp))
                 }
-                is SettingImageBannerItemUiModel -> {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    SettingImageBanner(imageBanner = section)
-                    Spacer(modifier = Modifier.height(12.dp))
-                }
-            }
-            if (index == items.size - 1) {
-                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
