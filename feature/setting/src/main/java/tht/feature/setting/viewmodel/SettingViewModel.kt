@@ -62,13 +62,13 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun onAccountManageClick() {
-        viewModelScope.launch {
-            _sideEffect.emit(SideEffect.NavigateAccountManage)
-        }
-    }
-
     fun onSettingItemClick(item: SettingListItemUiModel) {
-
+        // key 를 enum 으로 받아서 처리?
+        // key 를 화면 별로 구분 가능?
+        when (item.title) {
+            "계정 관리" -> viewModelScope.launch {
+                _sideEffect.emit(SideEffect.NavigateAccountManage)
+            }
+        }
     }
 }
