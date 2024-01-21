@@ -36,7 +36,6 @@ fun AccountManagerRoute(
             }
         }
     }
-
     val state by viewModel.state.collectAsState()
     val title = remember(state.items) {
         val settingItemSection = state.items.firstOrNull { it is SettingItemSectionUiModel }
@@ -46,7 +45,6 @@ fun AccountManagerRoute(
             ""
         }
     }
-    
     Box {
         SettingScreen(
             title = title,
