@@ -11,8 +11,7 @@ interface ParseSettingManageEventDelegate {
     fun parseEvent(key: String): SettingManageEvent
 }
 
-class ParseSettingManageEventDelegateImpl @Inject constructor(
-) : ParseSettingManageEventDelegate {
+class ParseSettingManageEventDelegateImpl @Inject constructor() : ParseSettingManageEventDelegate {
     override fun parseEvent(key: String): SettingManageEvent {
         return when (key) {
             SettingManageEvent.Phone.name -> SettingManageEvent.Phone
