@@ -44,27 +44,32 @@ fun SettingImageBannerItemModel.ImageBanner.toUiModelBanner(): SettingImageBanne
 
 fun SettingListItemModel.toUiModel(): SettingListItemUiModel {
     return when (this) {
-        is SettingItemModel -> SettingItemUiModel(title = title)
+        is SettingItemModel -> SettingItemUiModel(title = title, key = key)
         is SettingContentItemItemModel -> SettingContentItemItemUiModel(
             title = title,
-            content = content
+            content = content,
+            key = key
         )
         is SettingLocationItemItemModel -> SettingLocationItemItemUiModel(
             title = title,
-            location = location
+            location = location,
+            key = key
         )
         is SettingToggleItemItemModel -> SettingToggleItemItemUiModel(
             title = title,
-            enable = enable
+            enable = enable,
+            key = key
         )
         is SettingIconItemModel -> SettingIconItemUiModel(
             title = title,
-            icon = icon.toUiModelIcon()
+            icon = icon.toUiModelIcon(),
+            key = key
         )
         is SettingButtonItemModel -> SettingButtonItemUiModel(
             title = title,
             subTitle = subTitle,
-            btnTitle = btnTitle
+            btnTitle = btnTitle,
+            key = key
         )
     }
 }

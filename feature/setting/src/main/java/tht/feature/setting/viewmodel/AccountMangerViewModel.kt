@@ -16,17 +16,20 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tht.feature.setting.delegate.ParseAccountManagerEventDelegate
 import tht.feature.setting.uimodel.SettingListItemUiModel
 import tht.feature.setting.uimodel.SettingSectionUiModel
+import tht.feature.setting.uimodel.event.AccountManagerEvent
 import tht.feature.setting.uimodel.mapper.toUiModel
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountMangerViewModel @Inject constructor(
+    parseAccountManagerEventDelegate: ParseAccountManagerEventDelegate,
     private val fetchAccountManageItemsUseCase: FetchAccountManageItemsUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val userDisActiveUseCase: UserDisActiveUseCase
-) : ViewModel() {
+) : ViewModel(), ParseAccountManagerEventDelegate by parseAccountManagerEventDelegate {
 
     data class State(
         val loading: Boolean,
@@ -70,11 +73,15 @@ class AccountMangerViewModel @Inject constructor(
     }
 
     fun onSettingItemClick(item: SettingListItemUiModel) {
-        // key 를 enum 으로 받아서 처리?
-        // key 를 화면 별로 구분 가능?
-        when (item.title) {
-            "로그아웃" -> onLogout()
-            "계정 탈퇴" -> onDisActive()
+        kotlin.runCatching {
+            parseEvent(item.key)
+        }.onSuccess {
+            when (it) {
+                AccountManagerEvent.Logout -> onLogout()
+                AccountManagerEvent.DisActive -> onDisActive()
+            }
+        }.onFailure {
+            it.printStackTrace()
         }
     }
 

@@ -43,27 +43,32 @@ fun SettingImageBannerItemEntity.ImageBanner.toModelBanner(): SettingImageBanner
 
 fun SettingListItemEntity.toModel(): SettingListItemModel {
     return when (this) {
-        is SettingItemEntity -> SettingItemModel(title = title)
+        is SettingItemEntity -> SettingItemModel(title = title, key = key)
         is SettingContentItemItemEntity -> SettingContentItemItemModel(
             title = title,
-            content = content
+            content = content,
+            key = key
         )
         is SettingLocationItemItemEntity -> SettingLocationItemItemModel(
             title = title,
-            location = location
+            location = location,
+            key = key
         )
         is SettingToggleItemItemEntity -> SettingToggleItemItemModel(
             title = title,
-            enable = enable
+            enable = enable,
+            key = key
         )
         is SettingIconItemEntity -> SettingIconItemModel(
             title = title,
-            icon = icon.toModelIcon()
+            icon = icon.toModelIcon(),
+            key = key
         )
         is SettingButtonItemEntity -> SettingButtonItemModel(
             title = title,
             subTitle = subTitle,
-            btnTitle = btnTitle
+            btnTitle = btnTitle,
+            key = key
         )
     }
 }

@@ -12,33 +12,38 @@ import androidx.compose.runtime.Immutable
  */
 sealed interface SettingListItemUiModel {
     val title: String
+    val key: String
 }
 
 // 1. title
 @Immutable
 data class SettingItemUiModel(
-    override val title: String
+    override val title: String,
+    override val key: String
 ) : SettingListItemUiModel
 
 // 2. title + content(?)
 @Immutable
 data class SettingContentItemItemUiModel(
     override val title: String,
-    val content: String?
+    val content: String?,
+    override val key: String
 ) : SettingListItemUiModel
 
 // 3. title + location
 @Immutable
 data class SettingLocationItemItemUiModel(
     override val title: String,
-    val location: String?
+    val location: String?,
+    override val key: String
 ) : SettingListItemUiModel
 
 // 4. title + toggle
 @Immutable
 data class SettingToggleItemItemUiModel(
     override val title: String,
-    val enable: Boolean
+    val enable: Boolean,
+    override val key: String
 ) : SettingListItemUiModel
 
 
@@ -46,7 +51,8 @@ data class SettingToggleItemItemUiModel(
 @Immutable
 data class SettingIconItemUiModel(
     override val title: String,
-    val icon: SettingIcon
+    val icon: SettingIcon,
+    override val key: String
 ) : SettingListItemUiModel {
     enum class SettingIcon {
         Guard
@@ -58,5 +64,6 @@ data class SettingIconItemUiModel(
 data class SettingButtonItemUiModel(
     override val title: String,
     val subTitle: String,
-    val btnTitle: String
+    val btnTitle: String,
+    override val key: String
 ) : SettingListItemUiModel

@@ -8,36 +8,44 @@ package com.tht.tht.data.local.entity.setting
  * 5. title + icon(guard)
  * 6. title + subTitle + button
  */
-sealed interface SettingListItemEntity
+sealed interface SettingListItemEntity {
+    val title: String
+    val key: String
+}
 
 // 1. title
 data class SettingItemEntity(
-    val title: String
+    override val title: String,
+    override val key: String
 ) : SettingListItemEntity
 
 // 2. title + content(?)
 data class SettingContentItemItemEntity(
-    val title: String,
-    val content: String?
+    override val title: String,
+    val content: String?,
+    override val key: String
 ) : SettingListItemEntity
 
 // 3. title + location
 data class SettingLocationItemItemEntity(
-    val title: String,
-    val location: String?
+    override val title: String,
+    val location: String?,
+    override val key: String
 ) : SettingListItemEntity
 
 // 4. title + toggle
 data class SettingToggleItemItemEntity(
-    val title: String,
-    val enable: Boolean
+    override val title: String,
+    val enable: Boolean,
+    override val key: String
 ) : SettingListItemEntity
 
 
 // 5. title + icon
 data class SettingIconItemEntity(
-    val title: String,
-    val icon: SettingIcon
+    override val title: String,
+    val icon: SettingIcon,
+    override val key: String
 ) : SettingListItemEntity {
     enum class SettingIcon {
         Guard
@@ -46,9 +54,10 @@ data class SettingIconItemEntity(
 
 // 6. title + subTitle + button
 data class SettingButtonItemEntity(
-    val title: String,
+    override val title: String,
     val subTitle: String,
-    val btnTitle: String
+    val btnTitle: String,
+    override val key: String
 ) : SettingListItemEntity
 
 

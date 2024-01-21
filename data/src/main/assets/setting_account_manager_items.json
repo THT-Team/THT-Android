@@ -7,11 +7,13 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "로그아웃"
+                    "title": "로그아웃",
+                    "key": "Logout"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "계정 탈퇴"
+                    "title": "계정 탈퇴",
+                    "key": "DisActive"
                 }
             ]
         }

@@ -14,15 +14,18 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tht.feature.setting.delegate.ParseSettingManageEventDelegate
 import tht.feature.setting.uimodel.SettingListItemUiModel
+import tht.feature.setting.uimodel.event.SettingManageEvent
 import tht.feature.setting.uimodel.SettingSectionUiModel
 import tht.feature.setting.uimodel.mapper.toUiModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
+    parseSettingManageEventDelegate: ParseSettingManageEventDelegate,
     private val fetchSettingSectionModel: FetchSettingManageItemsUseCase
-) : ViewModel() {
+) : ViewModel(), ParseSettingManageEventDelegate by parseSettingManageEventDelegate {
 
     data class State(
         val loading: Boolean,
@@ -33,7 +36,7 @@ class SettingViewModel @Inject constructor(
         object NavigateAccountManage : SideEffect
     }
 
-    private val _state = MutableStateFlow<State>(
+    private val _state = MutableStateFlow(
         State(
             loading = false,
             items = persistentListOf()
@@ -63,12 +66,75 @@ class SettingViewModel @Inject constructor(
     }
 
     fun onSettingItemClick(item: SettingListItemUiModel) {
-        // key 를 enum 으로 받아서 처리?
-        // key 를 화면 별로 구분 가능?
-        when (item.title) {
-            "계정 관리" -> viewModelScope.launch {
-                _sideEffect.emit(SideEffect.NavigateAccountManage)
+        kotlin.runCatching {
+            parseEvent(item.key)
+        }.onSuccess {
+            when (it) {
+                SettingManageEvent.Sns -> onSnsEvent()
+                SettingManageEvent.ContactBlock -> onContactBlockEvent()
+                SettingManageEvent.Location -> onLocationEvent()
+                SettingManageEvent.AlarmSetting -> onAlarmSettingEvent()
+                SettingManageEvent.Question -> onQuestionEvent()
+                SettingManageEvent.Feedback -> onFeedbackEvent()
+                SettingManageEvent.UseTerms -> onUseTermsEvent()
+                SettingManageEvent.PrivacyTerms -> onPrivacyTermsEvent()
+                SettingManageEvent.LocationTerms -> onLocationTermsEvent()
+                SettingManageEvent.Licence -> onLicenceEvent()
+                SettingManageEvent.CompanyInfo -> onCompanyInfoEvent()
+                SettingManageEvent.AccountManager -> onAccountManagerEvent()
             }
+        }.onFailure {
+            it.printStackTrace()
+        }
+    }
+
+    private fun onSnsEvent() {
+
+    }
+
+    private fun onContactBlockEvent() {
+
+    }
+
+    private fun onLocationEvent() {
+
+    }
+
+    private fun onAlarmSettingEvent() {
+
+    }
+
+    private fun onQuestionEvent() {
+
+    }
+
+    private fun onFeedbackEvent() {
+
+    }
+
+    private fun onUseTermsEvent() {
+
+    }
+
+    private fun onPrivacyTermsEvent() {
+
+    }
+
+    private fun onLocationTermsEvent() {
+
+    }
+
+    private fun onLicenceEvent() {
+
+    }
+
+    private fun onCompanyInfoEvent() {
+
+    }
+
+    private fun onAccountManagerEvent() {
+        viewModelScope.launch {
+            _sideEffect.emit(SideEffect.NavigateAccountManage)
         }
     }
 }

@@ -8,7 +8,8 @@
                 {
                     "type": "SettingContentItemItemEntity",
                     "title": "연동된 SNS",
-                    "content": null
+                    "content": null,
+                    "key": "Sns"
                 }
             ]
         },
@@ -19,7 +20,8 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "저장된 연락처 차단하기"
+                    "title": "저장된 연락처 차단하기",
+                    "key": "ContactBlock"
                 }
             ]
         },
@@ -31,7 +33,8 @@
                 {
                     "type": "SettingLocationItemItemEntity",
                     "title": "내 위치",
-                    "location": null
+                    "location": null,
+                    "key": "Location"
                 }
             ]
         },
@@ -42,7 +45,8 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "알림 설정"
+                    "title": "알림 설정",
+                    "key": "AlarmSetting"
                 }
             ]
         },
@@ -53,11 +57,13 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "자주 묻는 질문"
+                    "title": "자주 묻는 질문",
+                    "key": "Question"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "문의 및 피드백 보내기"
+                    "title": "문의 및 피드백 보내기",
+                    "key": "Feedback"
                 }
             ]
         },
@@ -68,23 +74,28 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "서비스 이용약관"
+                    "title": "서비스 이용약관",
+                    "key": "UseTerms"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "개인정보 처리방침"
+                    "title": "개인정보 처리방침",
+                    "key": "PrivacyTerms"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "위치정보 이용약관"
+                    "title": "위치정보 이용약관",
+                    "key": "LocationTerms"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "라이센스"
+                    "title": "라이센스",
+                    "key": "Licence"
                 },
                 {
                     "type": "SettingItemEntity",
-                    "title": "사업자 정보"
+                    "title": "사업자 정보",
+                    "key": "CompanyInfo"
                 }
             ]
         },
@@ -99,7 +110,8 @@
             "items": [
                 {
                     "type": "SettingItemEntity",
-                    "title": "계정 관리"
+                    "title": "계정 관리",
+                    "key": "AccountManager"
                 }
             ]
         }
