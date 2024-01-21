@@ -10,4 +10,6 @@ interface DailyTopicRepository {
     suspend fun fetchDailyTopicFromLocal(): DailyTopicListModel
 
     suspend fun saveDailyTopic(topic: DailyTopicListModel)
+
+    suspend fun clearSavedTopic()
 }

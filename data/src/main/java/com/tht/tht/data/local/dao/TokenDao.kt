@@ -13,4 +13,6 @@ interface TokenDao {
     fun fetchThtToken(): AccessTokenEntity
 
     fun fetchPhone(): String?
+
+    fun clear()
 }

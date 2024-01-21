@@ -12,4 +12,6 @@ interface DailyTopicDataSource {
     suspend fun fetchDailyTopicFromLocal(): DailyTopicResponse
 
     suspend fun saveDailyTopic(topic: DailyTopicResponse)
+
+    suspend fun clear()
 }

@@ -6,4 +6,6 @@ interface DailyTopicDao {
     fun fetchDailyTopics(): DailyTopicResponse
 
     fun saveDailyTopic(topic: DailyTopicResponse)
+
+    fun clear()
 }

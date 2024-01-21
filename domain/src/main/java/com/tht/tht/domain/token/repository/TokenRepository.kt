@@ -15,4 +15,6 @@ interface TokenRepository {
     suspend fun fetchPhone(): String?
 
     suspend fun refreshAccessToken(): AccessTokenModel
+
+    suspend fun clearSavedToken()
 }
