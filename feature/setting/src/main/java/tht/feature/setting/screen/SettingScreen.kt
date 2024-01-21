@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -58,6 +59,7 @@ fun SettingScreen(
                     is SettingItemSectionUiModel -> {
                         Spacer(modifier = Modifier.height(12.dp))
                         SettingSection(
+                            modifier = Modifier.padding(horizontal = 16.dp),
                             section = section,
                             onClick = onSettingItemClick
                         )
@@ -65,7 +67,13 @@ fun SettingScreen(
                     }
                     is SettingImageBannerItemUiModel -> {
                         Spacer(modifier = Modifier.height(12.dp))
-                        SettingImageBanner(imageBanner = section)
+                        SettingImageBanner(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(88.dp)
+                                .padding(horizontal = 16.dp),
+                            imageBanner = section
+                        )
                         Spacer(modifier = Modifier.height(12.dp))
                     }
                 }

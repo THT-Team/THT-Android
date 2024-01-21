@@ -22,7 +22,7 @@ fun SettingSection(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
         ThtP1(
             modifier = Modifier.padding(start = 14.dp),
