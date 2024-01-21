@@ -40,7 +40,6 @@ data class SettingToggleItemItemEntity(
     override val key: String
 ) : SettingListItemEntity
 
-
 // 5. title + icon
 data class SettingIconItemEntity(
     override val title: String,
@@ -59,7 +58,3 @@ data class SettingButtonItemEntity(
     val btnTitle: String,
     override val key: String
 ) : SettingListItemEntity
-
-
-
-

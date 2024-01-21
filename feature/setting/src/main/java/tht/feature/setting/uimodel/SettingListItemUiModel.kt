@@ -46,7 +46,6 @@ data class SettingToggleItemItemUiModel(
     override val key: String
 ) : SettingListItemUiModel
 
-
 // 5. title + icon
 @Immutable
 data class SettingIconItemUiModel(

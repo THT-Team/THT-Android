@@ -11,8 +11,7 @@ interface ParseAccountManagerEventDelegate {
     fun parseEvent(key: String): AccountManagerEvent
 }
 
-class ParseAccountManagerEventDelegateImpl @Inject constructor(
-) : ParseAccountManagerEventDelegate {
+class ParseAccountManagerEventDelegateImpl @Inject constructor() : ParseAccountManagerEventDelegate {
     override fun parseEvent(key: String): AccountManagerEvent {
         return when (key) {
             AccountManagerEvent.Logout.name -> AccountManagerEvent.Logout
@@ -22,7 +21,6 @@ class ParseAccountManagerEventDelegateImpl @Inject constructor(
     }
 }
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class ParseAccountManagerEventDelegateModule {
@@ -31,4 +29,3 @@ abstract class ParseAccountManagerEventDelegateModule {
         impl: ParseAccountManagerEventDelegateImpl
     ): ParseAccountManagerEventDelegate
 }
-

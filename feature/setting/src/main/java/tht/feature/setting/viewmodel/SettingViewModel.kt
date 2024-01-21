@@ -88,49 +88,27 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    private fun onSnsEvent() {
+    private fun onSnsEvent() {}
 
-    }
+    private fun onContactBlockEvent() {}
 
-    private fun onContactBlockEvent() {
+    private fun onLocationEvent() {}
 
-    }
+    private fun onAlarmSettingEvent() {}
 
-    private fun onLocationEvent() {
+    private fun onQuestionEvent() {}
 
-    }
+    private fun onFeedbackEvent() {}
 
-    private fun onAlarmSettingEvent() {
+    private fun onUseTermsEvent() {}
 
-    }
+    private fun onPrivacyTermsEvent() {}
 
-    private fun onQuestionEvent() {
+    private fun onLocationTermsEvent() {}
 
-    }
+    private fun onLicenceEvent() {}
 
-    private fun onFeedbackEvent() {
-
-    }
-
-    private fun onUseTermsEvent() {
-
-    }
-
-    private fun onPrivacyTermsEvent() {
-
-    }
-
-    private fun onLocationTermsEvent() {
-
-    }
-
-    private fun onLicenceEvent() {
-
-    }
-
-    private fun onCompanyInfoEvent() {
-
-    }
+    private fun onCompanyInfoEvent() {}
 
     private fun onAccountManagerEvent() {
         viewModelScope.launch {
