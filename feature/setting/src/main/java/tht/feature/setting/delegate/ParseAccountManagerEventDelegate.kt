@@ -16,7 +16,7 @@ class ParseAccountManagerEventDelegateImpl @Inject constructor() : ParseAccountM
         return when (key) {
             AccountManagerEvent.Logout.name -> AccountManagerEvent.Logout
             AccountManagerEvent.DisActive.name -> AccountManagerEvent.DisActive
-            else -> throw Exception("Unknown Event")
+            else -> throw Exception("Unknown Event => $key")
         }
     }
 }

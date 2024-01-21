@@ -29,7 +29,7 @@ class ParseSettingManageEventDelegateImpl @Inject constructor(
             SettingManageEvent.Licence.name -> SettingManageEvent.Licence
             SettingManageEvent.CompanyInfo.name -> SettingManageEvent.CompanyInfo
             SettingManageEvent.AccountManager.name -> SettingManageEvent.AccountManager
-            else -> throw Exception("Unknown Event")
+            else -> throw Exception("Unknown Event => $key")
         }
     }
 }
