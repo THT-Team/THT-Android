@@ -5,4 +5,9 @@ import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
 
 interface LoginDataSource {
     suspend fun refreshFcmTokenLogin(fcmTokenLoginRequest: FcmTokenLoginRequest): FcmTokenLoginResponse
+
+    suspend fun userDisActive(
+        reason: String,
+        feedback: String
+    )
 }

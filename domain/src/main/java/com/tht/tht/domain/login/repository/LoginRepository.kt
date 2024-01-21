@@ -4,5 +4,13 @@ import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
 
 interface LoginRepository {
 
-    suspend fun refreshFcmTokenLogin(fcmToken: String, phone: String): FcmTokenLoginResponseModel
+    suspend fun refreshFcmTokenLogin(
+        fcmToken: String,
+        phone: String
+    ): FcmTokenLoginResponseModel
+
+    suspend fun userDisActive(
+        reason: String,
+        feedback: String
+    )
 }
