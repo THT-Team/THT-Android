@@ -26,15 +26,15 @@ fun SettingRowItem(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(10.dp))
+            .clickable(
+                enabled = true,
+                onClick = onClick
+            )
             .background(
                 color = colorResource(id = tht.core.ui.R.color.black_222222),
                 shape = RoundedCornerShape(10.dp)
             )
             .padding(horizontal = 14.dp, vertical = 15.dp)
-            .clickable(
-                enabled = true,
-                onClick = onClick
-            )
     ) {
         ThtSubtitle1(
             text = title,
