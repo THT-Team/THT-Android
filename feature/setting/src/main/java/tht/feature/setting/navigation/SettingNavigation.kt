@@ -2,6 +2,7 @@ package tht.feature.setting.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,29 +16,34 @@ fun SettingNavigation() {
         navController = navController,
         startDestination = MyPage.route
     ) {
-        addToHotNavGraph(
-            navigateSetting = {
-                navController.navigate(Setting.route)
-            }
-        )
+        addToHotNavGraph(navController = navController)
     }
 }
 
 private fun NavGraphBuilder.addToHotNavGraph(
-    navigateSetting: () -> Unit
+    navController: NavHostController,
 ) {
     composable(
         route = MyPage.route
     ) {
         MyPageRoute(
-            navigateSetting = navigateSetting
+            navigateSetting = {
+                navController.navigate(Setting.route)
+            }
         )
     }
 
     composable(
         route = Setting.route
     ) {
-        SettingRoute()
+        SettingRoute(
+            navigateMyPage = {
+                navController.popBackStack(
+                    route = MyPage.route,
+                    inclusive = false
+                )
+            }
+        )
     }
 }
 
