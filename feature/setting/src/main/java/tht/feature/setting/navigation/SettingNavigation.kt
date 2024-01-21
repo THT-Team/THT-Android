@@ -1,27 +1,37 @@
 package tht.feature.setting.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import tht.core.navigation.SignupNavigation
+import tht.feature.setting.route.AccountManagerRoute
 import tht.feature.setting.route.MyPageRoute
 import tht.feature.setting.route.SettingRoute
 
 @Composable
-fun SettingNavigation() {
+fun SettingNavigation(signupNavigation: SignupNavigation) {
     val navController = rememberNavController()
+    val context = LocalContext.current
     NavHost(
         navController = navController,
         startDestination = MyPage.route
     ) {
-        addToHotNavGraph(navController = navController)
+        addToHotNavGraph(
+            navController = navController,
+            navigateIntro = {
+                signupNavigation::navigatePreLogin.invoke(context)
+            }
+        )
     }
 }
 
 private fun NavGraphBuilder.addToHotNavGraph(
     navController: NavHostController,
+    navigateIntro: () -> Unit
 ) {
     composable(
         route = MyPage.route
@@ -52,7 +62,15 @@ private fun NavGraphBuilder.addToHotNavGraph(
     composable(
         route = AccountManager.route
     ) {
-
+        AccountManagerRoute(
+            onBackPressed = {
+                navController.popBackStack(
+                    route = Setting.route,
+                    inclusive = false
+                )
+            },
+            navigateIntro = navigateIntro
+        )
     }
 }
 

@@ -8,9 +8,17 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.appcompat.AppCompatTheme
+import dagger.hilt.android.AndroidEntryPoint
+import tht.core.navigation.SignupNavigation
 import tht.feature.setting.navigation.SettingNavigation
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyPageFragment : Fragment() {
+
+    @Inject
+    lateinit var signupNavigation: SignupNavigation
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -19,7 +27,7 @@ class MyPageFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppCompatTheme {
-                    SettingNavigation()
+                    SettingNavigation(signupNavigation)
                 }
             }
         }
