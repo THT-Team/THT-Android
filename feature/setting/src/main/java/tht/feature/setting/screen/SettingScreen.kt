@@ -1,11 +1,13 @@
 package tht.feature.setting.screen
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -14,19 +16,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.toolbar.ThtToolbar
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tht.core.ui.R
-import tht.feature.setting.composable.SettingRowItem
+import tht.feature.setting.composable.SettingImageBanner
+import tht.feature.setting.composable.SettingSection
+import tht.feature.setting.uimodel.SettingImageBannerItemUiModel
+import tht.feature.setting.uimodel.SettingItemSectionUiModel
+import tht.feature.setting.uimodel.SettingListItemUiModel
+import tht.feature.setting.uimodel.SettingSectionUiModel
 
 @Composable
 fun SettingScreen(
+    items: ImmutableList<SettingSectionUiModel>,
     onBackPressed: () -> Unit,
-    onAccountManageClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onSettingItemClick: (SettingListItemUiModel) -> Unit,
+    modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
-        modifier = modifier.background(
-            color = colorResource(id = R.color.black_161616)
-        )
+        modifier = modifier
+            .background(color = colorResource(id = R.color.black_161616))
+            .verticalScroll(scrollState, true)
     ) {
         ThtToolbar(
             modifier = Modifier
@@ -41,13 +52,26 @@ fun SettingScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        SettingRowItem(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            title = "계정 관리",
-            onClick = onAccountManageClick
-        )
+        items.forEachIndexed { index, section ->
+            when (section) {
+                is SettingItemSectionUiModel -> {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    SettingSection(
+                        section = section,
+                        onClick = onSettingItemClick
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+                is SettingImageBannerItemUiModel -> {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    SettingImageBanner(imageBanner = section)
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+            }
+            if (index == items.size - 1) {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+        }
     }
 }
 
@@ -55,7 +79,8 @@ fun SettingScreen(
 @Preview
 private fun SettingScreenPreview() {
     SettingScreen(
+        items = persistentListOf(),
         onBackPressed = {},
-        onAccountManageClick = {}
+        onSettingItemClick = {}
     )
 }

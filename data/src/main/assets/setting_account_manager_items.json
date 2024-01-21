@@ -1,0 +1,19 @@
+{
+    "items": [
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "계정 설정",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "로그아웃"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "계정 탈퇴"
+                }
+            ]
+        }
+    ]
+}

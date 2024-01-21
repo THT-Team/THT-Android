@@ -1,5 +1,7 @@
 package com.tht.tht.data.di
 
+import com.tht.tht.data.local.datasource.SettingItemDataSource
+import com.tht.tht.data.local.datasource.SettingItemDataSourceImpl
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.SignupUserDataSourceImpl
 import com.tht.tht.data.local.datasource.TermsDataSource
@@ -67,4 +69,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindChatDataSource(impl: ChatDataSourceImpl): ChatDataSource
+
+    @Binds
+    abstract fun bindSettingItemDataSource(impl: SettingItemDataSourceImpl): SettingItemDataSource
 }
