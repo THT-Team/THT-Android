@@ -1,6 +1,10 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -52,6 +56,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
+
+    implementation(libs.hilt)
+    testImplementation(libs.hilt.android.testing)
+    kapt(libs.hilt.android.compiler)
+    kaptTest(libs.hilt.android.compiler)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.jetpack.compose.material)
     implementation(libs.jetpack.compose.animation)
