@@ -65,6 +65,7 @@ class AccountMangerViewModel @Inject constructor(
             ).onSuccess {
                 _sideEffect.emit(SideEffect.NavigateIntro)
             }.onFailure {
+                it.printStackTrace()
                 _sideEffect.emit(
                     SideEffect.ShowErrorMessage(
                         "Fail DisActive"

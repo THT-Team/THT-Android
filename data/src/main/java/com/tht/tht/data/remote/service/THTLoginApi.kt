@@ -7,6 +7,7 @@ import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.login.FcmTokenLoginResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 
 interface THTLoginApi {
@@ -15,7 +16,8 @@ interface THTLoginApi {
         @Body fcmTokenLoginRequest: FcmTokenLoginRequest
     ): ThtResponse<FcmTokenLoginResponse>
 
-    @DELETE
+//    @DELETE(THTApiConstant.Login.USER_DIS_ACTIVE)
+    @HTTP(method = "DELETE", path = THTApiConstant.Login.USER_DIS_ACTIVE, hasBody = true)
     suspend fun userDisActive(
         @Body userDisActiveRequest: UserDisActiveRequest
     ): ThtResponse<Unit>
