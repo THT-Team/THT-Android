@@ -11,3 +11,7 @@ object MyPage : SettingDestination {
 object Setting : SettingDestination {
     override val route: String = "setting"
 }
+
+object AccountManager : SettingDestination {
+    override val route: String = "account_manager"
+}

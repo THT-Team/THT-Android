@@ -42,8 +42,17 @@ private fun NavGraphBuilder.addToHotNavGraph(
                     route = MyPage.route,
                     inclusive = false
                 )
+            },
+            navigateAccountManage = {
+                navController.navigate(AccountManager.route)
             }
         )
+    }
+
+    composable(
+        route = AccountManager.route
+    ) {
+
     }
 }
 
