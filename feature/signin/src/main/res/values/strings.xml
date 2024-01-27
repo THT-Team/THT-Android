@@ -21,9 +21,9 @@
     <string name="hint_phone_input">01012345678</string>
     <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다. 핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
     <string name="message_phone_input_error">핸드폰 번호를 다시 확인해 주세요</string>
-    <string name="message_send_auth_success">인증 코드 전송 완료</string>
     <string name="message_send_auth_fail">인증 코드 전송 실패</string>
     <string name="message_check_signup_state_fail">회원가입 이력 조회 실패</string>
+    <string name="message_phone_auth_complete">핸드폰 번호 인증 완료</string>
 
     <string name="title_verify">인증 코드 입력</string>
     <string name="message_verify">%1s 으로\n전송된 코드를 입력해주세요</string>

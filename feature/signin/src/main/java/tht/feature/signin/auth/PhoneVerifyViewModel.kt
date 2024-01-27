@@ -117,6 +117,7 @@ class PhoneVerifyViewModel @Inject constructor(
 
     private fun requestVerify(verify: String) {
         require(authNum.value.isNotBlank())
+        postSideEffect(VerifySideEffect.KeyboardVisible(false))
         viewModelScope.launch {
             _dataLoading.value = true
             requestPhoneVerifyUseCase(authNum.value, phone.value, verify, signInType)

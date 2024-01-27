@@ -86,15 +86,7 @@ class PhoneAuthViewModel @Inject constructor(
             requestAuthenticationUseCase(phone)
                 .onSuccess {
                     intent {
-                        postSideEffect(
-                            PhoneAuthSideEffect.ShowSuccessToast(
-                                stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
-                            ) {
-                                intent {
-                                    postSideEffect(PhoneAuthSideEffect.NavigateVerifyView(phone, it, signInType))
-                                }
-                            }
-                        )
+                        postSideEffect(PhoneAuthSideEffect.NavigateVerifyView(phone, it, signInType))
                     }
                 }.onFailure {
                     intent {
@@ -113,10 +105,6 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     sealed class PhoneAuthSideEffect : SideEffect {
-        data class ShowSuccessToast(
-            val message: String,
-            val closeListener: () -> Unit
-        ) : PhoneAuthSideEffect()
         data class ShowToast(val message: String) : PhoneAuthSideEffect()
         data class NavigateVerifyView(
             val phone: String,
