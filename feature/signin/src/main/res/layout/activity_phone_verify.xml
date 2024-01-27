@@ -36,19 +36,19 @@
         tools:text="@string/message_verify"
         app:layout_constraintTop_toBottomOf="@id/tv_verify_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_time"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         />
 
     <TextView
+        android:layout_marginTop="6dp"
         style="@style/SubT1RegularRedTextStyle"
         android:textColor="@color/red_ef4444"
         android:id="@+id/tv_time"
         android:layout_marginEnd="38dp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_verify_message"
-        app:layout_constraintStart_toEndOf="@id/tv_verify_message"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_verify_message"
+        app:layout_constraintStart_toStartOf="@id/tv_verify_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
