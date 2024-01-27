@@ -94,7 +94,7 @@ fun PreLoginScreen(
                     }
                     .padding(horizontal = 2.dp),
                 fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
+                textSize = 12.sp,
                 lineHeight = 16.8.sp,
                 text = stringResource(id = R.string.message_login_issue),
                 color = colorResource(id = tht.core.ui.R.color.white_f9fafa)

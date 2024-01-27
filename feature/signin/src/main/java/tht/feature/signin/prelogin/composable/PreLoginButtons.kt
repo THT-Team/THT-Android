@@ -157,7 +157,7 @@ private fun SignupButtonText(
     ThtText(
         modifier = modifier.fillMaxWidth(),
         fontWeight = FontWeight.SemiBold,
-        fontSize = 16.sp,
+        textSize = 16.sp,
         lineHeight = 22.4.sp,
         text = text,
         color = color
