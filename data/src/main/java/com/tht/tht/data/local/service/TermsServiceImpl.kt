@@ -1,4 +1,4 @@
-package com.tht.tht.data.local.dao
+package com.tht.tht.data.local.service
 
 import android.content.Context
 import com.google.gson.Gson
@@ -8,11 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TermsDaoImpl @Inject constructor(
+class TermsServiceImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : TermsDao {
+) : TermsService {
 
-    override suspend fun fetchTerms(): TermsEntity {
+    override fun fetchTerms(): TermsEntity {
         return try {
             val inputStream = context.resources.assets.open("signup_terms.json")
             val reader = inputStream.bufferedReader()

@@ -11,6 +11,9 @@ import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.login.usecase.LoginUseCase
+import com.tht.tht.domain.setting.repository.SettingRepository
+import com.tht.tht.domain.setting.usecase.FetchAccountManageItemsUseCase
+import com.tht.tht.domain.setting.usecase.FetchSettingManageItemsUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
@@ -311,4 +314,16 @@ object UseCaseModule {
         loginRepository: LoginRepository
     ): UserDisActiveUseCase =
         UserDisActiveUseCase(logoutUseCase, loginRepository)
+
+    @Provides
+    fun provideFetchSettingManageItemsUseCase(
+        settingRepository: SettingRepository
+    ): FetchSettingManageItemsUseCase =
+        FetchSettingManageItemsUseCase(settingRepository)
+
+    @Provides
+    fun provideFetchAccountManageItemsUseCase(
+        settingRepository: SettingRepository
+    ): FetchAccountManageItemsUseCase =
+        FetchAccountManageItemsUseCase(settingRepository)
 }

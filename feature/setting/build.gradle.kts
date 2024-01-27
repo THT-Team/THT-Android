@@ -75,4 +75,6 @@ dependencies {
     implementation(libs.app.compat.theme.adpater)
 
     implementation(libs.lottie.compose)
+
+    implementation(libs.kotlin.collections.immutable)
 }
