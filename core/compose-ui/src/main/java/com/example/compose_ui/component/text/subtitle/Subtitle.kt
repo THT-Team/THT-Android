@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.example.compose_ui.component.font.pretendardFontStyle
+import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
 @Composable
@@ -23,7 +23,7 @@ fun ThtSubtitle1(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 16.dpTextUnit,
             shadow = shadow
@@ -45,7 +45,7 @@ fun ThtSubtitle2(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 15.dpTextUnit,
             shadow = shadow

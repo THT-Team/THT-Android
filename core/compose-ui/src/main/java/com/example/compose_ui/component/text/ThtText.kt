@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import com.example.compose_ui.component.font.pretendardFontStyle
+import com.example.compose_ui.component.font.rememberPretendardFontStyle
 
 @Composable
 fun ThtText(
@@ -23,7 +23,7 @@ fun ThtText(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = textSize,
             lineHeight = lineHeight

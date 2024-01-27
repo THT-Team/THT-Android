@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.example.compose_ui.component.font.pretendardFontStyle
+import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
 
@@ -23,7 +23,7 @@ fun ThtHeadline1(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 30.dpTextUnit
         ),
@@ -44,7 +44,7 @@ fun ThtHeadline2(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 26.dpTextUnit,
             shadow = shadow
@@ -65,7 +65,7 @@ fun ThtHeadline3(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 24.dpTextUnit
         ),
@@ -86,7 +86,7 @@ fun ThtHeadline4(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 19.dpTextUnit,
             shadow = shadow
@@ -107,7 +107,7 @@ fun ThtHeadline5(
         modifier = modifier,
         textAlign = textAlign,
         text = text,
-        style = pretendardFontStyle(
+        style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 17.dpTextUnit,
         ),

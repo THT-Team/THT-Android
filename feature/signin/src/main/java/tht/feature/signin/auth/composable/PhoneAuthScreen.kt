@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.compose_ui.component.font.pretendardFontStyle
+import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.component.progress.ThtCircularProgress
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
@@ -217,7 +217,7 @@ private fun PhoneAuthTextField(
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester = FocusRequester()
 ) {
-    val textStyle = pretendardFontStyle(
+    val textStyle = rememberPretendardFontStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp,
         lineHeight = 33.8.sp
