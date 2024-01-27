@@ -67,6 +67,8 @@
         <item name="android:inputType">number</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">@font/pretandard_font_family</item>
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">@dimen/TextInputEditTextBottomMinusMargin</item>
     </style>
