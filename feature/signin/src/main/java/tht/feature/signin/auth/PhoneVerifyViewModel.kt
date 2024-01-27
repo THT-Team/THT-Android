@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
 import tht.core.ui.base.UiState
+import tht.feature.signin.BuildConfig
 import tht.feature.signin.StringProvider
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -120,27 +121,32 @@ class PhoneVerifyViewModel @Inject constructor(
         postSideEffect(VerifySideEffect.KeyboardVisible(false))
         viewModelScope.launch {
             _dataLoading.value = true
-            requestPhoneVerifyUseCase(authNum.value, phone.value, verify, signInType)
-                .onSuccess {
-                    when (it) {
-                        true -> {
-                            stopTimer()
-                            checkSignupState(phone.value)
-                        }
-                        false -> setUiState(
-                            VerifyUiState.ErrorViewShow(stringProvider.getString(StringProvider.ResId.VerifyFail))
-                        )
+            requestPhoneVerifyUseCase(
+                apiAuthNum = authNum.value,
+                phone = phone.value,
+                inputAuthNum = verify,
+                signInType = signInType,
+                forceTrue = BuildConfig.DEBUG
+            ).onSuccess {
+                when (it) {
+                    true -> {
+                        stopTimer()
+                        checkSignupState(phone.value)
                     }
-                }.onFailure {
-                    it.printStackTrace()
-                    setUiState(
-                        VerifyUiState.ErrorViewShow(
-                            stringProvider.getString(StringProvider.ResId.VerifyFail) + "\n$it"
-                        )
+                    false -> setUiState(
+                        VerifyUiState.ErrorViewShow(stringProvider.getString(StringProvider.ResId.VerifyFail))
                     )
-                }.also {
-                    _dataLoading.value = false
                 }
+            }.onFailure {
+                it.printStackTrace()
+                setUiState(
+                    VerifyUiState.ErrorViewShow(
+                        stringProvider.getString(StringProvider.ResId.VerifyFail) + "\n$it"
+                    )
+                )
+            }.also {
+                _dataLoading.value = false
+            }
         }
     }
 
