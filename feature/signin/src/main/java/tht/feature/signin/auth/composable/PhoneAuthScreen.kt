@@ -16,23 +16,21 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.component.progress.ThtCircularProgress
+import com.example.compose_ui.component.text.ThtTextField
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
 import com.example.compose_ui.component.text.headline.ThtHeadline5
@@ -72,7 +71,8 @@ fun PhoneAuthScreen(
                 .background(colorResource(id = tht.core.ui.R.color.black_161616))
         ) {
             ThtToolbar(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .systemBarsPadding(),
                 onBackPressed = onBackClick,
                 content = {}
@@ -215,49 +215,37 @@ private fun PhoneAuthTextField(
     onDone: () -> Unit,
     hint: String,
     modifier: Modifier = Modifier,
-    focusRequester: FocusRequester = FocusRequester()
-) {
-    val textStyle = rememberPretendardFontStyle(
+    textStyle: TextStyle = rememberPretendardFontStyle(
         fontWeight = FontWeight.SemiBold,
         fontSize = 26.sp,
         lineHeight = 33.8.sp
+    ),
+    focusRequester: FocusRequester = FocusRequester()
+) {
+    ThtTextField(
+        modifier = modifier.focusRequester(focusRequester),
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = hint,
+        singleLine = true,
+        placeholderTextStyle = textStyle.copy(
+            color = colorResource(id = tht.core.ui.R.color.gray_8d8d8d),
+            fontWeight = FontWeight.SemiBold
+        ),
+        textStyle = textStyle.copy(
+            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
+            fontWeight = FontWeight.SemiBold
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onDone()
+            }
+        )
     )
-    Box(
-        modifier = modifier
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .alpha(if (value.isEmpty()) 100f else 0f),
-            text = hint,
-            style = textStyle.copy(
-                color = colorResource(id = tht.core.ui.R.color.gray_8d8d8d),
-                fontWeight = FontWeight.SemiBold
-            )
-        )
-        BasicTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .alpha(if (value.isEmpty()) 0f else 100f)
-                .focusRequester(focusRequester),
-            value = value,
-            onValueChange = onValueChange,
-            textStyle = textStyle.copy(
-                color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
-                fontWeight = FontWeight.SemiBold
-            ),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    onDone()
-                }
-            )
-        )
-    }
 }
 
 @Composable
