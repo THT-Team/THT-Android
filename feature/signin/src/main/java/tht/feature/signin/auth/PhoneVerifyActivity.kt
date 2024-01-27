@@ -12,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
@@ -48,6 +50,10 @@ class PhoneVerifyActivity : AppCompatActivity() {
         initView()
         setListener()
         observeData()
+        lifecycleScope.launch {
+            delay(200)
+            textInputEditTexts.firstOrNull()?.setSoftKeyboardVisible(true)
+        }
     }
 
     private fun setToolbar() {
