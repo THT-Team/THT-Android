@@ -3,7 +3,6 @@ package tht.feature.signin.auth.composable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -176,29 +176,17 @@ private fun PhoneAuthTextFieldLayout(
     Column(
         modifier = modifier
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            PhoneAuthTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                value = value,
-                hint = hint,
-                onValueChange = onValueChange,
-                onDone = onDone,
-                focusRequester = focusRequester
-            )
-            if (value.isNotEmpty()) {
-                Image(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable(true, onClick = onClear),
-                    painter = painterResource(id = R.drawable.ic_delete),
-                    contentDescription = "ic_delete"
-                )
-            }
-        }
+        PhoneAuthTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            value = value,
+            hint = hint,
+            onValueChange = onValueChange,
+            onDone = onDone,
+            focusRequester = focusRequester,
+            onClear = onClear
+        )
         Spacer(modifier = Modifier.height(4.dp))
         Divider(
             modifier = Modifier.fillMaxWidth(),
@@ -213,6 +201,7 @@ private fun PhoneAuthTextField(
     value: String,
     onValueChange: (String) -> Unit,
     onDone: () -> Unit,
+    onClear: () -> Unit,
     hint: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = rememberPretendardFontStyle(
@@ -223,7 +212,9 @@ private fun PhoneAuthTextField(
     focusRequester: FocusRequester = FocusRequester()
 ) {
     ThtTextField(
+        onClear = onClear,
         modifier = modifier.focusRequester(focusRequester),
+        cursorBrush = SolidColor(colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)),
         value = value,
         onValueChange = onValueChange,
         placeholder = hint,
