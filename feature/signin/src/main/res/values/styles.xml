@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="SignupTextButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:paddingVertical">16dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/pretandard_font_family</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/selector_signup_button_text_color</item>
+        <item name="android:background">@drawable/btn_signup</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
     <style name="PhoneAuthInputEditTextFontStyle" parent="ThemeOverlay.Material3.TextInputEditText">
         <item name="android:textSize">26sp</item>
         <item name="android:textStyle">normal</item>

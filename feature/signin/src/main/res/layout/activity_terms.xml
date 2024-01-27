@@ -65,9 +65,10 @@
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
+        style="@style/SignupTextButtonStyle"
         android:enabled="false"
         android:id="@+id/btn_start"
-        android:background="@drawable/selector_btn_start"
+        android:text="@string/starting"
         android:layout_marginHorizontal="38dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toTopOf="@id/tv_notify"
