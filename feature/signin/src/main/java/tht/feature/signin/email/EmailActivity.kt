@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
@@ -31,6 +33,12 @@ class EmailActivity : AppCompatActivity() {
         initView()
         setListener()
         observeData()
+        lifecycleScope.launch {
+            delay(200)
+            if (!binding.etEmail.text.isNullOrBlank()) {
+                binding.etEmail.setSoftKeyboardVisible(true)
+            }
+        }
     }
 
     private fun setToolbar() {
