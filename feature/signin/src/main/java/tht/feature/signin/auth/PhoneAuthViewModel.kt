@@ -21,7 +21,7 @@ class PhoneAuthViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val stringProvider: StringProvider
-) :  ViewModel(), Container<PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect> {
+) : ViewModel(), Container<PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect> {
 
     override val store: Store<PhoneAuthUiState, PhoneAuthSideEffect> = store(initialState = PhoneAuthUiState.DEFAULT)
 
