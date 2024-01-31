@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
@@ -72,4 +73,11 @@ dependencies {
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
     implementation(libs.jetpack.compose.hilt.navigation)
+
+    implementation(libs.okhttp)
+    implementation("io.reactivex.rxjava2:rxjava:2.2.10")
+
+    implementation("io.github.jaeyunn15:thunder:1.1.0") // must required
+    implementation("io.github.jaeyunn15:thunder-okhttp:1.1.0") // must required
+    implementation("io.github.jaeyunn15:thunder-stomp:1.1.0")
 }

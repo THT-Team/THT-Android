@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("org.jlleitschuh.gradle.ktlint")
     id("com.google.gms.google-services")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -101,4 +102,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+
+    implementation("io.github.jaeyunn15:thunder:1.1.0") // must required
+    implementation("io.github.jaeyunn15:thunder-okhttp:1.1.0") // must required
+    implementation("io.github.jaeyunn15:thunder-stomp:1.1.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }

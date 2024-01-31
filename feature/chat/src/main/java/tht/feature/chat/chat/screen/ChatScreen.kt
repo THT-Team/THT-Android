@@ -1,4 +1,4 @@
-package tht.feature.chat.screen
+package tht.feature.chat.chat.screen
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -15,9 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.R
 import com.example.compose_ui.common.viewmodel.collectAsState
 import tht.feature.chat.component.ChatTopAppBar
-import tht.feature.chat.screen.chatlist.ChatListScreen
-import tht.feature.chat.viewmodel.chatlist.ChatViewModel
-import tht.feature.chat.viewmodel.state.ChatState
+import tht.feature.chat.chat.viewmodel.ChatViewModel
+import tht.feature.chat.chat.state.ChatState
 
 @Composable
 internal fun ChatScreen(
@@ -25,7 +24,7 @@ internal fun ChatScreen(
     navigateChatDetail: () -> Unit = { }
 ) {
     LaunchedEffect(key1 = Unit) {
-        viewModel.getChatList()
+        viewModel.getFakeChatList()
     }
 
     val state = viewModel.collectAsState().value

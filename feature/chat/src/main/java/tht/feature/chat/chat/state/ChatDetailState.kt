@@ -1,4 +1,4 @@
-package tht.feature.chat.viewmodel.detail.state
+package tht.feature.chat.chat.state
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

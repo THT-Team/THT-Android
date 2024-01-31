@@ -29,6 +29,7 @@ plugins {
     alias(libs.plugins.library) apply (false)
     alias(libs.plugins.ktlint) apply (false)
     alias(libs.plugins.detekt) apply (true)
+    alias(libs.plugins.serialization) apply(false)
 }
 
 
