@@ -55,8 +55,7 @@ fun ThtTextField(
             )
             BasicTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .alpha(if (value.isEmpty()) 0f else 100f),
+                    .fillMaxWidth(),
                 value = value,
                 cursorBrush = cursorBrush,
                 onValueChange = onValueChange,
