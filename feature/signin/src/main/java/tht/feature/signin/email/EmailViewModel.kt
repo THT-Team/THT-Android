@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
-import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -26,12 +26,15 @@ class EmailViewModel @Inject constructor(
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<EmailViewModel.EmailUiState, EmailViewModel.EmailSideEffect>() {
+) : BaseStateViewModel<EmailUiState, EmailViewModel.EmailSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<EmailUiState> = MutableStateFlow(EmailUiState.InputEmailEmpty)
+    override val _uiStateFlow: MutableStateFlow<EmailUiState> = MutableStateFlow(
+        EmailUiState.DEFAULT.copy(
+            email = savedStateHandle[KEY_EMAIL] ?: ""
+        )
+    )
 
     private val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
-    val email = savedStateHandle.getStateFlow(KEY_EMAIL, "")
 
     private val emailTemplate = listOf(
         "@naver.com",
@@ -54,24 +57,19 @@ class EmailViewModel @Inject constructor(
             }.launchIn(viewModelScope)
     }
 
+    // 자동 완성 기능은 임시 비활성화
     private val _emailAutoComplete = MutableStateFlow<List<String>>(emptyList())
     val emailAutoComplete = _emailAutoComplete.asStateFlow()
 
-    private val _dataLoading = MutableStateFlow(false)
-    val dataLoading = _dataLoading.asStateFlow()
-
     init {
         if (phone.value.isBlank()) {
-            _uiStateFlow.value =
-                EmailUiState.InvalidatePhone(
-                    stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-                )
+            _uiStateFlow.update { it.copy(invalidatePhone = true) }
         } else {
             viewModelScope.launch {
-                _dataLoading.value = true
+                _uiStateFlow.update { it.copy(loading = true) }
                 fetchSignupUserUseCase(phone.value)
                     .onSuccess {
-                        savedStateHandle[KEY_EMAIL] = it.email
+                        _uiStateFlow.update { it.copy(loading = true) }
                     }.onFailure {
                         when (it) {
                             is SignupException.SignupUserInvalidateException ->
@@ -89,7 +87,7 @@ class EmailViewModel @Inject constructor(
                             )
                         }
                     }.also {
-                        _dataLoading.value = false
+                        _uiStateFlow.update { it.copy(loading = false) }
                     }
             }
         }
@@ -106,15 +104,25 @@ class EmailViewModel @Inject constructor(
         return Pattern.matches(emailPattern, email)
     }
 
-    fun textInputEvent(text: String?) {
+    fun onEmailInputEvent(text: String?) {
         inputFlow.value = text ?: ""
         if (text.isNullOrBlank()) {
-            setUiState(EmailUiState.InputEmailEmpty)
+            _uiStateFlow.update {
+                it.copy(
+                    email = "",
+                    emailValidation = EmailUiState.EmailValidation.IDLE
+                )
+            }
             return
         }
-        when (checkEmailValidation(text)) {
-            true -> setUiState(EmailUiState.InputEmailCorrect)
-            else -> setUiState(EmailUiState.InputEmailError)
+        _uiStateFlow.update {
+            it.copy(
+                email = text,
+                emailValidation = when (checkEmailValidation(text)) {
+                    true -> EmailUiState.EmailValidation.VALIDATE
+                    else -> EmailUiState.EmailValidation.INVALIDATE
+                }
+            )
         }
     }
 
@@ -122,17 +130,27 @@ class EmailViewModel @Inject constructor(
         postSideEffect(EmailSideEffect.KeyboardVisible(false))
     }
 
-    fun backEvent() {
+    fun onBackEvent() {
         postSideEffect(EmailSideEffect.Back)
     }
 
-    fun nextEvent(email: String?) {
+    fun onClear() {
+        _uiStateFlow.update {
+            it.copy(
+                email = "",
+                emailValidation = EmailUiState.EmailValidation.IDLE
+            )
+        }
+    }
+
+    fun onNextEvent() {
+        val email = _uiStateFlow.value.email
         viewModelScope.launch {
-            if (email.isNullOrBlank() || !checkEmailValidation(email)) {
-                setUiState(EmailUiState.InputEmailError)
+            if (email.isBlank() || !checkEmailValidation(email)) {
+                _uiStateFlow.update { it.copy(emailValidation = EmailUiState.EmailValidation.INVALIDATE) }
                 return@launch
             }
-            _dataLoading.value = true
+           _uiStateFlow.update { it.copy(loading = true) }
             patchSignupDataUseCase(phone.value) {
                 it.copy(email = email)
             }.onSuccess {
@@ -153,20 +171,11 @@ class EmailViewModel @Inject constructor(
                     )
                 )
             }.also {
-                _dataLoading.value = false
+                _uiStateFlow.update { it.copy(loading = false) }
             }
         }
     }
 
-    sealed class EmailUiState : UiState {
-        object InputEmailEmpty : EmailUiState()
-
-        object InputEmailError : EmailUiState()
-
-        object InputEmailCorrect : EmailUiState()
-
-        data class InvalidatePhone(val message: String) : EmailUiState()
-    }
 
     sealed class EmailSideEffect : SideEffect {
         data class ShowToast(val message: String) : EmailSideEffect()
