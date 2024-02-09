@@ -1,6 +1,5 @@
 package tht.feature.signin.auth.composable
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,18 +18,15 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.component.progress.ThtCircularProgress
-import com.example.compose_ui.component.text.ThtTextField
+import com.example.compose_ui.component.text.ThtTextFieldLayout
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
 import com.example.compose_ui.component.text.headline.ThtHeadline5
@@ -87,13 +83,36 @@ fun PhoneAuthScreen(
                     color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                PhoneAuthTextFieldLayout(
+                val textStyle = rememberPretendardFontStyle(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 26.sp,
+                    lineHeight = 33.8.sp
+                )
+                ThtTextFieldLayout(
                     modifier = Modifier.fillMaxWidth(),
                     value = phone,
                     onValueChange = onEditPhoneNum,
                     onClear = onClear,
-                    onDone = onClick,
-                    hint = stringResource(id = R.string.hint_phone_input),
+                    cursorBrush = SolidColor(colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)),
+                    singleLine = true,
+                    placeholderTextStyle = textStyle.copy(
+                        color = colorResource(id = tht.core.ui.R.color.gray_8d8d8d),
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    textStyle = textStyle.copy(
+                        color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Phone,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            onClick()
+                        }
+                    ),
+                    placeholder = stringResource(id = R.string.hint_phone_input),
                     underLineColor = when (phoneValidation) {
                         PhoneAuthUiState.PhoneValidation.INVALIDATE ->
                             colorResource(id = tht.core.ui.R.color.red_ef4444)
@@ -102,17 +121,16 @@ fun PhoneAuthScreen(
                         PhoneAuthUiState.PhoneValidation.VALIDATE ->
                             colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)
                     },
-                    focusRequester = focusRequester
+                    focusRequester = focusRequester,
+                    errorVisible = phoneValidation == PhoneAuthUiState.PhoneValidation.INVALIDATE,
+                    error = {
+                        ThtCaption1(
+                            text = stringResource(id = R.string.message_phone_input_error),
+                            fontWeight = FontWeight.Normal,
+                            color = colorResource(id = tht.core.ui.R.color.red_ef4444)
+                        )
+                    }
                 )
-                AnimatedVisibility(
-                    visible = phoneValidation == PhoneAuthUiState.PhoneValidation.INVALIDATE
-                ) {
-                    ThtCaption1(
-                        text = stringResource(id = R.string.message_phone_input_error),
-                        fontWeight = FontWeight.Normal,
-                        color = colorResource(id = tht.core.ui.R.color.red_ef4444)
-                    )
-                }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -160,83 +178,6 @@ fun PhoneAuthScreen(
             visible = loading
         )
     }
-}
-
-@Composable
-private fun PhoneAuthTextFieldLayout(
-    value: String,
-    onValueChange: (String) -> Unit,
-    underLineColor: Color,
-    onDone: () -> Unit,
-    onClear: () -> Unit,
-    hint: String,
-    modifier: Modifier = Modifier,
-    focusRequester: FocusRequester = FocusRequester()
-) {
-    Column(
-        modifier = modifier
-    ) {
-        PhoneAuthTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            value = value,
-            hint = hint,
-            onValueChange = onValueChange,
-            onDone = onDone,
-            focusRequester = focusRequester,
-            onClear = onClear
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = underLineColor,
-            thickness = 2.dp
-        )
-    }
-}
-
-@Composable
-private fun PhoneAuthTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    onDone: () -> Unit,
-    onClear: () -> Unit,
-    hint: String,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = rememberPretendardFontStyle(
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 26.sp,
-        lineHeight = 33.8.sp
-    ),
-    focusRequester: FocusRequester = FocusRequester()
-) {
-    ThtTextField(
-        onClear = onClear,
-        modifier = modifier.focusRequester(focusRequester),
-        cursorBrush = SolidColor(colorResource(id = tht.core.ui.R.color.yellow_f9cc2e)),
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = hint,
-        singleLine = true,
-        placeholderTextStyle = textStyle.copy(
-            color = colorResource(id = tht.core.ui.R.color.gray_8d8d8d),
-            fontWeight = FontWeight.SemiBold
-        ),
-        textStyle = textStyle.copy(
-            color = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
-            fontWeight = FontWeight.SemiBold
-        ),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Phone,
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                onDone()
-            }
-        )
-    )
 }
 
 @Composable

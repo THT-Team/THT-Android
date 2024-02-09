@@ -37,11 +37,11 @@ fun ThtTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     textColor: ThtTextFieldColor = ThtTextFieldColor.default(),
     textStyle: TextStyle = LocalTextStyle.current,
-    placeholderTextStyle: TextStyle = LocalTextStyle.current,
+    placeholderTextStyle: TextStyle = LocalTextStyle.current
 ) {
     Row {
         Box(
-            modifier = modifier
+            modifier = modifier // weight(1f) 해줘여 clear 버튼 노출됨
         ) {
             Text(
                 modifier = Modifier
