@@ -67,11 +67,11 @@ class EmailActivity : AppCompatActivity() {
                     onBackClick = viewModel::onBackEvent,
                     focusRequester = focusRequester
                 )
-            }
-            LaunchedEffect(key1 = Unit) {
-                focusRequester.requestFocus()
-                delay(100)
-                keyboard?.show()
+                LaunchedEffect(key1 = Unit) {
+                    focusRequester.requestFocus()
+                    delay(100)
+                    keyboard?.show()
+                }
             }
         }
     }
