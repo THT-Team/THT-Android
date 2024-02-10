@@ -54,6 +54,7 @@ import tht.feature.signin.signup.nickname.NicknameUiState
 fun NicknameScreen(
     nickname: String,
     onEditNickname: (String) -> Unit,
+    maxInputSize: Int,
     onClick: () -> Unit,
     onClear: () -> Unit,
     nicknameValidation: NicknameUiState.NicknameValidation,
@@ -141,13 +142,16 @@ fun NicknameScreen(
                 val inputSizeText = stringResource(
                     id = tht.feature.signin.R.string.value_input_length,
                     nickname.length,
-                    100
+                    maxInputSize
                 )
                 val inputSizeTextAnnotatedString = remember(nickname) {
                     buildAnnotatedString {
                         val startIndex = inputSizeText.indexOf('/')
+                        pushStyle(SpanStyle(fontWeight = FontWeight.Medium))
+                        append(inputSizeText.substring(0, 1))
+                        pop()
                         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-                        append(inputSizeText.substring(0, startIndex))
+                        append(inputSizeText.substring(1, startIndex))
                         pop()
                         pushStyle(SpanStyle(fontWeight = FontWeight.Medium))
                         append(inputSizeText.substring(startIndex))
@@ -222,6 +226,7 @@ private fun NicknameScreenPreview() {
     NicknameScreen(
         modifier = Modifier.fillMaxSize(),
         nickname = "validate",
+        maxInputSize = 12,
         onEditNickname = {},
         onClick = {},
         onClear = {},
@@ -236,6 +241,7 @@ private fun NicknameScreenWarningPreview() {
     NicknameScreen(
         modifier = Modifier.fillMaxSize(),
         nickname = "invalidate",
+        maxInputSize = 12,
         onEditNickname = {},
         onClick = {},
         onClear = {},

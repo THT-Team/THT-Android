@@ -52,6 +52,7 @@ class NicknameFragment : SignupBaseComposeFragment<NicknameViewModel>() {
             modifier = Modifier.fillMaxSize(),
             nickname = state.nickname,
             nicknameValidation = state.validation,
+            maxInputSize = state.maxLength,
             onEditNickname = viewModel::onTextInputEvent,
             onClick = viewModel::onClickNextEvent,
             onClear = viewModel::onClearEvent,
