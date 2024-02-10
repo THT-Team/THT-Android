@@ -132,7 +132,8 @@ fun EmailScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
                 ) {
                     Image(
                         painter = painterResource(id = tht.feature.signin.R.drawable.ic_error),
@@ -143,7 +144,8 @@ fun EmailScreen(
                         text = stringResource(id = tht.feature.signin.R.string.message_email_input),
                         fontWeight = FontWeight.Medium,
                         color = colorResource(id = R.color.gray_666666),
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        includeFontPadding = false
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

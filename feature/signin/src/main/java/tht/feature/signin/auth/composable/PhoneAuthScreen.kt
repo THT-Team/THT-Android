@@ -133,7 +133,8 @@ fun PhoneAuthScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_error),
@@ -144,7 +145,8 @@ fun PhoneAuthScreen(
                         text = stringResource(id = R.string.message_phone_auth),
                         fontWeight = FontWeight.Medium,
                         color = colorResource(id = tht.core.ui.R.color.gray_666666),
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
+                        includeFontPadding = false
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

@@ -16,6 +16,7 @@ fun ThtCaption1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    includeFontPadding: Boolean = false
 ) {
     Text(
         modifier = modifier,
@@ -23,7 +24,8 @@ fun ThtCaption1(
         text = text,
         style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 11.dpTextUnit
+            fontSize = 11.dpTextUnit,
+            includeFontPadding = includeFontPadding
         ),
         color = color,
     )
