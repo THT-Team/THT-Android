@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
@@ -27,6 +28,7 @@ class NicknameViewModel @Inject constructor(
 ) : BaseStateViewModel<NicknameViewModel.NicknameUiState, NicknameViewModel.NicknameSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<NicknameUiState> = MutableStateFlow(NicknameUiState.Default)
+    private val phone: String = savedStateHandle[KEY_PHONE] ?: ""
 
     private val _inputLength = MutableStateFlow(0)
     val inputLength = _inputLength.asStateFlow()
