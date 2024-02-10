@@ -62,7 +62,9 @@ class TermsViewModel @Inject constructor(
                 fetchSignupUserUseCase(phone.value)
                     .onSuccess {
                         it.termsAgreement.forEach { entry ->
-                            termsAgreement[entry.key] = entry.value
+                            if (termsAgreement.containsKey(entry.key)) {
+                                termsAgreement[entry.key] = entry.value
+                            }
                         }
                         notifyTermsSelectState()
                     }.onFailure {
