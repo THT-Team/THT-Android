@@ -40,6 +40,7 @@ import com.example.compose_ui.component.text.ThtTextFieldLayout
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
 import com.example.compose_ui.component.text.headline.ThtHeadline5
+import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.feature.signin.R
@@ -140,7 +141,7 @@ fun PhoneAuthScreen(
                         painter = painterResource(id = R.drawable.ic_error),
                         contentDescription = "ic_error"
                     )
-                    ThtCaption1(
+                    ThtP2(
                         modifier = Modifier.padding(start = 6.dp),
                         text = stringResource(id = R.string.message_phone_auth),
                         fontWeight = FontWeight.Medium,

@@ -39,6 +39,7 @@ fun ThtP2(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    includeFontPadding: Boolean = false
 ) {
     Text(
         modifier = modifier,
@@ -46,7 +47,8 @@ fun ThtP2(
         text = text,
         style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 12.dpTextUnit
+            fontSize = 12.dpTextUnit,
+            includeFontPadding = includeFontPadding
         ),
         color = color,
     )

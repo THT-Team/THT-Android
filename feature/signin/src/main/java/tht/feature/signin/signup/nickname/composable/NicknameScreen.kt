@@ -45,6 +45,7 @@ import com.example.compose_ui.component.text.ThtText
 import com.example.compose_ui.component.text.ThtTextFieldLayout
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
+import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.extensions.dpTextUnit
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.core.ui.R
@@ -166,7 +167,7 @@ fun NicknameScreen(
                         painter = painterResource(id = tht.feature.signin.R.drawable.ic_error),
                         contentDescription = "ic_error"
                     )
-                    ThtCaption1(
+                    ThtP2(
                         modifier = Modifier
                             .padding(start = 6.dp)
                             .weight(1f),
@@ -179,7 +180,7 @@ fun NicknameScreen(
                     ThtText(
                         annotatedString = inputSizeTextAnnotatedString,
                         fontWeight = FontWeight.Medium,
-                        textSize = 11.dpTextUnit,
+                        textSize = 14.dpTextUnit,
                         color = colorResource(id = R.color.gray_666666),
                         textAlign = TextAlign.Start,
                         includeFontPadding = false
