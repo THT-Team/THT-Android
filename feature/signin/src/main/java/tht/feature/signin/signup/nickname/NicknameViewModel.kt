@@ -1,20 +1,22 @@
 package tht.feature.signin.signup.nickname
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.CheckNicknameDuplicateUseCase
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
-import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
 import javax.inject.Inject
 
@@ -25,80 +27,78 @@ class NicknameViewModel @Inject constructor(
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<NicknameViewModel.NicknameUiState, NicknameViewModel.NicknameSideEffect>() {
+) : BaseStateViewModel<NicknameUiState, NicknameViewModel.NicknameSideEffect>() {
 
-    override val _uiStateFlow: MutableStateFlow<NicknameUiState> = MutableStateFlow(NicknameUiState.Default)
     private val phone: String = savedStateHandle[KEY_PHONE] ?: ""
 
-    private val _inputLength = MutableStateFlow(0)
-    val inputLength = _inputLength.asStateFlow()
-
-    private val _dataLoading = MutableStateFlow(false)
-    val dataLoading = _dataLoading.asStateFlow()
-
-    private val _inputValue = MutableStateFlow("") // 입력한 값. 검증을 위한 용도
-    val inputValue = _inputValue.asStateFlow()
+    override val _uiStateFlow: MutableStateFlow<NicknameUiState> = MutableStateFlow(
+        NicknameUiState.DEFAULT.copy(
+            maxLength = MAX_LENGTH
+        )
+    )
 
     private val validInputValue = MutableStateFlow("") // 중복 체크를 통과한 유효 데이터
 
     init {
-        _inputValue.debounce(500L)
+        _uiStateFlow.map { it.nickname }
+            .distinctUntilChanged()
+            .debounce(500L)
             .filter { it.isNotBlank() && it != validInputValue.value }
-            .onEach {
-                // 09.23 닉네임 중복 체크 기능 비활성화
-                _uiStateFlow.value = NicknameUiState.ValidInput
-                validInputValue.value = it
-//                _dataLoading.value = true
-//                checkNicknameDuplicateUseCase(it)
-//                    .onSuccess { isDuplicate ->
-//                        if (!isDuplicate) {
-//                            _uiStateFlow.value = NicknameUiState.ValidInput
-//                            validInputValue.value = it
-//                        } else {
-//                            _uiStateFlow.value = NicknameUiState.InvalidInput(
-//                                stringProvider.getString(
-//                                    StringProvider.ResId.DuplicateNickname
-//                                )
-//                            )
-//                        }
-//                    }.onFailure {
-//                        _uiStateFlow.value = NicknameUiState.InvalidInput(
-//                            stringProvider.getString(
-//                                StringProvider.ResId.DuplicateCheckFail
-//                            )
-//                        )
-//                    }.also { _ ->
-//                        _dataLoading.value = false
-//                    }
-            }.launchIn(viewModelScope)
-
-        _inputValue.filter { it.isNotBlank() }
-            .onEach {
-                _inputLength.value = it.length
-                _uiStateFlow.value = when (it == validInputValue.value) {
-                    true -> NicknameUiState.ValidInput
-                    else -> NicknameUiState.Default
+            .onEach { input ->
+                _uiStateFlow.update {
+                    it.copy(
+                        validation = NicknameUiState.NicknameValidation.Idle,
+                        loading = true
+                    )
                 }
+                checkNicknameDuplicateUseCase(input)
+                    .onSuccess { isDuplicate ->
+                        if (!isDuplicate) {
+                            _uiStateFlow.update { it.copy(validation = NicknameUiState.NicknameValidation.Validate) }
+                            validInputValue.value = input
+                        } else {
+                            _uiStateFlow.update {
+                                it.copy(
+                                    validation = NicknameUiState.NicknameValidation.Invalid(
+                                        stringProvider.getString(
+                                            StringProvider.ResId.DuplicateNickname
+                                        )
+                                    )
+                                )
+                            }
+                        }
+                    }.onFailure {
+                        _uiStateFlow.update {
+                            it.copy(
+                                validation = NicknameUiState.NicknameValidation.Invalid(
+                                    stringProvider.getString(
+                                        StringProvider.ResId.DuplicateCheckFail
+                                    )
+                                )
+                            )
+                        }
+                    }
+                _uiStateFlow.update { it.copy(loading = false) }
             }.launchIn(viewModelScope)
 
-        _inputValue.filter { it.isBlank() }
-            .onEach {
-                _inputLength.value = 0
-                _uiStateFlow.value = NicknameUiState.Default
-            }.launchIn(viewModelScope)
+        fetchSavedData()
     }
 
-    fun fetchSavedData(phone: String) {
+    private fun fetchSavedData() {
         if (phone.isBlank()) {
-            _uiStateFlow.value = NicknameUiState.InvalidPhoneNumber(
-                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-            )
+            _uiStateFlow.update {
+                it.copy(
+                    validation = NicknameUiState.NicknameValidation.Invalid(
+                        stringProvider.getString(StringProvider.ResId.InvalidatePhone)
+                    )
+                )
+            }
         }
         viewModelScope.launch {
-            _dataLoading.value = true
+            _uiStateFlow.update { it.copy(loading = true) }
             fetchSignupUserUseCase(phone)
-                .onSuccess {
-                    _inputValue.value = it.nickname
+                .onSuccess { user ->
+                    _uiStateFlow.update { it.copy(nickname = user.nickname) }
                 }.onFailure {
                     _sideEffectFlow.emit(
                         NicknameSideEffect.ShowToast(
@@ -106,32 +106,46 @@ class NicknameViewModel @Inject constructor(
                                 stringProvider.getString(StringProvider.ResId.CustomerService)
                         )
                     )
-                }.also {
-                    _dataLoading.value = false
                 }
+            _uiStateFlow.update { it.copy(loading = false) }
         }
     }
 
-    fun textInputEvent(text: String?) {
-        _inputValue.value = text ?: ""
+    fun onTextInputEvent(text: String) {
+        if (text.length <= MAX_LENGTH) {
+            _uiStateFlow.update { it.copy(nickname = text) }
+        }
     }
 
-    fun backgroundTouchEvent() {
+    fun onClearEvent() {
+        _uiStateFlow.update {
+            it.copy(
+                nickname = "",
+                validation = NicknameUiState.NicknameValidation.Idle
+            )
+        }
+    }
+
+    fun onBackgroundTouchEvent() {
         postSideEffect(NicknameSideEffect.KeyboardVisible(false))
     }
 
-    fun clickNextEvent(phone: String, text: String?) {
+    fun onClickNextEvent() {
         if (phone.isBlank()) {
-            _uiStateFlow.value = NicknameUiState.InvalidPhoneNumber(
-                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-            )
+            _uiStateFlow.update {
+                it.copy(
+                    validation = NicknameUiState.NicknameValidation.Invalid(
+                        stringProvider.getString(StringProvider.ResId.InvalidatePhone)
+                    )
+                )
+            }
         }
-        if (text.isNullOrBlank()) {
-            _inputLength.value = 0
-            _uiStateFlow.value = NicknameUiState.Default
+        val nickname = _uiStateFlow.value.nickname
+        if (nickname.isBlank()) {
+            _uiStateFlow.update { it.copy(validation = NicknameUiState.NicknameValidation.Idle) }
             return
         }
-        if (text != validInputValue.value) {
+        if (nickname != validInputValue.value) {
             postSideEffect(
                 NicknameSideEffect.ShowToast(
                     stringProvider.getString(StringProvider.ResId.DuplicateCheckLoading)
@@ -141,9 +155,9 @@ class NicknameViewModel @Inject constructor(
         }
         postSideEffect(NicknameSideEffect.KeyboardVisible(false))
         viewModelScope.launch {
-            _dataLoading.value = true
+            _uiStateFlow.update { it.copy(loading = true) }
             patchSignupDataUseCase(phone) {
-                it.copy(nickname = text)
+                it.copy(nickname = nickname)
             }.onSuccess {
                 _sideEffectFlow.emit(NicknameSideEffect.NavigateNextView)
             }.onFailure {
@@ -152,17 +166,9 @@ class NicknameViewModel @Inject constructor(
                         stringProvider.getString(StringProvider.ResId.SendAuthFail)
                     )
                 )
-            }.also {
-                _dataLoading.value = false
             }
+            _uiStateFlow.update { it.copy(loading = false) }
         }
-    }
-
-    sealed class NicknameUiState : UiState {
-        object Default : NicknameUiState()
-        data class InvalidInput(val message: String) : NicknameUiState()
-        object ValidInput : NicknameUiState()
-        data class InvalidPhoneNumber(val message: String) : NicknameUiState()
     }
     sealed class NicknameSideEffect : SideEffect {
         data class ShowToast(val message: String) : NicknameSideEffect()
@@ -172,5 +178,6 @@ class NicknameViewModel @Inject constructor(
 
     companion object {
         const val MAX_LENGTH = 12
+        private const val KEY_PHONE = "phone"
     }
 }
