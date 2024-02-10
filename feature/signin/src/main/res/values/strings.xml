@@ -41,7 +41,7 @@
 
     <string name="title_nickname">닉네임을 알려주세요.</string>
     <string name="hint_nickname">닉네임</string>
-    <string name="message_nickname_input">THT에서 활동할 자유로운 호칭을 설정해주세요</string>
+    <string name="message_nickname_input">폴링에서 활동할 자유로운 호칭을 설정해주세요</string>
     <string name="value_input_length">(%1d/%2d)</string>
     <string name="message_nickname_patch_fail">닉네임 입력을 실패하였습니다</string>
     <string name="message_nickname_duplicate">이미 사용중인 닉네임입니다</string>
