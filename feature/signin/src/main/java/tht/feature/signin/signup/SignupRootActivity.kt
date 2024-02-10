@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.navigation.HomeNavigation
@@ -28,8 +30,20 @@ class SignupRootActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initNavGraph()
         setListener()
         observeData()
+    }
+
+    private fun initNavGraph() {
+        (supportFragmentManager.findFragmentById(binding.fcNavHost.id) as NavHostFragment)
+            .navController
+            .setGraph(
+                R.navigation.nav_graph,
+                bundleOf(
+                    "phone" to viewModel.phone.value
+                )
+            )
     }
 
     private fun setListener() {
@@ -44,7 +58,7 @@ class SignupRootActivity : AppCompatActivity() {
                 viewModel.sideEffectFlow.collect {
                     when (it) {
                         is SignupRootViewModel.SignupRootSideEffect.Back -> {
-                            val navController = findNavController(R.id.fc_nav_host)
+                            val navController = findNavController(binding.fcNavHost.id)
                             if (navController.currentDestination?.id == R.id.nicknameFragment) {
                                 onBackPressed()
                             } else {
@@ -52,7 +66,7 @@ class SignupRootActivity : AppCompatActivity() {
                             }
                         }
                         is SignupRootViewModel.SignupRootSideEffect.NavigateNextView -> {
-                            val navController = findNavController(R.id.fc_nav_host)
+                            val navController = findNavController(binding.fcNavHost.id)
                             when (it.step) {
                                 SignupRootViewModel.Step.EMPTY -> {}
                                 SignupRootViewModel.Step.NICKNAME -> {
@@ -71,7 +85,12 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)
                                 }
                                 SignupRootViewModel.Step.IDEAL_TYPE -> {
-                                    navController.navigate(R.id.action_idealTypeFragment_to_introductionFragment)
+                                    navController.navigate(
+                                        resId = R.id.action_idealTypeFragment_to_introductionFragment,
+                                        args = bundleOf(
+                                            "phone" to viewModel.phone.value
+                                        )
+                                    )
                                 }
                                 SignupRootViewModel.Step.INTRODUCTION -> {
                                     navController.navigate(R.id.action_introductionFragment_to_locationFragment)

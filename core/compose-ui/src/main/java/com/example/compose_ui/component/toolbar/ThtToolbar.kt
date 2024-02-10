@@ -18,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.R
 
+/**
+ * TODO: signup xml toolbar랑 이랑 미묘하게 다른 부분 조정 필요
+ */
 @Composable
 fun ThtToolbar(
     content: @Composable () -> Unit,
@@ -26,6 +29,7 @@ fun ThtToolbar(
 ) {
     Row(
         modifier = modifier.height(56.dp),
+//            .height(WindowInsets.statusBars.getTop(LocalDensity.current).dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (onBackPressed != null) {

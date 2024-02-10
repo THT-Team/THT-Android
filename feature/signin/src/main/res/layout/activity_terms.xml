@@ -31,7 +31,7 @@
                 android:id="@+id/iv_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="28dp"
                 android:layout_marginTop="26dp"
                 android:src="@drawable/ic_falling_logo_72_width"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
                 android:id="@+id/iv_check_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="28dp"
                 android:layout_marginTop="74dp"
                 android:src="@drawable/selector_ic_check_circle"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="28dp"
                 android:text="@string/title_all_agreement"
                 android:textColor="@color/white_f9fafa"
                 app:layout_constraintBottom_toBottomOf="@id/iv_check_all"
@@ -65,9 +65,10 @@
     </ScrollView>
 
     <androidx.appcompat.widget.AppCompatButton
+        style="@style/SignupTextButtonStyle"
         android:enabled="false"
         android:id="@+id/btn_start"
-        android:background="@drawable/selector_btn_start"
+        android:text="@string/starting"
         android:layout_marginHorizontal="38dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toTopOf="@id/tv_notify"

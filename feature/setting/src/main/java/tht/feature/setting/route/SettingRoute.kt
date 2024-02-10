@@ -41,7 +41,7 @@ fun SettingRoute(
         ThtCircularProgress(
             modifier = Modifier.align(Alignment.Center),
             color = colorResource(id = R.color.yellow_ffee54),
-            dataLoading = { state.loading }
+            visible = state.loading
         )
     }
 }

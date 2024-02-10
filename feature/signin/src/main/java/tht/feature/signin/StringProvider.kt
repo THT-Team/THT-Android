@@ -11,7 +11,6 @@ interface StringProvider {
         CustomerService,
         InvalidatePhone,
         InvalidateSignupProcess,
-        SendAuthSuccess,
         SendAuthFail,
         CheckSignupStateFail,
         AuthTimeout,

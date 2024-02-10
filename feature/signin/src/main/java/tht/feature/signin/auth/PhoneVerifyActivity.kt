@@ -1,19 +1,28 @@
 package tht.feature.signin.auth
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
+import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
+import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.setSoftKeyboardVisible
 import tht.core.ui.extension.showToast
@@ -22,6 +31,7 @@ import tht.feature.signin.databinding.ActivityPhoneVerifyBinding
 import tht.feature.signin.email.EmailActivity
 import tht.feature.signin.util.AnimatorUtil
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class PhoneVerifyActivity : AppCompatActivity() {
@@ -40,6 +50,10 @@ class PhoneVerifyActivity : AppCompatActivity() {
         initView()
         setListener()
         observeData()
+        lifecycleScope.launch {
+            delay(200)
+            textInputEditTexts.firstOrNull()?.setSoftKeyboardVisible(true)
+        }
     }
 
     private fun setToolbar() {
@@ -78,14 +92,25 @@ class PhoneVerifyActivity : AppCompatActivity() {
             viewModel.resendAuth()
         }
 
-        textInputEditTexts.forEachIndexed { i, view ->
-            view.setOnKeyListener(VerifyEditKeyEvent(view, if (i == 0) null else textInputEditTexts[i - 1]))
+        textInputEditTexts.forEachIndexed { i, editText ->
+            editText.setOnFocusChangeListener { v, hasFocus ->
+                if (i == 0 || !hasFocus) return@setOnFocusChangeListener
+                // focus 를 잡았을 때, 앞 칸이 비어 있다면 앞 칸으로 이동
+                textInputEditTexts[i - 1].let { prevEditText ->
+                    if (prevEditText.text.isNullOrBlank()) {
+                        prevEditText.setSoftKeyboardVisible(true)
+                    }
+                }
+            }
+
+            editText.setOnKeyListener(VerifyEditKeyEvent(editText, if (i == 0) null else textInputEditTexts[i - 1]))
             val nxtView = if (i in 0 until textInputEditTexts.size - 1) {
                 textInputEditTexts[i + 1]
             } else {
                 null
             }
-            view.addTextChangedListener(
+
+            editText.addTextChangedListener(
                 VerifyEditTextWatcher(
                     nxtView,
                     i,
@@ -113,11 +138,15 @@ class PhoneVerifyActivity : AppCompatActivity() {
                             binding.layoutBackground.setSoftKeyboardVisible(it.visible)
 
                         is PhoneVerifyViewModel.VerifySideEffect.NavigateNextView -> {
-                            startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
+                            showSuccessToast(getString(R.string.message_phone_auth_complete)) {
+                                startActivity(EmailActivity.getIntent(this@PhoneVerifyActivity, it.phone))
+                            }
                         }
 
                         is PhoneVerifyViewModel.VerifySideEffect.NavigateMainView -> {
-                            homeNavigation.navigateHome(this@PhoneVerifyActivity)
+                            showSuccessToast(getString(R.string.message_phone_auth_complete)) {
+                                homeNavigation.navigateHome(this@PhoneVerifyActivity)
+                            }
                         }
                     }
                 }
@@ -172,6 +201,64 @@ class PhoneVerifyActivity : AppCompatActivity() {
         textInputLayouts.forEach { layout ->
             layout.error = " "
         }
+    }
+
+    private fun showSuccessToast(message: String, closeListener: () -> Unit = { }) {
+        val shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+        val customToastView = layoutInflater.inflate(
+            R.layout.item_signup_custom_toast,
+            binding.layoutBackground,
+            false
+        ).apply {
+            alpha = 0f
+        }
+        customToastView.findViewById<TextView>(R.id.tv_title_custom_toast).text = message
+//        customToastView.findViewById<ImageView>(R.id.iv_image_custom_toast)
+//            .setBackgroundResource(R.drawable.ic_toast_send_success)
+        binding.layoutBackground.addView(customToastView)
+
+        customToastView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            width = 0
+            height = ConstraintLayout.LayoutParams.WRAP_CONTENT
+            startToStart = binding.layoutBackground.id
+            endToEnd = binding.layoutBackground.id
+            topToTop = binding.layoutBackground.id
+            bottomToBottom = binding.layoutBackground.id
+            marginStart = getPxFromDp(40).roundToInt()
+            marginEnd = getPxFromDp(40).roundToInt()
+            topMargin = getPxFromDp(70).roundToInt()
+            bottomMargin = getPxFromDp(70).roundToInt()
+        }
+
+        customToastView.animate()
+            .alpha(1f)
+            .duration = shortAnimationDuration.toLong()
+
+        val lottieView = customToastView.findViewById<LottieAnimationView>(R.id.lottie_image_custom_toast)
+        lottieView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {}
+
+            override fun onAnimationEnd(animation: Animator) {
+                customToastView.postDelayed({
+                    customToastView.apply {
+                        animate()
+                            .alpha(0f)
+                            .setDuration(shortAnimationDuration.toLong())
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    binding.layoutBackground.removeView(customToastView)
+                                    closeListener()
+                                }
+                            })
+                    }
+                }, 100)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {}
+
+            override fun onAnimationRepeat(animation: Animator) {}
+        })
+        lottieView.playAnimation()
     }
 
     companion object {

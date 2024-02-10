@@ -1,46 +1,52 @@
 package tht.feature.signin.signup.introduction
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
-import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
 import javax.inject.Inject
 
 @HiltViewModel
 class IntroductionViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<IntroductionViewModel.IntroductionUiState, IntroductionViewModel.IntroductionSideEffect>() {
+) : BaseStateViewModel<IntroductionUiState, IntroductionViewModel.IntroductionSideEffect>() {
 
     override val _uiStateFlow: MutableStateFlow<IntroductionUiState> =
-        MutableStateFlow(IntroductionUiState.Empty)
+        MutableStateFlow(IntroductionUiState.DEFAULT.copy(maxLength = MAX_LENGTH))
 
-    private val _inputLength = MutableStateFlow(0)
-    val inputLength = _inputLength.asStateFlow()
+    private val phone: String = (savedStateHandle[KEY_PHONE] ?: "").also {
+        Log.d("cwj", "phone => $it")
+    }
 
-    private val _dataLoading = MutableStateFlow(false)
-    val dataLoading = _dataLoading.asStateFlow()
+    init {
+        fetchSavedData()
+    }
 
-    fun fetchSavedData(phone: String) {
+    fun fetchSavedData() {
         if (phone.isBlank()) {
-            _uiStateFlow.value = IntroductionUiState.InvalidPhoneNumber(
-                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-            )
+            _uiStateFlow.update { it.copy(invalidatePhone = true) }
         }
         viewModelScope.launch {
-            _dataLoading.value = true
+            _uiStateFlow.update { it.copy(loading = true) }
             fetchSignupUserUseCase(phone)
-                .onSuccess {
-                    _inputLength.value = it.introduce.length
-                    _uiStateFlow.value = IntroductionUiState.ValidInput(it.introduce)
+                .onSuccess { user ->
+                    _uiStateFlow.update {
+                        it.copy(
+                            introduction = user.introduce,
+                            validation = IntroductionUiState.IntroductionValidation.VALIDATE
+                        )
+                    }
                 }.onFailure {
                     _sideEffectFlow.emit(
                         IntroductionSideEffect.ShowToast(
@@ -48,41 +54,47 @@ class IntroductionViewModel @Inject constructor(
                                 stringProvider.getString(StringProvider.ResId.CustomerService)
                         )
                     )
-                }.also {
-                    _dataLoading.value = false
                 }
+            _uiStateFlow.update { it.copy(loading = false) }
         }
     }
 
-    fun textInputEvent(text: String?) {
-        if (text.isNullOrBlank()) {
-            _uiStateFlow.value = IntroductionUiState.Empty
-            return
+    fun onTextInputEvent(text: String) {
+        if (text.length > MAX_LENGTH) return
+        _uiStateFlow.update {
+            it.copy(
+                introduction = text,
+                validation = when (text.isBlank()) {
+                    true -> IntroductionUiState.IntroductionValidation.IDLE
+                    else -> IntroductionUiState.IntroductionValidation.VALIDATE
+                }
+            )
         }
-        _inputLength.value = text.length
-        _uiStateFlow.value = IntroductionUiState.ValidInput(text)
     }
 
-    fun backgroundTouchEvent() {
+    fun onClear() {
+        _uiStateFlow.update {
+            it.copy(
+                introduction = "",
+                validation = IntroductionUiState.IntroductionValidation.IDLE
+            )
+        }
+    }
+
+    fun onBackgroundTouchEvent() {
         postSideEffect(IntroductionSideEffect.KeyboardVisible(false))
     }
 
-    fun clickNextEvent(phone: String, text: String?) {
-        if (phone.isBlank()) {
-            _uiStateFlow.value = IntroductionUiState.InvalidPhoneNumber(
-                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
-            )
-        }
-        if (text.isNullOrBlank()) {
-            _inputLength.value = 0
-            _uiStateFlow.value = IntroductionUiState.Empty
+    fun onClickNextEvent() {
+        val introduction = _uiStateFlow.value.introduction
+        if (introduction.isBlank()) {
             return
         }
         postSideEffect(IntroductionSideEffect.KeyboardVisible(false))
         viewModelScope.launch {
-            _dataLoading.value = true
+            _uiStateFlow.update { it.copy(loading = true) }
             patchSignupDataUseCase(phone) {
-                it.copy(introduce = text)
+                it.copy(introduce = introduction)
             }.onSuccess {
                 _sideEffectFlow.emit(IntroductionSideEffect.NavigateNextView)
             }.onFailure {
@@ -91,17 +103,11 @@ class IntroductionViewModel @Inject constructor(
                         stringProvider.getString(StringProvider.ResId.SendAuthFail)
                     )
                 )
-            }.also {
-                _dataLoading.value = false
             }
+            _uiStateFlow.update { it.copy(loading = false) }
         }
     }
 
-    sealed class IntroductionUiState : UiState {
-        data class InvalidPhoneNumber(val message: String) : IntroductionUiState()
-        object Empty : IntroductionUiState()
-        data class ValidInput(val introduce: String) : IntroductionUiState()
-    }
     sealed class IntroductionSideEffect : SideEffect {
         data class ShowToast(val message: String) : IntroductionSideEffect()
         data class KeyboardVisible(val visible: Boolean) : IntroductionSideEffect()
@@ -110,5 +116,6 @@ class IntroductionViewModel @Inject constructor(
 
     companion object {
         const val MAX_LENGTH = 200
+        private const val KEY_PHONE = "phone"
     }
 }

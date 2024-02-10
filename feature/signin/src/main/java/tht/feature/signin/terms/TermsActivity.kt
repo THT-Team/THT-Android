@@ -132,6 +132,8 @@ class TermsActivity : AppCompatActivity() {
             if (prevView !is TermsItemView) {
                 topMargin = getPxFromDp(35).toInt()
             }
+            marginStart = getPxFromDp(28).toInt()
+            marginEnd = getPxFromDp(28).toInt()
         }
     }
 

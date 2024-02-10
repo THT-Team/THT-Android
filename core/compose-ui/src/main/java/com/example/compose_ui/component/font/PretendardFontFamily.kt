@@ -1,7 +1,10 @@
 package com.example.compose_ui.component.font
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -22,13 +25,25 @@ val pretendardFontFamily = FontFamily(
 )
 
 @Composable
-fun pretendardFontStyle(
+fun rememberPretendardFontStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
-    shadow: Shadow? = null
-) = TextStyle(
-    fontFamily = pretendardFontFamily,
-    fontWeight = fontWeight,
-    fontSize = fontSize,
-    shadow = shadow
-)
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    color: Color = Color.Unspecified,
+    shadow: Shadow? = null,
+    includeFontPadding: Boolean = false
+): TextStyle {
+    return remember {
+        TextStyle(
+            color = color,
+            fontFamily = pretendardFontFamily,
+            fontWeight = fontWeight,
+            fontSize = fontSize,
+            shadow = shadow,
+            lineHeight = lineHeight,
+            platformStyle = PlatformTextStyle(
+                includeFontPadding = includeFontPadding
+            )
+        )
+    }
+}

@@ -21,10 +21,9 @@
 
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="11dp"
         android:src="@drawable/ic_left_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pb_signup"/>
@@ -39,7 +38,6 @@
         app:layout_constraintTop_toBottomOf="@id/iv_back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
         tools:layout="@layout/fragment_nickname" />
 
     <ProgressBar

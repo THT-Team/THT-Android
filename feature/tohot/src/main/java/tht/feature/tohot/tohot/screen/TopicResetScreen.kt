@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose_ui.component.font.pretendardFontStyle
+import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.text.headline.ThtHeadline5
 import com.example.compose_ui.component.text.p.ThtP1
@@ -132,7 +132,7 @@ fun TopicResetScreen(
                 }
             },
             textAlign = TextAlign.Center,
-            style = pretendardFontStyle(
+            style = rememberPretendardFontStyle(
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 19.dpTextUnit
             )

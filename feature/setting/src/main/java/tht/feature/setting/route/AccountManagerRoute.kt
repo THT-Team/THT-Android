@@ -56,7 +56,7 @@ fun AccountManagerRoute(
         ThtCircularProgress(
             modifier = Modifier.align(Alignment.Center),
             color = colorResource(id = tht.core.ui.R.color.yellow_ffee54),
-            dataLoading = { state.loading }
+            visible = state.loading
         )
     }
 }

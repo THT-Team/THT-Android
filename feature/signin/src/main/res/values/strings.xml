@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="help_login"><u>로그인에 어려움이 있으신가요?</u></string>
-
     <string name="signup">회원가입</string>
     <string name="login">로그인</string>
     <string name="next">다음</string>
+    <string name="starting">시작하기</string>
     <string name="loading">로딩중</string>
 
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="day">일</string>
-    <string name="confirm">확인</string>
+    <string name="confirm">확인</string>기
+    <string name="do_auth">인증하기</string>
 
-    <string name="message_login_issue"><u>로그인에 어려움이 있으신가요?</u></string>
+    <string name="message_login_issue"><u>계정에 문제가 있나요?</u></string>
 
     <string name="message_invalidate_phone">유효하지 않은 핸드폰 번호입니다</string>
     <string name="message_invalidate_signup_process">가입 프로세스가 유효하지 않습니다</string>
@@ -20,11 +20,11 @@
 
     <string name="phone_auth">핸드폰 번호 인증</string>
     <string name="hint_phone_input">01012345678</string>
-    <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다.\n핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
+    <string name="message_phone_auth">핸드폰 번호 입력 시, 인증 코드를 문자 메세지로 발송합니다. 핸드폰 번호는 다른 사람들에게 공유되거나 프로필에 표시하지않습니다.</string>
     <string name="message_phone_input_error">핸드폰 번호를 다시 확인해 주세요</string>
-    <string name="message_send_auth_success">인증 코드 전송 완료</string>
     <string name="message_send_auth_fail">인증 코드 전송 실패</string>
     <string name="message_check_signup_state_fail">회원가입 이력 조회 실패</string>
+    <string name="message_phone_auth_complete">핸드폰 번호 인증 완료</string>
 
     <string name="title_verify">인증 코드 입력</string>
     <string name="message_verify">%1s 으로\n전송된 코드를 입력해주세요</string>
@@ -34,14 +34,14 @@
     <string name="message_resend_auth_success">인증번호가 재전송 되었습니다</string>
 
     <string name="email_input_title">이메일 입력</string>
-    <string name="hint_email_input">welcome@falling.com</string>
-    <string name="message_email_input">이메일 계정 인증으로 로그인 문제가 생길 시 이메일로\n계정 복구를 진행합니다. 따로 프로필에 표시 되지 않습니다.</string>
+    <string name="hint_email_input">user@falling.com</string>
+    <string name="message_email_input">이메일 계정 인증으로 로그인 문제가 생길 시 이메일로 계정 복구를 진행합니다. 따로 프로필에 표시 되지 않습니다.</string>
     <string name="message_email_input_error">올바른 이메일 주소를 입력해주세요</string>
     <string name="message_email_patch_fail">이메일 입력을 실패하였습니다</string>
 
     <string name="title_nickname">닉네임을 알려주세요.</string>
     <string name="hint_nickname">닉네임</string>
-    <string name="message_nickname_input">THT에서 활동할 자유로운 호칭을 설정해주세요</string>
+    <string name="message_nickname_input">폴링에서 활동할 자유로운 호칭을 설정해주세요</string>
     <string name="value_input_length">(%1d/%2d)</string>
     <string name="message_nickname_patch_fail">닉네임 입력을 실패하였습니다</string>
     <string name="message_nickname_duplicate">이미 사용중인 닉네임입니다</string>
@@ -51,7 +51,7 @@
     <string name="title_all_agreement">전체 동의</string>
     <string name="parenthesis_require">(필수)</string>
     <string name="parenthesis_select">(선택)</string>
-    <string name="message_terms_notify">THT는 만 18세 이상부터 이용 가능하며, 타인의 계정으로 본 서비스를 사용하는 경우 정보통신망 이용 촉진 및 정보보호 등에 관한 법률에 의거 처벌을 받을 수 있습니다.</string>
+    <string name="message_terms_notify">Falling는 만 18세 이상부터 이용 가능하며, 타인의 계정으로 본 서비스를 사용하는 경우 정보통신망 이용 촉진 및 정보보호 등에 관한 법률에 의거 처벌을 받을 수 있습니다.</string>
     <string name="message_terms_fetch_error">이용약관 데이터를 불러올 수 없습니다</string>
     <string name="message_terms_patch_error">이용약관 데이터를 입력할 수 없습니다</string>
     <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
