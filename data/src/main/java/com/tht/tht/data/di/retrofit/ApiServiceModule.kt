@@ -1,8 +1,5 @@
 package com.tht.tht.data.di.retrofit
 
-import com.tht.tht.data.remote.response.base.BaseResponse
-import com.tht.tht.data.remote.response.base.ThtResponse
-import com.tht.tht.data.remote.response.user.UserHeartResponse
 import com.tht.tht.data.remote.service.THTLoginApi
 import com.tht.tht.data.remote.service.THTSignupApi
 import com.tht.tht.data.remote.service.chat.ChatService
@@ -11,7 +8,9 @@ import com.tht.tht.data.remote.service.image.ImageService
 import com.tht.tht.data.remote.service.image.ImageServiceImpl
 import com.tht.tht.data.remote.service.location.RegionCodeApi
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
+import com.tht.tht.data.remote.service.user.AccessTokenRefreshService
 import com.tht.tht.data.remote.service.user.UserBlockApiService
+import com.tht.tht.data.remote.service.user.UserDisActiveService
 import com.tht.tht.data.remote.service.user.UserDislikeApiService
 import com.tht.tht.data.remote.service.user.UserHeartApiService
 import com.tht.tht.data.remote.service.user.UserReportApiService
@@ -19,9 +18,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.delay
 import retrofit2.Retrofit
-import java.util.Random
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -90,25 +88,23 @@ object ApiServiceModule {
     @Singleton
     fun provideUserHeartApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
-    ): UserHeartApiService = object : UserHeartApiService {
-        override suspend fun sendHeart(userUuid: String): ThtResponse<UserHeartResponse> {
-            delay(500)
-            return BaseResponse.Success(
-                statusCode = 200,
-                response = UserHeartResponse(Random().nextInt(2) == 0)
-            )
-        }
-    }
-    // retrofit.create(UserHeartApiService::class.java)
+    ): UserHeartApiService = retrofit.create(UserHeartApiService::class.java)
 
     @Provides
     @Singleton
     fun provideUserDisLikeApiService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
-    ): UserDislikeApiService = object : UserDislikeApiService {
-        override suspend fun sendDislike(userUuid: String) {
-            delay(2000)
-        }
-    }
-    // retrofit.create(UserDislikeApiService::class.java)
+    ): UserDislikeApiService = retrofit.create(UserDislikeApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideAccessTokenRefreshService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): AccessTokenRefreshService = retrofit.create(AccessTokenRefreshService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideUserDisActiveService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): UserDisActiveService = retrofit.create(UserDisActiveService::class.java)
 }

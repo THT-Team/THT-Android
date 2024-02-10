@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import tht.core.ui.extension.showToast
 import tht.feature.tohot.R
 import tht.feature.tohot.component.card.ToHotLoadingCard
+import tht.feature.tohot.component.card.ToHotLoginExpiredCard
 import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
@@ -47,7 +48,8 @@ import tht.feature.tohot.tohot.viewmodel.ToHotViewModel
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun ToHotRoute(
-    toHotViewModel: ToHotViewModel = hiltViewModel()
+    toHotViewModel: ToHotViewModel = hiltViewModel(),
+    navigateLogout: () -> Unit
 ) {
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState()
@@ -68,6 +70,8 @@ internal fun ToHotRoute(
             toHotViewModel.store.sideEffect.collect {
                 try {
                     when (it) {
+                        is ToHotSideEffect.Logout -> navigateLogout()
+
                         is ToHotSideEffect.ToastMessage -> context.showToast(it.message)
 
                         is ToHotSideEffect.Scroll -> {
@@ -189,39 +193,51 @@ internal fun ToHotRoute(
             topicClickListener = toHotViewModel::topicSelectEvent,
             selectFinishListener = toHotViewModel::topicSelectFinishEvent
         ) {
-            ToHotScreen(
-                modifier = Modifier
-                    .pointerInteropFilter {
-                        when (it.action) {
-                            MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
-                        }
-                        false
-                    },
-                cardList = toHotState.userList,
-                toHotCardState = toHotState.userCardState,
-                pagerState = pagerState,
-                timers = toHotState.timers,
-                currentUserIdx = toHotState.enableTimerIdx,
-                cardMoveAllow = toHotState.cardMoveAllow,
-                topicIconUrl = toHotState.currentTopic?.iconUrl,
-                topicIconRes = toHotState.currentTopic?.iconRes,
-                topicTitle = toHotState.currentTopic?.title,
-                hasUnReadAlarm = toHotState.hasUnReadAlarm,
-                fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
-                isHoldCard = toHotState.holdCard,
-                onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
-                topicSelectListener = toHotViewModel::topicChangeClickEvent,
-                alarmClickListener = toHotViewModel::alarmClickEvent,
-                pageChanged = toHotViewModel::userChangeEvent,
-                ticChanged = toHotViewModel::ticChangeEvent,
-                loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
-                onLikeClick = toHotViewModel::userHeartEvent,
-                onUnLikeClick = toHotViewModel::userDislikeEvent,
-                onReportMenuClick = toHotViewModel::reportMenuEvent,
-                onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
-                onEnterClick = toHotViewModel::enterEvent,
-                onRefreshClick = toHotViewModel::queryUserListEvent
-            )
+            when (toHotState.loginAvailable) {
+                true -> {
+                    ToHotScreen(
+                        modifier = Modifier
+                            .pointerInteropFilter {
+                                when (it.action) {
+                                    MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
+                                }
+                                false
+                            },
+                        cardList = toHotState.userList,
+                        toHotCardState = toHotState.userCardState,
+                        pagerState = pagerState,
+                        timers = toHotState.timers,
+                        currentUserIdx = toHotState.enableTimerIdx,
+                        cardMoveAllow = toHotState.cardMoveAllow,
+                        topicIconUrl = toHotState.currentTopic?.iconUrl,
+                        topicIconRes = toHotState.currentTopic?.iconRes,
+                        topicTitle = toHotState.currentTopic?.title,
+                        hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                        fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                        isHoldCard = toHotState.holdCard,
+                        isShakingCard = toHotState.shakingCard,
+                        onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
+                        topicSelectListener = toHotViewModel::topicChangeClickEvent,
+                        alarmClickListener = toHotViewModel::alarmClickEvent,
+                        pageChanged = toHotViewModel::userChangeEvent,
+                        ticChanged = toHotViewModel::ticChangeEvent,
+                        loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
+                        onLikeClick = toHotViewModel::userHeartEvent,
+                        onUnLikeClick = toHotViewModel::userDislikeEvent,
+                        onReportMenuClick = toHotViewModel::reportMenuEvent,
+                        onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
+                        onEnterClick = toHotViewModel::enterEvent,
+                        onRefreshClick = toHotViewModel::queryUserListEvent
+                    )
+                }
+
+                else -> {
+                    ToHotLoginExpiredCard(
+                        modifier = Modifier.fillMaxSize(),
+                        onClick = toHotViewModel::logoutEvent
+                    )
+                }
+            }
         }
 
         ToHotLoadingCard(

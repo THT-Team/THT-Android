@@ -1,14 +1,18 @@
 package com.tht.tht.data.remote.datasource.topic
 
+import com.tht.tht.data.di.IODispatcher
 import com.tht.tht.data.local.dao.topic.DailyTopicDao
 import com.tht.tht.data.remote.mapper.toUnwrap
 import com.tht.tht.data.remote.response.topic.DailyTopicResponse
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DailyTopicDataSourceImpl @Inject constructor(
     private val service: DailyTopicApiService,
-    private val dao: DailyTopicDao
+    private val dao: DailyTopicDao,
+    @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : DailyTopicDataSource {
     override suspend fun fetchDailyTopic(): DailyTopicResponse {
         return service.fetchDailyTopic().toUnwrap { it }
@@ -19,10 +23,20 @@ class DailyTopicDataSourceImpl @Inject constructor(
     }
 
     override suspend fun fetchDailyTopicFromLocal(): DailyTopicResponse {
-        return dao.fetchDailyTopics()
+        return withContext(dispatcher) {
+            dao.fetchDailyTopics()
+        }
     }
 
     override suspend fun saveDailyTopic(topic: DailyTopicResponse) {
-        dao.saveDailyTopic(topic)
+        withContext(dispatcher) {
+            dao.saveDailyTopic(topic)
+        }
+    }
+
+    override suspend fun clear() {
+        return withContext(dispatcher) {
+            dao.clear()
+        }
     }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_like_item">
+
+    <ImageView
+        android:id="@+id/iv_profile"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_radius_img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/red_ef4444" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        style="@style/SubT2MediumTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintEnd_toStartOf="@id/view_new_circle"
+        app:layout_constraintStart_toEndOf="@id/iv_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_profile"
+        tools:text="최광현, 27"
+        tools:textColor="@color/white_ffffff" />
+
+    <View
+        android:id="@+id/view_new_circle"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_new_circle"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_nickname"
+        app:layout_constraintBottom_toBottomOf="@id/tv_nickname"/>
+
+    <ImageView
+        android:id="@+id/iv_map_pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_map_pin"
+        app:layout_constraintBottom_toBottomOf="@id/tv_address"
+        app:layout_constraintStart_toStartOf="@id/tv_nickname"
+        app:layout_constraintTop_toTopOf="@id/tv_address" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        style="@style/P2RegularGrayTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_map_pin"
+        app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+        tools:text="성남시 중원구 금광동" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_next_chance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/btn_next_chance"
+        android:backgroundTint="@color/white_ffffff"
+        app:layout_constraintStart_toStartOf="@id/tv_nickname"
+        app:layout_constraintTop_toBottomOf="@id/tv_address" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_chatting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_chatting"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

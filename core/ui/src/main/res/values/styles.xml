@@ -80,6 +80,12 @@
     </style>
     <!--H5Bold-->
 
+    <!--H5SemiBold-->
+    <style name="H5SemiBoldTextStyle">
+        <item name="android:textSize">17sp</item>
+    </style>
+    <!--H5SemiBold-->
+
     <!--H5Medium-->
     <style name="H5MediumTextStyle">
         <item name="android:textSize">17sp</item>
@@ -224,6 +230,10 @@
         <item name="android:textColor">@color/black_222222</item>
     </style>
 
+    <style name="P2SemiBoldGrayTextStyle" parent="P2SemiBoldTextStyle">
+        <item name="android:textColor">@color/gray_939393</item>
+    </style>
+
     <style name="P2SemiBoldYellowTextStyle" parent="P2SemiBoldTextStyle">
         <item name="android:textColor">@color/yellow_f9cc2e</item>
     </style>
@@ -330,5 +340,20 @@
         <item name="android:textColor">@color/gray_666666</item>
     </style>
     <!--Pretendard 14-->
+
+    <style name="TransparentBottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/black_222222</item>
+        <item name="android:textColorAlertDialogListItem">@color/white_f9fafa</item>
+        <item name="android:windowBackground">@drawable/bg_alert_dialog</item>
+    </style>
 
 </resources>

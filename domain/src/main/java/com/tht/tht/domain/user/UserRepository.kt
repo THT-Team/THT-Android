@@ -5,7 +5,13 @@ interface UserRepository {
 
     suspend fun blockUser(userUuid: String)
 
-    suspend fun sendHeart(userUuid: String): Boolean
+    suspend fun sendHeart(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    ): Boolean
 
-    suspend fun sendDislike(userUuid: String)
+    suspend fun sendDislike(
+        userUuid: String,
+        selectDailyTopicIdx: Int
+    )
 }

@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.ui.delegate.viewBinding
-import tht.core.ui.extension.resizeDialogFragment
+import tht.core.ui.dialog.resizeDialogFragment
 import tht.feature.signin.databinding.DialogLocationBinding
 
 @AndroidEntryPoint

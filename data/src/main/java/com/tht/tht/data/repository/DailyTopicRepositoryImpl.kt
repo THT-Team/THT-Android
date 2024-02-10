@@ -25,4 +25,8 @@ class DailyTopicRepositoryImpl @Inject constructor(
     override suspend fun saveDailyTopic(topic: DailyTopicListModel) {
         dataSource.saveDailyTopic(topic.toEntity())
     }
+
+    override suspend fun clearSavedTopic() {
+        dataSource.clear()
+    }
 }

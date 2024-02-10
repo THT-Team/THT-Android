@@ -20,6 +20,7 @@ object THTApiConstant {
 
     object Login {
         const val FCM_TOKEN_LOGIN = "users/login/normal"
+        const val USER_DIS_ACTIVE = "user/account-withdrawal"
     }
 
     object Topic {
@@ -33,9 +34,15 @@ object THTApiConstant {
     }
 
     object User {
+        const val ACCESS_TOKEN_REFRESH = "users/login/refresh"
+
         const val REPORT = "user/report"
 
         const val BLOCK = "/user/block/{block-user-uuid}"
+
+        const val Heart = "/i-like-you/{favorite-user-uuid}/{daily-topic-idx}"
+
+        const val DisLike = "/i-dont-like-you/{dont-favorite-user-uuid}/{daily-topic-idx}"
     }
 
     object Chat {

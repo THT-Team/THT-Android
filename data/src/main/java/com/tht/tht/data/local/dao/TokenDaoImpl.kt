@@ -3,6 +3,7 @@ package com.tht.tht.data.local.dao
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.firebase.messaging.FirebaseMessaging
+import com.tht.tht.data.local.entity.AccessTokenEntity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -43,12 +44,24 @@ class TokenDaoImpl @Inject constructor(
         sp.edit { putString(THT_PHONE_KEY, phone) }
     }
 
-    override fun fetchThtToken(): String? {
-        return sp.getString(THT_TOKEN_KEY, null)
+    override fun fetchThtToken(): AccessTokenEntity {
+        return AccessTokenEntity(
+            accessToken = sp.getString(THT_TOKEN_KEY, null),
+            expiredTime = sp.getLong(THT_TOKEN_EXPIRES_KEY, 0L)
+        )
     }
 
     override fun fetchPhone(): String? {
         return sp.getString(THT_PHONE_KEY, null)
+    }
+
+    override fun clear() {
+        sp.edit {
+            remove(FCM_TOKEN_KEY)
+            remove(THT_TOKEN_KEY)
+            remove(THT_TOKEN_EXPIRES_KEY)
+            remove(THT_PHONE_KEY)
+        }
     }
 
     companion object {

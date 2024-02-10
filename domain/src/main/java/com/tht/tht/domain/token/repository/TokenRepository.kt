@@ -1,5 +1,7 @@
 package com.tht.tht.domain.token.repository
 
+import com.tht.tht.domain.token.model.AccessTokenModel
+
 interface TokenRepository {
 
     suspend fun fetchFcmToken(): String
@@ -8,7 +10,11 @@ interface TokenRepository {
 
     suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String)
 
-    suspend fun fetchThtToken(): String?
+    suspend fun fetchThtToken(): AccessTokenModel
 
     suspend fun fetchPhone(): String?
+
+    suspend fun refreshAccessToken(): AccessTokenModel
+
+    suspend fun clearSavedToken()
 }

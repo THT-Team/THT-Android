@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "com.example.compose_ui"
-    compileSdk = 33
+    compileSdk = rootProject.ext.get("compileSdk") as Int
 
     defaultConfig {
-        minSdk = 24
+        minSdk = rootProject.ext.get("minSdkVersion") as Int
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:ui"))
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

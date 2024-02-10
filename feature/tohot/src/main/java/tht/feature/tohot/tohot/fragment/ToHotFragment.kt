@@ -9,10 +9,15 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.google.accompanist.themeadapter.appcompat.AppCompatTheme
 import dagger.hilt.android.AndroidEntryPoint
+import tht.core.navigation.SignupNavigation
 import tht.feature.tohot.navigation.ToHotNavigation
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ToHotFragment : Fragment() {
+
+    @Inject
+    lateinit var signupNavigation: SignupNavigation
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,7 +28,7 @@ class ToHotFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppCompatTheme {
-                    ToHotNavigation()
+                    ToHotNavigation(signupNavigation)
                 }
             }
         }

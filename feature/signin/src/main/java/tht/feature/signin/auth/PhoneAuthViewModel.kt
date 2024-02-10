@@ -1,16 +1,17 @@
 package tht.feature.signin.auth
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.compose_ui.common.viewmodel.Container
+import com.example.compose_ui.common.viewmodel.Store
+import com.example.compose_ui.common.viewmodel.intent
+import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.type.SignInType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
-import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -20,24 +21,28 @@ class PhoneAuthViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val requestAuthenticationUseCase: RequestAuthenticationUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<PhoneAuthViewModel.PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect>() {
+) : ViewModel(), Container<PhoneAuthUiState, PhoneAuthViewModel.PhoneAuthSideEffect> {
 
-    override val _uiStateFlow: MutableStateFlow<PhoneAuthUiState> =
-        MutableStateFlow(PhoneAuthUiState.InputPhoneNumEmpty)
-
-    private val _dataLoading = MutableStateFlow(false)
-    val dataLoading = _dataLoading.asStateFlow()
+    override val store: Store<PhoneAuthUiState, PhoneAuthSideEffect> = store(initialState = PhoneAuthUiState.DEFAULT)
 
     private val signInType: SignInType = savedStateHandle[EXTRA_SIGN_IN_TYPE_KEY] ?: SignInType.NORMAL
 
     fun textInputEvent(text: String?) {
-        if (text.isNullOrBlank()) {
-            setUiState(PhoneAuthUiState.InputPhoneNumEmpty)
-            return
+        val validation = if (text.isNullOrEmpty() || text.length < 11) {
+            PhoneAuthUiState.PhoneValidation.IDLE
+        } else {
+            when (checkPhoneValidation(text)) {
+                true -> PhoneAuthUiState.PhoneValidation.VALIDATE
+                else -> PhoneAuthUiState.PhoneValidation.INVALIDATE
+            }
         }
-        when (checkPhoneValidation(text)) {
-            true -> setUiState(PhoneAuthUiState.InputPhoneNumCorrect)
-            else -> setUiState(PhoneAuthUiState.InputPhoneNumError)
+        intent {
+            reduce {
+                it.copy(
+                    phone = text ?: "",
+                    phoneValidation = validation
+                )
+            }
         }
     }
     private fun checkPhoneValidation(phone: String): Boolean {
@@ -46,55 +51,60 @@ class PhoneAuthViewModel @Inject constructor(
     }
 
     fun backgroundTouchEvent() {
-        postSideEffect(PhoneAuthSideEffect.KeyboardVisible(false))
-    }
-
-    fun backEvent() {
-        postSideEffect(PhoneAuthSideEffect.Back)
-    }
-
-    fun authEvent(phone: String?) {
-        viewModelScope.launch {
-            if (phone.isNullOrBlank() || !checkPhoneValidation(phone)) {
-                setUiState(PhoneAuthUiState.InputPhoneNumError)
-                return@launch
-            }
-            _dataLoading.value = true
-            requestAuthenticationUseCase(phone)
-                .onSuccess {
-                    _sideEffectFlow.emit(
-                        PhoneAuthSideEffect.ShowSuccessToast(
-                            stringProvider.getString(StringProvider.ResId.SendAuthSuccess)
-                        ) {
-                            viewModelScope.launch {
-                                _sideEffectFlow.emit(PhoneAuthSideEffect.NavigateVerifyView(phone, it, signInType))
-                            }
-                        }
-                    )
-                }.onFailure {
-                    _sideEffectFlow.emit(
-                        PhoneAuthSideEffect.ShowToast(
-                            (stringProvider.getString(StringProvider.ResId.SendAuthFail) + it.message)
-                        )
-                    )
-                }.also {
-                    _sideEffectFlow.emit(PhoneAuthSideEffect.KeyboardVisible(false))
-                    _dataLoading.value = false
-                }
+        intent {
+            postSideEffect(PhoneAuthSideEffect.KeyboardVisible(false))
         }
     }
 
-    sealed class PhoneAuthUiState : UiState {
-        object InputPhoneNumCorrect : PhoneAuthUiState()
-        object InputPhoneNumEmpty : PhoneAuthUiState()
-        object InputPhoneNumError : PhoneAuthUiState()
+    fun backEvent() {
+        intent {
+            postSideEffect(PhoneAuthSideEffect.Back)
+        }
+    }
+
+    fun clearEvent() {
+        intent {
+            reduce {
+                it.copy(
+                    phone = "",
+                    phoneValidation = PhoneAuthUiState.PhoneValidation.IDLE
+                )
+            }
+        }
+    }
+
+    fun authEvent() {
+        val phone = store.state.value.phone
+        if (phone.isEmpty() || !checkPhoneValidation(phone)) {
+            intent {
+                reduce { it.copy(phoneValidation = PhoneAuthUiState.PhoneValidation.INVALIDATE) }
+            }
+            return
+        }
+        viewModelScope.launch {
+            intent { reduce { it.copy(loading = true) } }
+            requestAuthenticationUseCase(phone)
+                .onSuccess {
+                    intent {
+                        postSideEffect(PhoneAuthSideEffect.NavigateVerifyView(phone, it, signInType))
+                    }
+                }.onFailure {
+                    intent {
+                        postSideEffect(
+                            PhoneAuthSideEffect.ShowToast(
+                                (stringProvider.getString(StringProvider.ResId.SendAuthFail) + it.message)
+                            )
+                        )
+                    }
+                }
+            intent {
+                reduce { it.copy(loading = false) }
+                postSideEffect(PhoneAuthSideEffect.KeyboardVisible(false))
+            }
+        }
     }
 
     sealed class PhoneAuthSideEffect : SideEffect {
-        data class ShowSuccessToast(
-            val message: String,
-            val closeListener: () -> Unit
-        ) : PhoneAuthSideEffect()
         data class ShowToast(val message: String) : PhoneAuthSideEffect()
         data class NavigateVerifyView(
             val phone: String,

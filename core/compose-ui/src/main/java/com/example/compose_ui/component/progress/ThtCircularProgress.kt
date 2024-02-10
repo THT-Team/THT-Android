@@ -9,10 +9,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ThtCircularProgress(
     modifier: Modifier = Modifier,
-    color: Color,
-    dataLoading: () -> Boolean = { false }
+    visible: Boolean,
+    color: Color
 ) {
-    if (dataLoading()) {
+    if (visible) {
         CircularProgressIndicator(
             modifier = modifier,
             color = color,

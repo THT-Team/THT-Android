@@ -10,21 +10,30 @@ import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.image.RemoveImageUrlUseCase
 import com.tht.tht.domain.image.UploadImageUseCase
 import com.tht.tht.domain.login.repository.LoginRepository
-import com.tht.tht.domain.login.usecase.RefreshFcmTokenLoginUseCase
+import com.tht.tht.domain.login.usecase.LoginUseCase
+import com.tht.tht.domain.setting.repository.SettingRepository
+import com.tht.tht.domain.setting.usecase.FetchAccountManageItemsUseCase
+import com.tht.tht.domain.setting.usecase.FetchSettingManageItemsUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.signup.usecase.*
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
-import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
+import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
+import com.tht.tht.domain.token.token.RefreshThtAccessTokenUseCase
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
+import com.tht.tht.domain.user.LogoutUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.SendDislikeUseCase
 import com.tht.tht.domain.user.SendHeartUseCase
+import com.tht.tht.domain.user.UserDisActiveUseCase
 import com.tht.tht.domain.user.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -124,12 +133,26 @@ object UseCaseModule {
     @Provides
     fun provideCheckSignupStateUseCase(
         repository: SignupRepository,
-        tokenRepository: TokenRepository,
-        loginRepository: LoginRepository
+        loginUseCase: LoginUseCase
     ): CheckLoginEnableUseCase = CheckLoginEnableUseCase(
         repository,
+        loginUseCase
+    )
+
+    @Provides
+    fun provideLoginUseCase(
+        tokenRepository: TokenRepository,
+        loginRepository: LoginRepository
+    ): LoginUseCase = LoginUseCase(
         tokenRepository,
         loginRepository
+    )
+
+    @Provides
+    fun provideRefreshThtAccessTokenUseCase(
+        tokenRepository: TokenRepository
+    ): RefreshThtAccessTokenUseCase = RefreshThtAccessTokenUseCase(
+        tokenRepository
     )
 
     @Provides
@@ -175,11 +198,11 @@ object UseCaseModule {
         FetchLocationByAddressUseCase(repository, dispatcher)
 
     @Provides
-    fun provideRequestFcmTokenLoginUseCase(
+    fun provideRefreshFcmTokenUseCase(
         tokenRepository: TokenRepository,
         loginRepository: LoginRepository
-    ): RefreshFcmTokenLoginUseCase =
-        RefreshFcmTokenLoginUseCase(tokenRepository, loginRepository)
+    ): RefreshFcmTokenUseCase =
+        RefreshFcmTokenUseCase(tokenRepository, loginRepository)
 
     @Provides
     fun provideFetchRegionCodeUseCase(
@@ -209,10 +232,26 @@ object UseCaseModule {
         GetChatListUseCase(repository)
 
     @Provides
-    fun provideFetchThtTokenUseCase(
+    fun provideFetchThtAccessTokenUseCase(
         repository: TokenRepository
-    ): FetchThtTokenUseCase =
-        FetchThtTokenUseCase(repository)
+    ): FetchThtAccessTokenUseCase =
+        FetchThtAccessTokenUseCase(repository)
+
+    @Provides
+    fun provideCheckThtAccessTokenExpiredUseCase(
+        repository: TokenRepository
+    ): CheckThtAccessTokenExpiredUseCase =
+        CheckThtAccessTokenExpiredUseCase(repository)
+
+    @Provides
+    fun provideCheckAndRefreshThtAccessTokenUseCase(
+        refreshThtAccessTokenUseCase: RefreshThtAccessTokenUseCase,
+        checkThtAccessTokenExpiredUseCase: CheckThtAccessTokenExpiredUseCase
+    ): CheckAndRefreshThtAccessTokenUseCase =
+        CheckAndRefreshThtAccessTokenUseCase(
+            refreshThtAccessTokenUseCase,
+            checkThtAccessTokenExpiredUseCase
+        )
 
     @Provides
     fun provideFetchDailyTopicListUseCase(
@@ -261,4 +300,30 @@ object UseCaseModule {
         repository: UserRepository
     ): SendDislikeUseCase =
         SendDislikeUseCase(repository)
+
+    @Provides
+    fun provideLogoutUseCase(
+        tokenRepository: TokenRepository,
+        topicRepository: DailyTopicRepository
+    ): LogoutUseCase =
+        LogoutUseCase(tokenRepository, topicRepository)
+
+    @Provides
+    fun provideUserDisActiveUseCase(
+        logoutUseCase: LogoutUseCase,
+        loginRepository: LoginRepository
+    ): UserDisActiveUseCase =
+        UserDisActiveUseCase(logoutUseCase, loginRepository)
+
+    @Provides
+    fun provideFetchSettingManageItemsUseCase(
+        settingRepository: SettingRepository
+    ): FetchSettingManageItemsUseCase =
+        FetchSettingManageItemsUseCase(settingRepository)
+
+    @Provides
+    fun provideFetchAccountManageItemsUseCase(
+        settingRepository: SettingRepository
+    ): FetchAccountManageItemsUseCase =
+        FetchAccountManageItemsUseCase(settingRepository)
 }

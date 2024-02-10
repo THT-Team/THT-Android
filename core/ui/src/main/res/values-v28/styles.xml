@@ -87,6 +87,13 @@
     </style>
     <!--H5Bold-->
 
+    <!--H5SemiBold-->
+    <style name="H5SemiBoldTextStyle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textFontWeight">600</item>
+    </style>
+    <!--H5SemiBold-->
+
     <!--H5Medium-->
     <style name="H5MediumTextStyle">
         <item name="android:textSize">17sp</item>

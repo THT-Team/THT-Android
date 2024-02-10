@@ -1,0 +1,130 @@
+{
+    "items": [
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "계정 설정",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingContentItemItemEntity",
+                    "title": "연동된 SNS",
+                    "content": null,
+                    "key": "Sns"
+                },
+                {
+                    "type": "SettingContentItemItemEntity",
+                    "title": "핸드폰 번호",
+                    "content": null,
+                    "key": "Phone"
+                },{
+                    "type": "SettingContentItemItemEntity",
+                    "title": "이메일",
+                    "content": null,
+                    "key": "Email"
+                }
+            ]
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "활동",
+            "description": "나의 연락처에 저장된 지인들을 폴링에서 보고 싶지 않다면 서로에게 노출되지 않도록 설정 할 수 있어요.",
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "저장된 연락처 차단하기",
+                    "key": "ContactBlock"
+                }
+            ]
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "내 위치 설정",
+            "description": "나의 위치를 업데이트해서 상대방과 매칭률을 높혀보세요.",
+            "items": [
+                {
+                    "type": "SettingLocationItemItemEntity",
+                    "title": "내 위치",
+                    "location": null,
+                    "key": "Location"
+                }
+            ]
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "알림 설정",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "알림 설정",
+                    "key": "AlarmSetting"
+                }
+            ]
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "고객 지원",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "자주 묻는 질문",
+                    "key": "Question"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "문의 및 피드백 보내기",
+                    "key": "Feedback"
+                }
+            ]
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "법적 고지",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "서비스 이용약관",
+                    "key": "UseTerms"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "개인정보 처리방침",
+                    "key": "PrivacyTerms"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "위치정보 이용약관",
+                    "key": "LocationTerms"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "라이센스",
+                    "key": "Licence"
+                },
+                {
+                    "type": "SettingItemEntity",
+                    "title": "사업자 정보",
+                    "key": "CompanyInfo"
+                }
+            ]
+        },
+        {
+            "type": "SettingImageBannerItemEntity",
+            "banner": "Falling"
+        },
+        {
+            "type": "SettingItemSectionEntity",
+            "title": "계정 관리",
+            "description": null,
+            "items": [
+                {
+                    "type": "SettingItemEntity",
+                    "title": "계정 관리",
+                    "key": "AccountManager"
+                }
+            ]
+        }
+    ]
+}

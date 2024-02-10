@@ -3,17 +3,18 @@ package com.tht.tht
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.tht.tht.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import tht.core.navigation.HomeNavigation
+import tht.core.navigation.SignupNavigation
 import tht.core.ui.delegate.viewBinding
-import tht.feature.signin.prelogin.PreloginActivity
+import javax.inject.Inject
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -21,6 +22,12 @@ class SplashActivity : AppCompatActivity() {
 
     private val viewModel: SplashViewModel by viewModels()
     private val binding: ActivitySplashBinding by viewBinding(ActivitySplashBinding::inflate)
+
+    @Inject
+    lateinit var signupNavigation: SignupNavigation
+
+    @Inject
+    lateinit var homeNavigation: HomeNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -46,28 +53,24 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        val signupResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            Log.d("TAG", "signupResult => $it")
-            when (it.resultCode) {
-                RESULT_OK -> viewModel.signupSuccessEvent()
-                else -> viewModel.signupCancelEvent()
-            }
-        }
-
         lifecycleScope.launch {
-            viewModel.sideEffect.collect {
-                when (it) {
-                    is SplashSideEffect.Signup -> {
-                        signupResult.launch(PreloginActivity.getIntent(this@SplashActivity))
-                    }
+            launch {
+                viewModel.loading.collect {
+                    binding.progress.isVisible = it
+                }
+            }
+            launch {
+                viewModel.sideEffect.collect {
+                    when (it) {
+                        is SplashSideEffect.Signup -> {
+                            signupNavigation.navigatePreLogin(this@SplashActivity)
+                            finish()
+                        }
 
-                    is SplashSideEffect.Home -> {
-                        startActivity(HomeActivity.newIntent(this@SplashActivity))
-                        finish()
-                    }
-
-                    is SplashSideEffect.Cancel -> {
-                        finish()
+                        is SplashSideEffect.Home -> {
+                            homeNavigation.navigateHome(this@SplashActivity)
+                            finish()
+                        }
                     }
                 }
             }

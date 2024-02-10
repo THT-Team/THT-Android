@@ -53,12 +53,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:navigation"))
     implementation(project(":core:ui"))
     implementation(project(":domain"))
     implementation(project(":data"))
 
     implementation(project(":feature:chat"))
-    implementation(project(":feature:heart"))
+    implementation(project(":feature:like"))
     implementation(project(":feature:setting"))
     implementation(project(":feature:signin"))
     implementation(project(":feature:tohot"))

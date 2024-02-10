@@ -14,11 +14,12 @@ class RequestPhoneVerifyUseCase(
         apiAuthNum: String,
         phone: String,
         inputAuthNum: String,
-        signInType: SignInType
+        signInType: SignInType,
+        forceTrue: Boolean = false
     ): Result<Boolean> {
         return kotlin.runCatching {
             withContext(dispatcher) {
-                (apiAuthNum == inputAuthNum).also {
+                (apiAuthNum == inputAuthNum || forceTrue).also {
                     if(it && repository.fetchSignupUser(phone) == null) { // 해당 phone 으로 진행 중인 가입 프로세스가 없다면, 새로 생성
                         createSignupUserUseCase(phone, signInType)
                     }

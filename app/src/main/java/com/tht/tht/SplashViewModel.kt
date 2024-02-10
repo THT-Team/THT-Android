@@ -2,44 +2,48 @@ package com.tht.tht
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.domain.token.token.FetchThtTokenUseCase
+import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val fetchThtTokenUseCase: FetchThtTokenUseCase
+    private val checkAndRefreshThtAccessTokenUseCase: CheckAndRefreshThtAccessTokenUseCase
 ) : ViewModel() {
 
     private val _sideEffect = MutableSharedFlow<SplashSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun splashFinishEvent() {
-        checkAutoLogin()
-    }
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
 
-    fun signupSuccessEvent() {
+    fun splashFinishEvent() {
         checkAutoLogin()
     }
 
     private fun checkAutoLogin() {
         viewModelScope.launch {
-            fetchThtTokenUseCase()
+            launch {
+                delay(500)
+                _loading.value = true
+            }
+            checkAndRefreshThtAccessTokenUseCase()
                 .onSuccess {
-                    _sideEffect.emit(SplashSideEffect.Home)
+                    when (it) {
+                        true -> _sideEffect.emit(SplashSideEffect.Home)
+                        else -> _sideEffect.emit(SplashSideEffect.Signup)
+                    }
                 }.onFailure {
                     it.printStackTrace()
                     _sideEffect.emit(SplashSideEffect.Signup)
                 }
-        }
-    }
-
-    fun signupCancelEvent() {
-        viewModelScope.launch {
-            _sideEffect.emit(SplashSideEffect.Cancel)
+            _loading.value = false
         }
     }
 }
@@ -47,5 +51,4 @@ class SplashViewModel @Inject constructor(
 sealed class SplashSideEffect {
     object Signup : SplashSideEffect()
     object Home : SplashSideEffect()
-    object Cancel : SplashSideEffect()
 }

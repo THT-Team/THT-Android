@@ -63,6 +63,7 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                                 requireContext().getColor(R.color.yellow_f9cc2e)
                             binding.btnNext.isEnabled = true
                         }
+
                         LocationViewModel.LocationUiState.InvalidInput -> {
                             binding.cvLocation.strokeColor =
                                 requireContext().getColor(R.color.gray_8d8d8d)
@@ -78,14 +79,21 @@ class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocat
                         is LocationViewModel.LocationSideEffect.ShowToast -> {
                             context?.showToast(it.message)
                         }
+
                         LocationViewModel.LocationSideEffect.CheckPermission -> {
                             locationPermissionGrantEvent.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                         }
+
                         LocationViewModel.LocationSideEffect.ShowLocationDialog -> {
-                            findNavController().navigate(
-                                LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment()
-                            )
+                            if (findNavController().currentDestination?.id ==
+                                tht.feature.signin.R.id.locationFragment
+                            ) {
+                                findNavController().navigate(
+                                    LocationFragmentDirections.actionLocationFragmentToLocationDialogFragment()
+                                )
+                            }
                         }
+
                         LocationViewModel.LocationSideEffect.NavigateNextView -> {
                             rootViewModel.nextEvent(SignupRootViewModel.Step.LOCATION)
                         }

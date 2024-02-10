@@ -10,6 +10,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import tht.feature.tohot.component.card.ShakingCard
 import tht.feature.tohot.component.card.ToHotHoldCard
 import tht.feature.tohot.component.card.ToHotCardImage
 import tht.feature.tohot.model.ImmutableListWrapper
@@ -22,6 +23,7 @@ fun ToHotCardImagePager(
     pagerState: PagerState = rememberPagerState(),
     imageUrls: ImmutableListWrapper<String>,
     isHold: Boolean,
+    isShaking: Boolean,
     loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> },
     onHoldDoubleTab: () -> Unit = { }
 ) {
@@ -39,11 +41,16 @@ fun ToHotCardImagePager(
                 clickableContent = false,
                 onDoubleTab = onHoldDoubleTab
             ) {
-                ToHotCardImage(
+                ShakingCard(
                     modifier = Modifier.fillMaxHeight(),
-                    imageUrl = imageUrls.list[page],
-                    loadFinishListener = loadFinishListener
-                )
+                    shakingOn = !isHold && isShaking
+                ) {
+                    ToHotCardImage(
+                        modifier = Modifier.fillMaxHeight(),
+                        imageUrl = imageUrls.list[page],
+                        loadFinishListener = loadFinishListener
+                    )
+                }
             }
         }
     }
@@ -55,7 +62,8 @@ fun ToHotCardImagePager(
 private fun ToHotCardImagePagerPreview() {
     ToHotCardImagePager(
         imageUrls = userData.profileImgUrl,
-        isHold = false
+        isHold = false,
+        isShaking = false
     )
 }
 
@@ -65,6 +73,7 @@ private fun ToHotCardImagePagerPreview() {
 private fun ToHotCardImagePagerBlurPreview() {
     ToHotCardImagePager(
         imageUrls = userData.profileImgUrl,
-        isHold = true
+        isHold = true,
+        isShaking = false
     )
 }
