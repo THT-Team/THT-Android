@@ -68,8 +68,14 @@ class EmailViewModel @Inject constructor(
             viewModelScope.launch {
                 _uiStateFlow.update { it.copy(loading = true) }
                 fetchSignupUserUseCase(phone.value)
-                    .onSuccess {
-                        _uiStateFlow.update { it.copy(loading = true) }
+                    .onSuccess { user ->
+                        _uiStateFlow.update {
+                            it.copy(
+                                loading = true,
+                                email = user.email,
+                                emailValidation = getMailValidation(user.email)
+                            )
+                        }
                     }.onFailure {
                         when (it) {
                             is SignupException.SignupUserInvalidateException ->
@@ -90,6 +96,13 @@ class EmailViewModel @Inject constructor(
                         _uiStateFlow.update { it.copy(loading = false) }
                     }
             }
+        }
+    }
+
+    private fun getMailValidation(email: String): EmailUiState.EmailValidation {
+        return  when (checkEmailValidation(email)) {
+            true -> EmailUiState.EmailValidation.VALIDATE
+            else -> EmailUiState.EmailValidation.INVALIDATE
         }
     }
 
@@ -118,10 +131,7 @@ class EmailViewModel @Inject constructor(
         _uiStateFlow.update {
             it.copy(
                 email = text,
-                emailValidation = when (checkEmailValidation(text)) {
-                    true -> EmailUiState.EmailValidation.VALIDATE
-                    else -> EmailUiState.EmailValidation.INVALIDATE
-                }
+                emailValidation = getMailValidation(text)
             )
         }
     }
