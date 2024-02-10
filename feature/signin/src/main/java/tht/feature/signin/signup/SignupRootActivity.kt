@@ -85,7 +85,12 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)
                                 }
                                 SignupRootViewModel.Step.IDEAL_TYPE -> {
-                                    navController.navigate(R.id.action_idealTypeFragment_to_introductionFragment)
+                                    navController.navigate(
+                                        resId = R.id.action_idealTypeFragment_to_introductionFragment,
+                                        args = bundleOf(
+                                            "phone" to viewModel.phone.value
+                                        )
+                                    )
                                 }
                                 SignupRootViewModel.Step.INTRODUCTION -> {
                                     navController.navigate(R.id.action_introductionFragment_to_locationFragment)
