@@ -100,7 +100,7 @@ class EmailViewModel @Inject constructor(
     }
 
     private fun getMailValidation(email: String): EmailUiState.EmailValidation {
-        return  when (checkEmailValidation(email)) {
+        return when (checkEmailValidation(email)) {
             true -> EmailUiState.EmailValidation.VALIDATE
             else -> EmailUiState.EmailValidation.INVALIDATE
         }
@@ -160,7 +160,7 @@ class EmailViewModel @Inject constructor(
                 _uiStateFlow.update { it.copy(emailValidation = EmailUiState.EmailValidation.INVALIDATE) }
                 return@launch
             }
-           _uiStateFlow.update { it.copy(loading = true) }
+            _uiStateFlow.update { it.copy(loading = true) }
             patchSignupDataUseCase(phone.value) {
                 it.copy(email = email)
             }.onSuccess {
@@ -185,7 +185,6 @@ class EmailViewModel @Inject constructor(
             }
         }
     }
-
 
     sealed class EmailSideEffect : SideEffect {
         data class ShowToast(val message: String) : EmailSideEffect()

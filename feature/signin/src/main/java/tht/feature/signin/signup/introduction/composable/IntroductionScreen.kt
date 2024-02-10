@@ -223,5 +223,3 @@ private fun IntroductionScreenPreview() {
         loading = false
     )
 }
-
-

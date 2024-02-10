@@ -96,7 +96,7 @@ class PhoneVerifyActivity : AppCompatActivity() {
             editText.setOnFocusChangeListener { v, hasFocus ->
                 if (i == 0 || !hasFocus) return@setOnFocusChangeListener
                 // focus 를 잡았을 때, 앞 칸이 비어 있다면 앞 칸으로 이동
-                textInputEditTexts[i-1].let { prevEditText ->
+                textInputEditTexts[i - 1].let { prevEditText ->
                     if (prevEditText.text.isNullOrBlank()) {
                         prevEditText.setSoftKeyboardVisible(true)
                     }

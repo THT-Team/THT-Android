@@ -250,5 +250,3 @@ private fun NicknameScreenWarningPreview() {
         loading = false
     )
 }
-
-
