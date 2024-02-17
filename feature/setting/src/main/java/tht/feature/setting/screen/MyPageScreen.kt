@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -20,11 +21,20 @@ import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.dpTextUnit
 import tht.core.ui.R
+import tht.feature.setting.uimodel.MyPageUserInfoUiModel
 
 @Composable
 fun MyPageScreen(
-    modifier: Modifier = Modifier,
-    onSettingClick: () -> Unit = { }
+    userInfo: MyPageUserInfoUiModel,
+    introduceEditMode: Boolean,
+    onSettingClick: () -> Unit,
+    onNicknameEditClick: () -> Unit,
+    onIntroduceClick: () -> Unit,
+    onPrimaryProfileEditClick: (Int) -> Unit,
+    onOptionalProfileEditClick: () -> Unit,
+    onIdealTypeEditClick: () -> Unit,
+    onInterestEditClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -62,11 +72,24 @@ fun MyPageScreen(
                 }
             }
         )
+
+
     }
 }
 
 @Composable
 @Preview
 private fun MyPageScreenPreview() {
-    MyPageScreen()
+    MyPageScreen(
+        modifier = Modifier.fillMaxSize(),
+        userInfo = MyPageUserInfoUiModel.EMPTY,
+        introduceEditMode = false,
+        onSettingClick = {},
+        onNicknameEditClick = {},
+        onIntroduceClick = {},
+        onPrimaryProfileEditClick = {},
+        onOptionalProfileEditClick = {},
+        onIdealTypeEditClick = {},
+        onInterestEditClick = {},
+    )
 }

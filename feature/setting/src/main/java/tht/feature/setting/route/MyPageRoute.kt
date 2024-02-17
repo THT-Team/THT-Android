@@ -3,6 +3,8 @@ package tht.feature.setting.route
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import tht.feature.setting.screen.MyPageScreen
@@ -14,14 +16,28 @@ fun MyPageRoute(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     LaunchedEffect(key1 = Unit) {
-        viewModel.sideEffect.collect {
+        viewModel.store.sideEffect.collect {
             when (it) {
-                is MyPageViewModel.SideEffect.NavigateSetting -> navigateSetting()
+                is MyPageViewModel.MyPageSideEffect.NavigateSetting -> navigateSetting()
             }
         }
     }
-    MyPageScreen(
-        modifier = Modifier.fillMaxSize(),
-        onSettingClick = viewModel::onSettingClick
-    )
+    val state by viewModel.store.state.collectAsState()
+    when (state.showSkeletonView || state.myPageUserInfo == null) {
+        true -> {}
+        else -> {
+            MyPageScreen(
+                modifier = Modifier.fillMaxSize(),
+                userInfo = requireNotNull(state.myPageUserInfo),
+                introduceEditMode = false,
+                onSettingClick = viewModel::onSettingClick,
+                onNicknameEditClick = viewModel::onNicknameEditClick,
+                onIntroduceClick = viewModel::onIntroduceClick,
+                onPrimaryProfileEditClick = viewModel::onPrimaryProfileEditClick,
+                onOptionalProfileEditClick = viewModel::onOptionalProfileEditClick,
+                onIdealTypeEditClick = viewModel::onIdealTypeEditClick,
+                onInterestEditClick = viewModel::onInterestEditClick
+            )
+        }
+    }
 }
