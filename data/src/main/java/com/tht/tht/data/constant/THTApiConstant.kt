@@ -48,4 +48,8 @@ object THTApiConstant {
     object Chat {
         const val CHAT_LIST = "/chat/rooms"
     }
+
+    object Setting {
+        const val MY_PAGE = "/user"
+    }
 }

@@ -11,12 +11,14 @@ import com.tht.tht.data.repository.RegionCodeRepositoryImpl
 import com.tht.tht.data.repository.SettingRepositoryImpl
 import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
+import com.tht.tht.data.repository.UserSettingRepositoryImpl
 import com.tht.tht.domain.chat.repository.ChatRepository
 import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.login.repository.LoginRepository
 import com.tht.tht.domain.setting.repository.SettingRepository
+import com.tht.tht.domain.setting.repository.UserSettingRepository
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
@@ -63,4 +65,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindSettingRepository(impl: SettingRepositoryImpl): SettingRepository
+
+    @Binds
+    abstract fun bindUserSettingRepository(impl: UserSettingRepositoryImpl): UserSettingRepository
 }

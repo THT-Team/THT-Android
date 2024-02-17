@@ -7,6 +7,7 @@ import com.tht.tht.data.remote.service.dailyusercard.DailyUserCardApiService
 import com.tht.tht.data.remote.service.image.ImageService
 import com.tht.tht.data.remote.service.image.ImageServiceImpl
 import com.tht.tht.data.remote.service.location.RegionCodeApi
+import com.tht.tht.data.remote.service.setting.MyPageUserInfoService
 import com.tht.tht.data.remote.service.topic.DailyTopicApiService
 import com.tht.tht.data.remote.service.user.AccessTokenRefreshService
 import com.tht.tht.data.remote.service.user.UserBlockApiService
@@ -107,4 +108,10 @@ object ApiServiceModule {
     fun provideUserDisActiveService(
         @ThtAccessTokenRetrofit retrofit: Retrofit
     ): UserDisActiveService = retrofit.create(UserDisActiveService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMyPageUserInfoService(
+        @ThtAccessTokenRetrofit retrofit: Retrofit
+    ): MyPageUserInfoService = retrofit.create(MyPageUserInfoService::class.java)
 }
