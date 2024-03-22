@@ -3,7 +3,7 @@ package com.tht.tht.data.constant
 object THTApiConstant {
     const val TIMEOUT_MILLIS = 5000L
 
-    const val BASE_URL = "http://tht-talk.store/"
+    const val BASE_URL = "http://tht-talk.co.kr/"
 
     object Signup {
         const val AUTHENTICATION_NUM = "users/join/certification/phone-number"
