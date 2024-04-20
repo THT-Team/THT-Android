@@ -69,6 +69,14 @@ class MyPageViewModel @Inject constructor(
 
     }
 
+    fun onNonePrimaryProfileAddClick() {
+
+    }
+
+    fun onNonePrimaryProfileRemoveClick() {
+
+    }
+
     fun onOptionalProfileEditClick() {
 
     }

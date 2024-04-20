@@ -34,6 +34,8 @@ fun MyPageRoute(
                 onNicknameEditClick = viewModel::onNicknameEditClick,
                 onIntroduceClick = viewModel::onIntroduceClick,
                 onPrimaryProfileEditClick = viewModel::onPrimaryProfileEditClick,
+                onNonePrimaryProfileAddClick = viewModel::onNonePrimaryProfileAddClick,
+                onNonePrimaryProfileRemoveClick = viewModel::onNonePrimaryProfileRemoveClick,
                 onOptionalProfileEditClick = viewModel::onOptionalProfileEditClick,
                 onIdealTypeEditClick = viewModel::onIdealTypeEditClick,
                 onInterestEditClick = viewModel::onInterestEditClick
