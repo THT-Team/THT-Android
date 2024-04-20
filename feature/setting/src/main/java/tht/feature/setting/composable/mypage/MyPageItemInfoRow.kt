@@ -27,7 +27,7 @@ internal fun MyPageItemInfoRow(
     info: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     titleMinWidth: Dp? = null,
-    onClick: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
@@ -72,7 +72,7 @@ private fun MyPageItemInfoRowPreview() {
         info = {
             ThtSubtitle1(
                 text = "info",
-                fontWeight = FontWeight.Normal ,
+                fontWeight = FontWeight.Normal,
                 color = colorResource(id = R.color.yellow_f9cc2e)
             )
         },

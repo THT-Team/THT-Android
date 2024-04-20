@@ -30,7 +30,7 @@ fun ColumnScope.MyPageInfoRows(
     onDrinkClick: () -> Unit,
     onReligionClick: () -> Unit,
     onIdealTypeEditClick: () -> Unit,
-    onInterestEditClick: () -> Unit,
+    onInterestEditClick: () -> Unit
 ) {
     Spacer(modifier = Modifier.height(32.dp))
     MyPageItemInfoRow(

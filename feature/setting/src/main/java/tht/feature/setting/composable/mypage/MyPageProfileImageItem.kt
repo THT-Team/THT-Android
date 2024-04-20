@@ -70,11 +70,11 @@ fun MyPageProfileImageItem(
                 .clip(RoundedCornerShape(12.dp)),
             model = model,
             contentDescription = "profile_image",
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Crop
         )
         // remove default icon padding
         CompositionLocalProvider(
-            LocalMinimumInteractiveComponentEnforcement provides false,
+            LocalMinimumInteractiveComponentEnforcement provides false
         ) {
             if (isPrimary) {
                 IconButton(

@@ -27,7 +27,7 @@ fun MyPageUserInfoModel.toUiModel(): MyPageUserInfoUiModel {
         height = height,
         religion = religion,
         idealTypeList = idealTypeList.map { it.toUiModel() }.toPersistentList(),
-        interestsList = interestsList.map { it.toUiModel() }.toPersistentList(),
+        interestsList = interestsList.map { it.toUiModel() }.toPersistentList()
     )
 }
 
@@ -38,7 +38,6 @@ fun MyPageUserInfoModel.IdealType.toUiModel(): MyPageUserInfoUiModel.IdealType {
         name = name
     )
 }
-
 
 fun MyPageUserInfoModel.Interests.toUiModel(): MyPageUserInfoUiModel.Interests {
     return MyPageUserInfoUiModel.Interests(
