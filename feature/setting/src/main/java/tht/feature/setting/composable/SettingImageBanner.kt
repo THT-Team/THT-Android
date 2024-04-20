@@ -3,6 +3,7 @@ package tht.feature.setting.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,10 +62,10 @@ fun SettingImageBanner(
                         tint = colorResource(id = R.color.white_f9fafa)
                     )
                 }
-                Spacer(space = 21.dp)
+                androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     painter = painterResource(id = tht.feature.setting.R.drawable.ic_setting_tht_banner),
-                    contentDescription = "ic_falling_banner",
+                    contentDescription = "ic_setting_tht_banner",
                     tint = colorResource(id = R.color.white_f9fafa)
                 )
             }
