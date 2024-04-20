@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +29,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import tht.feature.setting.R
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MyPageProfileImageItem(
     imageUrl: String?,
@@ -68,41 +72,46 @@ fun MyPageProfileImageItem(
             contentDescription = "profile_image",
             contentScale = ContentScale.Crop,
         )
-        if (isPrimary) {
-            IconButton(
-                modifier = Modifier.align(Alignment.BottomEnd)
-                    .padding(end = 6.dp, bottom = 6.dp),
-                onClick = onPrimaryEditClick
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_profile_image_edit),
-                    contentDescription = "ic_profile_image_edit",
-                    tint = Color.Unspecified
-                )
-            }
-        } else {
-            if (imageUrl.isNullOrBlank()) {
+        // remove default icon padding
+        CompositionLocalProvider(
+            LocalMinimumInteractiveComponentEnforcement provides false,
+        ) {
+            if (isPrimary) {
                 IconButton(
-                    modifier = Modifier.align(Alignment.Center),
-                    onClick = onNonePrimaryAddClick
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                        .padding(end = 6.dp, bottom = 6.dp),
+                    onClick = onPrimaryEditClick
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_profile_image_add),
+                        painter = painterResource(id = R.drawable.ic_profile_image_edit),
                         contentDescription = "ic_profile_image_edit",
                         tint = Color.Unspecified
                     )
                 }
             } else {
-                IconButton(
-                    modifier = Modifier.align(Alignment.BottomEnd)
-                        .padding(end = 6.dp, bottom = 6.dp),
-                    onClick = onNonePrimaryRemoveClick
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_profile_image_delete),
-                        contentDescription = "ic_profile_image_edit",
-                        tint = Color.Unspecified
-                    )
+                if (imageUrl.isNullOrBlank()) {
+                    IconButton(
+                        modifier = Modifier.align(Alignment.Center),
+                        onClick = onNonePrimaryAddClick
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile_image_add),
+                            contentDescription = "ic_profile_image_edit",
+                            tint = Color.Unspecified
+                        )
+                    }
+                } else {
+                    IconButton(
+                        modifier = Modifier.align(Alignment.BottomEnd)
+                            .padding(end = 6.dp, bottom = 6.dp),
+                        onClick = onNonePrimaryRemoveClick
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile_image_delete),
+                            contentDescription = "ic_profile_image_edit",
+                            tint = Color.Unspecified
+                        )
+                    }
                 }
             }
         }
