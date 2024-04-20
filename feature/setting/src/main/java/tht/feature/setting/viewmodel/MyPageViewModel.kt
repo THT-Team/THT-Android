@@ -20,13 +20,23 @@ class MyPageViewModel @Inject constructor(
 ) : ViewModel(), Container<MyPageViewModel.MyPageUiState, MyPageViewModel.MyPageSideEffect> {
 
     sealed interface MyPageSideEffect {
+        object ShowProfileImageModifyToast : MyPageSideEffect
         object NavigateSetting : MyPageSideEffect
+        object NavigateModifyNickName : MyPageSideEffect
+        object NavigateModifyIntroduce : MyPageSideEffect
+        object NavigateModifyPreferredGender : MyPageSideEffect
+        object NavigateModifyHeight : MyPageSideEffect
+        object NavigateModifySmoke : MyPageSideEffect
+        object NavigateModifyNickDrink : MyPageSideEffect
+        object NavigateModifyNickReligion : MyPageSideEffect
+        object NavigateModifyNickInterest : MyPageSideEffect
+        object NavigateModifyNickIdealType : MyPageSideEffect
     }
 
     @Immutable
     data class MyPageUiState(
         val myPageUserInfo: MyPageUserInfoUiModel?,
-        val loading: Boolean,
+        val loading: Boolean
     ) {
         val showSkeletonView: Boolean
             get() = myPageUserInfo == null && loading
@@ -58,51 +68,51 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun onNicknameEditClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyNickName) }
     }
 
     fun onIntroduceClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyIntroduce) }
     }
 
     fun onPrimaryProfileEditClick(priority: Int) {
-
+        intent { postSideEffect(MyPageSideEffect.ShowProfileImageModifyToast) }
     }
 
     fun onNonePrimaryProfileAddClick() {
-
+        intent { postSideEffect(MyPageSideEffect.ShowProfileImageModifyToast) }
     }
 
     fun onNonePrimaryProfileRemoveClick() {
-
+        intent { postSideEffect(MyPageSideEffect.ShowProfileImageModifyToast) }
     }
 
     fun onPreferredGenderClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyPreferredGender) }
     }
 
     fun onHeightClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyHeight) }
     }
 
     fun onDrinkClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyNickDrink) }
     }
 
     fun onReligionClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyNickReligion) }
     }
 
     fun onSmokeClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifySmoke) }
     }
 
     fun onIdealTypeEditClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyNickIdealType) }
     }
 
     fun onInterestEditClick() {
-
+        intent { postSideEffect(MyPageSideEffect.NavigateModifyNickInterest) }
     }
 
 

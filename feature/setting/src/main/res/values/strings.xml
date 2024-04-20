@@ -18,4 +18,6 @@
     <string name="gender_male">남성</string>
     <string name="gender_female">여성</string>
     <string name="gender_unknown">알수없음</string>
+
+    <string name="message_modify_profile_image_complete">프로필 사진 변경이 완료되었습니다</string>
 </resources>
