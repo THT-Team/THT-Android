@@ -6,16 +6,19 @@ import tht.feature.setting.uimodel.MyPageUserInfoUiModel
 
 fun MyPageUserInfoModel.toUiModel(): MyPageUserInfoUiModel {
     return MyPageUserInfoUiModel(
-        address = address,
-        age = age,
-        email = email,
+        userUuid = userUuid,
+        username = username,
+        userProfilePhotos = userProfilePhotos.map { it.toUiModel() }.toPersistentList(),
+        birth = birth,
+        gender = gender,
+        preferredGender = preferredGender,
+        introduction = introduction,
+        smoke = smoke,
+        drink = drink,
+        height = height,
+        religion = religion,
         idealTypeList = idealTypeList.map { it.toUiModel() }.toPersistentList(),
         interestsList = interestsList.map { it.toUiModel() }.toPersistentList(),
-        introduction = introduction,
-        phoneNumber = phoneNumber,
-        userProfilePhotos = userProfilePhotos.map { it.toUiModel() }.toPersistentList(),
-        userUuid = userUuid,
-        username = username
     )
 }
 

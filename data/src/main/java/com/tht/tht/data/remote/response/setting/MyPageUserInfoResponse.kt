@@ -1,5 +1,6 @@
 package com.tht.tht.data.remote.response.setting
 
+
 import com.google.gson.annotations.SerializedName
 
 data class MyPageUserInfoResponse(
@@ -7,8 +8,12 @@ data class MyPageUserInfoResponse(
     val address: String,
     @SerializedName("age")
     val age: Int,
+    @SerializedName("drinking")
+    val drinking: String,
     @SerializedName("email")
     val email: String,
+    @SerializedName("gender")
+    val gender: String,
     @SerializedName("idealTypeList")
     val idealTypeList: List<IdealType>,
     @SerializedName("interestsList")
@@ -17,6 +22,14 @@ data class MyPageUserInfoResponse(
     val introduction: String,
     @SerializedName("phoneNumber")
     val phoneNumber: String,
+    @SerializedName("prefer_gender")
+    val preferGender: String,
+    @SerializedName("religion")
+    val religion: String,
+    @SerializedName("smoking")
+    val smoking: String,
+    @SerializedName("tall")
+    val tall: Int,
     @SerializedName("userProfilePhotos")
     val userProfilePhotos: List<UserProfilePhoto>,
     @SerializedName("userUuid")

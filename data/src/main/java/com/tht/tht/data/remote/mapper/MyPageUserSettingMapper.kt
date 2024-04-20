@@ -5,16 +5,19 @@ import com.tht.tht.domain.setting.model.MyPageUserInfoModel
 
 fun MyPageUserInfoResponse.toModel(): MyPageUserInfoModel {
     return MyPageUserInfoModel(
-        address = address,
-        age = age,
-        email = email,
-        idealTypeList = idealTypeList.map { it.toModel() },
-        interestsList = interestsList.map { it.toModel() },
-        introduction = introduction,
-        phoneNumber = phoneNumber,
-        userProfilePhotos = userProfilePhotos.map { it.toModel() },
         userUuid = userUuid,
-        username = username
+        username = username,
+        birth = "UnKnown",
+        gender = gender,
+        introduction = introduction,
+        preferredGender = preferGender,
+        height = tall,
+        smoke = smoking,
+        drink = drinking,
+        religion = religion,
+        userProfilePhotos = userProfilePhotos.map { it.toModel() },
+        idealTypeList = idealTypeList.map { it.toModel() },
+        interestsList = interestsList.map { it.toModel() }
     )
 }
 
