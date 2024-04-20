@@ -3,4 +3,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="my_page_profile_description">매력적인 사진으로 무디들에게 나를 어필해보세요.\n프로필 완성도가 높아지면 상대방에게 좋아요를 더 많이 받을 수 있어요 🔥</string>
+
+    <string name="my_page_birth_title">생년월일</string>
+    <string name="my_page_gender_title">성별</string>
+    <string name="my_page_introduce_title">자기소개</string>
+    <string name="my_page_preferred_gender_title">선호성별</string>
+    <string name="my_page_height_title">키</string>
+    <string name="my_page_smoke_title">흡연 여부</string>
+    <string name="my_page_drink_title">술</string>
+    <string name="my_page_religion_title">종교</string>
+    <string name="my_page_interest_title">관심사</string>
+    <string name="my_page_ideal_type_title">이상형</string>
+
+    <string name="gender_male">남성</string>
+    <string name="gender_female">여성</string>
+    <string name="gender_unknown">알수없음</string>
 </resources>

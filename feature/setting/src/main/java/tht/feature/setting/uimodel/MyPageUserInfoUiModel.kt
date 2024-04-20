@@ -10,9 +10,9 @@ data class MyPageUserInfoUiModel(
     val username: String,
     val userProfilePhotos: ImmutableList<UserProfilePhoto>,
     val birth: String,
-    val gender: String,
+    val gender: Gender,
     val introduction: String,
-    val preferredGender: String,
+    val preferredGender: Gender,
     val height: Int,
     val smoke: String,
     val drink: String,
@@ -20,6 +20,11 @@ data class MyPageUserInfoUiModel(
     val idealTypeList: ImmutableList<IdealType>,
     val interestsList: ImmutableList<Interests>,
 ) {
+    enum class Gender {
+        Male,
+        FeMale,
+        UnKnown
+    }
     @Immutable
     data class IdealType(
         val emojiCode: String,
@@ -48,8 +53,8 @@ data class MyPageUserInfoUiModel(
                  introduction = "",
                  userProfilePhotos = persistentListOf(),
                  birth = "",
-                 gender = "",
-                 preferredGender = "",
+                 gender = Gender.Male,
+                 preferredGender = Gender.Male,
                  height = 0,
                  smoke = "",
                  drink = "",

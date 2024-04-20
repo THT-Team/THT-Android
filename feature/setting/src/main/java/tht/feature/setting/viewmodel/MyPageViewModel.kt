@@ -77,7 +77,23 @@ class MyPageViewModel @Inject constructor(
 
     }
 
-    fun onOptionalProfileEditClick() {
+    fun onPreferredGenderClick() {
+
+    }
+
+    fun onHeightClick() {
+
+    }
+
+    fun onDrinkClick() {
+
+    }
+
+    fun onReligionClick() {
+
+    }
+
+    fun onSmokeClick() {
 
     }
 

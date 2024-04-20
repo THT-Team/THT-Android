@@ -29,14 +29,17 @@ fun MyPageRoute(
             MyPageScreen(
                 modifier = Modifier.fillMaxSize(),
                 userInfo = requireNotNull(state.myPageUserInfo),
-                introduceEditMode = false,
                 onSettingClick = viewModel::onSettingClick,
                 onNicknameEditClick = viewModel::onNicknameEditClick,
-                onIntroduceClick = viewModel::onIntroduceClick,
                 onPrimaryProfileEditClick = viewModel::onPrimaryProfileEditClick,
                 onNonePrimaryProfileAddClick = viewModel::onNonePrimaryProfileAddClick,
                 onNonePrimaryProfileRemoveClick = viewModel::onNonePrimaryProfileRemoveClick,
-                onOptionalProfileEditClick = viewModel::onOptionalProfileEditClick,
+                onIntroduceClick = viewModel::onIntroduceClick,
+                onPreferredGenderClick = viewModel::onPreferredGenderClick,
+                onHeightClick = viewModel::onHeightClick,
+                onDrinkClick = viewModel::onDrinkClick,
+                onReligionClick = viewModel::onReligionClick,
+                onSmokeClick = viewModel::onSmokeClick,
                 onIdealTypeEditClick = viewModel::onIdealTypeEditClick,
                 onInterestEditClick = viewModel::onInterestEditClick
             )

@@ -1,5 +1,6 @@
 package tht.feature.setting.screen
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -22,9 +25,12 @@ import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.ThtText
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline4
+import com.example.compose_ui.component.text.subtitle.ThtSubtitle1
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.dpTextUnit
 import tht.core.ui.R
+import tht.feature.setting.composable.mypage.MyPageInfoRows
+import tht.feature.setting.composable.mypage.MyPageItemInfoRow
 import tht.feature.setting.composable.mypage.MyPageNicknameRow
 import tht.feature.setting.composable.mypage.MyPageProfileImageRow
 import tht.feature.setting.uimodel.MyPageUserInfoUiModel
@@ -32,21 +38,26 @@ import tht.feature.setting.uimodel.MyPageUserInfoUiModel
 @Composable
 fun MyPageScreen(
     userInfo: MyPageUserInfoUiModel,
-    introduceEditMode: Boolean,
     onSettingClick: () -> Unit,
     onNicknameEditClick: () -> Unit,
-    onIntroduceClick: () -> Unit,
     onPrimaryProfileEditClick: (Int) -> Unit,
     onNonePrimaryProfileAddClick: () -> Unit,
     onNonePrimaryProfileRemoveClick: () -> Unit,
-    onOptionalProfileEditClick: () -> Unit,
+    onIntroduceClick: () -> Unit,
+    onPreferredGenderClick: () -> Unit,
+    onHeightClick: () -> Unit,
+    onSmokeClick: () -> Unit,
+    onDrinkClick: () -> Unit,
+    onReligionClick: () -> Unit,
     onIdealTypeEditClick: () -> Unit,
     onInterestEditClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState()
 ) {
     Column(
         modifier = modifier
             .background(color = colorResource(id = R.color.black_161616))
+            .verticalScroll(scrollState)
     ) {
         ThtToolbar(
             modifier = Modifier
@@ -104,7 +115,8 @@ fun MyPageScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
         ThtCaption1(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             textAlign = TextAlign.Start,
             text = stringResource(id = tht.feature.setting.R.string.my_page_profile_description),
@@ -112,8 +124,17 @@ fun MyPageScreen(
             color = colorResource(id = R.color.gray_8d8d8d)
         )
 
-
-
+        MyPageInfoRows(
+            userInfo = userInfo,
+            onIntroduceClick = onIntroduceClick,
+            onPreferredGenderClick = onPreferredGenderClick,
+            onHeightClick = onHeightClick,
+            onSmokeClick = onSmokeClick,
+            onDrinkClick = onDrinkClick,
+            onReligionClick = onReligionClick,
+            onIdealTypeEditClick = onIdealTypeEditClick,
+            onInterestEditClick = onInterestEditClick
+        )
     }
 }
 
@@ -123,14 +144,17 @@ private fun MyPageScreenPreview() {
     MyPageScreen(
         modifier = Modifier.fillMaxSize(),
         userInfo = MyPageUserInfoUiModel.EMPTY,
-        introduceEditMode = false,
         onSettingClick = {},
         onNicknameEditClick = {},
         onIntroduceClick = {},
         onPrimaryProfileEditClick = {},
         onNonePrimaryProfileAddClick = {},
         onNonePrimaryProfileRemoveClick = {},
-        onOptionalProfileEditClick = {},
+        onPreferredGenderClick = {},
+        onHeightClick = {},
+        onDrinkClick = {},
+        onReligionClick = {},
+        onSmokeClick = {},
         onIdealTypeEditClick = {},
         onInterestEditClick = {},
     )
