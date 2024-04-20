@@ -45,7 +45,6 @@ fun ThtToolbar(
                 )
             }
         }
-        Spacer(modifier = Modifier.width(16.dp))
         content()
     }
 }
