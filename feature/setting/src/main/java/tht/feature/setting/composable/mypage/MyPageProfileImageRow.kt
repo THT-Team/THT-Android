@@ -58,16 +58,44 @@ private fun MyPageProfileImageRowPreview() {
             .padding(horizontal = 16.dp),
         userProfileImages = persistentListOf(
             MyPageUserInfoUiModel.UserProfilePhoto(
-                priority = 0,
+                priority = 1,
                 url = "https://asdasd"
             ),
             MyPageUserInfoUiModel.UserProfilePhoto(
-                priority = 1,
+                priority = 2,
                 url = "https://asd"
             ),
             MyPageUserInfoUiModel.UserProfilePhoto(
-                priority = 2,
+                priority = 3,
                 url = ""
+            )
+        ).toImmutableList(),
+        onPrimaryEditClick = {},
+        onNonePrimaryRemoveClick = {},
+        onNonePrimaryAddClick = {}
+    )
+}
+
+@Composable
+@Preview
+private fun MyPageProfileImageRowPreview2() {
+    MyPageProfileImageRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(140.dp)
+            .padding(horizontal = 16.dp),
+        userProfileImages = persistentListOf(
+            MyPageUserInfoUiModel.UserProfilePhoto(
+                priority = 1,
+                url = "https://asdasd"
+            ),
+            MyPageUserInfoUiModel.UserProfilePhoto(
+                priority = 2,
+                url = "https://asd"
+            ),
+            MyPageUserInfoUiModel.UserProfilePhoto(
+                priority = 3,
+                url = "https://asd"
             )
         ).toImmutableList(),
         onPrimaryEditClick = {},
