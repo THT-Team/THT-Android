@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -27,6 +28,7 @@ fun MyPageNicknameRow(
         modifier = modifier
     ) {
         ThtHeadline5(
+            modifier = Modifier.align(Alignment.CenterVertically),
             text = nickname,
             fontWeight = FontWeight.SemiBold,
             color = colorResource(id = tht.core.ui.R.color.white_f9fafa)
