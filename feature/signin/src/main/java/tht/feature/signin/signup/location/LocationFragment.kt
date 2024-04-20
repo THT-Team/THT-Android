@@ -13,10 +13,10 @@ import tht.core.ui.R
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
+import tht.core.ui.util.StringUtil
 import tht.feature.signin.databinding.FragmentLocationBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class LocationFragment : SignupRootBaseFragment<LocationViewModel, FragmentLocationBinding>() {

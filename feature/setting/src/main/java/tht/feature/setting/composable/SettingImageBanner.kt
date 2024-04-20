@@ -15,6 +15,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.p.ThtP1
@@ -59,7 +60,23 @@ fun SettingImageBanner(
                         tint = colorResource(id = R.color.white_f9fafa)
                     )
                 }
+                androidx.compose.foundation.layout.Spacer(modifier = Modifier.weight(1f))
+                Icon(
+                    painter = painterResource(id = tht.feature.setting.R.drawable.ic_setting_tht_banner),
+                    contentDescription = "ic_setting_tht_banner",
+                    tint = colorResource(id = R.color.white_f9fafa)
+                )
             }
         }
     }
+}
+
+@Composable
+@Preview
+private fun SettingImageBannerPreview() {
+    SettingImageBanner(
+        imageBanner = SettingImageBannerItemUiModel(
+            banner = SettingImageBannerItemUiModel.ImageBanner.Falling
+        )
+    )
 }

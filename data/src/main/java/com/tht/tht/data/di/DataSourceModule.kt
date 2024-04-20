@@ -14,6 +14,8 @@ import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSource
 import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSourceImpl
 import com.tht.tht.data.remote.datasource.login.LoginDataSource
 import com.tht.tht.data.remote.datasource.login.LoginDataSourceImpl
+import com.tht.tht.data.remote.datasource.setting.UserSettingDataSource
+import com.tht.tht.data.remote.datasource.setting.UserSettingDataSourceImpl
 import com.tht.tht.data.remote.datasource.signup.EmailDataSource
 import com.tht.tht.data.remote.datasource.signup.EmailDataSourceImpl
 import com.tht.tht.data.remote.datasource.signup.ImageDataSource
@@ -72,4 +74,7 @@ abstract class DataSourceModule {
 
     @Binds
     abstract fun bindSettingItemDataSource(impl: SettingItemDataSourceImpl): SettingItemDataSource
+
+    @Binds
+    abstract fun bindUserSettingDataSource(impl: UserSettingDataSourceImpl): UserSettingDataSource
 }

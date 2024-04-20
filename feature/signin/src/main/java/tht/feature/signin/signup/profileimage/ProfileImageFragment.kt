@@ -18,11 +18,11 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.dialog.showCustomAlertDialog
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
+import tht.core.ui.util.StringUtil
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentProfileImageBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class ProfileImageFragment : SignupRootBaseFragment<ProfileImageViewModel, FragmentProfileImageBinding>() {

@@ -14,11 +14,11 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
+import tht.core.ui.util.StringUtil
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentIdealTypeBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIdealTypeBinding>() {
@@ -116,9 +116,7 @@ class IdealTypeFragment : SignupRootBaseFragment<IdealTypeViewModel, FragmentIde
     }
 
     private fun addChip(ideal: IdealTypeModel, idx: Int) {
-        val emoji = StringUtil.parseEmoji(ideal.emojiCode).let {
-            if (it.isNullOrBlank()) "" else "$it "
-        }
+        val emoji = StringUtil.parseEmoji(ideal.emojiCode)
         binding.groupChip.addView(
             getIdealChip().apply {
                 "$emoji${ideal.title}".let {
