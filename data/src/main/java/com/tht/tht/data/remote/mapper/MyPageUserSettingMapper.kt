@@ -29,7 +29,6 @@ fun MyPageUserInfoResponse.IdealType.toModel(): MyPageUserInfoModel.IdealType {
     )
 }
 
-
 fun MyPageUserInfoResponse.Interests.toModel(): MyPageUserInfoModel.Interests {
     return MyPageUserInfoModel.Interests(
         emojiCode = emojiCode,

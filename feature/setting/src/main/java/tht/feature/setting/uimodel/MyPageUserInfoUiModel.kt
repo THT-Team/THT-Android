@@ -18,25 +18,28 @@ data class MyPageUserInfoUiModel(
     val drink: String,
     val religion: String,
     val idealTypeList: ImmutableList<IdealType>,
-    val interestsList: ImmutableList<Interests>,
+    val interestsList: ImmutableList<Interests>
 ) {
     enum class Gender {
         Male,
         FeMale,
         UnKnown
     }
+
     @Immutable
     data class IdealType(
         val emojiCode: String,
         val idx: Int,
         val name: String
     )
+
     @Immutable
     data class Interests(
         val emojiCode: String,
         val idx: Int,
         val name: String
     )
+
     @Immutable
     data class UserProfilePhoto(
         val priority: Int,
@@ -45,23 +48,22 @@ data class MyPageUserInfoUiModel(
         fun isPrimaryImage(): Boolean = priority <= 2
     }
 
-     companion object {
-         val EMPTY: MyPageUserInfoUiModel
-             get() = MyPageUserInfoUiModel(
-                 userUuid = "",
-                 username = "",
-                 introduction = "",
-                 userProfilePhotos = persistentListOf(),
-                 birth = "",
-                 gender = Gender.Male,
-                 preferredGender = Gender.Male,
-                 height = 0,
-                 smoke = "",
-                 drink = "",
-                 religion = "",
-                 idealTypeList = persistentListOf(),
-                 interestsList = persistentListOf()
-             )
-     }
+    companion object {
+        val EMPTY: MyPageUserInfoUiModel
+            get() = MyPageUserInfoUiModel(
+                userUuid = "",
+                username = "",
+                introduction = "",
+                userProfilePhotos = persistentListOf(),
+                birth = "",
+                gender = Gender.Male,
+                preferredGender = Gender.Male,
+                height = 0,
+                smoke = "",
+                drink = "",
+                religion = "",
+                idealTypeList = persistentListOf(),
+                interestsList = persistentListOf()
+            )
+    }
 }
-

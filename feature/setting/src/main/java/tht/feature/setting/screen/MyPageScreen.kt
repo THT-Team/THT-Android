@@ -25,12 +25,10 @@ import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.ThtText
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline4
-import com.example.compose_ui.component.text.subtitle.ThtSubtitle1
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.dpTextUnit
 import tht.core.ui.R
 import tht.feature.setting.composable.mypage.MyPageInfoRows
-import tht.feature.setting.composable.mypage.MyPageItemInfoRow
 import tht.feature.setting.composable.mypage.MyPageNicknameRow
 import tht.feature.setting.composable.mypage.MyPageProfileImageRow
 import tht.feature.setting.uimodel.MyPageUserInfoUiModel
@@ -156,6 +154,6 @@ private fun MyPageScreenPreview() {
         onReligionClick = {},
         onSmokeClick = {},
         onIdealTypeEditClick = {},
-        onInterestEditClick = {},
+        onInterestEditClick = {}
     )
 }

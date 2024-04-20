@@ -114,6 +114,4 @@ class MyPageViewModel @Inject constructor(
     fun onInterestEditClick() {
         intent { postSideEffect(MyPageSideEffect.NavigateModifyNickInterest) }
     }
-
-
 }

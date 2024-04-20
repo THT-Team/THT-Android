@@ -1,6 +1,5 @@
 package com.tht.tht.data.remote.response.setting
 
-
 import com.google.gson.annotations.SerializedName
 
 data class MyPageUserInfoResponse(
