@@ -1,4 +1,4 @@
-package tht.feature.signin.util
+package tht.core.ui.util
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -12,13 +12,15 @@ import android.widget.TextView
  * 기존 Api에서 U+를 제거하고 보내줬으니, 앞에 0x만 붙이면 됨
  */
 object StringUtil {
-    fun parseEmoji(emojiCode: String): String? {
+    fun parseEmoji(emojiCode: String): String {
         return try {
             val code = Integer.decode("0x${emojiCode.removePrefix("U+")}")
             String(Character.toChars(code))
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }.let {
+            if (it.isNullOrBlank()) "" else it
         }
     }
 

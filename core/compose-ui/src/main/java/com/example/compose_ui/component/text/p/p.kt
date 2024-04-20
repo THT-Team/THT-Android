@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
@@ -17,7 +18,9 @@ fun ThtP1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
-    shadow: Shadow? = null
+    shadow: Shadow? = null,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         modifier = modifier,
@@ -29,6 +32,8 @@ fun ThtP1(
             shadow = shadow
         ),
         color = color,
+        overflow = overflow,
+        maxLines = maxLines
     )
 }
 
@@ -39,7 +44,9 @@ fun ThtP2(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
-    includeFontPadding: Boolean = false
+    includeFontPadding: Boolean = false,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         modifier = modifier,
@@ -51,5 +58,7 @@ fun ThtP2(
             includeFontPadding = includeFontPadding
         ),
         color = color,
+        overflow = overflow,
+        maxLines = maxLines
     )
 }

@@ -27,11 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose_ui.component.chip.ToHotEmojiChip
 import com.example.compose_ui.component.text.p.ThtP2
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 import tht.feature.tohot.R
-import tht.feature.tohot.component.chip.ToHotEmojiChip
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.userData
 

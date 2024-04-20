@@ -14,11 +14,11 @@ import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.getPxFromDp
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
+import tht.core.ui.util.StringUtil
 import tht.feature.signin.R
 import tht.feature.signin.databinding.FragmentInterestBinding
 import tht.feature.signin.signup.SignupRootBaseFragment
 import tht.feature.signin.signup.SignupRootViewModel
-import tht.feature.signin.util.StringUtil
 
 @AndroidEntryPoint
 class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInterestBinding>() {
@@ -117,9 +117,7 @@ class InterestFragment : SignupRootBaseFragment<InterestViewModel, FragmentInter
     }
 
     private fun addChip(interest: InterestModel, idx: Int) {
-        val emoji = StringUtil.parseEmoji(interest.emojiCode).let {
-            if (it.isNullOrBlank()) "" else "$it "
-        }
+        val emoji = StringUtil.parseEmoji(interest.emojiCode)
         binding.groupChip.addView(
             getInterestChip().apply {
                 "$emoji${interest.title}".let {

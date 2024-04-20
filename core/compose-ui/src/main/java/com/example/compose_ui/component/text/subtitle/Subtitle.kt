@@ -17,7 +17,8 @@ fun ThtSubtitle1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
-    shadow: Shadow? = null
+    shadow: Shadow? = null,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     Text(
         modifier = modifier,
@@ -29,6 +30,7 @@ fun ThtSubtitle1(
             shadow = shadow
         ),
         color = color,
+        maxLines = maxLines
     )
 }
 
