@@ -16,8 +16,8 @@ import tht.feature.chat.model.ChatListUiModel
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ChatDetailViewModel @Inject constructor(
-) : ViewModel(), Container<ChatDetailState, ChatDetailSideEffect> {
+internal class ChatDetailViewModel @Inject constructor() :
+    ViewModel(), Container<ChatDetailState, ChatDetailSideEffect> {
     override val store: Store<ChatDetailState, ChatDetailSideEffect> =
         store(
             initialState = ChatDetailState.ChatList(

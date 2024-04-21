@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 fun OnLifecycleEvent(
     onEvent: (
         owner: LifecycleOwner,
-        event: Lifecycle.Event,
+        event: Lifecycle.Event
     ) -> Unit
 ) {
     val eventHandler = rememberUpdatedState(onEvent)

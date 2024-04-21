@@ -69,7 +69,8 @@ internal class ChatViewModel @Inject constructor(
                                 partnerProfileUrl = "",
                                 currentMessage = "안녕",
                                 messageTime = "2020.08.08"
-                            ), ChatListModel(
+                            ),
+                            ChatListModel(
                                 chatRoomIdx = 4L,
                                 partnerName = "최웅재",
                                 partnerProfileUrl = "",
