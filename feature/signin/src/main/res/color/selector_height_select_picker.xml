@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- not work. NumberPicker 는 Select Item 의 색상을 변경 방법을 제공 x -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="false" android:color="@color/yellow_f9cc2e" />
+    <item android:state_selected="true" android:color="@color/yellow_f9cc2e" />
+<!--    <item android:state_checked="false" android:color="@color/gray_686868" />-->
+<!--    <item android:state_checked="true" android:color="@color/yellow_f9cc2e" />-->
+</selector>

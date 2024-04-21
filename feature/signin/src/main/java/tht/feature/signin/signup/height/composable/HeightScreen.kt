@@ -56,7 +56,7 @@ internal fun HeightScreen(
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
-        confirmValueChange = { false }
+        confirmValueChange = { true }
     )
 
     LaunchedEffect(key1 = state.heightSelectModalShow) {
@@ -90,7 +90,7 @@ internal fun HeightScreen(
         HeightSelectModel(
             modifier = Modifier.fillMaxSize(),
             modalBottomSheetState = modalBottomSheetState,
-            onSelectHeight = onSelectHeight
+            onSelectHeight = onSelectHeight,
         ) {
             HeightScreenContent(
                 modifier = Modifier.fillMaxSize(),

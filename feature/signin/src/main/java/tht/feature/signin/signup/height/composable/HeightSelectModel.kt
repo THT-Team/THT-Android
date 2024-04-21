@@ -1,6 +1,5 @@
 package tht.feature.signin.signup.height.composable
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -19,7 +18,7 @@ internal fun HeightSelectModel(
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true,
-        confirmValueChange = { false }
+        confirmValueChange = { true }
     ),
     content: @Composable () -> Unit
 ) {
@@ -29,8 +28,10 @@ internal fun HeightSelectModel(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             HeightSelectScreen(
-                modifier = Modifier.fillMaxSize(),
-                onSelectHeight = onSelectHeight
+                onSelectHeight = onSelectHeight,
+                minValue = 130,
+                maxValue = 200,
+                initialValue = 170
             )
         },
         content = content

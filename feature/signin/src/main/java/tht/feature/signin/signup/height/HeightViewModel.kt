@@ -1,6 +1,5 @@
 package tht.feature.signin.signup.height
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
@@ -15,13 +14,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HeightViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val fetchSignupUserUseCase: FetchSignupUserUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
 ) : BaseStateViewModel<HeightUiState, HeightViewModel.HeightSideEffect>() {
 
-    private val phone: String = savedStateHandle[KEY_PHONE] ?: ""
+    private var phone: String? = null
 
     sealed interface HeightSideEffect : SideEffect {
         data class ShowToast(val message: String) : HeightSideEffect
@@ -31,8 +29,19 @@ class HeightViewModel @Inject constructor(
 
     override val _uiStateFlow: MutableStateFlow<HeightUiState> = MutableStateFlow(HeightUiState.DEFAULT)
 
-    init {
+    fun fetchSavedData(phone: String) {
         viewModelScope.launch {
+            if (phone.isBlank()) {
+                _sideEffectFlow.emit(
+                    HeightSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.InvalidatePhone) +
+                            stringProvider.getString(StringProvider.ResId.CustomerService)
+                    )
+                )
+                return@launch
+            }
+            this@HeightViewModel.phone = phone
+
             _uiStateFlow.update { it.copy(loading = true) }
             fetchSignupUserUseCase(phone)
                 .onSuccess { user ->
@@ -53,6 +62,7 @@ class HeightViewModel @Inject constructor(
         }
     }
 
+
     fun onClickHeightInput() {
         viewModelScope.launch {
             _uiStateFlow.update { it.copy(heightSelectModalShow = true) }
@@ -60,7 +70,12 @@ class HeightViewModel @Inject constructor(
     }
 
     fun onSelectHeight(height: Int) {
-        _uiStateFlow.update { it.copy(height = height) }
+        _uiStateFlow.update {
+            it.copy(
+                heightSelectModalShow = false,
+                height = height
+            )
+        }
     }
 
     fun onBackClick() {
@@ -79,6 +94,17 @@ class HeightViewModel @Inject constructor(
 
     fun onNext() {
         viewModelScope.launch {
+            val phone = runCatching {
+                requireNotNull(phone)
+            }.onFailure {
+                _sideEffectFlow.emit(
+                    HeightSideEffect.ShowToast(
+                        stringProvider.getString(StringProvider.ResId.InvalidatePhone) +
+                            stringProvider.getString(StringProvider.ResId.CustomerService)
+                    )
+                )
+            }.getOrNull() ?: return@launch
+
             val height = _uiStateFlow.value.height
             if (height == null) {
                 _sideEffectFlow.emit(
