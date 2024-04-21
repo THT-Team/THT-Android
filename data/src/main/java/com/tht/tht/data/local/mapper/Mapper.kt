@@ -50,7 +50,11 @@ fun SignupUserEntity.toModel(): SignupUserModel {
         idealTypeKeys = idealTypeKeys,
         fcmToken = fcmToken,
         snsType = snsType,
-        snsUniqueId = snsUniqueId
+        snsUniqueId = snsUniqueId,
+        height = height,
+        smoke = smoke,
+        drink = drink,
+        religion = religion
     )
 }
 
@@ -77,7 +81,11 @@ fun SignupUserModel.toEntity(): SignupUserEntity {
         idealTypeKeys = idealTypeKeys,
         fcmToken = fcmToken,
         snsType = snsType,
-        snsUniqueId = snsUniqueId
+        snsUniqueId = snsUniqueId,
+        height = height,
+        smoke = smoke,
+        drink = drink,
+        religion = religion
     )
 }
 

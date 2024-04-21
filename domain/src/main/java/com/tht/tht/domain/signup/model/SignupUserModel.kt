@@ -18,7 +18,11 @@ data class SignupUserModel(
     val idealTypeKeys: List<Long>,
     val fcmToken: String,
     val snsType: String,
-    val snsUniqueId: String
+    val snsUniqueId: String,
+    val height: Int,
+    val smoke: String,
+    val drink: String,
+    val religion: String
 ) {
     companion object {
         fun getFromDefaultArgument(
@@ -39,7 +43,11 @@ data class SignupUserModel(
             idealTypeKeys: List<Long> = emptyList(),
             fcmToken: String = "",
             snsType: String = "",
-            snsUniqueId: String = ""
+            snsUniqueId: String = "",
+            height: Int = -1,
+            smoke: String = "",
+            drink: String = "",
+            religion: String = ""
         ): SignupUserModel = SignupUserModel(
             phone = phone,
             termsAgreement = termsAgreement,
@@ -58,7 +66,11 @@ data class SignupUserModel(
             idealTypeKeys = idealTypeKeys,
             fcmToken = fcmToken,
             snsType = snsType,
-            snsUniqueId = snsUniqueId
+            snsUniqueId = snsUniqueId,
+            height = height,
+            smoke = smoke,
+            drink = drink,
+            religion = religion
         )
     }
 }

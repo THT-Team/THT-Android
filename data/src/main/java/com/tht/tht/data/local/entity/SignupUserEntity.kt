@@ -20,5 +20,9 @@ data class SignupUserEntity(
     val idealTypeKeys: List<Long>,
     val fcmToken: String,
     val snsType: String,
-    val snsUniqueId: String
+    val snsUniqueId: String,
+    val height: Int,
+    val smoke: String,
+    val drink: String,
+    val religion: String
 ) : java.io.Serializable

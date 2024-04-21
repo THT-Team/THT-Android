@@ -46,6 +46,14 @@ class RequestSignupUseCase(
                     user.introduce.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("introduce")
 
                     user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("ideal")
+
+                    user.height < 0 -> throw SignupException.SignupUserInfoInvalidateException("height")
+
+                    user.smoke.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("smoke")
+
+                    user.drink.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("drink")
+
+                    user.religion.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("religion")
                 }
 
                 signupRepository.requestSignup(
