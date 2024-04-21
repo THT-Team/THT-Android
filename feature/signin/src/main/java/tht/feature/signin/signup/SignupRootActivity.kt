@@ -79,7 +79,10 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_genderFragment_to_profileImageFragment)
                                 }
                                 SignupRootViewModel.Step.PROFILE_IMAGE -> {
-                                    navController.navigate(R.id.action_profileImageFragment_to_interestFragment)
+                                    navController.navigate(R.id.action_profileImageFragment_to_heightFragment)
+                                }
+                                SignupRootViewModel.Step.HEIGHT -> {
+                                    navController.navigate(R.id.action_heightFragment_interestFragment)
                                 }
                                 SignupRootViewModel.Step.INTEREST -> {
                                     navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)
