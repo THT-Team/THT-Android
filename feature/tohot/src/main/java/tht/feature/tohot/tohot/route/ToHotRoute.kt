@@ -38,10 +38,10 @@ import tht.feature.tohot.component.dialog.ToHotUseReportDialog
 import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
-import tht.feature.tohot.tohot.state.ToHotLoading
-import tht.feature.tohot.tohot.state.ToHotSideEffect
 import tht.feature.tohot.tohot.screen.ToHotScreen
 import tht.feature.tohot.tohot.screen.TopicSelectModel
+import tht.feature.tohot.tohot.state.ToHotLoading
+import tht.feature.tohot.tohot.state.ToHotSideEffect
 import tht.feature.tohot.tohot.viewmodel.ToHotViewModel
 
 //TODO: 다른 탭에 갔을 때 일시 정지
@@ -52,7 +52,11 @@ internal fun ToHotRoute(
     navigateLogout: () -> Unit
 ) {
     val toHotState by toHotViewModel.store.state.collectAsState()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        pageCount = {
+            toHotState.userList.list.size
+        }
+    )
     val context = LocalContext.current
 
     val userHeartLottieComposition by rememberLottieComposition(

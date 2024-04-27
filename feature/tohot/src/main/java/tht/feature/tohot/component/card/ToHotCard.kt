@@ -58,7 +58,9 @@ fun ToHotCard(
     loadFinishListener: (Boolean, Throwable?) -> Unit = { _, _ -> },
     onHoldDoubleTab: () -> Unit = { }
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(
+        pageCount = { imageUrls.list.size }
+    )
     var userInfoFullShow by remember { mutableStateOf(false) }
 
     val fallingAnimatedProgress = remember { Animatable(0f) }
