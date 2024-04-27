@@ -85,7 +85,10 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_heightFragment_to_moreInfoFragment)
                                 }
                                 SignupRootViewModel.Step.MORE_INFO -> {
-                                    navController.navigate(R.id.action_moreInfoFragment_to_interestFragment)
+                                    navController.navigate(R.id.action_moreInfoFragment_to_religionFragment)
+                                }
+                                SignupRootViewModel.Step.RELIGION -> {
+                                    navController.navigate(R.id.action_religionFragment_to_interestFragment)
                                 }
                                 SignupRootViewModel.Step.INTEREST -> {
                                     navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)

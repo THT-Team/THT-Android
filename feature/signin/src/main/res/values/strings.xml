@@ -104,6 +104,17 @@
     <string name="message_more_info_patch_fail">추가정보 입력을 실패하였습니다</string>
     <string name="message_require_select_more_info">추가정보를 선택해주세요</string>
 
+    <string name="title_religion">종교를 알려주세요</string>
+    <string name="message_religion_patch_fail">종교 입력을 실패하였습니다</string>
+    <string name="message_require_select_religion">종교를 선택해주세요</string>
+
+    <string name="religion_none">무교</string>
+    <string name="religion_christianity">기독교</string>
+    <string name="religion_buddhism">불교</string>
+    <string name="religion_catholic">천주교</string>
+    <string name="religion_won_buddhism">원불교</string>
+    <string name="religion_extra">기타</string>
+
     <string name="title_more_info_btn_none">안 함</string>
     <string name="title_more_info_btn_sometime">가끔</string>
     <string name="title_more_info_btn_almost">자주</string>

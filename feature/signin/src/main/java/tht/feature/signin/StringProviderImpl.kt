@@ -51,6 +51,8 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.HeightPathFail -> R.string.message_height_path_fail
             StringProvider.ResId.MoreInfoPatchFail -> R.string.message_more_info_patch_fail
             StringProvider.ResId.RequireSelectMoreInfo -> R.string.message_require_select_more_info
+            StringProvider.ResId.ReligionPatchFail -> R.string.message_religion_patch_fail
+            StringProvider.ResId.RequireSelectReligion -> R.string.message_require_select_religion
             StringProvider.ResId.RequireSelectHeight -> R.string.message_require_select_height
             StringProvider.ResId.BirthdayPatchFail -> R.string.message_birthday_patch_fail
             StringProvider.ResId.SignupFail -> R.string.message_signup_fail

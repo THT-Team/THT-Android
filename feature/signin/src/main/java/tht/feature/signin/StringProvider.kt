@@ -36,6 +36,8 @@ interface StringProvider {
         HeightPathFail,
         MoreInfoPatchFail,
         RequireSelectMoreInfo,
+        ReligionPatchFail,
+        RequireSelectReligion,
         BirthdayPatchFail,
         InvalidateLocation,
         FetchLocationFail,
