@@ -58,7 +58,9 @@ fun ToHotPagerIndicator(
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 private fun ToHotPagerIndicatorPreview() {
     ToHotPagerIndicator(
-        pagerState = rememberPagerState(),
+        pagerState = rememberPagerState(
+            pageCount = { 0 }
+        ),
         pageCount = 10,
         width = 20.dp,
         height = 20.dp
