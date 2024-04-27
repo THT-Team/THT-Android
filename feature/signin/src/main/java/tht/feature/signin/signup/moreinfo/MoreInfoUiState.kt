@@ -1,5 +1,6 @@
 package tht.feature.signin.signup.moreinfo
 
+import com.tht.tht.domain.signup.model.SignupUserModel
 import tht.core.ui.base.UiState
 
 data class MoreInfoUiState(
@@ -11,12 +12,19 @@ data class MoreInfoUiState(
         None,
         SomeTime,
         Almost;
+        fun toDomain(): SignupUserModel.Smoke {
+            return when(this) {
+                None -> SignupUserModel.Smoke.NONE
+                SomeTime -> SignupUserModel.Smoke.SOMETIMES
+                Almost -> SignupUserModel.Smoke.FREQUENTLY
+            }
+        }
         companion object {
-            fun from(smoke: String): Smoke? {
+            fun from(smoke: SignupUserModel.Smoke?): Smoke? {
                 return when (smoke) {
-                    None.name -> None
-                    SomeTime.name -> SomeTime
-                    Almost.name -> Almost
+                    SignupUserModel.Smoke.NONE -> None
+                    SignupUserModel.Smoke.SOMETIMES -> SomeTime
+                    SignupUserModel.Smoke.FREQUENTLY -> Almost
                     else -> null
                 }
             }
@@ -26,16 +34,24 @@ data class MoreInfoUiState(
         None,
         SomeTime,
         Almost;
+        fun toDomain(): SignupUserModel.Drink {
+            return when(this) {
+                None -> SignupUserModel.Drink.NONE
+                SomeTime -> SignupUserModel.Drink.SOMETIMES
+                Almost -> SignupUserModel.Drink.FREQUENTLY
+            }
+        }
         companion object {
-            fun from(smoke: String): Drink?{
-                return when (smoke) {
-                    None.name -> None
-                    SomeTime.name -> SomeTime
-                    Almost.name -> Almost
+            fun from(drink: SignupUserModel.Drink?): Drink?{
+                return when (drink) {
+                    SignupUserModel.Drink.NONE -> None
+                    SignupUserModel.Drink.SOMETIMES -> SomeTime
+                    SignupUserModel.Drink.FREQUENTLY -> Almost
                     else -> null
                 }
             }
         }
+
     }
 
     companion object {

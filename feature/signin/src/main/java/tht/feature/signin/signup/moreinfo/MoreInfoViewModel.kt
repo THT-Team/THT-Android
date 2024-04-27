@@ -100,8 +100,8 @@ class MoreInfoViewModel @Inject constructor(
                 phone = phone,
                 reduce = {
                     it.copy(
-                        smoke = smoke.name,
-                        drink = drink.name
+                        smoke = smoke.toDomain(),
+                        drink = drink.toDomain()
                     )
                 }
             ).onSuccess {

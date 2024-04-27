@@ -52,9 +52,9 @@ fun SignupUserEntity.toModel(): SignupUserModel {
         snsType = snsType,
         snsUniqueId = snsUniqueId,
         height = height,
-        smoke = smoke,
-        drink = drink,
-        religion = religion
+        smoke = SignupUserModel.Smoke.from(smoke),
+        drink = SignupUserModel.Drink.from(drink),
+        religion = SignupUserModel.Religion.from(religion)
     )
 }
 
@@ -83,9 +83,9 @@ fun SignupUserModel.toEntity(): SignupUserEntity {
         snsType = snsType,
         snsUniqueId = snsUniqueId,
         height = height,
-        smoke = smoke,
-        drink = drink,
-        religion = religion
+        smoke = smoke?.name ?: "",
+        drink = drink?.name ?: "",
+        religion = religion?.name ?: ""
     )
 }
 

@@ -20,10 +20,61 @@ data class SignupUserModel(
     val snsType: String,
     val snsUniqueId: String,
     val height: Int,
-    val smoke: String,
-    val drink: String,
-    val religion: String
+    val smoke: Smoke?,
+    val drink: Drink?,
+    val religion: Religion?
 ) {
+    enum class Smoke {
+        NONE,
+        SOMETIMES,
+        FREQUENTLY;
+        companion object {
+            fun from(smoke: String): Smoke? {
+                return when (smoke) {
+                    NONE.name -> NONE
+                    SOMETIMES.name -> SOMETIMES
+                    FREQUENTLY.name -> FREQUENTLY
+                    else -> null
+                }
+            }
+        }
+    }
+    enum class Drink {
+        NONE,
+        SOMETIMES,
+        FREQUENTLY;
+        companion object {
+            fun from(drink: String): Drink? {
+                return when (drink) {
+                    NONE.name -> NONE
+                    SOMETIMES.name -> SOMETIMES
+                    FREQUENTLY.name -> FREQUENTLY
+                    else -> null
+                }
+            }
+        }
+    }
+    enum class Religion {
+        NONE,
+        CHRISTIAN,
+        BUDDHISM,
+        CATHOLICISM,
+        WON_BUDDHISM,
+        OTHER;
+        companion object {
+            fun from(religion: String): Religion? {
+                return when (religion) {
+                    NONE.name -> NONE
+                    CHRISTIAN.name -> CHRISTIAN
+                    BUDDHISM.name -> BUDDHISM
+                    CATHOLICISM.name -> CATHOLICISM
+                    WON_BUDDHISM.name -> WON_BUDDHISM
+                    OTHER.name -> OTHER
+                    else -> null
+                }
+            }
+        }
+    }
     companion object {
         fun getFromDefaultArgument(
             phone: String = "",
@@ -45,9 +96,9 @@ data class SignupUserModel(
             snsType: String = "",
             snsUniqueId: String = "",
             height: Int = -1,
-            smoke: String = "",
-            drink: String = "",
-            religion: String = ""
+            smoke: Smoke? = null,
+            drink: Drink? = null,
+            religion: Religion? = null
         ): SignupUserModel = SignupUserModel(
             phone = phone,
             termsAgreement = termsAgreement,

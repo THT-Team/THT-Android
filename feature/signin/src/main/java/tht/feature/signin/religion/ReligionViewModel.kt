@@ -92,7 +92,7 @@ class ReligionViewModel @Inject constructor(
             patchSignupDataUseCase(
                 phone = phone,
                 reduce = {
-                    it.copy(religion = religion.name)
+                    it.copy(religion = religion.toDomain())
                 }
             ).onSuccess {
                 _sideEffectFlow.emit(ReligionSideEffect.NavigateNextView)

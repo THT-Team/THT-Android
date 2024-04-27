@@ -49,11 +49,11 @@ class RequestSignupUseCase(
 
                     user.height < 0 -> throw SignupException.SignupUserInfoInvalidateException("height")
 
-                    user.smoke.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("smoke")
+                    user.smoke == null -> throw SignupException.SignupUserInfoInvalidateException("smoke")
 
-                    user.drink.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("drink")
+                    user.drink == null -> throw SignupException.SignupUserInfoInvalidateException("drink")
 
-                    user.religion.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("religion")
+                    user.religion == null -> throw SignupException.SignupUserInfoInvalidateException("religion")
                 }
 
                 signupRepository.requestSignup(
