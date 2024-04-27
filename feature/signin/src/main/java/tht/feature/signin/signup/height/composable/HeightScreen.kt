@@ -41,6 +41,7 @@ import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.core.ui.R
 import tht.feature.signin.signup.height.HeightUiState
+import tht.feature.signin.ui.SignupDescription
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -148,25 +149,10 @@ private fun HeightScreenContent(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
+        SignupDescription(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top
-        ) {
-            Image(
-                painter = painterResource(id = tht.feature.signin.R.drawable.ic_error),
-                contentDescription = "ic_error"
-            )
-            ThtP2(
-                modifier = Modifier
-                    .padding(start = 6.dp)
-                    .weight(1f),
-                text = stringResource(id = tht.feature.signin.R.string.message_can_change_in_my_page),
-                fontWeight = FontWeight.Medium,
-                color = colorResource(id = R.color.gray_666666),
-                textAlign = TextAlign.Start,
-                includeFontPadding = false
-            )
-        }
+            description = stringResource(id = tht.feature.signin.R.string.message_can_change_in_my_page),
+        )
 
         Spacer(modifier = Modifier.weight(1f))
         Button(

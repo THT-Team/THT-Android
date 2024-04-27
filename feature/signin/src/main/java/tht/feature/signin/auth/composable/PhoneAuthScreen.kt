@@ -1,11 +1,9 @@
 package tht.feature.signin.auth.composable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,12 +23,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,11 +36,11 @@ import com.example.compose_ui.component.text.ThtTextFieldLayout
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
 import com.example.compose_ui.component.text.headline.ThtHeadline5
-import com.example.compose_ui.component.text.p.ThtP2
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.feature.signin.R
 import tht.feature.signin.auth.PhoneAuthUiState
+import tht.feature.signin.ui.SignupDescription
 
 //https://blog.msg-team.com/android-jetpack-compose-inserting-components-on-a-soft-keyboard-fb988dbfb20b
 @Composable
@@ -133,23 +129,10 @@ fun PhoneAuthScreen(
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
+                SignupDescription(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_error),
-                        contentDescription = "ic_error"
-                    )
-                    ThtP2(
-                        modifier = Modifier.padding(start = 6.dp),
-                        text = stringResource(id = R.string.message_phone_auth),
-                        fontWeight = FontWeight.Medium,
-                        color = colorResource(id = tht.core.ui.R.color.gray_666666),
-                        textAlign = TextAlign.Start,
-                        includeFontPadding = false
-                    )
-                }
+                    description = stringResource(id = R.string.message_phone_auth)
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
                     modifier = Modifier
