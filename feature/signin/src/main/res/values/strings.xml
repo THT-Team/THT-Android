@@ -98,6 +98,15 @@
     <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
     <string name="date_default">2004. 01. 01</string>
 
+    <string name="title_more_info">추가정보를 알려주세요</string>
+    <string name="title_smoke_info">흡연 스타일을 선택해주세요</string>
+    <string name="title_drink_info">주량을 선택해주세요</string>
+    <string name="message_more_info_patch_fail">추가정보 입력을 실패하였습니다</string>
+    <string name="message_require_select_more_info">추가정보를 선택해주세요</string>
+
+    <string name="title_more_info_btn_none">안 함</string>
+    <string name="title_more_info_btn_sometime">가끔</string>
+    <string name="title_more_info_btn_almost">자주</string>
 
     <string name="title_location">현재 위치를 알려주세요.</string>
     <string name="hint_location">서울시 강남구 대치동</string>

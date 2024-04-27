@@ -34,6 +34,8 @@ interface StringProvider {
         ProfileImagePatchFail,
         RequireSelectHeight,
         HeightPathFail,
+        MoreInfoPatchFail,
+        RequireSelectMoreInfo,
         BirthdayPatchFail,
         InvalidateLocation,
         FetchLocationFail,

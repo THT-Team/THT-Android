@@ -48,7 +48,7 @@ internal fun SignupSmallButton(
 
 @Composable
 @Preview
-private fun SignupSmallButtonEmablePreview() {
+private fun SignupSmallButtonEnablePreview() {
     SignupSmallButton(
         enable = true,
         onClick = {}

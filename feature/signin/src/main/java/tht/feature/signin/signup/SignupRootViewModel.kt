@@ -77,7 +77,7 @@ class SignupRootViewModel @Inject constructor(
         GENDER,
         PROFILE_IMAGE,
         HEIGHT,
-//        MORE_INFO,
+        MORE_INFO,
 //        RELIGION,
         INTEREST,
         IDEAL_TYPE,
