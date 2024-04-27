@@ -84,7 +84,6 @@ internal fun ToHotScreen(
             ToHotCardState.Running -> {
                 VerticalPager(
                     userScrollEnabled = false,
-                    pageCount = cardList.list.size,
                     state = pagerState,
                     key = { cardList.list[it].id }
                 ) { idx ->
@@ -159,7 +158,9 @@ fun ToHotScreenPreview() {
     ToHotScreen(
         cardList = toHotState.userList,
         toHotCardState = toHotState.userCardState,
-        pagerState = rememberPagerState(),
+        pagerState = rememberPagerState(
+            pageCount = { toHotState.userList.list.size }
+        ),
         timers = toHotState.timers,
         currentUserIdx = toHotState.enableTimerIdx,
         cardMoveAllow = toHotState.cardMoveAllow,

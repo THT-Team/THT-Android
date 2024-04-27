@@ -20,7 +20,7 @@ import tht.feature.tohot.userData
 @Composable
 fun ToHotCardImagePager(
     modifier: Modifier = Modifier,
-    pagerState: PagerState = rememberPagerState(),
+    pagerState: PagerState,
     imageUrls: ImmutableListWrapper<String>,
     isHold: Boolean,
     isShaking: Boolean,
@@ -32,7 +32,6 @@ fun ToHotCardImagePager(
     ) {
         HorizontalPager(
             modifier = Modifier.fillMaxSize(),
-            pageCount = imageUrls.list.size,
             state = pagerState
         ) { page ->
             ToHotHoldCard(
@@ -63,7 +62,10 @@ private fun ToHotCardImagePagerPreview() {
     ToHotCardImagePager(
         imageUrls = userData.profileImgUrl,
         isHold = false,
-        isShaking = false
+        isShaking = false,
+        pagerState = rememberPagerState(
+            pageCount = { 0 }
+        )
     )
 }
 
@@ -74,6 +76,9 @@ private fun ToHotCardImagePagerBlurPreview() {
     ToHotCardImagePager(
         imageUrls = userData.profileImgUrl,
         isHold = true,
-        isShaking = false
+        isShaking = false,
+        pagerState = rememberPagerState(
+            pageCount = { 0 }
+        )
     )
 }
