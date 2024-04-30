@@ -1,4 +1,4 @@
-package tht.feature.chat
+package tht.feature.chat.chat.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import tht.feature.chat.screen.ChatScreen
-import tht.feature.chat.screen.detail.ChatDetailActivity
+import tht.feature.chat.navigation.ChatNavigation
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -25,9 +24,7 @@ class ChatFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ChatScreen {
-                    startActivity(ChatDetailActivity.newIntent(requireContext()))
-                }
+                ChatNavigation()
             }
         }
     }
