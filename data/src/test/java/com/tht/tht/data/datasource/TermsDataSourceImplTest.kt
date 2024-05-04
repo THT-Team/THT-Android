@@ -1,6 +1,5 @@
 package com.tht.tht.data.datasource
 
-import com.tht.tht.data.local.service.TermsService
 import com.tht.tht.data.local.datasource.TermsDataSourceImpl
 import com.tht.tht.data.local.entity.TermsEntity
 import io.mockk.coEvery

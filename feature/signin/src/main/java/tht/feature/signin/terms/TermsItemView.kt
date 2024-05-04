@@ -45,9 +45,9 @@ class TermsItemView @JvmOverloads constructor(
 
     fun setView(terms: TermsModel) {
         this.terms = terms
-        binding.tvDescription.isVisible = terms.description.isNotBlank()
+//        binding.tvDescription.isVisible = terms.description.isNotBlank()
         binding.tvDescription.text = terms.description
-        binding.ivRightArrow.isVisible = terms.content.isNotEmpty()
+//        binding.ivRightArrow.isVisible = terms.content.isNotEmpty()
 
         val requireStr = when (terms.require) {
             true -> context.getString(R.string.parenthesis_require)

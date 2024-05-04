@@ -5,6 +5,7 @@ import com.tht.tht.data.local.entity.SignupUserEntity
 import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.remote.response.location.LocationResponse
 import com.tht.tht.data.remote.response.regioncode.RegionCodeResponse
+import com.tht.tht.data.remote.response.terms.TermsResponse
 import com.tht.tht.domain.signup.model.LocationModel
 import com.tht.tht.domain.signup.model.RegionCodeModel
 import com.tht.tht.domain.signup.model.SignupUserModel
@@ -12,18 +13,13 @@ import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.token.model.AccessTokenModel
 
 // 확장 함수
-fun TermsEntity.Body.toModel(): TermsModel {
+fun TermsResponse.TermsResponseItem.toModel(): TermsModel {
     return TermsModel(
         title = title,
         key = key,
         description = description,
-        content = content.map {
-            TermsModel.TermsContent(
-                title = it.title,
-                content = it.content
-            )
-        },
-        require = require
+        require = isRequired,
+        link = link
     )
 }
 

@@ -7,6 +7,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
@@ -19,6 +21,7 @@ fun ThtSubtitle1(
     textAlign: TextAlign = TextAlign.Center,
     shadow: Shadow? = null,
     maxLines: Int = Int.MAX_VALUE,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         modifier = modifier,
@@ -27,7 +30,8 @@ fun ThtSubtitle1(
         style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 16.dpTextUnit,
-            shadow = shadow
+            shadow = shadow,
+            lineHeight = lineHeight
         ),
         color = color,
         maxLines = maxLines
