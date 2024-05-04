@@ -100,7 +100,7 @@ fun EmailScreen(
                         fontWeight = FontWeight.SemiBold
                     ),
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Phone,
+                        keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
