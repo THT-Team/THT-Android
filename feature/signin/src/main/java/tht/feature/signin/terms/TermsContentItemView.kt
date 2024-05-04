@@ -16,8 +16,8 @@ class TermsContentItemView @JvmOverloads constructor(
 
     private val binding: ItemTermsContentBinding by viewBinding(ItemTermsContentBinding::inflate)
 
-    fun setView(terms: TermsModel.TermsContent) {
-        binding.tvTitle.text = terms.title
-        binding.tvContent.text = terms.content
-    }
+//    fun setView(terms: TermsModel.TermsContent) {
+//        binding.tvTitle.text = terms.title
+//        binding.tvContent.text = terms.content
+//    }
 }

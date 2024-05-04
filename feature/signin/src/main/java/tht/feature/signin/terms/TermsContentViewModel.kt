@@ -3,7 +3,6 @@ package tht.feature.signin.terms
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.domain.signup.model.TermsModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +19,7 @@ class TermsContentViewModel @Inject constructor(
     private val _sideEffectFlow = MutableSharedFlow<TermsContentSideEffect>()
     val sideEffectFlow = _sideEffectFlow.asSharedFlow()
 
-    val terms: StateFlow<TermsModel> =
-        savedStateHandle.getStateFlow(EXTRA_TERMS, TermsModel("", "", emptyList(), "", false))
+    val termsUrl: StateFlow<String> = savedStateHandle.getStateFlow(EXTRA_TERMS_LINK, "")
 
     fun backEvent() {
         viewModelScope.launch {
@@ -34,6 +32,6 @@ class TermsContentViewModel @Inject constructor(
     }
 
     companion object {
-        const val EXTRA_TERMS = "extra_terms_key"
+        const val EXTRA_TERMS_LINK = "extra_terms_key_link"
     }
 }
