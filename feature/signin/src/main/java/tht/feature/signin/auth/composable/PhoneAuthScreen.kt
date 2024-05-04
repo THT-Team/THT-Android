@@ -3,7 +3,6 @@ package tht.feature.signin.auth.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,16 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -35,12 +30,12 @@ import com.example.compose_ui.component.progress.ThtCircularProgress
 import com.example.compose_ui.component.text.ThtTextFieldLayout
 import com.example.compose_ui.component.text.caption.ThtCaption1
 import com.example.compose_ui.component.text.headline.ThtHeadline1
-import com.example.compose_ui.component.text.headline.ThtHeadline5
 import com.example.compose_ui.component.toolbar.ThtToolbar
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.feature.signin.R
 import tht.feature.signin.auth.PhoneAuthUiState
 import tht.feature.signin.ui.SignupDescription
+import tht.feature.signin.ui.SignupLargeButton
 
 //https://blog.msg-team.com/android-jetpack-compose-inserting-components-on-a-soft-keyboard-fb988dbfb20b
 @Composable
@@ -134,27 +129,12 @@ fun PhoneAuthScreen(
                     description = stringResource(id = R.string.message_phone_auth)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .imePadding(),
-                    shape = RoundedCornerShape(16.dp),
-                    enabled = phoneValidation == PhoneAuthUiState.PhoneValidation.VALIDATE,
+                SignupLargeButton(
+                    modifier = Modifier.imePadding(),
                     onClick = onClick,
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colorResource(id = tht.core.ui.R.color.yellow_f9cc2e),
-                        contentColor = Color.Transparent,
-                        disabledBackgroundColor = colorResource(id = tht.core.ui.R.color.brown_26241f),
-                        disabledContentColor = Color.Transparent
-                    ),
-                    contentPadding = PaddingValues(vertical = 16.dp)
-                ) {
-                    ThtHeadline5(
-                        text = stringResource(id = R.string.do_auth),
-                        fontWeight = FontWeight.Bold,
-                        color = colorResource(id = tht.core.ui.R.color.black_222222)
-                    )
-                }
+                    text = stringResource(id = R.string.do_auth),
+                    enable = phoneValidation == PhoneAuthUiState.PhoneValidation.VALIDATE,
+                )
                 Spacer(modifier = Modifier.height(42.dp))
             }
         }
