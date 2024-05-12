@@ -17,6 +17,7 @@ import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
+import tht.feature.signin.signup.signupcomplete.SignupCompleteActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,9 +25,6 @@ class SignupRootActivity : AppCompatActivity() {
 
     private val viewModel: SignupRootViewModel by viewModels()
     private val binding: ActivitySignupRootBinding by viewBinding(ActivitySignupRootBinding::inflate)
-
-    @Inject
-    lateinit var homeNavigation: HomeNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,13 +103,22 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_introductionFragment_to_locationFragment)
                                 }
                                 SignupRootViewModel.Step.LOCATION -> {
+                                    // 위치 입력 후 회원가입 요청 시도. 회원가입 이후 지인 차단 진행
                                     viewModel.signUpEvent()
+                                }
+                                SignupRootViewModel.Step.BlockContacts -> {
+                                    startActivity(
+                                        SignupCompleteActivity.getIntent(
+                                            this@SignupRootActivity,
+                                            viewModel.phone.value
+                                        )
+                                    )
                                 }
                             }
                         }
-                        is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
-                            homeNavigation.navigateHome(this@SignupRootActivity)
-                            finish()
+                        SignupRootViewModel.SignupRootSideEffect.SuccessSignup -> {
+                            // 회원 가입 이후 지인 차단 기능
+                            findNavController(binding.fcNavHost.id).navigate(R.id.action_locationFragment_to_blockContactsFragment)
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
                             showToast(it.message)

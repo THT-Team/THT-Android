@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 class RequestSignupUseCase(
     private val signupRepository: SignupRepository,
     private val tokenRepository: TokenRepository,
-    private val removeSignupUserUseCase: RemoveSignupUserUseCase,
     private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(phone: String): Result<Boolean> {
@@ -59,7 +58,6 @@ class RequestSignupUseCase(
                 signupRepository.requestSignup(
                     user.copy(fcmToken = fcmToken)
                 ).let {
-                    removeSignupUserUseCase(phone)
                     tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone)
                     it.accessToken.isNotBlank()
                 }

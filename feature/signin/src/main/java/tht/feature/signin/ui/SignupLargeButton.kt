@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,24 +23,26 @@ internal fun SignupLargeButton(
     enable: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = colorResource(id = R.color.yellow_f9cc2e),
+        contentColor = Color.Transparent,
+        disabledBackgroundColor = colorResource(id = R.color.brown_26241f),
+        disabledContentColor = Color.Transparent
+    ),
+    textColor: Color = colorResource(id = R.color.black_222222)
 ) {
     Button(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         enabled = enable,
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = colorResource(id = R.color.yellow_f9cc2e),
-            contentColor = Color.Transparent,
-            disabledBackgroundColor = colorResource(id = R.color.brown_26241f),
-            disabledContentColor = Color.Transparent
-        ),
+        colors = colors,
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         ThtHeadline5(
             text = text,
             fontWeight = FontWeight.Bold,
-            color = colorResource(id = R.color.black_222222)
+            color = textColor
         )
     }
 }

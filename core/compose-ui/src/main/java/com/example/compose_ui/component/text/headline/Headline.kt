@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
@@ -81,6 +82,7 @@ fun ThtHeadline3(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         modifier = modifier,
@@ -88,7 +90,8 @@ fun ThtHeadline3(
         text = text,
         style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
-            fontSize = 24.dpTextUnit
+            fontSize = 24.dpTextUnit,
+            lineHeight = lineHeight
         ),
         color = color,
     )

@@ -9,7 +9,7 @@ class RemoveSignupUserUseCase(
     private val dispatcher: CoroutineDispatcher
 ) {
 
-    internal suspend operator fun invoke(phone: String): Boolean {
+    suspend operator fun invoke(phone: String): Boolean {
         return withContext(dispatcher) {
             repository.removeSignupUser(phone)
         }

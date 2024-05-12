@@ -40,8 +40,11 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-
         </activity>
+        <activity
+            android:name=".signup.signupcomplete.SignupCompleteActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
