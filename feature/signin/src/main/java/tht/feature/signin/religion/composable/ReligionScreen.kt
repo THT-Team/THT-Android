@@ -49,7 +49,11 @@ internal fun ReligionScreen(
                     buildAnnotatedString {
                         append(context.getString(R.string.title_religion))
                         addStyle(
-                            style = SpanStyle(color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))),
+                            style = SpanStyle(
+                                color = Color(
+                                    context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null)
+                                )
+                            ),
                             start = 0,
                             end = 3
                         )
@@ -119,11 +123,10 @@ internal fun ReligionScreen(
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(16.dp))
             SignupDescription(
                 modifier = Modifier.fillMaxWidth(),
-                description = stringResource(id = R.string.message_can_change_in_my_page),
+                description = stringResource(id = R.string.message_can_change_in_my_page)
             )
 
             Spacer(modifier = Modifier.weight(1f))

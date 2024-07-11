@@ -112,8 +112,10 @@ fun EmailScreen(
                     underLineColor = when (emailValidation) {
                         EmailUiState.EmailValidation.INVALIDATE ->
                             colorResource(id = R.color.red_ef4444)
+
                         EmailUiState.EmailValidation.IDLE ->
                             colorResource(id = R.color.gray_8d8d8d)
+
                         EmailUiState.EmailValidation.VALIDATE ->
                             colorResource(id = R.color.yellow_f9cc2e)
                     },
@@ -130,7 +132,7 @@ fun EmailScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 SignupDescription(
                     modifier = Modifier.fillMaxWidth(),
-                    description = stringResource(id = tht.feature.signin.R.string.message_email_input),
+                    description = stringResource(id = tht.feature.signin.R.string.message_email_input)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Button(

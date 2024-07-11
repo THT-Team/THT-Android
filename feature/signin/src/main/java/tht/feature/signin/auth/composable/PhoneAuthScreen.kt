@@ -133,7 +133,7 @@ fun PhoneAuthScreen(
                     modifier = Modifier.imePadding(),
                     onClick = onClick,
                     text = stringResource(id = R.string.do_auth),
-                    enable = phoneValidation == PhoneAuthUiState.PhoneValidation.VALIDATE,
+                    enable = phoneValidation == PhoneAuthUiState.PhoneValidation.VALIDATE
                 )
                 Spacer(modifier = Modifier.height(42.dp))
             }
