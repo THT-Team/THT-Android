@@ -49,7 +49,6 @@ class MoreInfoFragment : SignupBaseComposeFragment<MoreInfoViewModel>() {
             onDrinkClick = viewModel::onDrinkClick,
             onNextClick = viewModel::onNextClick
         )
-
     }
 
     override fun setProgress() {

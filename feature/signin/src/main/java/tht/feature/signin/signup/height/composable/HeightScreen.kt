@@ -80,7 +80,7 @@ internal fun HeightScreen(
         HeightSelectModel(
             modifier = Modifier.fillMaxSize(),
             modalBottomSheetState = modalBottomSheetState,
-            onSelectHeight = onSelectHeight,
+            onSelectHeight = onSelectHeight
         ) {
             HeightScreenContent(
                 modifier = Modifier.fillMaxSize(),
@@ -140,7 +140,7 @@ private fun HeightScreenContent(
         Spacer(modifier = Modifier.height(16.dp))
         SignupDescription(
             modifier = Modifier.fillMaxWidth(),
-            description = stringResource(id = tht.feature.signin.R.string.message_can_change_in_my_page),
+            description = stringResource(id = tht.feature.signin.R.string.message_can_change_in_my_page)
         )
 
         Spacer(modifier = Modifier.weight(1f))

@@ -55,7 +55,6 @@ private fun SignupSmallButtonEnablePreview() {
     )
 }
 
-
 @Composable
 @Preview
 private fun SignupSmallButtonPreview() {

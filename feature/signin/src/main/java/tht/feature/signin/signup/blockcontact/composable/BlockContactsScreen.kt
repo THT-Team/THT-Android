@@ -66,7 +66,7 @@ internal fun BlockContactsScreen(
                 onClick = onLaterClick,
                 text = stringResource(id = tht.feature.signin.R.string.later),
                 enable = btnEnable,
-                colors =  ButtonDefaults.buttonColors(
+                colors = ButtonDefaults.buttonColors(
                     backgroundColor = colorResource(id = R.color.black_222222),
                     contentColor = Color.Transparent,
                     disabledBackgroundColor = colorResource(id = R.color.black_222222),

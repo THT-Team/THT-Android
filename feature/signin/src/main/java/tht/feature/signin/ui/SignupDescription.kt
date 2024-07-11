@@ -47,6 +47,6 @@ internal fun SignupDescription(
 private fun SignupDescriptionPreview() {
     SignupDescription(
         modifier = Modifier.fillMaxWidth(),
-        description = "Description",
+        description = "Description"
     )
 }

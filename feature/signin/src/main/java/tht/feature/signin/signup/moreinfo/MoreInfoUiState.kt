@@ -13,7 +13,7 @@ data class MoreInfoUiState(
         SomeTime,
         Almost;
         fun toDomain(): SignupUserModel.Smoke {
-            return when(this) {
+            return when (this) {
                 None -> SignupUserModel.Smoke.NONE
                 SomeTime -> SignupUserModel.Smoke.SOMETIMES
                 Almost -> SignupUserModel.Smoke.FREQUENTLY
@@ -35,14 +35,14 @@ data class MoreInfoUiState(
         SomeTime,
         Almost;
         fun toDomain(): SignupUserModel.Drink {
-            return when(this) {
+            return when (this) {
                 None -> SignupUserModel.Drink.NONE
                 SomeTime -> SignupUserModel.Drink.SOMETIMES
                 Almost -> SignupUserModel.Drink.FREQUENTLY
             }
         }
         companion object {
-            fun from(drink: SignupUserModel.Drink?): Drink?{
+            fun from(drink: SignupUserModel.Drink?): Drink? {
                 return when (drink) {
                     SignupUserModel.Drink.NONE -> None
                     SignupUserModel.Drink.SOMETIMES -> SomeTime
@@ -51,7 +51,6 @@ data class MoreInfoUiState(
                 }
             }
         }
-
     }
 
     companion object {

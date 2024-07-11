@@ -45,7 +45,6 @@ class SignupCompleteActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
         fun getIntent(context: Context, phone: String): Intent {
             return Intent(context, SignupCompleteActivity::class.java).apply {

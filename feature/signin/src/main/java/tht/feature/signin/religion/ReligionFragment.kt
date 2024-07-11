@@ -3,7 +3,6 @@ package tht.feature.signin.religion
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,7 +17,7 @@ import tht.feature.signin.signup.SignupBaseComposeFragment
 import tht.feature.signin.signup.SignupRootViewModel
 
 @AndroidEntryPoint
-class ReligionFragment: SignupBaseComposeFragment<ReligionViewModel>() {
+class ReligionFragment : SignupBaseComposeFragment<ReligionViewModel>() {
     override val viewModel: ReligionViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

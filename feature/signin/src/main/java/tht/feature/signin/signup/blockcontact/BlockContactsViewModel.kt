@@ -11,9 +11,8 @@ import tht.core.ui.base.SideEffect
 import javax.inject.Inject
 
 @HiltViewModel
-class BlockContactsViewModel @Inject constructor(
-
-) : BaseStateViewModel<BlockContactsUiState, BlockContactsViewModel.BlockContactsSideEffect>() {
+class BlockContactsViewModel @Inject constructor() :
+    BaseStateViewModel<BlockContactsUiState, BlockContactsViewModel.BlockContactsSideEffect>() {
 
     sealed interface BlockContactsSideEffect : SideEffect {
         object NavigateNextScreen : BlockContactsSideEffect

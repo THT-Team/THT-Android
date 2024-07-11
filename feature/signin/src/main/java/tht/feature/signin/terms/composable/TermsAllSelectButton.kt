@@ -22,14 +22,13 @@ import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.headline.ThtHeadline5
 import tht.core.ui.R
 
-
 @Composable
 internal fun SignupLargeSelectButton(
     text: String,
     isSelect: Boolean,
     enable: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Button(
         modifier = modifier.fillMaxWidth(),

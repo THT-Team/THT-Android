@@ -16,7 +16,7 @@ data class ReligionUiState(
         Extra;
 
         fun toDomain(): SignupUserModel.Religion {
-            return when(this) {
+            return when (this) {
                 None -> SignupUserModel.Religion.NONE
                 Christianity -> SignupUserModel.Religion.CHRISTIAN
                 Buddhism -> SignupUserModel.Religion.BUDDHISM

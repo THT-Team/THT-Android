@@ -11,14 +11,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
 import tht.feature.signin.signup.signupcomplete.SignupCompleteActivity
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SignupRootActivity : AppCompatActivity() {
@@ -118,7 +116,9 @@ class SignupRootActivity : AppCompatActivity() {
                         }
                         SignupRootViewModel.SignupRootSideEffect.SuccessSignup -> {
                             // 회원 가입 이후 지인 차단 기능
-                            findNavController(binding.fcNavHost.id).navigate(R.id.action_locationFragment_to_blockContactsFragment)
+                            findNavController(binding.fcNavHost.id).navigate(
+                                R.id.action_locationFragment_to_blockContactsFragment
+                            )
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
                             showToast(it.message)

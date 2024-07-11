@@ -76,7 +76,6 @@ class TermsContentActivity : AppCompatActivity() {
         }
     }
 
-
     companion object {
         fun getIntent(
             context: Context,

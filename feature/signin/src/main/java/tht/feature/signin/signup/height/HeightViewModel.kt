@@ -62,7 +62,6 @@ class HeightViewModel @Inject constructor(
         }
     }
 
-
     fun onClickHeightInput() {
         viewModelScope.launch {
             _uiStateFlow.update { it.copy(heightSelectModalShow = true) }
@@ -85,7 +84,6 @@ class HeightViewModel @Inject constructor(
     }
 
     fun onHeightSelectModalShow() {
-
     }
 
     fun onHeightSelectModalHide() {

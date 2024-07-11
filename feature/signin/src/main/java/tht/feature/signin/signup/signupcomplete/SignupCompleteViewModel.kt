@@ -17,7 +17,7 @@ import javax.inject.Inject
 class SignupCompleteViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     fetchSignupUserUseCase: FetchSignupUserUseCase,
-    private val removeSignupUserUseCase: RemoveSignupUserUseCase,
+    private val removeSignupUserUseCase: RemoveSignupUserUseCase
 ) : BaseStateViewModel<SignupCompleteViewModel.SignupCompleteState, SignupCompleteViewModel.SignupSideEffect>() {
 
     private val phone: String? = savedStateHandle[EXTRA_KEY_PHONE]
@@ -29,7 +29,7 @@ class SignupCompleteViewModel @Inject constructor(
     data class SignupCompleteState(
         val loading: Boolean,
         val profileImage: String?,
-        val error: Throwable? = null,
+        val error: Throwable? = null
     ) : UiState {
         companion object {
             val default: SignupCompleteState get() = SignupCompleteState(
@@ -80,7 +80,6 @@ class SignupCompleteViewModel @Inject constructor(
             postSideEffect(SignupSideEffect.NavigateMain)
             _uiStateFlow.update { it.copy(loading = false) }
         }
-
     }
 
     companion object {

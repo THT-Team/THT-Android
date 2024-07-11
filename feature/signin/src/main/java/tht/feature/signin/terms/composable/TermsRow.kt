@@ -33,7 +33,7 @@ internal fun TermsRow(
 ) {
     Column(
         modifier = modifier.noRippleClickable(onClick)
-    ){
+    ) {
         Row {
             Icon(
                 modifier = Modifier
@@ -61,7 +61,6 @@ internal fun TermsRow(
                 lineHeight = 22.4.sp
             )
 
-
             if (!terms.link.isNullOrBlank()) {
                 Spacer(space = 12.dp)
                 Icon(
@@ -69,7 +68,7 @@ internal fun TermsRow(
                         .widthIn(18.dp)
                         .align(Alignment.Top)
                         .clickable(enabled = true, onClick = onRightArrowClick),
-                    painter = painterResource(id = tht.feature.signin.R.drawable.ic_right_arrow_gray) ,
+                    painter = painterResource(id = tht.feature.signin.R.drawable.ic_right_arrow_gray),
                     contentDescription = "ic_right_arrow_gray",
                     tint = Color.Unspecified
                 )
@@ -137,6 +136,5 @@ private fun TermsRowPreview() {
             onClick = {},
             onRightArrowClick = {}
         )
-
     }
 }

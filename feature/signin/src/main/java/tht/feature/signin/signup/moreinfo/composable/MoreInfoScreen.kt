@@ -54,7 +54,9 @@ internal fun MoreInfoScreen(
                     buildAnnotatedString {
                         append(context.getString(R.string.title_more_info))
                         addStyle(
-                            style = SpanStyle(color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))),
+                            style = SpanStyle(
+                                color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
+                            ),
                             start = 0,
                             end = 4
                         )
@@ -64,14 +66,15 @@ internal fun MoreInfoScreen(
                 color = colorResource(id = tht.core.ui.R.color.gray_666666)
             )
 
-
             Spacer(modifier = Modifier.height(38.dp))
             ThtHeadline4(
                 text = remember {
                     buildAnnotatedString {
                         append(context.getString(R.string.title_smoke_info))
                         addStyle(
-                            style = SpanStyle(color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))),
+                            style = SpanStyle(
+                                color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
+                            ),
                             start = 0,
                             end = 3
                         )
@@ -117,7 +120,9 @@ internal fun MoreInfoScreen(
                     buildAnnotatedString {
                         append(context.getString(R.string.title_drink_info))
                         addStyle(
-                            style = SpanStyle(color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))),
+                            style = SpanStyle(
+                                color = Color(context.resources.getColor(tht.core.ui.R.color.white_f9fafa, null))
+                            ),
                             start = 0,
                             end = 3
                         )
@@ -160,7 +165,7 @@ internal fun MoreInfoScreen(
             Spacer(modifier = Modifier.height(16.dp))
             SignupDescription(
                 modifier = Modifier.fillMaxWidth(),
-                description = stringResource(id = R.string.message_can_change_in_my_page),
+                description = stringResource(id = R.string.message_can_change_in_my_page)
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -179,4 +184,3 @@ internal fun MoreInfoScreen(
         )
     }
 }
-

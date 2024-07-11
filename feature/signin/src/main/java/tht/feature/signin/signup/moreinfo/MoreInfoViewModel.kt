@@ -27,7 +27,6 @@ class MoreInfoViewModel @Inject constructor(
         object NavigateNextView : MoreInfoSideEffect
     }
 
-
     override val _uiStateFlow: MutableStateFlow<MoreInfoUiState> = MutableStateFlow(MoreInfoUiState.default)
 
     fun fetchSavedData(phone: String) {
