@@ -3,7 +3,6 @@ package com.tht.tht.data.repository
 import com.tht.tht.data.local.datasource.SignupUserDataSource
 import com.tht.tht.data.local.datasource.TermsDataSource
 import com.tht.tht.data.local.entity.SignupUserEntity
-import com.tht.tht.data.local.entity.TermsEntity
 import com.tht.tht.data.local.mapper.toEntity
 import com.tht.tht.data.local.mapper.toModel
 import com.tht.tht.data.remote.datasource.signup.SignupApiDataSource
