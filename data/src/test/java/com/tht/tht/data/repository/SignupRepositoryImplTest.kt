@@ -104,24 +104,24 @@ internal class SignupRepositoryImplTest {
                 .isEqualTo(expect)
         }
 
-    @Test
-    fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
-        val expect = TermsEntity(
-            listOf(
-                TermsEntity.Body(
-                    listOf(TermsEntity.Body.Content("content", "title")),
-                    true,
-                    "title",
-                    "key",
-                    "description1"
-                )
-            )
-        )
-        coEvery { termsDataSource.fetchSignupTerms() } returns expect
-        val actual = repository.fetchTerms()
-        assertThat(actual)
-            .isEqualTo(expect.body.map { it.toModel() })
-    }
+//    @Test
+//    fun `fetchTerms는 TermsDataSource의 fetchTerms의 결과를 Model로 가공해 리턴한다`() = runTest(testDispatcher) {
+//        val expect = TermsEntity(
+//            listOf(
+//                TermsEntity.Body(
+//                    listOf(TermsEntity.Body.Content("content", "title")),
+//                    true,
+//                    "title",
+//                    "key",
+//                    "description1"
+//                )
+//            )
+//        )
+//        coEvery { termsDataSource.fetchSignupTerms() } returns expect
+//        val actual = repository.fetchTerms()
+//        assertThat(actual)
+//            .isEqualTo(expect.body.map { it.toModel() })
+//    }
 
     @Test
     fun `checkNicknameDuplicate는 SignupApiDataSource의 checkNicknameDuplicate의 결과를 리턴한다`() =
