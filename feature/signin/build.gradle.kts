@@ -89,4 +89,6 @@ dependencies {
     implementation(libs.jetpack.compose.coil)
 
     implementation(libs.lottie.compose)
+
+    implementation(libs.kotlin.collections.immutable)
 }

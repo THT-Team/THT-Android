@@ -163,7 +163,7 @@ class NicknameViewModel @Inject constructor(
             }.onFailure {
                 _sideEffectFlow.emit(
                     NicknameSideEffect.ShowToast(
-                        stringProvider.getString(StringProvider.ResId.SendAuthFail)
+                        stringProvider.getString(StringProvider.ResId.NickNamePatchFail)
                     )
                 )
             }

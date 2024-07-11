@@ -123,12 +123,10 @@ object UseCaseModule {
     fun provideRequestSignupUseCase(
         repository: SignupRepository,
         tokenRepository: TokenRepository,
-        removeSignupUserUseCase: RemoveSignupUserUseCase,
         @DefaultDispatcher dispatcher: CoroutineDispatcher
     ): RequestSignupUseCase = RequestSignupUseCase(
         repository,
         tokenRepository,
-        removeSignupUserUseCase,
         dispatcher
     )
 

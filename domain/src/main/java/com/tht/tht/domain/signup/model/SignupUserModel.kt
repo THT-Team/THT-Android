@@ -18,8 +18,63 @@ data class SignupUserModel(
     val idealTypeKeys: List<Long>,
     val fcmToken: String,
     val snsType: String,
-    val snsUniqueId: String
+    val snsUniqueId: String,
+    val height: Int,
+    val smoke: Smoke?,
+    val drink: Drink?,
+    val religion: Religion?
 ) {
+    enum class Smoke {
+        NONE,
+        SOMETIMES,
+        FREQUENTLY;
+        companion object {
+            fun from(smoke: String): Smoke? {
+                return when (smoke) {
+                    NONE.name -> NONE
+                    SOMETIMES.name -> SOMETIMES
+                    FREQUENTLY.name -> FREQUENTLY
+                    else -> null
+                }
+            }
+        }
+    }
+    enum class Drink {
+        NONE,
+        SOMETIMES,
+        FREQUENTLY;
+        companion object {
+            fun from(drink: String): Drink? {
+                return when (drink) {
+                    NONE.name -> NONE
+                    SOMETIMES.name -> SOMETIMES
+                    FREQUENTLY.name -> FREQUENTLY
+                    else -> null
+                }
+            }
+        }
+    }
+    enum class Religion {
+        NONE,
+        CHRISTIAN,
+        BUDDHISM,
+        CATHOLICISM,
+        WON_BUDDHISM,
+        OTHER;
+        companion object {
+            fun from(religion: String): Religion? {
+                return when (religion) {
+                    NONE.name -> NONE
+                    CHRISTIAN.name -> CHRISTIAN
+                    BUDDHISM.name -> BUDDHISM
+                    CATHOLICISM.name -> CATHOLICISM
+                    WON_BUDDHISM.name -> WON_BUDDHISM
+                    OTHER.name -> OTHER
+                    else -> null
+                }
+            }
+        }
+    }
     companion object {
         fun getFromDefaultArgument(
             phone: String = "",
@@ -39,7 +94,11 @@ data class SignupUserModel(
             idealTypeKeys: List<Long> = emptyList(),
             fcmToken: String = "",
             snsType: String = "",
-            snsUniqueId: String = ""
+            snsUniqueId: String = "",
+            height: Int = -1,
+            smoke: Smoke? = null,
+            drink: Drink? = null,
+            religion: Religion? = null
         ): SignupUserModel = SignupUserModel(
             phone = phone,
             termsAgreement = termsAgreement,
@@ -58,7 +117,11 @@ data class SignupUserModel(
             idealTypeKeys = idealTypeKeys,
             fcmToken = fcmToken,
             snsType = snsType,
-            snsUniqueId = snsUniqueId
+            snsUniqueId = snsUniqueId,
+            height = height,
+            smoke = smoke,
+            drink = drink,
+            religion = religion
         )
     }
 }

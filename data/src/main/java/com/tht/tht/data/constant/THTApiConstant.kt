@@ -10,6 +10,8 @@ object THTApiConstant {
 
         const val NICKNAME_DUPLICATE_CHECK = "users/join/nick-name/duplicate-check"
 
+        const val TERMS = "users/join/agreements/main-category"
+
         const val INTERESTS = "ideal-types"
         const val IDEAL_TYPE = "ideal-types"
 

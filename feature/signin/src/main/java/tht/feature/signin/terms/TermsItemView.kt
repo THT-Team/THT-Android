@@ -3,7 +3,6 @@ package tht.feature.signin.terms
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import com.tht.tht.domain.signup.model.TermsModel
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.R
@@ -45,9 +44,9 @@ class TermsItemView @JvmOverloads constructor(
 
     fun setView(terms: TermsModel) {
         this.terms = terms
-        binding.tvDescription.isVisible = terms.description.isNotBlank()
+//        binding.tvDescription.isVisible = terms.description.isNotBlank()
         binding.tvDescription.text = terms.description
-        binding.ivRightArrow.isVisible = terms.content.isNotEmpty()
+//        binding.ivRightArrow.isVisible = terms.content.isNotEmpty()
 
         val requireStr = when (terms.require) {
             true -> context.getString(R.string.parenthesis_require)

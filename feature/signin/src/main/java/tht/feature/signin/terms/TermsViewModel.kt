@@ -2,18 +2,20 @@ package tht.feature.signin.terms
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.FetchTermsUseCase
 import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import tht.core.ui.base.BaseStateViewModel
 import tht.core.ui.base.SideEffect
-import tht.core.ui.base.UiState
 import tht.feature.signin.StringProvider
+import tht.feature.signin.terms.mapper.toModel
+import tht.feature.signin.terms.mapper.toUiModel
+import tht.feature.signin.terms.uimodel.TermsUiModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,34 +25,29 @@ class TermsViewModel @Inject constructor(
     private val fetchTermsUseCase: FetchTermsUseCase,
     private val patchSignupDataUseCase: PatchSignupDataUseCase,
     private val stringProvider: StringProvider
-) : BaseStateViewModel<TermsViewModel.TermsUiState, TermsViewModel.TermsSideEffect>() {
-
-    override val _uiStateFlow: MutableStateFlow<TermsUiState> = MutableStateFlow(TermsUiState.SelectNone)
+) : BaseStateViewModel<TermsUiState, TermsViewModel.TermsSideEffect>() {
 
     private val phone = savedStateHandle.getStateFlow(EXTRA_PHONE_KEY, "")
 
-    private val _termsList: MutableStateFlow<List<TermsModel>> = MutableStateFlow(emptyList())
-    val termsList = _termsList.asStateFlow()
-
-    private val termsAgreement = mutableMapOf<TermsModel, Boolean>()
-
-    private val _dataLoading = MutableStateFlow(false)
-    val dataLoading = _dataLoading.asStateFlow()
+    override val _uiStateFlow: MutableStateFlow<TermsUiState> = MutableStateFlow(TermsUiState.default)
 
     init {
         if (phone.value.isBlank()) {
-            _uiStateFlow.value = TermsUiState.InvalidatePhone(
-                stringProvider.getString(StringProvider.ResId.InvalidatePhone)
+            postSideEffect(
+                TermsSideEffect.ShowToast(
+                    stringProvider.getString(StringProvider.ResId.InvalidatePhone)
+                )
             )
         } else {
             viewModelScope.launch {
-                _dataLoading.value = true
+                _uiStateFlow.update { it.copy(loading = true) }
                 fetchTermsUseCase()
-                    .onSuccess {
-                        it.forEach { terms ->
-                            termsAgreement[terms] = false
+                    .onSuccess { termsList ->
+                        _uiStateFlow.update {
+                            it.copy(
+                                terms = termsList.map { t -> t.toUiModel() }.toPersistentList()
+                            )
                         }
-                        _termsList.value = it
                     }.onFailure {
                         _sideEffectFlow.emit(
                             TermsSideEffect.ShowToast(
@@ -60,67 +57,48 @@ class TermsViewModel @Inject constructor(
                     }
 
                 fetchSignupUserUseCase(phone.value)
-                    .onSuccess {
-                        it.termsAgreement.forEach { entry ->
-                            if (termsAgreement.containsKey(entry.key)) {
-                                termsAgreement[entry.key] = entry.value
-                            }
+                    .onSuccess { user ->
+                        _uiStateFlow.update {
+                            it.copy(
+                                terms = _uiStateFlow.value.terms
+                                    .map { t -> t.copy(isSelect = user.termsAgreement.containsKey(t.toModel())) }
+                                    .toPersistentList()
+                            )
                         }
-                        notifyTermsSelectState()
+                        updateTermsAllSelectState()
                     }.onFailure {
                         it.printStackTrace()
                         _sideEffectFlow.emit(TermsSideEffect.ShowToast(it.toString()))
-                    }.also {
-                        _dataLoading.value = false
                     }
+                _uiStateFlow.update { it.copy(loading = false) }
             }
         }
     }
 
-    fun termsCheckEvent(terms: TermsModel) {
-        termsAgreement[terms] = !termsAgreement.getOrDefault(terms, false)
-        notifyTermsSelectState()
+    fun onTermsCheckClick(terms: TermsUiModel, idx: Int) {
+        val updatedTermsList = _uiStateFlow.value.terms.toMutableList().apply {
+            this[idx] = this[idx].copy(isSelect = !terms.isSelect)
+        }.toPersistentList()
+        _uiStateFlow.update { it.copy(terms = updatedTermsList) }
+        updateTermsAllSelectState()
     }
 
-    private fun notifyTermsSelectState() {
-        val agreementSet = termsAgreement.keys.filter { termsAgreement[it] == true }.toSet()
-        if (agreementSet.size == termsAgreement.values.size) {
-            _uiStateFlow.value = TermsUiState.SelectAll
-        } else {
-            _uiStateFlow.value = TermsUiState.Select(agreementSet, checkRequireTerms())
-        }
+    fun onTermsLinkClick(link: String?) {
+        if (link.isNullOrBlank()) return
+        postSideEffect(TermsSideEffect.NavigateTermsDetail(link))
     }
 
-    private fun checkRequireTerms(): Boolean {
-        termsAgreement.forEach { (t, select) ->
-            if (t.require && !select) return false
-        }
-        return true
+    fun onAllSelectClick() {
+        val updatedTermsList = _uiStateFlow.value.terms
+            .toMutableList()
+            .map { it.copy(isSelect = !_uiStateFlow.value.isAllSelect) }
+            .toPersistentList()
+        _uiStateFlow.update { it.copy(terms = updatedTermsList) }
+        updateTermsAllSelectState()
     }
 
-    fun termsClickEvent(terms: TermsModel) {
-        postSideEffect(TermsSideEffect.NavigateTermsDetail(terms))
-    }
-
-    fun toggleAllSelect() {
-        when (_uiStateFlow.value) {
-            TermsUiState.SelectAll -> {
-                _uiStateFlow.value = TermsUiState.SelectNone
-                termsAgreement.keys.forEach {
-                    termsAgreement[it] = false
-                }
-            }
-            else -> {
-                _uiStateFlow.value = TermsUiState.SelectAll
-                termsAgreement.keys.forEach {
-                    termsAgreement[it] = true
-                }
-            }
-        }
-    }
-
-    fun startEvent() {
-        if (!checkRequireTerms()) {
+    fun onStartClick() {
+        if (!checkRequireTermsAllSelect()) {
             postSideEffect(
                 TermsSideEffect.ShowToast(
                     stringProvider.getString(StringProvider.ResId.RequireTermsNeedSelect)
@@ -129,9 +107,14 @@ class TermsViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            _dataLoading.value = true
+            _uiStateFlow.update { it.copy(loading = true) }
+            val termsAgreement = _uiStateFlow.value
+                .terms
+                .associate { it.toModel() to it.isSelect }
             patchSignupDataUseCase(phone.value) {
-                it.copy(termsAgreement = termsAgreement)
+                it.copy(
+                    termsAgreement = termsAgreement
+                )
             }.onSuccess {
                 when (it) {
                     true -> _sideEffectFlow.emit(TermsSideEffect.NavigateNextView(phone.value))
@@ -146,30 +129,34 @@ class TermsViewModel @Inject constructor(
                         stringProvider.getString(StringProvider.ResId.TermsPatchFail) + it
                     )
                 )
-            }.also {
-                _dataLoading.value = false
             }
+            _uiStateFlow.update { it.copy(loading = false) }
         }
     }
 
-    fun backEvent() {
+    fun onBackClick() {
         postSideEffect(TermsSideEffect.Back)
     }
 
-    sealed class TermsUiState : UiState {
-        object SelectNone : TermsUiState()
-        data class Select(
-            val selectTermsSet: Set<TermsModel>,
-            val isRequireTermsAllSelect: Boolean
-        ) : TermsUiState()
-        object SelectAll : TermsUiState()
-        data class InvalidatePhone(val message: String) : TermsUiState()
+    private fun checkRequireTermsAllSelect(): Boolean {
+        return _uiStateFlow.value.isAllRequireTermsSelect
+    }
+
+    private fun updateTermsAllSelectState() {
+        _uiStateFlow.value.terms.let { termsList ->
+            _uiStateFlow.update {
+                it.copy(
+                    isAllSelect = termsList.filter { t -> t.isSelect }.size == termsList.size,
+                    isAllRequireTermsSelect = termsList.all { !it.require || it.isSelect }
+                )
+            }
+        }
     }
 
     sealed class TermsSideEffect : SideEffect {
         data class ShowToast(val message: String) : TermsSideEffect()
 
-        data class NavigateTermsDetail(val terms: TermsModel) : TermsSideEffect()
+        data class NavigateTermsDetail(val link: String) : TermsSideEffect()
 
         data class NavigateNextView(val phone: String) : TermsSideEffect()
 

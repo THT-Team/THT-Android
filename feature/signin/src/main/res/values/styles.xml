@@ -142,6 +142,12 @@
         <item name="android:textColor">@color/white_d7d7d7</item>
     </style>
 
+    <style name="HeightSelectNumberPickerStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">20sp</item>
+        <item name="colorControlNormal">@color/gray_4b4b4b</item>
+        <item name="android:textColorPrimary">@color/selector_height_select_picker</item>
+    </style>
+
     <style name="THT_ProgressStyle" parent="Widget.AppCompat.ProgressBar">
         <item name="android:indeterminateTint">@color/yellow_f9cc2e</item>
     </style>

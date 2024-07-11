@@ -3,7 +3,6 @@ package tht.feature.signin.terms
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.tht.tht.domain.signup.model.TermsModel
 import tht.core.ui.delegate.viewBinding
 import tht.feature.signin.databinding.ItemTermsContentBinding
 
@@ -16,8 +15,8 @@ class TermsContentItemView @JvmOverloads constructor(
 
     private val binding: ItemTermsContentBinding by viewBinding(ItemTermsContentBinding::inflate)
 
-    fun setView(terms: TermsModel.TermsContent) {
-        binding.tvTitle.text = terms.title
-        binding.tvContent.text = terms.content
-    }
+//    fun setView(terms: TermsModel.TermsContent) {
+//        binding.tvTitle.text = terms.title
+//        binding.tvContent.text = terms.content
+//    }
 }

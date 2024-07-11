@@ -9,6 +9,7 @@ import com.tht.tht.data.remote.response.interests.InterestTypeResponse
 import com.tht.tht.data.remote.response.nickname.NicknameDuplicateCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupCheckResponse
 import com.tht.tht.data.remote.response.signup.SignupResponse
+import com.tht.tht.data.remote.response.terms.TermsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -20,6 +21,9 @@ interface THTSignupApi {
     suspend fun requestAuthenticationNumber(
         @Path("phone")phone: String
     ): ThtResponse<AuthenticationNumberResponse>
+
+    @GET(THTApiConstant.Signup.TERMS)
+    suspend fun fetchTermsList(): ThtResponse<TermsResponse>
 
     @GET("${THTApiConstant.Signup.NICKNAME_DUPLICATE_CHECK}/{nickname}")
     suspend fun checkNicknameDuplicate(

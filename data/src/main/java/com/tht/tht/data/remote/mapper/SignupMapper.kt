@@ -71,7 +71,11 @@ fun SignupUserModel.toRemoteRequest(): SignupRequest {
         idealTypeList = idealTypeKeys,
         fcmToken = fcmToken,
         snsType = snsType,
-        snsUniqueId = snsUniqueId
+        snsUniqueId = snsUniqueId,
+        height = height,
+        smoke = smoke?.name ?: "",
+        drink = drink?.name ?: "",
+        religion = religion?.name ?: ""
     )
 }
 

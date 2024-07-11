@@ -45,7 +45,7 @@ class SignupRootViewModel @Inject constructor(
         viewModelScope.launch {
             _dataLoading.value = true
             requestSignupUseCase(phone.value).onSuccess {
-                _sideEffectFlow.emit(SignupRootSideEffect.FinishSignup)
+                _sideEffectFlow.emit(SignupRootSideEffect.SuccessSignup)
             }.onFailure {
                 it.printStackTrace()
                 _sideEffectFlow.emit(
@@ -65,7 +65,7 @@ class SignupRootViewModel @Inject constructor(
 
     sealed class SignupRootSideEffect : SideEffect {
         object Back : SignupRootSideEffect()
-        object FinishSignup : SignupRootSideEffect()
+        object SuccessSignup : SignupRootSideEffect()
         data class ShowToast(val message: String) : SignupRootSideEffect()
         data class NavigateNextView(val step: Step) : SignupRootSideEffect()
     }
@@ -76,10 +76,14 @@ class SignupRootViewModel @Inject constructor(
         BIRTHDAY,
         GENDER,
         PROFILE_IMAGE,
+        HEIGHT,
+        MORE_INFO,
+        RELIGION,
         INTEREST,
         IDEAL_TYPE,
         INTRODUCTION,
-        LOCATION
+        LOCATION,
+        BlockContacts
     }
 
     companion object {

@@ -11,6 +11,8 @@
     <string name="day">일</string>
     <string name="confirm">확인</string>기
     <string name="do_auth">인증하기</string>
+    <string name="yes">네, 좋아요!</string>
+    <string name="later">나중에 하기</string>
 
     <string name="message_login_issue"><u>계정에 문제가 있나요?</u></string>
 
@@ -51,13 +53,13 @@
     <string name="title_all_agreement">전체 동의</string>
     <string name="parenthesis_require">(필수)</string>
     <string name="parenthesis_select">(선택)</string>
-    <string name="message_terms_notify">Falling는 만 18세 이상부터 이용 가능하며, 타인의 계정으로 본 서비스를 사용하는 경우 정보통신망 이용 촉진 및 정보보호 등에 관한 법률에 의거 처벌을 받을 수 있습니다.</string>
+    <string name="title_terms">폴링을 이용하려면 동의가 필요해요.</string>
+    <string name="message_terms_notify">Falling은 만 18세 이상부터 이용 가능하며, 타인의 계정으로 본 서비스를 사용하는 경우 정보통신망 이용 촉진 및 정보보호 등에 관한 법률에 의거 처벌을 받을 수 있습니다.</string>
     <string name="message_terms_fetch_error">이용약관 데이터를 불러올 수 없습니다</string>
     <string name="message_terms_patch_error">이용약관 데이터를 입력할 수 없습니다</string>
     <string name="message_require_terms_need_select">필수 이용 약관을 동의해주세요</string>
 
     <string name="title_preferred_gender">선호 성별을 알려주세요</string>
-    <string name="message_preferred_gender_input">마이페이지에서 변경 가능합니다</string>
     <string name="message_preferred_gender_patch_fail">선호 성별 입력을 실패했습니다</string>
 
     <string name="text_male">남성</string>
@@ -84,6 +86,10 @@
     <string name="menu_profile_image_modify">사진 변경</string>
     <string name="menu_profile_image_remove">사진 삭제</string>
 
+    <string name="title_height">키를 입력해주세요.</string>
+    <string name="message_height_path_fail">키 정보 입력을 실패하였습니다</string>
+    <string name="message_require_select_height">키를 선택해주세요</string>
+
     <string name="title_introduce">나를 알려 주세요.</string>
     <string name="hint_introduce">제 MBTI는요 :)</string>
     <string name="message_introduce_input">자유롭게 자기소개를 해주세요.</string>
@@ -95,6 +101,26 @@
     <string name="message_can_change_in_my_page">마이페이지에서 변경 가능합니다</string>
     <string name="date_default">2004. 01. 01</string>
 
+    <string name="title_more_info">추가정보를 알려주세요</string>
+    <string name="title_smoke_info">흡연 스타일을 선택해주세요</string>
+    <string name="title_drink_info">주량을 선택해주세요</string>
+    <string name="message_more_info_patch_fail">추가정보 입력을 실패하였습니다</string>
+    <string name="message_require_select_more_info">추가정보를 선택해주세요</string>
+
+    <string name="title_religion">종교를 알려주세요</string>
+    <string name="message_religion_patch_fail">종교 입력을 실패하였습니다</string>
+    <string name="message_require_select_religion">종교를 선택해주세요</string>
+
+    <string name="religion_none">무교</string>
+    <string name="religion_christianity">기독교</string>
+    <string name="religion_buddhism">불교</string>
+    <string name="religion_catholic">천주교</string>
+    <string name="religion_won_buddhism">원불교</string>
+    <string name="religion_extra">기타</string>
+
+    <string name="title_more_info_btn_none">안 함</string>
+    <string name="title_more_info_btn_sometime">가끔</string>
+    <string name="title_more_info_btn_almost">자주</string>
 
     <string name="title_location">현재 위치를 알려주세요.</string>
     <string name="hint_location">서울시 강남구 대치동</string>
@@ -123,5 +149,9 @@
     <string name="inquiry_complete_dialog">InquiryCompleteDialog</string>
 
     <string name="signup_user_invalidate">회원가입 정보가 존재하지 않습니다</string>
+
+    <string name="block_contacts">아는 사람 만나지 않기</string>
+    <string name="title_block_contacts">혹시 폴링에서\n아는 사람을 만날까봐\n걱정되시나요?</string>
+    <string name="description_block_contacts">폴링에서 아는 사람을 마주치고 싶지 않다면\n해당 기능을 켜주세요.</string>
 
 </resources>

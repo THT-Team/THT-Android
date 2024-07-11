@@ -32,7 +32,15 @@ data class SignupRequest(
     @SerializedName("snsType")
     val snsType: String,
     @SerializedName("snsUniqueId")
-    val snsUniqueId: String
+    val snsUniqueId: String,
+    @SerializedName("tall")
+    val height: Int,
+    @SerializedName("smoking")
+    val smoke: String,
+    @SerializedName("drinking")
+    val drink: String,
+    @SerializedName("religion")
+    val religion: String
 ) {
     data class Agreement(
         @SerializedName("locationServiceAgree")

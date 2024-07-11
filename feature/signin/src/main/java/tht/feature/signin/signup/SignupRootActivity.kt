@@ -11,22 +11,18 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import tht.core.navigation.HomeNavigation
 import tht.core.ui.delegate.viewBinding
 import tht.core.ui.extension.repeatOnStarted
 import tht.core.ui.extension.showToast
 import tht.feature.signin.R
 import tht.feature.signin.databinding.ActivitySignupRootBinding
-import javax.inject.Inject
+import tht.feature.signin.signup.signupcomplete.SignupCompleteActivity
 
 @AndroidEntryPoint
 class SignupRootActivity : AppCompatActivity() {
 
     private val viewModel: SignupRootViewModel by viewModels()
     private val binding: ActivitySignupRootBinding by viewBinding(ActivitySignupRootBinding::inflate)
-
-    @Inject
-    lateinit var homeNavigation: HomeNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +75,16 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_genderFragment_to_profileImageFragment)
                                 }
                                 SignupRootViewModel.Step.PROFILE_IMAGE -> {
-                                    navController.navigate(R.id.action_profileImageFragment_to_interestFragment)
+                                    navController.navigate(R.id.action_profileImageFragment_to_heightFragment)
+                                }
+                                SignupRootViewModel.Step.HEIGHT -> {
+                                    navController.navigate(R.id.action_heightFragment_to_moreInfoFragment)
+                                }
+                                SignupRootViewModel.Step.MORE_INFO -> {
+                                    navController.navigate(R.id.action_moreInfoFragment_to_religionFragment)
+                                }
+                                SignupRootViewModel.Step.RELIGION -> {
+                                    navController.navigate(R.id.action_religionFragment_to_interestFragment)
                                 }
                                 SignupRootViewModel.Step.INTEREST -> {
                                     navController.navigate(R.id.action_interestFragment_to_idealTypeFragment)
@@ -96,13 +101,24 @@ class SignupRootActivity : AppCompatActivity() {
                                     navController.navigate(R.id.action_introductionFragment_to_locationFragment)
                                 }
                                 SignupRootViewModel.Step.LOCATION -> {
+                                    // 위치 입력 후 회원가입 요청 시도. 회원가입 이후 지인 차단 진행
                                     viewModel.signUpEvent()
+                                }
+                                SignupRootViewModel.Step.BlockContacts -> {
+                                    startActivity(
+                                        SignupCompleteActivity.getIntent(
+                                            this@SignupRootActivity,
+                                            viewModel.phone.value
+                                        )
+                                    )
                                 }
                             }
                         }
-                        is SignupRootViewModel.SignupRootSideEffect.FinishSignup -> {
-                            homeNavigation.navigateHome(this@SignupRootActivity)
-                            finish()
+                        SignupRootViewModel.SignupRootSideEffect.SuccessSignup -> {
+                            // 회원 가입 이후 지인 차단 기능
+                            findNavController(binding.fcNavHost.id).navigate(
+                                R.id.action_locationFragment_to_blockContactsFragment
+                            )
                         }
                         is SignupRootViewModel.SignupRootSideEffect.ShowToast -> {
                             showToast(it.message)

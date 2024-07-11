@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 class RequestSignupUseCase(
     private val signupRepository: SignupRepository,
     private val tokenRepository: TokenRepository,
-    private val removeSignupUserUseCase: RemoveSignupUserUseCase,
     private val dispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(phone: String): Result<Boolean> {
@@ -46,12 +45,19 @@ class RequestSignupUseCase(
                     user.introduce.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("introduce")
 
                     user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("ideal")
+
+                    user.height < 0 -> throw SignupException.SignupUserInfoInvalidateException("height")
+
+                    user.smoke == null -> throw SignupException.SignupUserInfoInvalidateException("smoke")
+
+                    user.drink == null -> throw SignupException.SignupUserInfoInvalidateException("drink")
+
+                    user.religion == null -> throw SignupException.SignupUserInfoInvalidateException("religion")
                 }
 
                 signupRepository.requestSignup(
                     user.copy(fcmToken = fcmToken)
                 ).let {
-                    removeSignupUserUseCase(phone)
                     tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone)
                     it.accessToken.isNotBlank()
                 }

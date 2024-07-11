@@ -56,7 +56,7 @@ class SignupRepositoryImpl @Inject constructor(
 
     override suspend fun fetchTerms(): List<TermsModel> {
         return withContext(dispatcher) {
-            termsDataSource.fetchSignupTerms().body.map { it.toModel() }
+            termsDataSource.fetchSignupTerms().map { it.toModel() }
         }
     }
 

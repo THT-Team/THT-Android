@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
 
@@ -16,7 +17,8 @@ fun ThtCaption1(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
-    includeFontPadding: Boolean = false
+    includeFontPadding: Boolean = false,
+    lineHeight: TextUnit = TextUnit.Unspecified
 ) {
     Text(
         modifier = modifier,
@@ -25,7 +27,8 @@ fun ThtCaption1(
         style = rememberPretendardFontStyle(
             fontWeight = fontWeight,
             fontSize = 11.dpTextUnit,
-            includeFontPadding = includeFontPadding
+            includeFontPadding = includeFontPadding,
+            lineHeight = lineHeight
         ),
         color = color,
     )

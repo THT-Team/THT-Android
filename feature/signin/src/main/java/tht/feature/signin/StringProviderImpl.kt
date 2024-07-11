@@ -48,6 +48,12 @@ class StringProviderImpl @Inject constructor(
             StringProvider.ResId.ProfileImagePartialUploadFail -> R.string.message_profile_image_partial_upload_fail
             StringProvider.ResId.ProfileImageUploadFail -> R.string.message_profile_image_upload_fail
             StringProvider.ResId.ProfileImagePatchFail -> R.string.message_profile_image_patch_fail
+            StringProvider.ResId.HeightPathFail -> R.string.message_height_path_fail
+            StringProvider.ResId.MoreInfoPatchFail -> R.string.message_more_info_patch_fail
+            StringProvider.ResId.RequireSelectMoreInfo -> R.string.message_require_select_more_info
+            StringProvider.ResId.ReligionPatchFail -> R.string.message_religion_patch_fail
+            StringProvider.ResId.RequireSelectReligion -> R.string.message_require_select_religion
+            StringProvider.ResId.RequireSelectHeight -> R.string.message_require_select_height
             StringProvider.ResId.BirthdayPatchFail -> R.string.message_birthday_patch_fail
             StringProvider.ResId.SignupFail -> R.string.message_signup_fail
             StringProvider.ResId.InvalidDate -> R.string.message_invalidate_date

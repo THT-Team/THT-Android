@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,19 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -50,6 +43,7 @@ import com.example.compose_ui.extensions.dpTextUnit
 import com.example.compose_ui.extensions.noRippleClickable
 import tht.core.ui.R
 import tht.feature.signin.signup.nickname.NicknameUiState
+import tht.feature.signin.ui.SignupSmallButton
 
 @Composable
 fun NicknameScreen(
@@ -187,29 +181,14 @@ fun NicknameScreen(
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Button(
+
+                SignupSmallButton(
                     modifier = Modifier
-                        .width(88.dp)
-                        .height(54.dp)
                         .imePadding()
                         .align(Alignment.End),
-                    shape = RoundedCornerShape(16.dp),
-                    enabled = nicknameValidation == NicknameUiState.NicknameValidation.Validate,
-                    onClick = onClick,
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colorResource(id = R.color.yellow_f9cc2e),
-                        contentColor = Color.Transparent,
-                        disabledBackgroundColor = colorResource(id = R.color.brown_26241f),
-                        disabledContentColor = Color.Transparent
-                    ),
-                    contentPadding = PaddingValues(vertical = 16.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = tht.feature.signin.R.drawable.ic_right_arrow_black),
-                        contentDescription = "ic_right_arrow_black",
-                        tint = Color.Black
-                    )
-                }
+                    enable = nicknameValidation == NicknameUiState.NicknameValidation.Validate,
+                    onClick = onClick
+                )
                 Spacer(modifier = Modifier.height(42.dp))
             }
         }
