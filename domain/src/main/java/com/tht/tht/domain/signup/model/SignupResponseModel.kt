@@ -2,5 +2,6 @@ package com.tht.tht.domain.signup.model
 
 data class SignupResponseModel(
     val accessToken: String,
-    val accessTokenExpiresIn: Long
+    val accessTokenExpiresIn: Long,
+    val userUuid: String
 )

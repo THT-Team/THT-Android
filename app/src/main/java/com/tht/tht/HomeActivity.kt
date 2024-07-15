@@ -53,18 +53,22 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
                     )
                     true
                 }
+
                 R.id.menu_heart -> {
                     showFragment(LikeFragment.TAG)
                     true
                 }
+
                 R.id.menu_chat -> {
                     showFragment(ChatFragment.TAG)
                     true
                 }
+
                 R.id.menu_my -> {
                     showFragment(MyPageFragment.TAG)
                     true
                 }
+
                 else -> false
             }
         }

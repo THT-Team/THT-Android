@@ -6,6 +6,7 @@ import com.tht.tht.domain.token.model.AccessTokenModel
 fun AccessTokenRefreshResponse.toAccessTokenModel(): AccessTokenModel {
     return AccessTokenModel(
         accessToken = accessToken,
-        expiredTime = accessTokenExpiresIn
+        expiredTime = accessTokenExpiresIn,
+        userUuid = userUuid,
     )
 }

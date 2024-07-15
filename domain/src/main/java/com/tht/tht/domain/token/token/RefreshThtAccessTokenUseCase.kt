@@ -16,7 +16,8 @@ class RefreshThtAccessTokenUseCase(
                 tokenRepository.updateThtToken(
                     tokenInfo.accessToken,
                     tokenInfo.expiredTime,
-                    phone
+                    phone,
+                    tokenInfo.userUuid,
                 )
             }
         }

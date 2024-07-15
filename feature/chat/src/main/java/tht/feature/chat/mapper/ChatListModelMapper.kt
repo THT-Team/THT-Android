@@ -8,5 +8,5 @@ fun ChatListModel.toModel() = ChatListUiModel(
     partnerName = partnerName,
     partnerProfileUrl = partnerProfileUrl,
     currentMessage = currentMessage,
-    messageTime = messageTime
+    messageTime = messageTime.parseTimeString()
 )

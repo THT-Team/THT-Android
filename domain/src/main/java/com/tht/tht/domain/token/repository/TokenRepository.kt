@@ -8,11 +8,13 @@ interface TokenRepository {
 
     suspend fun updateFcmToken(token: String)
 
-    suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String)
+    suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String, userUuid: String?)
 
     suspend fun fetchThtToken(): AccessTokenModel
 
     suspend fun fetchPhone(): String?
+
+    suspend fun fetchUserUuid(): String?
 
     suspend fun refreshAccessToken(): AccessTokenModel
 

@@ -6,7 +6,6 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
-import com.tht.tht.domain.chat.model.ChatListModel
 import com.tht.tht.domain.chat.usecase.GetChatListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -24,7 +23,11 @@ internal class ChatViewModel @Inject constructor(
     override val store: Store<ChatState, ChatSideEffect> =
         store(initialState = ChatState.ChatList(isLoading = true, chatList = persistentListOf()))
 
-    fun getChatList() {
+    init {
+        getChatList()
+    }
+
+    private fun getChatList() {
         viewModelScope.launch {
             val chatList = getChatListUseCase().getOrNull() ?: listOf()
             intent {
@@ -37,48 +40,6 @@ internal class ChatViewModel @Inject constructor(
                             chatList = chatList.map { it.toModel() }.toImmutableList()
                         )
                     }
-                }
-            }
-        }
-    }
-
-    fun getFakeChatList() {
-        viewModelScope.launch {
-            intent {
-                reduce {
-                    ChatState.ChatList(
-                        isLoading = false,
-                        chatList = listOf(
-                            ChatListModel(
-                                chatRoomIdx = 1L,
-                                partnerName = "최웅재",
-                                partnerProfileUrl = "",
-                                currentMessage = "안녕",
-                                messageTime = "2020.08.08"
-                            ),
-                            ChatListModel(
-                                chatRoomIdx = 2L,
-                                partnerName = "최웅재",
-                                partnerProfileUrl = "",
-                                currentMessage = "안녕",
-                                messageTime = "2020.08.08"
-                            ),
-                            ChatListModel(
-                                chatRoomIdx = 3L,
-                                partnerName = "최웅재",
-                                partnerProfileUrl = "",
-                                currentMessage = "안녕",
-                                messageTime = "2020.08.08"
-                            ),
-                            ChatListModel(
-                                chatRoomIdx = 4L,
-                                partnerName = "최웅재",
-                                partnerProfileUrl = "",
-                                currentMessage = "안녕",
-                                messageTime = "2020.08.08"
-                            )
-                        ).map { it.toModel() }.toImmutableList()
-                    )
                 }
             }
         }

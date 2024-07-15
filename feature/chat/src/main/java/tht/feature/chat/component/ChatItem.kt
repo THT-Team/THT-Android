@@ -26,11 +26,11 @@ import tht.feature.chat.model.ChatListUiModel
 internal fun ChatItem(
     item: ChatListUiModel,
     isLoading: Boolean,
-    onClickItem: () -> Unit
+    onClickItem: (Long, String) -> Unit
 ) {
     Row(
         modifier = Modifier
-            .noRippleClickable { onClickItem() }
+            .noRippleClickable { onClickItem(item.chatRoomIdx, item.partnerName) }
             .fillMaxWidth()
             .padding(horizontal = 15.dp, vertical = (16.5).dp),
         verticalAlignment = Alignment.CenterVertically
@@ -65,7 +65,7 @@ internal fun ChatItem(
                 color = Color(0xFF8D8D8D)
             )
             Spacer(space = 10.dp)
-            ChatAlert(number = 1)
+//            ChatAlert(number = 1)
         }
     }
 }
@@ -82,6 +82,6 @@ internal fun ChatItemPreivew() {
             currentMessage = "안녕"
         ),
         isLoading = false,
-        onClickItem = {}
+        onClickItem = { _, _ -> }
     )
 }

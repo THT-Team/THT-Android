@@ -1,7 +1,6 @@
 package tht.feature.chat.component.detail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,9 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,53 +33,48 @@ import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.image.ThtImage
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
-import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.p.ThtP2
-import kotlinx.collections.immutable.ImmutableList
-import tht.feature.chat.model.ChatListUiModel
+import tht.feature.chat.model.ChatDetailInformationUiModel
+import tht.feature.chat.model.ChatHistoryUiModel
 
 @Composable
-fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
+fun ChatDetailList(
+    userUuid: String?,
+    chatDetailInformation: ChatDetailInformationUiModel?,
+    chatList: List<ChatHistoryUiModel>,
+    onLoadMore: () -> Unit
+) {
+    val listState = rememberLazyListState()
+
+    listState.OnTopReached() {
+        onLoadMore()
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
+        state = listState,
     ) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
-            ChatRandomTitle(title = "마음이 답답할 때 무엇을 하나요?")
+            ChatBubbleTitle(chatDetailInformation = chatDetailInformation)
             Spacer(modifier = Modifier.height(8.dp))
         }
-        itemsIndexed(items) { index, item ->
-            if (index % 2 == 0) {
-                Sender(text = item.currentMessage, updateTime = "3:13 PM")
+        items(chatList) { item ->
+            if (item.senderUuid == userUuid) {
+                Sender(text = item.msg, updateTime = item.dateTime)
             } else {
                 Receiver(
-                    text = item.currentMessage,
-                    updateTime = "3:12 PM",
+                    text = item.msg,
+                    updateTime = item.dateTime,
                     isShowProfile = true,
-                    userName = "Stitch"
+                    userName = item.sender
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
     }
-}
-
-@Composable
-fun ChatRandomTitle(title: String) {
-    ThtP1(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(6.dp))
-            .border(color = Color(0xFFF9CC2E), width = 1.dp, shape = RoundedCornerShape(6.dp))
-            .background(Color(0xFF222222))
-            .padding(vertical = 12.dp),
-        text = title,
-        fontWeight = FontWeight.Normal,
-        color = Color.White,
-        textAlign = TextAlign.Center
-    )
 }
 
 @Composable
@@ -163,6 +163,28 @@ fun Receiver(
         }
     }
 }
+
+@Composable
+fun LazyListState.OnTopReached(
+    buffer: Int = 0,
+    onLoadMore: () -> Unit,
+) {
+    require(buffer >= 0) { "buffer가 0보다 작습니다 - $buffer" }
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val firstVisibleItem =
+                layoutInfo.visibleItemsInfo.firstOrNull() ?: return@derivedStateOf true
+            firstVisibleItem.index == 0
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore) {
+        snapshotFlow { shouldLoadMore.value }.collect {
+            if (it) onLoadMore()
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable

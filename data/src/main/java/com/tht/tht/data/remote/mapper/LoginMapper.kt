@@ -6,6 +6,7 @@ import com.tht.tht.domain.token.model.FcmTokenLoginResponseModel
 fun FcmTokenLoginResponse.toModel(): FcmTokenLoginResponseModel {
     return FcmTokenLoginResponseModel(
         accessToken = accessToken,
-        accessTokenExpiresIn = accessTokenExpiresIn
+        accessTokenExpiresIn = accessTokenExpiresIn,
+        userUuid = userUuid,
     )
 }

@@ -1,5 +1,6 @@
 package tht.feature.chat.chat.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +20,15 @@ import tht.feature.chat.component.detail.ChatEditTextContainer
 
 @Composable
 internal fun ChatDetailScreen(
-    viewModel: ChatDetailViewModel = hiltViewModel()
+    viewModel: ChatDetailViewModel = hiltViewModel(),
+    onBack: () -> Unit,
+    roomIdx: Long,
+    partnerName: String,
 ) {
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getChatList()
+
+    LaunchedEffect(Unit) {
+        viewModel.getChatDetailInformation(roomIdx)
+        viewModel.getUserUuid()
     }
 
     val state = viewModel.collectAsState().value
@@ -30,14 +36,21 @@ internal fun ChatDetailScreen(
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             ChatDetailTopAppBar(
-                title = "마음",
-                onClickBack = { },
+                title = partnerName,
+                onClickBack = onBack,
                 onClickReport = {},
                 onClickLogout = {}
             )
             Box(modifier = Modifier.weight(1f)) {
                 when (state) {
-                    is ChatDetailState.ChatList -> ChatDetailList(state.chatList)
+                    is ChatDetailState.ChatList -> ChatDetailList(
+                        userUuid = state.userUuid,
+                        chatDetailInformation = state.chatDetailInformation,
+                        chatList = state.chatList,
+                        onLoadMore = {
+                            viewModel.getChatHistory(roomIdx)
+                        }
+                    )
                 }
             }
         }
@@ -52,5 +65,5 @@ internal fun ChatDetailScreen(
 @Composable
 @Preview(showBackground = true)
 fun ChatDetailScreenPreview() {
-    ChatDetailScreen()
+    ChatDetailScreen(roomIdx = 0, onBack = {}, partnerName = "")
 }
