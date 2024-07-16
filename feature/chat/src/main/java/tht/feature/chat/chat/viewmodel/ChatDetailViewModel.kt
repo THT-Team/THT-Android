@@ -55,7 +55,7 @@ internal class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun getChatHistory(roomIdx: Long, chatIdx: String? = null, size: String = "20") {
+    fun getChatHistory(roomIdx: Long, chatIdx: String? = null, size: String = "100") {
         if ((store.state.value as? ChatDetailState.ChatList)?.chatIdx == "-1") return
         viewModelScope.launch {
             val history = getChatHistoryUseCase(

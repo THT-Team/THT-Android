@@ -13,13 +13,16 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,9 +48,22 @@ fun ChatDetailList(
     onLoadMore: () -> Unit
 ) {
     val listState = rememberLazyListState()
+    var previousPosition: Int? by remember {
+        mutableStateOf(null)
+    }
+    var isScrolling by remember {
+        mutableStateOf(false)
+    }
 
-    listState.OnTopReached() {
+    listState.OnTopReached(buffer = 10) {
+        previousPosition = chatList.size
         onLoadMore()
+    }
+
+    LaunchedEffect(chatList.isNotEmpty(), !isScrolling) {
+        if (chatList.isNotEmpty()) {
+            listState.scrollToItem(chatList.lastIndex)
+        }
     }
 
     LazyColumn(
@@ -61,15 +77,21 @@ fun ChatDetailList(
             ChatBubbleTitle(chatDetailInformation = chatDetailInformation)
             Spacer(modifier = Modifier.height(8.dp))
         }
-        items(chatList) { item ->
+        itemsIndexed(chatList) { index, item ->
+            val isSameUser =
+                if (index != 0 && chatList[index - 1].senderUuid != userUuid) true else if (index == 0) null else false
             if (item.senderUuid == userUuid) {
-                Sender(text = item.msg, updateTime = item.dateTime)
+                Sender(
+                    text = item.msg,
+                    updateTime = item.dateTime,
+                )
             } else {
                 Receiver(
                     text = item.msg,
                     updateTime = item.dateTime,
                     isShowProfile = true,
-                    userName = item.sender
+                    userName = item.sender,
+                    isSameUser = isSameUser,
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -110,30 +132,36 @@ fun Receiver(
     isShowProfile: Boolean,
     userName: String,
     text: String,
-    updateTime: String
+    updateTime: String,
+    isSameUser: Boolean?,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Start
     ) {
-        if (isShowProfile) {
-            ThtImage(
-                modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
-                src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
-                size = DpSize(34.dp, 34.dp)
-            )
-            Spacer(space = 10.dp)
+        if (isSameUser == false || isSameUser == null) {
+            if (isShowProfile) {
+                ThtImage(
+                    modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
+                    src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
+                    size = DpSize(34.dp, 34.dp)
+                )
+                Spacer(space = 10.dp)
+            }
         }
+        if (isSameUser == true && isShowProfile) Spacer(space = 44.dp)
         Column {
-            ThtP2(
-                modifier = Modifier,
-                text = userName,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF8D8D8D),
-                textAlign = TextAlign.Start
-            )
-            Spacer(space = 8.dp)
+            if (isSameUser == false || isSameUser == null) {
+                ThtP2(
+                    modifier = Modifier,
+                    text = userName,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF8D8D8D),
+                    textAlign = TextAlign.Start
+                )
+                Spacer(space = 8.dp)
+            }
             Row(
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.End
@@ -173,11 +201,10 @@ fun LazyListState.OnTopReached(
     val shouldLoadMore = remember {
         derivedStateOf {
             val firstVisibleItem =
-                layoutInfo.visibleItemsInfo.firstOrNull() ?: return@derivedStateOf true
+                layoutInfo.visibleItemsInfo.firstOrNull() ?: return@derivedStateOf false
             firstVisibleItem.index == 0
         }
     }
-
     LaunchedEffect(shouldLoadMore) {
         snapshotFlow { shouldLoadMore.value }.collect {
             if (it) onLoadMore()
@@ -193,7 +220,8 @@ fun ReceiverPreview() {
         text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
         updateTime = "3:12 PM",
         isShowProfile = false,
-        userName = "stitch"
+        userName = "stitch",
+        isSameUser = true,
     )
 }
 
@@ -204,7 +232,8 @@ fun ReceiverPreview2() {
         text = "긴 텍스트",
         updateTime = "3:12 PM",
         isShowProfile = false,
-        userName = "stitch"
+        userName = "stitch",
+        isSameUser = true,
     )
 }
 
@@ -219,6 +248,6 @@ fun SenderPreview() {
 fun SenderPreview2() {
     Sender(
         text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-        updateTime = "3:12 PM"
+        updateTime = "3:12 PM",
     )
 }
