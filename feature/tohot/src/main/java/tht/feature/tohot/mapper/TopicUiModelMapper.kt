@@ -1,8 +1,13 @@
 package tht.feature.tohot.mapper
 
+import com.tht.tht.domain.topic.DailyTopicListModel
 import com.tht.tht.domain.topic.DailyTopicModel
 import tht.feature.tohot.R
+import tht.feature.tohot.model.ImmutableListWrapper
+import tht.feature.tohot.model.TopicSelectUiModel
 import tht.feature.tohot.model.TopicUiModel
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 fun DailyTopicModel.toUiModel(): TopicUiModel {
     return TopicUiModel(
@@ -13,4 +18,39 @@ fun DailyTopicModel.toUiModel(): TopicUiModel {
         title = title,
         content = content
     )
+}
+
+// TODO: 적용
+fun DailyTopicListModel.toUiModel(): TopicSelectUiModel {
+    val topicExpiredDuration = (topicResetTimeMill - System.currentTimeMillis()).toDuration(DurationUnit.MILLISECONDS)
+    return when(topicSelectType) {
+        DailyTopicListModel.TopicSelectType.ONE_CHOICE -> {
+            if (topics.isEmpty()) throw Exception("TopicSizeException")
+            TopicSelectUiModel.OneTopic(
+                isEvent = true,
+                topic = topics.first().toUiModel(),
+                introduce = introduction,
+                topicExpiredDuration = topicExpiredDuration
+            )
+        }
+        DailyTopicListModel.TopicSelectType.TWO_CHOICE -> {
+            if (topics.size < 2) throw Exception("TopicSizeException")
+            TopicSelectUiModel.TwoTopic(
+                topic1 = topics.first().toUiModel(),
+                topic2 = topics[1].toUiModel(),
+                introduce = introduction,
+                topicExpiredDuration = topicExpiredDuration
+            )
+        }
+        DailyTopicListModel.TopicSelectType.FOUR_CHOICE -> {
+            if (topics.size < 4) throw Exception("TopicSizeException")
+            TopicSelectUiModel.FourTopic(
+                topics = ImmutableListWrapper(
+                    list = topics.take(4).map { it.toUiModel() }
+                ),
+                introduce = introduction,
+                topicExpiredDuration = topicExpiredDuration
+            )
+        }
+    }
 }
