@@ -9,26 +9,72 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+
+/**
+ * 1. 처음 init 될 때 enable 이 false 면 currentSec, destinationSec가 같아야 함
+ * 2. enable 이 true가 되면 destinationSec-=1 진행
+ * 3. 단, 중간에 enable이 false가 되었다가 다시 true가 될 땐 반응하면 안됨
+ *
+ * 상위에서 처리해줘야 할 것 같기도 하네
+ * Timer 모델 건드리면서 해보자
+ */
+@Composable
+fun ToHotAnimateTimeProgressContainer(
+    enable: Boolean,
+    duration: Duration,
+    onEnd: () -> Unit,
+    oneTicDuration: Duration,
+    modifier: Modifier = Modifier,
+) {
+    val maxSec = remember(duration) { duration.toInt(DurationUnit.SECONDS) }
+    var currentSec by remember(maxSec) { mutableIntStateOf(maxSec) }
+    var destinationSec by remember { mutableStateOf(maxSec.toFloat()) }
+    LaunchedEffect(enable, currentSec) {
+        if (enable) {
+            destinationSec = 0f.coerceAtLeast((currentSec - 1).toFloat())
+        }
+    }
+
+    ToHotAnimateTimeProgressContainerInternal(
+        enable = enable,
+        modifier = modifier,
+        maxTimeSec = maxSec,
+        currentSec = currentSec.toFloat(),
+        destinationSec = destinationSec,
+        duration = oneTicDuration.toLong(DurationUnit.MILLISECONDS).toFloat(),
+        onTicChanged = {
+            val nextSec = currentSec - 1
+            Log.d("cwj_debug", "onTicChanged -> $nextSec")
+            if (nextSec > 0) {
+                currentSec = nextSec
+            } else {
+                Log.d("cwj_debug", "onEnd")
+                onEnd()
+            }
+        }
+    )
+}
 
 /**
  * 1. maxTime, currentSec 를 받아 ProgressBar 구성
  * 2. maxTime, destinationSec 로 목표 progress 산출
  * 3. 애니메이션 수행
  * 4. 애니메이션 수행 후 ticChanged 호출
- *
- * TODO: Timer 가 tic 마다 끊기는 듯한 UI 문제 확인
- * - Release Build 테스트
- * - Recomposition 최적화 확인
  */
 @Composable
-fun ToHotAnimateTimeProgressContainer(
+private fun ToHotAnimateTimeProgressContainerInternal(
     modifier: Modifier = Modifier,
     enable: Boolean,
     maxTimeSec: Int,
@@ -41,7 +87,7 @@ fun ToHotAnimateTimeProgressContainer(
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
     duration: Float = ((currentSec - destinationSec) * 1000),
-    ticChanged: (Float) -> Unit = { }
+    onTicChanged: (Float) -> Unit = { }
 ) {
     Log.d("Timer", "cSec[$currentSec], dSec[$destinationSec]")
     val destinationProgress = destinationSec / maxTimeSec.toFloat()
@@ -110,7 +156,7 @@ fun ToHotAnimateTimeProgressContainer(
                     )
                 )
             }
-            ticChanged((progressAnimatable.value * maxTimeSec))
+            onTicChanged((progressAnimatable.value * maxTimeSec))
         }
     }
 
@@ -138,15 +184,15 @@ fun ToHotAnimateTimeProgressContainer(
     }
 }
 
-@Composable
-@Preview
-private fun ToHotAnimateTimeProgressContainerPreview() {
-    ToHotAnimateTimeProgressContainer(
-        modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
-        enable = true,
-        maxTimeSec = 5,
-        currentSec = 5f,
-        ticChanged = {},
-        destinationSec = 4f
-    )
-}
+//@Composable
+//@Preview
+//private fun ToHotAnimateTimeProgressContainerPreview() {
+//    ToHotAnimateTimeProgressContainer(
+//        modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
+//        enable = true,
+//        maxTimeSec = 5,
+//        currentSec = 5f,
+//        ticChanged = {},
+//        destinationSec = 4f
+//    )
+//}

@@ -29,6 +29,8 @@ import tht.feature.tohot.component.progress.ToHotHeartTimeProgressContainer
 import tht.feature.tohot.component.userinfo.ToHotUserInfoCard
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -43,14 +45,12 @@ fun ToHotCard(
     introduce: String,
     timer: CardTimerUiModel.ToHotTimer,
     maxTimeSec: Int,
-    currentSec: Float,
-    destinationSec: Float,
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
     isHoldCard: Boolean,
     isShakingCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
-    ticChanged: (Float) -> Unit = { },
+    onTimerEnd: () -> Unit = { },
     userCardClick: () -> Unit = { },
     onLikeClick: () -> Unit = { },
     onUnLikeClick: () -> Unit = { },
@@ -97,10 +97,9 @@ fun ToHotCard(
                 ToHotAnimateTimeProgressContainer(
                     modifier = timerModifier,
                     enable = enable && !isHoldCard,
-                    maxTimeSec = maxTimeSec,
-                    currentSec = currentSec,
-                    ticChanged = ticChanged,
-                    destinationSec = destinationSec
+                    duration = maxTimeSec.toDuration(DurationUnit.SECONDS),
+                    oneTicDuration = 1.toDuration(DurationUnit.SECONDS),
+                    onEnd = onTimerEnd
                 )
             }
 
@@ -172,8 +171,6 @@ private fun ToHotCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Timer,
         maxTimeSec = 5,
-        currentSec = 5f,
-        destinationSec = 4f,
         enable = true,
         isHoldCard = false,
         isShakingCard = false
@@ -200,8 +197,6 @@ private fun ToHotCardHoldCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Timer,
         maxTimeSec = 5,
-        currentSec = 5f,
-        destinationSec = 4f,
         enable = true,
         isHoldCard = true,
         isShakingCard = false
@@ -228,8 +223,6 @@ private fun ToHotHeartCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Heart,
         maxTimeSec = 5,
-        currentSec = 5f,
-        destinationSec = 4f,
         enable = true,
         isHoldCard = false,
         isShakingCard = false
@@ -256,8 +249,6 @@ private fun ToHotDislikeCardPreview() {
         introduce = "introduce",
         timer = CardTimerUiModel.ToHotTimer.Dislike,
         maxTimeSec = 5,
-        currentSec = 5f,
-        destinationSec = 4f,
         enable = true,
         isHoldCard = false,
         isShakingCard = false

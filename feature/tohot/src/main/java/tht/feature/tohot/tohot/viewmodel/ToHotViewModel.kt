@@ -519,6 +519,11 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    fun onTimerEnd(userIdx: Int) = with(store.state.value) {
+        Log.d("Timer", "onTimerEnd => $userIdx => enableTimerIdx[$enableTimerIdx]")
+        if (userIdx != enableTimerIdx) return@with
+        tryScrollToNext(userIdx)
+    }
     /**
      * timer tic 이 변경될 때 호출
      * - timer 가 0이면 다음 유저 스크롤

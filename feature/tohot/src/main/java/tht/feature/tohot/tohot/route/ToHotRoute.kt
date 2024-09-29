@@ -224,7 +224,7 @@ internal fun ToHotRoute(
                         topicSelectListener = toHotViewModel::topicChangeClickEvent,
                         alarmClickListener = toHotViewModel::alarmClickEvent,
                         pageChanged = toHotViewModel::userChangeEvent,
-                        ticChanged = toHotViewModel::ticChangeEvent,
+                        onTimerEnd = toHotViewModel::onTimerEnd,
                         loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
                         onLikeClick = toHotViewModel::userHeartEvent,
                         onUnLikeClick = toHotViewModel::userDislikeEvent,
