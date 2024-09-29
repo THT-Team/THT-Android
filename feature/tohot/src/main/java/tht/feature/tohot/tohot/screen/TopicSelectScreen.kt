@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.text.headline.ThtHeadline5
 import tht.feature.tohot.R
-import tht.feature.tohot.component.topic.TopicSelectChip
+import tht.feature.tohot.component.topic.FourTypeTopic
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.TopicUiModel
-import tht.feature.tohot.model.topics
+import tht.feature.tohot.model.dummyTopics
 
 @Composable
 fun TopicSelectScreen(
@@ -74,17 +74,17 @@ fun TopicSelectScreen(
         Spacer(modifier = Modifier.height(22.dp))
 
         topics.list.forEach {
-            TopicSelectChip(
-                modifier = Modifier
-                    .padding(horizontal = 22.dp),
-                iconUrl = it.iconUrl,
-                iconRes = it.iconRes,
-                title = it.title,
-                content = it.content,
-                key = it.key,
-                isSelect = selectTopicKey == it.key,
-                topicClickListener = topicClickListener
-            )
+//            FourTypeTopic(
+//                modifier = Modifier
+//                    .padding(horizontal = 22.dp),
+//                iconUrl = it.iconUrl,
+//                iconRes = it.iconRes,
+//                title = it.title,
+//                content = it.content,
+//                key = it.key,
+//                isSelect = selectTopicKey == it.key,
+//                topicClickListener = topicClickListener,
+//            )
 
             Spacer(modifier = Modifier.height(14.dp))
         }
@@ -118,7 +118,7 @@ fun TopicSelectScreen(
 private fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
-        topics = ImmutableListWrapper(topics),
+        topics = ImmutableListWrapper(dummyTopics),
         selectTopicKey = 1,
         buttonEnabled = true
     )

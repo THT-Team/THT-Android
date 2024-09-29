@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.TopicUiModel
-import tht.feature.tohot.model.topics
+import tht.feature.tohot.model.dummyTopics
 
 /**
  * https://foso.github.io/Jetpack-Compose-Playground/material/modalbottomsheetlayout/
@@ -59,7 +59,7 @@ private fun TopicSelectModelPreview() {
     TopicSelectModel(
         modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded),
         remainingTime = "24:00:00",
-        topics = ImmutableListWrapper(topics),
+        topics = ImmutableListWrapper(dummyTopics),
         selectTopicKey = 1,
         content = { }
     )
