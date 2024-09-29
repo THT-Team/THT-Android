@@ -55,7 +55,7 @@ internal fun SignupCompleteScreen(
         ) {
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -100,7 +100,7 @@ internal fun SignupCompleteScreen(
                 modifier = Modifier
                     .size(182.dp)
                     .align(Alignment.CenterHorizontally),
-                borderColors = listOf(Color(0xFFF9CC2E), Color(0xFFFF7539)),
+                borderColors = listOf(Color(0xFFF9CC2E), Color(0xFFFF7539))
             ) {
                 Box(
                     modifier = Modifier
