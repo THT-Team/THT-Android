@@ -1,8 +1,8 @@
 buildscript {
     extra.apply {
-        set("compileSdk", 34)
+        set("compileSdk", 35)
         set("minSdkVersion", 26)
-        set("targetSdk", 34)
+        set("targetSdk", 35)
         set("versionCode", 1)
         set("versionName", "1.0")
     }

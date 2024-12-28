@@ -1,21 +1,21 @@
 [versions]
 #android
-android-gradle = "7.4.2"
+android-gradle = "8.7.0"
 android-material = "1.7.0"
 android-lifecycle-viewModel-KTX = "2.5.1"
 
 #androidx
-androidx-core = "1.7.0"
-androidx-appcompat = "1.5.1"
-androidx-constraintlayout = "2.1.4"
-androidx-activity-ktx = "1.7.0"
-androidx-fragment-ktx = "1.5.4"
-androidx-lifecycle-runtime-ktx = "2.7.0"
-androidx-navigation = "2.5.3"
-androidx-core-splash = "1.0.0"
+androidx-core = "1.15.0"
+androidx-appcompat = "1.7.0"
+androidx-constraintlayout = "2.2.0"
+androidx-activity-ktx = "1.9.3"
+androidx-fragment-ktx = "1.8.5"
+androidx-lifecycle-runtime-ktx = "2.8.7"
+androidx-navigation = "2.8.5"
+androidx-core-splash = "1.0.1"
 
 #kotlin
-kotlin = "1.8.10"
+kotlin = "1.9.25"
 kotlin-jvm = "1.8.10"
 collections-immutable = "0.3.5"
 
@@ -33,11 +33,11 @@ ktlint = "11.3.1"
 detekt = "1.22.0"
 
 #DI
-hilt = "2.44.2"
-hilt-androidX-compiler = "1.0.0"
+hilt = "2.49"
+hilt-androidX-compiler = "1.2.0"
 
 #Coroutines
-coroutines = '1.6.1'
+coroutines = '1.8.1'
 
 #Network
 okhttp = "4.9.3"
@@ -57,12 +57,12 @@ glide = "4.14.2"
 javax_mail = "1.6.2"
 
 #jetpack compose
-jetpack-compose = "1.6.6"
-jetpack-compose-activity = "1.9.0"
-jetpack-compose-viewmodel = "2.7.0"
-jetpack-compose-navigation = "2.7.7"
+jetpack-compose = "1.7.6"
+jetpack-compose-activity = "1.9.3"
+jetpack-compose-viewmodel = "2.8.7"
+jetpack-compose-navigation = "2.8.5"
 jetpack-compose-hilt-navigation = "1.2.0"
-jetpack-compose-coil = "2.4.0"
+jetpack-compose-coil = "2.7.0"
 app-compat-theme-adpater = "0.28.0"
 
 #lottie
