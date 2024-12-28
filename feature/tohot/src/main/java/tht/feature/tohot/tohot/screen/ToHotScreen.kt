@@ -85,7 +85,15 @@ internal fun ToHotScreen(
                 VerticalPager(
                     userScrollEnabled = false,
                     state = pagerState,
-                    key = { cardList.list[it].id }
+                    key = {
+                        // List 가 업데이트 되기 이전에 PagerState.pageCount 블록이 업데이트 된 ListSize를 리턴해서 IndexOutOfBoundsException 발생
+                        // 원인 파악을 아직 하지 못해서 임시 방편 처리
+                        if (it in cardList.list.indices) {
+                            cardList.list[it].id
+                        } else {
+                            it
+                        }
+                    }
                 ) { idx ->
                     val card = cardList.list[idx]
                     val enable = idx == currentUserIdx &&
