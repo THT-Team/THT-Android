@@ -88,6 +88,9 @@ internal fun ToHotScreen(
                     key = { cardList.list[it].id }
                 ) { idx ->
                     val card = cardList.list[idx]
+                    val enable = idx == currentUserIdx &&
+                        currentUserIdx == pagerState.currentPage &&
+                        timers.list[idx].startAble && cardMoveAllow
                     ToHotCard(
                         modifier = Modifier
                             .fillMaxSize()
@@ -101,8 +104,7 @@ internal fun ToHotScreen(
                         introduce = card.introduce,
                         timer = timers.list[idx].timerType,
                         maxTimeSec = timers.list[idx].maxSec,
-                        enable = currentUserIdx == pagerState.currentPage &&
-                            timers.list[idx].startAble && cardMoveAllow,
+                        enable = enable,
                         fallingAnimationEnable = idx == fallingAnimationTargetIdx,
                         isHoldCard = isHoldCard,
                         isShakingCard = isShakingCard,
