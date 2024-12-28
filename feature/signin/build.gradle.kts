@@ -88,6 +88,7 @@ dependencies {
     implementation(libs.jetpack.compose.activity)
     implementation(libs.jetpack.compose.viewmodel)
     implementation(libs.jetpack.compose.coil)
+    implementation(libs.jetpack.compose.foundation)
 
     implementation(libs.lottie.compose)
 
