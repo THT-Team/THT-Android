@@ -98,7 +98,6 @@ fun ToHotCard(
                     modifier = timerModifier,
                     enable = enable && !isHoldCard,
                     duration = maxTimeSec.toDuration(DurationUnit.SECONDS),
-                    oneTicDuration = 1.toDuration(DurationUnit.SECONDS),
                     onEnd = onTimerEnd
                 )
             }

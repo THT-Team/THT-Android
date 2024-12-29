@@ -18,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
+import com.example.compose_ui.common.LogComposition
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlin.math.ceil
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -35,32 +38,18 @@ fun ToHotAnimateTimeProgressContainer(
     enable: Boolean,
     duration: Duration,
     onEnd: () -> Unit,
-    oneTicDuration: Duration,
     modifier: Modifier = Modifier,
 ) {
+    LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
     val maxSec = remember(duration) { duration.toInt(DurationUnit.SECONDS) }
-    var currentSec by remember(maxSec) { mutableIntStateOf(maxSec) }
-    var destinationSec by remember { mutableStateOf(maxSec.toFloat()) }
-    LaunchedEffect(enable, currentSec) {
-        if (enable) {
-            destinationSec = 0f.coerceAtLeast((currentSec - 1).toFloat())
-        }
-    }
 
     ToHotAnimateTimeProgressContainerInternal(
         enable = enable,
         modifier = modifier,
         maxTimeSec = maxSec,
-        currentSec = currentSec.toFloat(),
-        destinationSec = destinationSec,
-        duration = oneTicDuration.toLong(DurationUnit.MILLISECONDS).toFloat(),
+        destinationSec = 0f,
         onTicChanged = {
-            val nextSec = currentSec - 1
-            Log.d("cwj_debug", "onTicChanged -> $nextSec")
-            if (nextSec > 0) {
-                currentSec = nextSec
-            } else {
-                Log.d("cwj_debug", "onEnd")
+            if (it <= 0) {
                 onEnd()
             }
         }
@@ -78,34 +67,39 @@ private fun ToHotAnimateTimeProgressContainerInternal(
     modifier: Modifier = Modifier,
     enable: Boolean,
     maxTimeSec: Int,
-    currentSec: Float,
     destinationSec: Float,
-    progressColor: List<Color> = listOf(
+    progressColor: ImmutableList<Color> = persistentListOf(
         Color(0xFFF9CC2E),
         Color(0xFFF98F2E),
         Color(0xFFF93A2E)
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
-    duration: Float = ((currentSec - destinationSec) * 1000),
+    duration: Float = ((maxTimeSec - destinationSec) * 1000),
     onTicChanged: (Float) -> Unit = { }
 ) {
-    Log.d("Timer", "cSec[$currentSec], dSec[$destinationSec]")
+    var currentSec by remember { mutableIntStateOf(maxTimeSec) }
     val destinationProgress = destinationSec / maxTimeSec.toFloat()
-    var color = progressColor.lastOrNull() ?: Color.Yellow
-    for (i in progressColor.indices) {
-        val value = progressColor.size - i - 1
-        if (destinationProgress >= (1.0f / progressColor.size) * value) {
-            color = progressColor[i]
-            break
+    var color by remember(progressColor) {
+        mutableStateOf(progressColor.firstOrNull() ?: Color.Yellow )
+    }
+    LaunchedEffect(currentSec) {
+        for (i in progressColor.indices) {
+            // currentSec로 하면 색상 변경이 좀 늦어져서, 1초 뒤 변경될 progress 기준으로 계산
+            val currentProgress = (currentSec - 1).coerceAtLeast(0).toFloat() / maxTimeSec
+            val value = progressColor.size - 1 - i
+            if (currentProgress >= (1.0f / progressColor.size) * value) {
+                color = progressColor[i]
+                break
+            }
         }
     }
     val animateProgressColor by animateColorAsState(
         targetValue = color,
-        animationSpec = tween(durationMillis = duration.toInt()),
+        animationSpec = tween(durationMillis = 1000),
         label = "animateProgressColor"
     )
 
-    val progressAnimatable = remember { Animatable((currentSec / maxTimeSec.toFloat())) }
+    val progressAnimatable = remember { Animatable(1f) }
     LaunchedEffect(key1 = destinationSec, key2 = enable) {
         if (enable) {
             if (progressAnimatable.targetValue == destinationProgress) {
@@ -141,7 +135,9 @@ private fun ToHotAnimateTimeProgressContainerInternal(
                         durationMillis = remainingDuration.toInt(),
                         easing = LinearEasing
                     )
-                )
+                ) {
+                    currentSec = ceil((this.value * maxTimeSec)).toInt()
+                }
             } else {
                 Log.d(
                     "Timer",
@@ -154,7 +150,9 @@ private fun ToHotAnimateTimeProgressContainerInternal(
                         durationMillis = duration.toInt(),
                         easing = LinearEasing
                     )
-                )
+                ) {
+                    currentSec = ceil((this.value * maxTimeSec)).toInt()
+                }
             }
             onTicChanged((progressAnimatable.value * maxTimeSec))
         }
@@ -171,7 +169,7 @@ private fun ToHotAnimateTimeProgressContainerInternal(
             progressColor = animateProgressColor,
             backgroundColor = progressBackgroundColor,
             progress = 1 - progressAnimatable.value,
-            sec = currentSec.toInt()
+            sec = currentSec
         )
 
         ToHotTimeProgressBar(
