@@ -1,6 +1,5 @@
 package tht.feature.tohot.tohot.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,9 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEnterCard
-import tht.feature.tohot.component.card.ToHotNoneNextUserCard
-import tht.feature.tohot.component.card.ToHotNoneInitialUserCard
 import tht.feature.tohot.component.card.ToHotErrorCard
+import tht.feature.tohot.component.card.ToHotNoneInitialUserCard
+import tht.feature.tohot.component.card.ToHotNoneNextUserCard
 import tht.feature.tohot.component.card.ToHotQuerySuccessCard
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
@@ -28,15 +27,16 @@ import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotState
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ToHotScreen(
     modifier: Modifier = Modifier,
     toHotCardState: ToHotCardState,
     pagerState: PagerState,
     cardList: ImmutableListWrapper<ToHotUserUiModel>,
-    timers: ImmutableListWrapper<CardTimerUiModel>,
+    timer: CardTimerUiModel,
     currentUserIdx: Int,
     cardMoveAllow: Boolean,
     topicIconUrl: String?,
@@ -50,7 +50,8 @@ internal fun ToHotScreen(
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
     pageChanged: (Int) -> Unit,
-    ticChanged: (Float, Int) -> Unit,
+    onTimerEnd: (Int) -> Unit,
+    onTicChanged: (Float, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
     onUnLikeClick: (Int) -> Unit = { },
     onReportMenuClick: () -> Unit = { },
@@ -85,9 +86,19 @@ internal fun ToHotScreen(
                 VerticalPager(
                     userScrollEnabled = false,
                     state = pagerState,
-                    key = { cardList.list[it].id }
+                    key = {
+                        // List 가 업데이트 되기 이전에 PagerState.pageCount 블록이 업데이트 된 ListSize를 리턴해서 IndexOutOfBoundsException 발생
+                        // 원인 파악을 아직 하지 못해서 임시 방편 처리
+                        if (it in cardList.list.indices) {
+                            cardList.list[it].id
+                        } else {
+                            it
+                        }
+                    }
                 ) { idx ->
                     val card = cardList.list[idx]
+                    val isCurrentCard = currentUserIdx == pagerState.currentPage &&
+                        idx == currentUserIdx
                     ToHotCard(
                         modifier = Modifier
                             .fillMaxSize()
@@ -99,19 +110,16 @@ internal fun ToHotScreen(
                         interests = card.interests,
                         idealTypes = card.idealTypes,
                         introduce = card.introduce,
-                        timer = timers.list[idx].timerType,
-                        maxTimeSec = timers.list[idx].maxSec,
-                        currentSec = timers.list[idx].currentSec,
-                        destinationSec = timers.list[idx].destinationSec,
-                        enable = currentUserIdx == pagerState.currentPage &&
-                            timers.list[idx].startAble && cardMoveAllow,
+                        timer = if (isCurrentCard) timer else null,
+                        enable = isCurrentCard && timer.startAble && cardMoveAllow,
                         fallingAnimationEnable = idx == fallingAnimationTargetIdx,
                         isHoldCard = isHoldCard,
                         isShakingCard = isShakingCard,
                         onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
                         userCardClick = { },
                         onReportMenuClick = onReportMenuClick,
-                        ticChanged = { ticChanged(it, idx) },
+                        onTicChanged = { onTicChanged(it, idx) },
+                        onTimerEnd = { onTimerEnd(idx) },
                         onLikeClick = { onLikeClick(idx) },
                         onUnLikeClick = { onUnLikeClick(idx) },
                         loadFinishListener = { s, e -> loadFinishListener(idx, s, e) },
@@ -127,22 +135,18 @@ internal fun ToHotScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 @Preview
 fun ToHotScreenPreview() {
     val toHotState = ToHotState(
         userList = ImmutableListWrapper(mockUserList.toList()),
         userCardState = ToHotCardState.Running,
-        timers = ImmutableListWrapper(
-            Array(mockUserList.size) {
-                CardTimerUiModel(
-                    maxSec = 5,
-                    currentSec = 5f,
-                    destinationSec = 4.5f,
-                    startAble = false
-                )
-            }.toList()
+        timer = CardTimerUiModel(
+            maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
+            initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            duration = 6.toDuration(DurationUnit.NANOSECONDS),
+            startAble = true
         ),
         enableTimerIdx = 0,
         cardMoveAllow = true,
@@ -161,7 +165,7 @@ fun ToHotScreenPreview() {
         pagerState = rememberPagerState(
             pageCount = { toHotState.userList.list.size }
         ),
-        timers = toHotState.timers,
+        timer = toHotState.timer,
         currentUserIdx = toHotState.enableTimerIdx,
         cardMoveAllow = toHotState.cardMoveAllow,
         topicIconUrl = toHotState.currentTopic?.iconUrl,
@@ -175,7 +179,8 @@ fun ToHotScreenPreview() {
         topicSelectListener = { },
         alarmClickListener = { },
         pageChanged = { },
-        ticChanged = { _, _ -> },
+        onTimerEnd = { },
+        onTicChanged = { _, _ -> },
         loadFinishListener = { _, _, _ -> },
         onLikeClick = { },
         onUnLikeClick = { },

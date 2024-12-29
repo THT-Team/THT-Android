@@ -12,7 +12,7 @@ data class ToHotState(
     val loading: ToHotLoading,
     val userList: ImmutableListWrapper<ToHotUserUiModel>,
     val userCardState: ToHotCardState = ToHotCardState.NoneSelectTopic, // Start, Empty 경우 보여줄 View 를 정함
-    val timers: ImmutableListWrapper<CardTimerUiModel>,
+    val timer: CardTimerUiModel, // 현재 표시 중인 Card TimerState
     val enableTimerIdx: Int, // 현재 표시 되는 Card Idx -> 해당 Card 의 Timer 진행됨
     val fallingAnimationIdx: Int = -1, // 신고, 차단 Animation Idx
     val cardMoveAllow: Boolean, // card suspend 기능. false 일 경우 Timer 중단. Dialog 등이 표시 될 때 사용
