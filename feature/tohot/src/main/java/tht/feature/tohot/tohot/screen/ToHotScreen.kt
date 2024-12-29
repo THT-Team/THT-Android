@@ -36,15 +36,12 @@ import kotlin.time.toDuration
 internal fun ToHotScreen(
     modifier: Modifier = Modifier,
     toHotCardState: ToHotCardState,
-    selectTopicKey: Int,
+    topicInfo: ToHotState.TopicInfo,
     pagerState: PagerState,
     cardList: ImmutableList<ToHotCardUiModel>,
     timer: CardTimerUiModel,
     currentUserIdx: Int,
     cardMoveAllow: Boolean,
-    topicIconUrl: String?,
-    topicIconRes: Int?,
-    topicTitle: String?,
     hasUnReadAlarm: Boolean,
     fallingAnimationTargetIdx: Int,
     isHoldCard: Boolean,
@@ -70,9 +67,9 @@ internal fun ToHotScreen(
     ) {
         ToHotToolBar {
             ToHotToolBarContent(
-                topicIconUrl = topicIconUrl,
-                topicIconRes = topicIconRes,
-                topicTitle = topicTitle,
+                topicIconUrl = topicInfo.currentTopic?.iconUrl,
+                topicIconRes = topicInfo.currentTopic?.iconRes,
+                topicTitle = topicInfo.currentTopic?.title,
                 hasUnReadAlarm = hasUnReadAlarm,
                 topicSelectListener = topicSelectListener,
                 alarmClickListener = alarmClickListener
@@ -139,7 +136,7 @@ internal fun ToHotScreen(
                                     .fillMaxSize()
                                     .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
                                 topicCard = card.topic,
-                                selectTopicKey = selectTopicKey,
+                                selectTopicKey = topicInfo.selectTopicKey,
                                 onSelectTopic = onSelectTopic,
                                 onClickConfirm = onClickConfirm
                             )
@@ -168,11 +165,16 @@ fun ToHotScreenPreview() {
             startAble = true
         ),
         enableTimerIdx = 0,
-        cardMoveAllow = true,
+        cardVisibleState = ToHotState.CardVisibleState(
+            cardMoveAllow = true
+        ),
+        dialogState = ToHotState.DialogState(),
         loading = ToHotLoading.None,
-        selectTopicKey = -1,
-        currentTopic = null,
-        topicResetTimeMill = 0,
+        topic = ToHotState.TopicInfo(
+            selectTopicKey = -1,
+            currentTopic = null,
+            topicResetTimeMill = 0,
+        ),
         hasUnReadAlarm = false
     )
     ToHotScreen(
@@ -183,14 +185,11 @@ fun ToHotScreenPreview() {
         ),
         timer = toHotState.timer,
         currentUserIdx = toHotState.enableTimerIdx,
-        cardMoveAllow = toHotState.cardMoveAllow,
-        topicIconUrl = toHotState.currentTopic?.iconUrl,
-        topicIconRes = toHotState.currentTopic?.iconRes,
-        topicTitle = toHotState.currentTopic?.title,
+        cardMoveAllow = toHotState.cardVisibleState.cardMoveAllow,
+        topicInfo = toHotState.topic,
         hasUnReadAlarm = toHotState.hasUnReadAlarm,
-        fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+        fallingAnimationTargetIdx = toHotState.cardVisibleState.fallingAnimationIdx,
         isHoldCard = false,
-        selectTopicKey = 0,
         isShakingCard = false,
         onFallingAnimationFinish = { },
         topicSelectListener = { },

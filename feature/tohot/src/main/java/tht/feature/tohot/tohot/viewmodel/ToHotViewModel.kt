@@ -62,11 +62,12 @@ class ToHotViewModel @Inject constructor(
         cardList = persistentListOf(),
         timer = createDefaultTimer(),
         enableTimerIdx = 0,
-        cardMoveAllow = true,
+        dialogState = ToHotState.DialogState(),
+        cardVisibleState = ToHotState.CardVisibleState(
+            cardMoveAllow = false
+        ),
         loading = ToHotLoading.None,
-        selectTopicKey = -1,
-        currentTopic = null,
-        topicResetTimeMill = 0,
+        topic = ToHotState.TopicInfo(),
         hasUnReadAlarm = false
     )
     override val store: Store<ToHotState, ToHotSideEffect> = store(initialState = initializeState)
@@ -111,16 +112,12 @@ class ToHotViewModel @Inject constructor(
                             ToHotCardState.Running
                         } else {
                             ToHotCardState.Enter
-                        }.also {
-                            Log.d("cwj_debug", "cardState -> $it")
                         }
 
                         val cardList = if (cardState == ToHotCardState.NoneSelectTopic) {
                             persistentListOf(ToHotCardUiModel.Topic(toHotState.topic.toUiModel()))
                         } else {
                             userCardList.toImmutableList()
-                        }.also {
-                            Log.d("cwj_debug", "cardList -> $it")
                         }
 
                         it.copy(
@@ -128,15 +125,17 @@ class ToHotViewModel @Inject constructor(
                             userCardState = cardState,
                             timer = createDefaultTimer(),
                             enableTimerIdx = 0,
-                            currentTopic = if (toHotState.selectTopic != null) {
-                                toHotState.topic.topics.find { t ->
-                                    t.key == toHotState.selectTopic?.key
-                                }?.toUiModel()
-                            } else {
-                                null
-                            },
-                            selectTopicKey = toHotState.selectTopic?.key ?: -1,
-                            topicResetTimeMill = toHotState.topicResetTimeMill
+                            topic = ToHotState.TopicInfo(
+                                currentTopic = if (toHotState.selectTopic != null) {
+                                    toHotState.topic.topics.find { t ->
+                                        t.key == toHotState.selectTopic?.key
+                                    }?.toUiModel()
+                                } else {
+                                    null
+                                },
+                                selectTopicKey = toHotState.selectTopic?.key ?: -1,
+                                topicResetTimeMill = toHotState.topicResetTimeMill
+                            )
                         )
                     }
                 }.onFailure { e ->
@@ -291,7 +290,9 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    selectTopicKey = topicKey
+                    topic = it.topic.copy(
+                        selectTopicKey = topicKey
+                    )
                 )
             }
         }
@@ -324,7 +325,7 @@ class ToHotViewModel @Inject constructor(
     fun onConfirmSelectTopic() {
         val selectTopic = getTopic(
             cardList = store.state.value.cardList,
-            selectTopicKey = store.state.value.selectTopicKey
+            selectTopicKey = store.state.value.topic.selectTopicKey
         )
         if (selectTopic == null || selectTopic.idx < 0) return
 
@@ -337,8 +338,10 @@ class ToHotViewModel @Inject constructor(
                         true -> {
                             reduce { state ->
                                 state.copy(
-                                    selectTopicKey = -1,
-                                    currentTopic = selectTopic,
+                                    topic = state.topic.copy(
+                                        selectTopicKey = -1,
+                                        currentTopic = selectTopic,
+                                    ),
                                     loading = ToHotLoading.None
                                 )
                             }
@@ -401,13 +404,17 @@ class ToHotViewModel @Inject constructor(
                     timer = createDefaultTimer(
                         startAble = userCardLoadedIdxSet.contains(userIdx)
                     ),
-                    cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
-                        it.matchingFullScreenUser == null,
-                    reportMenuDialogShow = false,
-                    reportDialogShow = false,
-                    blockDialogShow = false,
-                    holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH,
-                    shakingCard = false
+                    cardVisibleState = ToHotState.CardVisibleState(
+                        cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
+                            it.cardVisibleState.matchingFullScreenUser == null,
+                        holdCard = passedCardCountBetweenTouch > CARD_COUNT_ALLOW_WITHOUT_TOUCH,
+                        shakingCard = false
+                    ),
+                    dialogState = ToHotState.DialogState(
+                        reportMenuDialogShow = false,
+                        reportDialogShow = false,
+                        blockDialogShow = false,
+                    ),
                 )
             }
         }
@@ -443,7 +450,11 @@ class ToHotViewModel @Inject constructor(
         if (tic <= SHAKING_ANIMATION_START_TIC) {
             intent {
                 reduce {
-                    it.copy(shakingCard = true)
+                    it.copy(
+                        cardVisibleState = it.cardVisibleState.copy(
+                            shakingCard = true
+                        )
+                    )
                 }
             }
         }
@@ -451,7 +462,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userHeartEvent(idx: Int) {
         if (heartLoading) return
-        if (store.state.value.currentTopic == null) {
+        if (store.state.value.topic.currentTopic == null) {
             // TODO: Toast
             return
         }
@@ -469,7 +480,7 @@ class ToHotViewModel @Inject constructor(
             heartLoading = true
             sendHeartUseCase(
                 userUuid = user.id,
-                selectDailyTopicIdx = store.state.value.currentTopic!!.idx
+                selectDailyTopicIdx = store.state.value.topic.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
                     userHeartApiResultChanel.send(it)
@@ -484,7 +495,9 @@ class ToHotViewModel @Inject constructor(
                     timer = createDefaultTimer(
                         timerType = CardTimerUiModel.ToHotTimer.Heart
                     ),
-                    shakingCard = false
+                    cardVisibleState = it.cardVisibleState.copy(
+                        shakingCard = false
+                    )
                 )
             }
             postSideEffect(
@@ -495,7 +508,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userDislikeEvent(idx: Int) {
         if (heartLoading) return
-        if (store.state.value.currentTopic == null) {
+        if (store.state.value.topic.currentTopic == null) {
             // TODO: Toast
             return
         }
@@ -513,7 +526,7 @@ class ToHotViewModel @Inject constructor(
             heartLoading = true
             sendDislikeUseCase(
                 userUuid = user.id,
-                selectDailyTopicIdx = store.state.value.currentTopic!!.idx
+                selectDailyTopicIdx = store.state.value.topic.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
                     userDislikeApiResultChanel.send(true)
@@ -528,7 +541,9 @@ class ToHotViewModel @Inject constructor(
                     timer = createDefaultTimer(
                         timerType = CardTimerUiModel.ToHotTimer.Dislike
                     ),
-                    shakingCard = false
+                    cardVisibleState = it.cardVisibleState.copy(
+                        shakingCard = false
+                    )
                 )
             }
             postSideEffect(
@@ -557,8 +572,10 @@ class ToHotViewModel @Inject constructor(
                     val imageUrl = user.profileImgUrl.list.first()
                     reduce {
                         it.copy(
-                            matchingFullScreenUser = MatchingUserUiModel(imageUrl, idx),
-                            cardMoveAllow = false
+                            cardVisibleState = it.cardVisibleState.copy(
+                                matchingFullScreenUser = MatchingUserUiModel(imageUrl, idx),
+                                cardMoveAllow = false
+                            )
                         )
                     }
                     delay(300)
@@ -601,8 +618,10 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    matchingFullScreenUser = null,
-                    cardMoveAllow = true
+                    cardVisibleState = it.cardVisibleState.copy(
+                        matchingFullScreenUser = null,
+                        cardMoveAllow = true
+                    )
                 )
             }
         }
@@ -616,10 +635,14 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    cardMoveAllow = true,
-                    reportMenuDialogShow = false,
-                    reportDialogShow = false,
-                    blockDialogShow = false
+                    cardVisibleState = it.cardVisibleState.copy(
+                        cardMoveAllow = true,
+                    ),
+                    dialogState = it.dialogState.copy(
+                        reportMenuDialogShow = false,
+                        reportDialogShow = false,
+                        blockDialogShow = false
+                    )
                 )
             }
         }
@@ -629,8 +652,12 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    cardMoveAllow = false,
-                    reportMenuDialogShow = true
+                    cardVisibleState = it.cardVisibleState.copy(
+                        cardMoveAllow = false,
+                    ),
+                    dialogState = it.dialogState.copy(
+                        reportMenuDialogShow = true
+                    )
                 )
             }
         }
@@ -640,8 +667,10 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    reportMenuDialogShow = false,
-                    reportDialogShow = true
+                    dialogState = it.dialogState.copy(
+                        reportMenuDialogShow = false,
+                        reportDialogShow = true
+                    )
                 )
             }
         }
@@ -651,8 +680,10 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    reportMenuDialogShow = false,
-                    blockDialogShow = true
+                    dialogState = it.dialogState.copy(
+                        reportMenuDialogShow = false,
+                        blockDialogShow = true
+                    )
                 )
             }
         }
@@ -673,7 +704,7 @@ class ToHotViewModel @Inject constructor(
             reduce { it.copy(loading = ToHotLoading.Report) }
             reportUserUseCase(
                 userUuid = user.id,
-                reason = store.state.value.reportReason[reasonIdx]
+                reason = store.state.value.dialogState.reportReason[reasonIdx]
             ).unWrapTokenException()
                 .onSuccess {
                     postSideEffect(
@@ -685,9 +716,13 @@ class ToHotViewModel @Inject constructor(
                     )
                     reduce {
                         it.copy(
-                            fallingAnimationIdx = userIdx,
-                            reportMenuDialogShow = false,
-                            reportDialogShow = false
+                            cardVisibleState = it.cardVisibleState.copy(
+                                fallingAnimationIdx = userIdx,
+                            ),
+                            dialogState = it.dialogState.copy(
+                                reportMenuDialogShow = false,
+                                reportDialogShow = false
+                            )
                         )
                     }
                 }.onFailure {
@@ -729,9 +764,13 @@ class ToHotViewModel @Inject constructor(
                     )
                     reduce {
                         it.copy(
-                            fallingAnimationIdx = idx,
-                            reportMenuDialogShow = false,
-                            blockDialogShow = false
+                            cardVisibleState = it.cardVisibleState.copy(
+                                fallingAnimationIdx = idx,
+                            ),
+                            dialogState = it.dialogState.copy(
+                                reportMenuDialogShow = false,
+                                blockDialogShow = false
+                            )
                         )
                     }
                 }.onFailure {
@@ -752,7 +791,9 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    fallingAnimationIdx = -1
+                    cardVisibleState = it.cardVisibleState.copy(
+                        fallingAnimationIdx = -1
+                    )
                 )
             }
             when ((idx + 1) in currentUserListRange) {
@@ -797,12 +838,14 @@ class ToHotViewModel @Inject constructor(
 
     fun releaseHoldEvent() {
         passedCardCountBetweenTouch = 0
-        store.state.value.holdCard.let { holdCard ->
+        store.state.value.cardVisibleState.holdCard.let { holdCard ->
             intent {
                 reduce {
                     it.copy(
-                        cardMoveAllow = holdCard,
-                        holdCard = !holdCard
+                        cardVisibleState = it.cardVisibleState.copy(
+                            cardMoveAllow = holdCard,
+                            holdCard = !holdCard
+                        )
                     )
                 }
             }

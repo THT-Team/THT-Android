@@ -118,7 +118,7 @@ internal fun ToHotRoute(
         }
     }
 
-    toHotState.matchingFullScreenUser?.let {
+    toHotState.cardVisibleState.matchingFullScreenUser?.let {
         ToHotUserMatchingDialog(
             isShow = true,
             onDismissRequest = toHotViewModel::matchingUserFullScreenDismissEvent,
@@ -128,22 +128,22 @@ internal fun ToHotRoute(
     }
 
     ToHotUserReportMenuDialog(
-        isShow = toHotState.reportMenuDialogShow,
+        isShow = toHotState.dialogState.reportMenuDialogShow,
         onReportClick = toHotViewModel::reportMenuReportEvent,
         onBlockClick = toHotViewModel::reportMenuBlockEvent,
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUseReportDialog(
-        isShow = toHotState.reportDialogShow,
-        reportReason = toHotState.reportReason,
+        isShow = toHotState.dialogState.reportDialogShow,
+        reportReason = toHotState.dialogState.reportReason,
         onReportClick = { toHotViewModel.cardReportEvent(pagerState.currentPage, it) },
         onCancelClick = toHotViewModel::reportDialogDismissEvent,
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
     ToHotUserBlockDialog(
-        isShow = toHotState.blockDialogShow,
+        isShow = toHotState.dialogState.blockDialogShow,
         onBlockClick = { toHotViewModel.cardBlockEvent(pagerState.currentPage) },
         onCancelClick = toHotViewModel::reportDialogDismissEvent,
         onDismiss = toHotViewModel::reportDialogDismissEvent
@@ -163,19 +163,16 @@ internal fun ToHotRoute(
                             false
                         },
                     cardList = toHotState.cardList,
-                    selectTopicKey = toHotState.selectTopicKey,
+                    topicInfo = toHotState.topic,
                     toHotCardState = toHotState.userCardState,
                     pagerState = pagerState,
                     timer = toHotState.timer,
                     currentUserIdx = toHotState.enableTimerIdx,
-                    cardMoveAllow = toHotState.cardMoveAllow,
-                    topicIconUrl = toHotState.currentTopic?.iconUrl,
-                    topicIconRes = toHotState.currentTopic?.iconRes,
-                    topicTitle = toHotState.currentTopic?.title,
+                    cardMoveAllow = toHotState.cardVisibleState.cardMoveAllow,
                     hasUnReadAlarm = toHotState.hasUnReadAlarm,
-                    fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
-                    isHoldCard = toHotState.holdCard,
-                    isShakingCard = toHotState.shakingCard,
+                    fallingAnimationTargetIdx = toHotState.cardVisibleState.fallingAnimationIdx,
+                    isHoldCard = toHotState.cardVisibleState.holdCard,
+                    isShakingCard = toHotState.cardVisibleState.shakingCard,
                     onSelectTopic = toHotViewModel::onSelectTopic,
                     onClickConfirm = toHotViewModel::onConfirmSelectTopic,
                     onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,

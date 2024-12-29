@@ -14,27 +14,42 @@ data class ToHotState(
     val userCardState: ToHotCardState = ToHotCardState.NoneSelectTopic, // Start, Empty 경우 보여줄 View 를 정함
     val timer: CardTimerUiModel, // 현재 표시 중인 Card TimerState
     val enableTimerIdx: Int, // 현재 표시 되는 Card Idx -> 해당 Card 의 Timer 진행됨
-    val fallingAnimationIdx: Int = -1, // 신고, 차단 Animation Idx
-    val cardMoveAllow: Boolean, // card suspend 기능. false 일 경우 Timer 중단. Dialog 등이 표시 될 때 사용
-    val reportMenuDialogShow: Boolean = false,
-    val reportDialogShow: Boolean = false,
-    val blockDialogShow: Boolean = false,
-    val holdCard: Boolean = false, // 일시정지 카드
-    val shakingCard: Boolean = false, // 흔들다리 효과 애니메이션. 3초에 시작
-    val reportReason: List<String> = listOf(
-        "불쾌한 사진",
-        "허위 프로필",
-        "사진 도용",
-        "욕설 및 비방",
-        "불법 촬영물 공유"
-    ),
-    val selectTopicKey: Int = -1,
-    val topicResetTimeMill: Long,
-    val currentTopic: TopicUiModel?,
+    val dialogState: DialogState,
+    val cardVisibleState: CardVisibleState,
+    val topic: TopicInfo,
     val hasUnReadAlarm: Boolean,
-    val matchingFullScreenUser: MatchingUserUiModel? = null,
     val loginAvailable: Boolean = true // 로그인 유효성
-)
+) {
+    @Immutable
+    data class CardVisibleState(
+        val cardMoveAllow: Boolean, // card suspend 기능. false 일 경우 Timer 중단. Dialog 등이 표시 될 때 사용
+        val fallingAnimationIdx: Int = -1, // 신고, 차단 Animation Idx
+        val holdCard: Boolean = false, // 일시정지 카드
+        val shakingCard: Boolean = false, // 흔들다리 효과 애니메이션. 3초에 시작
+        val matchingFullScreenUser: MatchingUserUiModel? = null
+    )
+
+    @Immutable
+    data class DialogState(
+        val reportMenuDialogShow: Boolean = false,
+        val reportDialogShow: Boolean = false,
+        val blockDialogShow: Boolean = false,
+        val reportReason: List<String> = listOf(
+            "불쾌한 사진",
+            "허위 프로필",
+            "사진 도용",
+            "욕설 및 비방",
+            "불법 촬영물 공유"
+        )
+    )
+
+    @Immutable
+    data class TopicInfo(
+        val selectTopicKey: Int = -1,
+        val topicResetTimeMill: Long = 0,
+        val currentTopic: TopicUiModel? = null
+    )
+}
 
 enum class ToHotLoading {
     None,
