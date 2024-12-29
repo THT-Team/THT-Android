@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,38 +22,53 @@ import androidx.compose.ui.unit.dp
 import com.example.compose_ui.common.LogComposition
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 
 @Composable
 fun ToHotAnimateTimeProgressContainer(
     enable: Boolean,
-    durationMill: Long,
+    duration: Long,
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
+    initialDelay: Long = 0L,
+    completionDelay: Long = 0L,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
-    val maxSec = remember(durationMill) { (durationMill / 1000).toInt() }
-    val destinationSec = 0f
+    var progressState by remember { mutableStateOf(false) } // disActive
+    LaunchedEffect(initialDelay) {
+        delay(initialDelay)
+        progressState = true
+    }
+    if (progressState) {
+        val maxSec = remember(duration) { (duration / 1000).toInt() }
+        val destinationSec = 0f
 
-    ToHotAnimateTimeProgressContainerInternal(
-        enable = enable,
-        modifier = modifier,
-        maxTimeSec = maxSec,
-        destinationSec = destinationSec,
-        duration = (maxSec + 1) * 1000f, // 실제 duration 은 1초 추가
-        onTicChanged = {
-            if (it <= destinationSec) {
-                onEnd()
+        ToHotAnimateTimeProgressContainerInternal(
+            enable = enable,
+            modifier = modifier,
+            maxTimeSec = maxSec,
+            destinationSec = destinationSec,
+            duration = (maxSec + 1) * 1000f, // 실제 duration 은 1초 추가
+            onTicChanged = {
+                coroutineScope.launch {
+                    if (completionDelay > 0) {
+                        progressState = false
+                    }
+                    delay(completionDelay)
+                    if (it <= destinationSec) {
+                        onEnd()
+                    }
+                }
             }
-        }
-    )
+        )
+    } else {
+        ToHotEmptyTimeProgressContainer(modifier = modifier)
+    }
 }
 
-/**
- * 2. 시작, 끝 전 후로 delay + state 추가
- *  - initialState
- *  - delayState
- */
 @Composable
 private fun ToHotAnimateTimeProgressContainerInternal(
     modifier: Modifier = Modifier,
@@ -66,7 +82,8 @@ private fun ToHotAnimateTimeProgressContainerInternal(
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
     duration: Float = ((maxTimeSec - destinationSec) * 1000),
-    onTicChanged: (Float) -> Unit = { }
+    onTicChanged: (Float) -> Unit = { },
+    completionDelayMillis: Long = 0L,
 ) {
     var currentSec by remember { mutableIntStateOf(maxTimeSec) }
     val destinationProgress = destinationSec / maxTimeSec.toFloat()
@@ -104,6 +121,7 @@ private fun ToHotAnimateTimeProgressContainerInternal(
             ) {
                 currentSec = ceil((this.value * maxTimeSec)).toInt()
             }
+            delay(completionDelayMillis)
             onTicChanged((progressAnimatable.value * maxTimeSec))
         }
     }
@@ -139,6 +157,6 @@ private fun ToHotAnimateTimeProgressContainerPreview() {
         modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
         enable = true,
         onEnd = {},
-        durationMill = 1000
+        duration = 1000
     )
 }

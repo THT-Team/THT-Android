@@ -94,8 +94,10 @@ fun ToHotCard(
             CardTimerUiModel.ToHotTimer.Timer -> {
                 ToHotAnimateTimeProgressContainer(
                     modifier = timerModifier,
+                    initialDelay = 1000,
+                    completionDelay = 1000,
                     enable = enable && !isHoldCard,
-                    durationMill = maxTimeSec * 1000L,
+                    duration = maxTimeSec * 1000L,
                     onEnd = onTimerEnd
                 )
             }
