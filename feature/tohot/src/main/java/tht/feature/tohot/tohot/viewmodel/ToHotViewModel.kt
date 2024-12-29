@@ -555,7 +555,11 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun userHeartEvent(idx: Int) {
-        if (heartLoading || store.state.value.currentTopic == null) return
+        if (heartLoading) return
+        if (store.state.value.currentTopic == null) {
+            // TODO: Toast
+            return
+        }
         viewModelScope.launch {
             heartLoading = true
             sendHeartUseCase(
@@ -588,6 +592,10 @@ class ToHotViewModel @Inject constructor(
 
     fun userDislikeEvent(idx: Int) {
         if (heartLoading) return
+        if (store.state.value.currentTopic == null) {
+            // TODO: Toast
+            return
+        }
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
