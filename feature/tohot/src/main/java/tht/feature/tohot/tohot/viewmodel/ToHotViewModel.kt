@@ -36,6 +36,8 @@ import tht.feature.tohot.tohot.state.ToHotSideEffect
 import tht.feature.tohot.tohot.state.ToHotState
 import java.util.Stack
 import javax.inject.Inject
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 /**
  * TODO: UseCase Test Code 작성
@@ -55,7 +57,7 @@ class ToHotViewModel @Inject constructor(
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     private val initializeState get() = ToHotState(
         userList = ImmutableListWrapper(emptyList()),
-        timers = ImmutableListWrapper(emptyList()),
+        timer = createDefaultTimer(),
         enableTimerIdx = 0,
         cardMoveAllow = true,
         loading = ToHotLoading.None,
@@ -79,6 +81,8 @@ class ToHotViewModel @Inject constructor(
     private val userDislikeApiResultChanel = Channel<Boolean>()
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
+
+    private val userCardLoadedIdxSet = mutableSetOf<Int>()
 
     private val currentUserListRange: IntRange
         get() = store.state.value.userList.list.indices
@@ -111,16 +115,7 @@ class ToHotViewModel @Inject constructor(
                         it.copy(
                             userList = ImmutableListWrapper(newList),
                             userCardState = cardState,
-                            timers = ImmutableListWrapper(
-                                List(toHotState.cards.size) {
-                                    CardTimerUiModel(
-                                        maxSec = MAX_TIMER_SEC.toInt(),
-                                        currentSec = MAX_TIMER_SEC,
-                                        destinationSec = MAX_TIMER_SEC,
-                                        startAble = false
-                                    )
-                                }
-                            ),
+                            timer = createDefaultTimer(),
                             enableTimerIdx = 0,
                             topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
                             topicModalShow = toHotState.needSelectTopic,
@@ -252,7 +247,6 @@ class ToHotViewModel @Inject constructor(
                         reduce {
                             it.copy(
                                 userList = ImmutableListWrapper(emptyList()),
-                                timers = ImmutableListWrapper(emptyList()),
                                 userCardState = ToHotCardState.NoneNextUser,
                                 enableTimerIdx = 0
                             )
@@ -314,17 +308,7 @@ class ToHotViewModel @Inject constructor(
                             userList = ImmutableListWrapper(
                                 store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
                             ),
-                            timers = ImmutableListWrapper(
-                                store.state.value.timers.list +
-                                    List(dailyUserCardList.cards.size) {
-                                        CardTimerUiModel(
-                                            maxSec = MAX_TIMER_SEC.toInt(),
-                                            currentSec = MAX_TIMER_SEC,
-                                            destinationSec = MAX_TIMER_SEC,
-                                            startAble = false
-                                        )
-                                    }
-                            ),
+                            timer = createDefaultTimer(),
                             topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
                             topicResetTimeMill = dailyUserCardList.topicResetTimeMill
                         )
@@ -354,17 +338,6 @@ class ToHotViewModel @Inject constructor(
                                 store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
                             ),
                             userCardState = ToHotCardState.Running,
-                            timers = ImmutableListWrapper(
-                                store.state.value.timers.list +
-                                    List(dailyUserCardList.cards.size) {
-                                        CardTimerUiModel(
-                                            maxSec = MAX_TIMER_SEC.toInt(),
-                                            currentSec = MAX_TIMER_SEC,
-                                            destinationSec = MAX_TIMER_SEC,
-                                            startAble = false
-                                        )
-                                    }
-                            ),
                             enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
                             loading = ToHotLoading.None,
                             topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
@@ -462,7 +435,7 @@ class ToHotViewModel @Inject constructor(
      * 중복 데이터 처리를 위해 passedCardIdSet 추가
      */
     fun userChangeEvent(userIdx: Int) {
-        Log.d("ToHot", "userChangeEvent => $userIdx")
+        Log.d(TAG, "userChangeEvent => $userIdx")
         if (userIdx !in currentUserListRange) return
         with(store.state.value) {
             if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
@@ -479,16 +452,10 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            this[userIdx] = this[userIdx].copy(
-                                maxSec = MAX_TIMER_SEC.toInt(),
-                                currentSec = MAX_TIMER_SEC,
-                                destinationSec = MAX_TIMER_SEC - TIMER_INTERVAL
-                            )
-                        }
-                    ),
                     enableTimerIdx = userIdx,
+                    timer = createDefaultTimer(
+                        startAble = userCardLoadedIdxSet.contains(userIdx)
+                    ),
                     cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
                         it.matchingFullScreenUser == null,
                     reportMenuDialogShow = false,
@@ -502,55 +469,47 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
-        Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
+        Log.d(TAG, "userCardLoadFinishEvent => $idx, $result")
         error?.printStackTrace()
+        userCardLoadedIdxSet.add(idx)
         intent {
             reduce {
                 it.copy(
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            this[idx] = this[idx].copy(
-                                startAble = true
-                            )
-                        }
-                    )
+                    timer = createDefaultTimer(startAble = true)
                 )
             }
         }
     }
 
-    /**
-     * timer tic 이 변경될 때 호출
-     * - timer 가 0이면 다음 유저 스크롤
-     * - timer 가 0이 아니면 timer 를 1 감소
-     */
-    fun ticChangeEvent(tic: Float, userIdx: Int) = with(store.state.value) {
-        Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
+    fun onTimerEnd(userIdx: Int) = with(store.state.value) {
+        Log.d("Timer", "onTimerEnd => $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return@with
+        tryScrollToNext(userIdx)
+    }
+
+    fun onTicChanged(tic: Float, userIdx: Int) = with(store.state.value) {
+        Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
+        if (userIdx != enableTimerIdx) return
+        if (userIdx !in userList.list.indices) return
         if (tic <= 0) {
-            tryScrollToNext(userIdx)
+            onTimerEnd(userIdx)
             return
         }
-        if (userIdx !in userList.list.indices) return
-        intent {
-            reduce {
-                it.copy(
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            this[userIdx] = this[userIdx].copy(
-                                currentSec = this[userIdx].destinationSec,
-                                destinationSec = this[userIdx].destinationSec - TIMER_INTERVAL
-                            )
-                        }
-                    ),
-                    shakingCard = tic <= SHAKING_ANIMATION_START_TIC
-                )
+        if (tic <= SHAKING_ANIMATION_START_TIC) {
+            intent {
+                reduce {
+                    it.copy(shakingCard = true)
+                }
             }
         }
     }
 
     fun userHeartEvent(idx: Int) {
-        if (heartLoading || store.state.value.currentTopic == null) return
+        if (heartLoading) return
+        if (store.state.value.currentTopic == null) {
+            // TODO: Toast
+            return
+        }
         viewModelScope.launch {
             heartLoading = true
             sendHeartUseCase(
@@ -567,10 +526,8 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Heart)
-                        }
+                    timer = createDefaultTimer(
+                        timerType = CardTimerUiModel.ToHotTimer.Heart
                     ),
                     shakingCard = false
                 )
@@ -583,6 +540,10 @@ class ToHotViewModel @Inject constructor(
 
     fun userDislikeEvent(idx: Int) {
         if (heartLoading) return
+        if (store.state.value.currentTopic == null) {
+            // TODO: Toast
+            return
+        }
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
@@ -599,10 +560,8 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply {
-                            this[idx] = this[idx].copy(timerType = CardTimerUiModel.ToHotTimer.Dislike)
-                        }
+                    timer = createDefaultTimer(
+                        timerType = CardTimerUiModel.ToHotTimer.Dislike
                     ),
                     shakingCard = false
                 )
@@ -825,9 +784,6 @@ class ToHotViewModel @Inject constructor(
                     userList = ImmutableListWrapper(
                         it.userList.list.toMutableList().apply { removeAt(userIdx) }
                     ),
-                    timers = ImmutableListWrapper(
-                        it.timers.list.toMutableList().apply { removeAt(userIdx) }
-                    ),
                     enableTimerIdx = if (enableTimerIdx >= userIdx) {
                         enableTimerIdx - 1
                     } else {
@@ -886,10 +842,30 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val MAX_TIMER_SEC = 5f
+    private fun createDefaultTimer(
+        startAble: Boolean = false,
+        timerType: CardTimerUiModel.ToHotTimer = CardTimerUiModel.ToHotTimer.Timer
+    ): CardTimerUiModel {
+        return CardTimerUiModel(
+            maxTimer = MAX_TIMER_MILL.toDuration(DurationUnit.MILLISECONDS),
+            initialDelay = TIMER_INITIAL_DELAY_MILL.toDuration(DurationUnit.MILLISECONDS),
+            completionDelay = TIMER_COMPLETION_DELAY_MILL.toDuration(DurationUnit.MILLISECONDS),
+            duration = TIMER_DURATION_MILL.toDuration(DurationUnit.MILLISECONDS),
+            startAble = startAble,
+            timerType = timerType
+        )
+    }
 
-        private const val TIMER_INTERVAL = 1f
+    companion object {
+        private const val TAG = "TO_HOT"
+
+        private const val MAX_TIMER_MILL = 5000L
+
+        private const val TIMER_INITIAL_DELAY_MILL = 1000L
+
+        private const val TIMER_COMPLETION_DELAY_MILL = 1000L
+
+        private const val TIMER_DURATION_MILL = 6000L
 
         private const val SHAKING_ANIMATION_START_TIC = 3f
 
