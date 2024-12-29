@@ -38,9 +38,11 @@ fun ToHotAnimateTimeProgressContainer(
     val coroutineScope = rememberCoroutineScope()
     LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
     var progressState by remember { mutableStateOf(false) } // disActive
-    LaunchedEffect(initialDelay) {
-        delay(initialDelay)
-        progressState = true
+    LaunchedEffect(initialDelay, enable) {
+        if (enable) {
+            delay(initialDelay)
+            progressState = true
+        }
     }
     if (progressState) {
         val maxSec = remember(duration) { (duration / 1000).toInt() }
