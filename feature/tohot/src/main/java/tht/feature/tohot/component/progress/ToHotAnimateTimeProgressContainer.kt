@@ -42,14 +42,16 @@ fun ToHotAnimateTimeProgressContainer(
 ) {
     LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
     val maxSec = remember(duration) { duration.toInt(DurationUnit.SECONDS) }
+    val destinationSec = 0f
 
     ToHotAnimateTimeProgressContainerInternal(
         enable = enable,
         modifier = modifier,
         maxTimeSec = maxSec,
-        destinationSec = 0f,
+        destinationSec = destinationSec,
+        duration = (maxSec + 1) * 1000f, // 실제 duration 은 1초 추가
         onTicChanged = {
-            if (it <= 0) {
+            if (it <= destinationSec) {
                 onEnd()
             }
         }
