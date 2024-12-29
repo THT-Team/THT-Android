@@ -76,4 +76,5 @@ dependencies {
     implementation(libs.lottie.compose)
 
     implementation(libs.renderscript.intrinsics.replacement.toolkit)
+    implementation(libs.kotlin.collections.immutable)
 }
