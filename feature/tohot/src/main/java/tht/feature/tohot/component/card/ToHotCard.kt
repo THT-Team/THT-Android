@@ -29,8 +29,6 @@ import tht.feature.tohot.component.progress.ToHotHeartTimeProgressContainer
 import tht.feature.tohot.component.userinfo.ToHotUserInfoCard
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -97,7 +95,7 @@ fun ToHotCard(
                 ToHotAnimateTimeProgressContainer(
                     modifier = timerModifier,
                     enable = enable && !isHoldCard,
-                    duration = maxTimeSec.toDuration(DurationUnit.SECONDS),
+                    durationMill = maxTimeSec * 1000L,
                     onEnd = onTimerEnd
                 )
             }
