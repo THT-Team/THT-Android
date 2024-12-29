@@ -80,7 +80,7 @@ private fun OneTypeTopic(
                 shape = RoundedCornerShape(size = 24.dp)
             )
             .padding(horizontal = 24.dp, vertical = 12.dp)
-            .noRippleClickable { onSelectTopic(topicUiModel.key) },
+            .noRippleClickable { onSelectTopic(topicUiModel.idx) },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

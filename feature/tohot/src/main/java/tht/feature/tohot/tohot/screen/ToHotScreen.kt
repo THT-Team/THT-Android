@@ -136,7 +136,7 @@ internal fun ToHotScreen(
                                     .fillMaxSize()
                                     .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
                                 topicCard = card.topic,
-                                selectTopicKey = topicInfo.selectTopicKey,
+                                selectTopicIdx = topicInfo.selectTopicIdx,
                                 onSelectTopic = onSelectTopic,
                                 onClickConfirm = onClickConfirm
                             )
@@ -171,7 +171,7 @@ fun ToHotScreenPreview() {
         dialogState = ToHotState.DialogState(),
         loading = ToHotLoading.None,
         topic = ToHotState.TopicInfo(
-            selectTopicKey = -1,
+            selectTopicIdx = -1,
             currentTopic = null,
             topicResetTimeMill = 0,
         ),

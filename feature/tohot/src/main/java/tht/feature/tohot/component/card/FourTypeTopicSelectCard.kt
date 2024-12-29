@@ -18,14 +18,14 @@ import kotlin.time.toDuration
 @Composable
 fun FourTypeTopicSelectCard(
     topicSelectUiModel: TopicSelectUiModel.FourTopic,
-    selectTopicKey: Int,
+    selectTopicIdx: Int,
     buttonEnabled: Boolean,
     modifier: Modifier = Modifier,
     onSelectTopic: (Int) -> Unit = { },
     onClickConfirm: () -> Unit = { }
 ) {
-    val hasSelectTopic by remember(topicSelectUiModel, selectTopicKey) {
-        mutableStateOf(topicSelectUiModel.topics.any { it.key == selectTopicKey })
+    val hasSelectTopic by remember(topicSelectUiModel, selectTopicIdx) {
+        mutableStateOf(topicSelectUiModel.topics.any { it.idx == selectTopicIdx })
     }
     TopicSelectTypeCardScreen(
         modifier = modifier,
@@ -42,8 +42,8 @@ fun FourTypeTopicSelectCard(
                 iconRes = topic.iconRes,
                 title = topic.title,
                 content = topic.content,
-                key = topic.key,
-                isSelect = selectTopicKey == topic.key,
+                key = topic.idx,
+                isSelect = selectTopicIdx == topic.idx,
                 topicClickListener = onSelectTopic,
                 hasSelectTopic = hasSelectTopic
             )
@@ -62,7 +62,7 @@ private fun FourTypeTopicSelectCardPreview() {
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
             topics = dummyTopics
         ),
-        selectTopicKey = 0,
+        selectTopicIdx = 0,
         buttonEnabled = true
     )
 }
@@ -76,7 +76,7 @@ private fun FourTypeTopicSelectCardNoneSelectPreview() {
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
             topics = dummyTopics
         ),
-        selectTopicKey = -1,
+        selectTopicIdx = -1,
         buttonEnabled = true
     )
 }

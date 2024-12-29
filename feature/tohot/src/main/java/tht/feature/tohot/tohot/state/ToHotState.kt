@@ -45,7 +45,7 @@ data class ToHotState(
 
     @Immutable
     data class TopicInfo(
-        val selectTopicKey: Int = -1,
+        val selectTopicIdx: Int = -1,
         val topicResetTimeMill: Long = 0,
         val currentTopic: TopicUiModel? = null
     )

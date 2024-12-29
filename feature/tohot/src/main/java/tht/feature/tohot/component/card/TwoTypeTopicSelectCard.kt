@@ -39,16 +39,16 @@ import kotlin.time.toDuration
 @Composable
 fun TwoTypeTopicSelectCard(
     topicSelectUiModel: TopicSelectUiModel.TwoTopic,
-    selectTopicKey: Int,
+    selectTopicIdx: Int,
     buttonEnabled: Boolean,
     modifier: Modifier = Modifier,
     onSelectTopic: (Int) -> Unit = { },
     onClickConfirm: () -> Unit = { }
 ) {
-    val hasSelectTopic by remember(selectTopicKey, topicSelectUiModel) {
+    val hasSelectTopic by remember(selectTopicIdx, topicSelectUiModel) {
          mutableStateOf(
-             topicSelectUiModel.topic1.key == selectTopicKey ||
-             topicSelectUiModel.topic2.key == selectTopicKey
+             topicSelectUiModel.topic1.idx == selectTopicIdx ||
+             topicSelectUiModel.topic2.idx == selectTopicIdx
          )
     }
     TopicSelectTypeCardScreen(
@@ -69,17 +69,17 @@ fun TwoTypeTopicSelectCard(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(1f)
-                        .noRippleClickable { onSelectTopic(topicSelectUiModel.topic1.key) },
+                        .noRippleClickable { onSelectTopic(topicSelectUiModel.topic1.idx) },
                     hasSelectTopic = hasSelectTopic,
-                    isSelect = selectTopicKey == topicSelectUiModel.topic1.key,
+                    isSelect = selectTopicIdx == topicSelectUiModel.topic1.idx,
                     topicUiModel = topicSelectUiModel.topic1
                 )
                 TwoTypeTopic(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(1f)
-                        .noRippleClickable { onSelectTopic(topicSelectUiModel.topic2.key) },
-                    isSelect = selectTopicKey == topicSelectUiModel.topic2.key,
+                        .noRippleClickable { onSelectTopic(topicSelectUiModel.topic2.idx) },
+                    isSelect = selectTopicIdx == topicSelectUiModel.topic2.idx,
                     hasSelectTopic = hasSelectTopic,
                     topicUiModel = topicSelectUiModel.topic2
                 )
@@ -164,7 +164,7 @@ private fun TwoTypeTopicSelectCardPreview() {
             topic1 = dummyTopics[0],
             topic2 = dummyTopics[1],
         ),
-        selectTopicKey = 0,
+        selectTopicIdx = 0,
         buttonEnabled = true
     )
 }
@@ -179,7 +179,7 @@ private fun TwoTypeTopicSelectCardNoneSelectPreview() {
             topic1 = dummyTopics[0],
             topic2 = dummyTopics[1],
         ),
-        selectTopicKey = -1,
+        selectTopicIdx = -1,
         buttonEnabled = true
     )
 }

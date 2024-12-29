@@ -128,12 +128,12 @@ class ToHotViewModel @Inject constructor(
                             topic = ToHotState.TopicInfo(
                                 currentTopic = if (toHotState.selectTopic != null) {
                                     toHotState.topic.topics.find { t ->
-                                        t.key == toHotState.selectTopic?.key
+                                        t.idx == toHotState.selectTopic?.idx
                                     }?.toUiModel()
                                 } else {
                                     null
                                 },
-                                selectTopicKey = toHotState.selectTopic?.key ?: -1,
+                                selectTopicIdx = toHotState.selectTopic?.idx ?: -1,
                                 topicResetTimeMill = toHotState.topicResetTimeMill
                             )
                         )
@@ -291,7 +291,7 @@ class ToHotViewModel @Inject constructor(
             reduce {
                 it.copy(
                     topic = it.topic.copy(
-                        selectTopicKey = topicKey
+                        selectTopicIdx = topicKey
                     )
                 )
             }
@@ -300,23 +300,23 @@ class ToHotViewModel @Inject constructor(
 
     private fun getTopic(
         cardList: List<ToHotCardUiModel>,
-        selectTopicKey: Int
+        selectTopicIdx: Int
     ): TopicUiModel? {
         val topicList = cardList.filterIsInstance<ToHotCardUiModel.Topic>()
         return topicList.asSequence()
             .mapNotNull { topicSelectUiModel ->
                 when (topicSelectUiModel.topic) {
                     is TopicSelectUiModel.OneTopic -> {
-                        topicSelectUiModel.topic.topic.takeIf { it.key == selectTopicKey }
+                        topicSelectUiModel.topic.topic.takeIf { it.idx == selectTopicIdx }
                     }
                     is TopicSelectUiModel.TwoTopic -> {
                         listOf(
                             topicSelectUiModel.topic.topic1,
                             topicSelectUiModel.topic.topic2
-                        ).firstOrNull { it.key == selectTopicKey }
+                        ).firstOrNull { it.idx == selectTopicIdx }
                     }
                     is TopicSelectUiModel.FourTopic -> {
-                        topicSelectUiModel.topic.topics.firstOrNull { it.key == selectTopicKey }
+                        topicSelectUiModel.topic.topics.firstOrNull { it.idx == selectTopicIdx }
                     }
                 }
             }.firstOrNull()
@@ -325,7 +325,7 @@ class ToHotViewModel @Inject constructor(
     fun onConfirmSelectTopic() {
         val selectTopic = getTopic(
             cardList = store.state.value.cardList,
-            selectTopicKey = store.state.value.topic.selectTopicKey
+            selectTopicIdx = store.state.value.topic.selectTopicIdx
         )
         if (selectTopic == null || selectTopic.idx < 0) return
 
@@ -339,7 +339,7 @@ class ToHotViewModel @Inject constructor(
                             reduce { state ->
                                 state.copy(
                                     topic = state.topic.copy(
-                                        selectTopicKey = -1,
+                                        selectTopicIdx = -1,
                                         currentTopic = selectTopic,
                                     ),
                                     loading = ToHotLoading.None
