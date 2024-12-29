@@ -187,7 +187,7 @@ private fun ToHotCardPreview() {
             initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             duration = 6.toDuration(DurationUnit.NANOSECONDS),
-            startAble = true,
+            startAble = true
         ),
         enable = true,
         isHoldCard = false,
@@ -218,7 +218,7 @@ private fun ToHotCardHoldCardPreview() {
             initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             duration = 6.toDuration(DurationUnit.NANOSECONDS),
-            startAble = true,
+            startAble = true
         ),
         enable = true,
         isHoldCard = true,

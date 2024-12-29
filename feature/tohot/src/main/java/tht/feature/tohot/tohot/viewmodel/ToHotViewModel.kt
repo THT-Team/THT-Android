@@ -467,7 +467,7 @@ class ToHotViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d(TAG, "userCardLoadFinishEvent => $idx, $result")
         error?.printStackTrace()
@@ -475,7 +475,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce {
                 it.copy(
-                    timer = createDefaultTimer(startAble = true),
+                    timer = createDefaultTimer(startAble = true)
                 )
             }
         }
@@ -486,6 +486,7 @@ class ToHotViewModel @Inject constructor(
         if (userIdx != enableTimerIdx) return@with
         tryScrollToNext(userIdx)
     }
+
     /**
      * timer tic 이 변경될 때 호출
      * - timer 가 0이면 다음 유저 스크롤
@@ -848,7 +849,7 @@ class ToHotViewModel @Inject constructor(
 
     private fun createDefaultTimer(
         startAble: Boolean = false,
-        timerType: CardTimerUiModel.ToHotTimer = CardTimerUiModel.ToHotTimer.Timer,
+        timerType: CardTimerUiModel.ToHotTimer = CardTimerUiModel.ToHotTimer.Timer
     ): CardTimerUiModel {
         return CardTimerUiModel(
             maxTimer = MAX_TIMER_MILL.toDuration(DurationUnit.MILLISECONDS),
@@ -856,7 +857,7 @@ class ToHotViewModel @Inject constructor(
             completionDelay = TIMER_COMPLETION_DELAY_MILL.toDuration(DurationUnit.MILLISECONDS),
             duration = TIMER_DURATION_MILL.toDuration(DurationUnit.MILLISECONDS),
             startAble = startAble,
-            timerType = timerType,
+            timerType = timerType
         )
     }
 

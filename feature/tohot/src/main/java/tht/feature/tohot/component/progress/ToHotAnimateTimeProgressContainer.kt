@@ -34,7 +34,7 @@ fun ToHotAnimateTimeProgressContainer(
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
     initialDelay: Long = 0L,
-    completionDelay: Long = 0L,
+    completionDelay: Long = 0L
 ) {
     val coroutineScope = rememberCoroutineScope()
     LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
@@ -85,12 +85,12 @@ private fun ToHotAnimateTimeProgressContainerInternal(
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
     onTicChanged: (Float) -> Unit = { },
-    completionDelayMillis: Long = 0L,
+    completionDelayMillis: Long = 0L
 ) {
     var currentSec by remember { mutableIntStateOf(maxTimeSec) }
     val destinationProgress = destinationSec / maxTimeSec.toFloat()
     var color by remember(progressColor) {
-        mutableStateOf(progressColor.firstOrNull() ?: Color.Yellow )
+        mutableStateOf(progressColor.firstOrNull() ?: Color.Yellow)
     }
     LaunchedEffect(currentSec) {
         for (i in progressColor.indices) {
@@ -160,6 +160,6 @@ private fun ToHotAnimateTimeProgressContainerPreview() {
         enable = true,
         onEnd = {},
         duration = 1000,
-        maxTimer = 5,
+        maxTimer = 5
     )
 }

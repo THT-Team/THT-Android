@@ -144,7 +144,7 @@ fun ToHotScreenPreview() {
             initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
             duration = 6.toDuration(DurationUnit.NANOSECONDS),
-            startAble = true,
+            startAble = true
         ),
         enableTimerIdx = 0,
         cardMoveAllow = true,
