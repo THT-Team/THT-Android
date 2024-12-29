@@ -120,7 +120,7 @@ class ToHotViewModel @Inject constructor(
                             topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
                             topicModalShow = toHotState.needSelectTopic,
                             currentTopic = toHotState.topic.topics.find { t ->
-                                t.key == toHotState.selectTopicKey
+                                t.key == toHotState.selectTopic?.key
                             }?.toUiModel(),
                             topicResetRemainingTime = parseRemainingTime(toHotState.topicResetTimeMill),
                             topicResetTimeMill = toHotState.topicResetTimeMill
@@ -388,7 +388,7 @@ class ToHotViewModel @Inject constructor(
 
     fun topicSelectFinishEvent() {
         val selectTopicIdx = with(store.state.value) {
-            topicList.list.find { it.key == selectTopicKey }
+            topicList.find { it.key == selectTopicKey }
         }?.idx ?: -1
         if (selectTopicIdx < 0) return
 

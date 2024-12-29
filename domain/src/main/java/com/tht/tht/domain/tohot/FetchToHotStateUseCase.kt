@@ -5,14 +5,14 @@ import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 
 /**
+ *  1. DailyUserCardRepository 조회
+ *   - 금일 동일 토픽을 선택한 User 목록 조회
+ *   - 금일 내가 선택한 주제어 idx 조회 -> 주제어 목록에서 selectTopicKey로 금일 내가 선택한 주제어 정보 확인 가능
  *
- *  DailyTopic FetchTopicList 인 Model 을 리턴 하는 UseCase?
- *  -> 해당 Model 의 selectIdx 가 음수 라면 Topic Open
- *  1. Local Topic State Fetch
- *  2. 유효 하지 않다면 FetchTopicList
- *  3. 유효 하다면 FetchUserList
- *  4. UserList 의 리턴 값 중 selectTopicIdx 가 유효 하지 않다면 2번으로 이동
- *  TODO: 왜 매번 Remote 를 불러 오는거 같지 topicResetTimeMill 체크 ㄱㄱ
+ *  2. Local에 캐싱한 주제어 목록 정보 조회
+ *   - 만료되었다면 Remote에서 새로 불러옴
+ *   - selectTopicKey가 음수면 Remote에서 새로 불러옴
+ *  3.
  */
 class FetchToHotStateUseCase(
     private val topicRepository: DailyTopicRepository,
@@ -28,6 +28,8 @@ class FetchToHotStateUseCase(
                 passedUserIdList = emptyList(),
                 lastUserDailyFallingCourserIdx = null,
                 size = size
+            ).copy(
+                selectTopicKey = -1 //TODO: Remove -> TestCode
             )
             val topic = kotlin.runCatching {
                 val localTopic = topicRepository.fetchDailyTopicFromLocal()
@@ -41,10 +43,9 @@ class FetchToHotStateUseCase(
             }
             ToHotStateModel(
                 topic = topic,
-                selectTopicKey = userCards.selectTopicKey,
+                selectTopic = topic.topics.firstOrNull { it.key == userCards.selectTopicKey },
                 topicResetTimeMill = userCards.topicResetTimeMill,
-                cards = userCards.cards,
-                needSelectTopic = userCards.selectTopicKey < 0
+                cards = userCards.cards
             )
         }
     }
