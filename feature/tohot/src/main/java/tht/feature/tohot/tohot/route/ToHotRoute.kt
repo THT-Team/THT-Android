@@ -2,12 +2,10 @@ package tht.feature.tohot.tohot.route
 
 import android.view.MotionEvent
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -45,7 +43,7 @@ import tht.feature.tohot.tohot.state.ToHotSideEffect
 import tht.feature.tohot.tohot.viewmodel.ToHotViewModel
 
 //TODO: 다른 탭에 갔을 때 일시 정지
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ToHotRoute(
     toHotViewModel: ToHotViewModel = hiltViewModel(),
@@ -54,7 +52,7 @@ internal fun ToHotRoute(
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState(
         pageCount = {
-            toHotState.userList.list.size
+            toHotState.userList.size
         }
     )
     val context = LocalContext.current

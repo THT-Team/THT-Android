@@ -12,6 +12,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.card.ToHotErrorCard
@@ -22,7 +25,6 @@ import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.mockUserList
 import tht.feature.tohot.model.CardTimerUiModel
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
@@ -35,7 +37,7 @@ internal fun ToHotScreen(
     modifier: Modifier = Modifier,
     toHotCardState: ToHotCardState,
     pagerState: PagerState,
-    cardList: ImmutableListWrapper<ToHotUserUiModel>,
+    cardList: ImmutableList<ToHotUserUiModel>,
     timer: CardTimerUiModel,
     currentUserIdx: Int,
     cardMoveAllow: Boolean,
@@ -89,14 +91,14 @@ internal fun ToHotScreen(
                     key = {
                         // List 가 업데이트 되기 이전에 PagerState.pageCount 블록이 업데이트 된 ListSize를 리턴해서 IndexOutOfBoundsException 발생
                         // 원인 파악을 아직 하지 못해서 임시 방편 처리
-                        if (it in cardList.list.indices) {
-                            cardList.list[it].id
+                        if (it in cardList.indices) {
+                            cardList[it].id
                         } else {
                             it
                         }
                     }
                 ) { idx ->
-                    val card = cardList.list[idx]
+                    val card = cardList[idx]
                     val isCurrentCard = currentUserIdx == pagerState.currentPage &&
                         idx == currentUserIdx
                     ToHotCard(
@@ -139,7 +141,7 @@ internal fun ToHotScreen(
 @Preview
 fun ToHotScreenPreview() {
     val toHotState = ToHotState(
-        userList = ImmutableListWrapper(mockUserList.toList()),
+        userList = mockUserList.toList().toImmutableList(),
         userCardState = ToHotCardState.Running,
         timer = CardTimerUiModel(
             maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
@@ -154,7 +156,7 @@ fun ToHotScreenPreview() {
         selectTopicKey = -1,
         currentTopic = null,
         topicModalShow = false,
-        topicList = ImmutableListWrapper(emptyList()),
+        topicList = persistentListOf(),
         topicResetRemainingTime = "00:00:00",
         topicResetTimeMill = 0,
         hasUnReadAlarm = false
@@ -163,7 +165,7 @@ fun ToHotScreenPreview() {
         cardList = toHotState.userList,
         toHotCardState = toHotState.userCardState,
         pagerState = rememberPagerState(
-            pageCount = { toHotState.userList.list.size }
+            pageCount = { toHotState.userList.size }
         ),
         timer = toHotState.timer,
         currentUserIdx = toHotState.enableTimerIdx,

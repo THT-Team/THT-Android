@@ -1,8 +1,8 @@
 package tht.feature.tohot.tohot.state
 
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import tht.feature.tohot.model.CardTimerUiModel
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.model.TopicUiModel
@@ -10,7 +10,7 @@ import tht.feature.tohot.model.TopicUiModel
 @Immutable
 data class ToHotState(
     val loading: ToHotLoading,
-    val userList: ImmutableListWrapper<ToHotUserUiModel>,
+    val userList: ImmutableList<ToHotUserUiModel>,
     val userCardState: ToHotCardState = ToHotCardState.NoneSelectTopic, // Start, Empty 경우 보여줄 View 를 정함
     val timer: CardTimerUiModel, // 현재 표시 중인 Card TimerState
     val enableTimerIdx: Int, // 현재 표시 되는 Card Idx -> 해당 Card 의 Timer 진행됨
@@ -30,7 +30,7 @@ data class ToHotState(
     ),
     val selectTopicKey: Int = -1,
     val currentTopic: TopicUiModel?,
-    val topicList: ImmutableListWrapper<TopicUiModel>,
+    val topicList: ImmutableList<TopicUiModel>,
     val topicModalShow: Boolean,
     val topicResetRemainingTime: String,
     val topicResetTimeMill: Long,

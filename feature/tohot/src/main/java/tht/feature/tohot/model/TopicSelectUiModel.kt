@@ -2,6 +2,7 @@ package tht.feature.tohot.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.persistentListOf
 import tht.feature.tohot.R
 import kotlin.time.Duration
 
@@ -41,7 +42,7 @@ data class TopicUiModel(
     val content: String
 )
 
-val dummyTopics = listOf(
+val dummyTopics = persistentListOf(
     TopicUiModel(
         iconUrl = "https://www.emojiall.com/en/header-svg/%F0%9F%98%83.svg",
         iconRes = R.drawable.ic_topic_item_pet_38,

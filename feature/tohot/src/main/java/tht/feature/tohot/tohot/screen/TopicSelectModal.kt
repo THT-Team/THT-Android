@@ -1,7 +1,6 @@
 package tht.feature.tohot.tohot.screen
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -10,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tht.feature.tohot.model.ImmutableListWrapper
+import kotlinx.collections.immutable.ImmutableList
 import tht.feature.tohot.model.TopicUiModel
 import tht.feature.tohot.model.dummyTopics
 
@@ -18,7 +17,6 @@ import tht.feature.tohot.model.dummyTopics
  * https://foso.github.io/Jetpack-Compose-Playground/material/modalbottomsheetlayout/
  */
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TopicSelectModel(
     modifier: Modifier = Modifier,
@@ -28,7 +26,7 @@ fun TopicSelectModel(
         confirmValueChange = { false }
     ),
     remainingTime: String,
-    topics: ImmutableListWrapper<TopicUiModel>,
+    topics: ImmutableList<TopicUiModel>,
     selectTopicKey: Int,
     topicClickListener: (Int) -> Unit = { },
     selectFinishListener: () -> Unit = { },
@@ -52,14 +50,13 @@ fun TopicSelectModel(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 @Preview
 private fun TopicSelectModelPreview() {
     TopicSelectModel(
         modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Expanded),
         remainingTime = "24:00:00",
-        topics = ImmutableListWrapper(dummyTopics),
+        topics = dummyTopics,
         selectTopicKey = 1,
         content = { }
     )

@@ -17,6 +17,8 @@ import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.SendDislikeUseCase
 import com.tht.tht.domain.user.SendHeartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -27,7 +29,6 @@ import tht.feature.tohot.StringProvider
 import tht.feature.tohot.mapper.calculateInterval
 import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
@@ -56,7 +57,7 @@ class ToHotViewModel @Inject constructor(
     private val stringProvider: StringProvider
 ) : ViewModel(), Container<ToHotState, ToHotSideEffect> {
     private val initializeState get() = ToHotState(
-        userList = ImmutableListWrapper(emptyList()),
+        userList = persistentListOf(),
         timer = createDefaultTimer(),
         enableTimerIdx = 0,
         cardMoveAllow = true,
@@ -64,7 +65,7 @@ class ToHotViewModel @Inject constructor(
         selectTopicKey = -1,
         currentTopic = null,
         topicModalShow = false,
-        topicList = ImmutableListWrapper(emptyList()),
+        topicList = persistentListOf(),
         topicResetRemainingTime = "00:00:00",
         topicResetTimeMill = 0,
         hasUnReadAlarm = false
@@ -85,7 +86,7 @@ class ToHotViewModel @Inject constructor(
     private val userCardLoadedIdxSet = mutableSetOf<Int>()
 
     private val currentUserListRange: IntRange
-        get() = store.state.value.userList.list.indices
+        get() = store.state.value.userList.indices
 
     init {
         fetchToHotState(autoRunToHot = false)
@@ -113,11 +114,11 @@ class ToHotViewModel @Inject constructor(
                             ToHotCardState.Enter
                         }
                         it.copy(
-                            userList = ImmutableListWrapper(newList),
+                            userList = newList.toImmutableList(),
                             userCardState = cardState,
                             timer = createDefaultTimer(),
                             enableTimerIdx = 0,
-                            topicList = ImmutableListWrapper(toHotState.topic.topics.map { t -> t.toUiModel() }),
+                            topicList = toHotState.topic.topics.map { t -> t.toUiModel() }.toImmutableList(),
                             topicModalShow = toHotState.needSelectTopic,
                             currentTopic = toHotState.topic.topics.find { t ->
                                 t.key == toHotState.selectTopic?.key
@@ -148,7 +149,7 @@ class ToHotViewModel @Inject constructor(
                     intent {
                         reduce {
                             it.copy(
-                                topicList = ImmutableListWrapper(dailyTopic.topics.map { t -> t.toUiModel() }),
+                                topicList = dailyTopic.topics.map { t -> t.toUiModel() }.toImmutableList(),
                                 topicModalShow = true,
                                 topicResetRemainingTime = parseRemainingTime(dailyTopic.topicResetTimeMill),
                                 topicResetTimeMill = dailyTopic.topicResetTimeMill
@@ -246,7 +247,7 @@ class ToHotViewModel @Inject constructor(
                     intent {
                         reduce {
                             it.copy(
-                                userList = ImmutableListWrapper(emptyList()),
+                                userList = persistentListOf(),
                                 userCardState = ToHotCardState.NoneNextUser,
                                 enableTimerIdx = 0
                             )
@@ -272,13 +273,13 @@ class ToHotViewModel @Inject constructor(
      */
     fun queryUserListEvent() {
         if (store.state.value.loading != ToHotLoading.None) return
-        val prevUserSize = store.state.value.userList.list.size
+        val prevUserSize = store.state.value.userList.size
         var queryCount = 0
         intent {
             reduce { it.copy(loading = ToHotLoading.UserList) }
             while (true) {
                 queryUserCard()
-                if (store.state.value.userList.list.size != prevUserSize) {
+                if (store.state.value.userList.size != prevUserSize) {
                     reduce { it.copy(userCardState = ToHotCardState.QuerySuccess) }
                     break
                 }
@@ -305,9 +306,9 @@ class ToHotViewModel @Inject constructor(
                 intent {
                     reduce {
                         it.copy(
-                            userList = ImmutableListWrapper(
-                                store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
-                            ),
+                            userList = (
+                                store.state.value.userList + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                            ).toImmutableList(),
                             timer = createDefaultTimer(),
                             topicResetRemainingTime = parseRemainingTime(dailyUserCardList.topicResetTimeMill),
                             topicResetTimeMill = dailyUserCardList.topicResetTimeMill
@@ -334,9 +335,9 @@ class ToHotViewModel @Inject constructor(
                 intent {
                     reduce {
                         it.copy(
-                            userList = ImmutableListWrapper(
-                                store.state.value.userList.list + dailyUserCardList.cards.map { c -> c.toUiModel() }
-                            ),
+                            userList = (
+                                store.state.value.userList + dailyUserCardList.cards.map { c -> c.toUiModel() }
+                            ).toImmutableList(),
                             userCardState = ToHotCardState.Running,
                             enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
                             loading = ToHotLoading.None,
@@ -402,7 +403,7 @@ class ToHotViewModel @Inject constructor(
                             reduce { state ->
                                 state.copy(
                                     topicModalShow = false,
-                                    currentTopic = state.topicList.list.find { t -> t.key == state.selectTopicKey },
+                                    currentTopic = state.topicList.find { t -> t.key == state.selectTopicKey },
                                     loading = ToHotLoading.None
                                 )
                             }
@@ -438,9 +439,9 @@ class ToHotViewModel @Inject constructor(
         Log.d(TAG, "userChangeEvent => $userIdx")
         if (userIdx !in currentUserListRange) return
         with(store.state.value) {
-            if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
-                passedCardIdSet.add(userList.list[userIdx].id)
-                val passUser = passedUserCardStack.push(userList.list[userIdx])
+            if (!passedCardIdSet.contains(userList[userIdx].id)) {
+                passedCardIdSet.add(userList[userIdx].id)
+                val passUser = passedUserCardStack.push(userList[userIdx])
                 passedCardCountBetweenTouch++
                 if (userIdx == currentUserListRange.last) {
                     viewModelScope.launch {
@@ -490,7 +491,7 @@ class ToHotViewModel @Inject constructor(
     fun onTicChanged(tic: Float, userIdx: Int) = with(store.state.value) {
         Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
         if (userIdx != enableTimerIdx) return
-        if (userIdx !in userList.list.indices) return
+        if (userIdx !in userList.indices) return
         if (tic <= 0) {
             onTimerEnd(userIdx)
             return
@@ -513,7 +514,7 @@ class ToHotViewModel @Inject constructor(
         viewModelScope.launch {
             heartLoading = true
             sendHeartUseCase(
-                userUuid = store.state.value.userList.list[idx].id,
+                userUuid = store.state.value.userList[idx].id,
                 selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
@@ -547,7 +548,7 @@ class ToHotViewModel @Inject constructor(
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
-                userUuid = store.state.value.userList.list[idx].id,
+                userUuid = store.state.value.userList[idx].id,
                 selectDailyTopicIdx = store.state.value.currentTopic!!.idx
             ).unWrapTokenException()
                 .onSuccess {
@@ -579,7 +580,7 @@ class ToHotViewModel @Inject constructor(
             reduce { it.copy(loading = ToHotLoading.None) }
             if (res != null) {
                 if (res) {
-                    val imageUrl = store.state.value.userList.list[idx].profileImgUrl.list.first()
+                    val imageUrl = store.state.value.userList[idx].profileImgUrl.list.first()
                     reduce {
                         it.copy(
                             matchingFullScreenUser = MatchingUserUiModel(imageUrl, idx),
@@ -687,7 +688,7 @@ class ToHotViewModel @Inject constructor(
         intent {
             reduce { it.copy(loading = ToHotLoading.Report) }
             reportUserUseCase(
-                userUuid = store.state.value.userList.list[userIdx].id,
+                userUuid = store.state.value.userList[userIdx].id,
                 reason = store.state.value.reportReason[reasonIdx]
             ).unWrapTokenException()
                 .onSuccess {
@@ -722,7 +723,7 @@ class ToHotViewModel @Inject constructor(
     fun cardBlockEvent(idx: Int) {
         intent {
             reduce { it.copy(loading = ToHotLoading.Block) }
-            blockUserUseCase(userUuid = store.state.value.userList.list[idx].id)
+            blockUserUseCase(userUuid = store.state.value.userList[idx].id)
                 .unWrapTokenException()
                 .onSuccess {
                     postSideEffect(
@@ -777,13 +778,11 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun removeUserCard(userIdx: Int) = with(store.state.value) {
-        if (userIdx !in userList.list.indices) return
+        if (userIdx !in userList.indices) return
         intent {
             reduce {
                 it.copy(
-                    userList = ImmutableListWrapper(
-                        it.userList.list.toMutableList().apply { removeAt(userIdx) }
-                    ),
+                    userList = it.userList.toMutableList().apply { removeAt(userIdx) }.toImmutableList(),
                     enableTimerIdx = if (enableTimerIdx >= userIdx) {
                         enableTimerIdx - 1
                     } else {

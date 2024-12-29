@@ -24,9 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.text.headline.ThtHeadline4
 import com.example.compose_ui.component.text.headline.ThtHeadline5
+import kotlinx.collections.immutable.ImmutableList
 import tht.feature.tohot.R
-import tht.feature.tohot.component.topic.FourTypeTopic
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.TopicUiModel
 import tht.feature.tohot.model.dummyTopics
 
@@ -34,7 +33,7 @@ import tht.feature.tohot.model.dummyTopics
 fun TopicSelectScreen(
     modifier: Modifier = Modifier,
     remainingTime: String,
-    topics: ImmutableListWrapper<TopicUiModel>,
+    topics: ImmutableList<TopicUiModel>,
     selectTopicKey: Int,
     buttonEnabled: Boolean,
     topicClickListener: (Int) -> Unit = { },
@@ -73,7 +72,7 @@ fun TopicSelectScreen(
 
         Spacer(modifier = Modifier.height(22.dp))
 
-        topics.list.forEach {
+        topics.forEach {
 //            FourTypeTopic(
 //                modifier = Modifier
 //                    .padding(horizontal = 22.dp),
@@ -118,7 +117,7 @@ fun TopicSelectScreen(
 private fun TopicSelectScreenPreview() {
     TopicSelectScreen(
         remainingTime = "24:00:00",
-        topics = ImmutableListWrapper(dummyTopics),
+        topics = dummyTopics,
         selectTopicKey = 1,
         buttonEnabled = true
     )
