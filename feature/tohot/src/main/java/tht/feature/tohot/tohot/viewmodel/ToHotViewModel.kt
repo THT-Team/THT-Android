@@ -82,6 +82,8 @@ class ToHotViewModel @Inject constructor(
 
     private val fetchUserListPagingResultChannel = Channel<Unit>()
 
+    private val userCardLoadedIdxSet = mutableSetOf<Int>()
+
     private val currentUserListRange: IntRange
         get() = store.state.value.userList.list.indices
 
@@ -451,7 +453,9 @@ class ToHotViewModel @Inject constructor(
             reduce {
                 it.copy(
                     enableTimerIdx = userIdx,
-                    timer = createDefaultTimer(startAble = false), // card loading 끝난 이후 true 처리
+                    timer = createDefaultTimer(
+                        startAble = userCardLoadedIdxSet.contains(userIdx)
+                    ),
                     cardMoveAllow = passedCardCountBetweenTouch <= CARD_COUNT_ALLOW_WITHOUT_TOUCH &&
                         it.matchingFullScreenUser == null,
                     reportMenuDialogShow = false,
@@ -467,6 +471,7 @@ class ToHotViewModel @Inject constructor(
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
         error?.printStackTrace()
+        userCardLoadedIdxSet.add(idx)
         intent {
             reduce {
                 it.copy(
