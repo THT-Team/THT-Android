@@ -210,7 +210,7 @@ internal fun ToHotRoute(
                         cardList = toHotState.userList,
                         toHotCardState = toHotState.userCardState,
                         pagerState = pagerState,
-                        timers = toHotState.timers,
+                        timer = toHotState.timer,
                         currentUserIdx = toHotState.enableTimerIdx,
                         cardMoveAllow = toHotState.cardMoveAllow,
                         topicIconUrl = toHotState.currentTopic?.iconUrl,

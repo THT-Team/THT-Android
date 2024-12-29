@@ -2,7 +2,6 @@ package tht.feature.tohot.component.card
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,11 +28,13 @@ import tht.feature.tohot.component.progress.ToHotHeartTimeProgressContainer
 import tht.feature.tohot.component.userinfo.ToHotUserInfoCard
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToHotCard(
     modifier: Modifier = Modifier,
+    timer: CardTimerUiModel?,
     imageUrls: ImmutableListWrapper<String>,
     name: String,
     age: Int,
@@ -41,8 +42,6 @@ fun ToHotCard(
     interests: ImmutableListWrapper<InterestModel>,
     idealTypes: ImmutableListWrapper<IdealTypeModel>,
     introduce: String,
-    timer: CardTimerUiModel.ToHotTimer,
-    maxTimeSec: Int,
     enable: Boolean,
     fallingAnimationEnable: Boolean = false,
     isHoldCard: Boolean,
@@ -90,14 +89,23 @@ fun ToHotCard(
         val timerModifier = Modifier
             .align(Alignment.TopCenter)
             .padding(horizontal = 13.dp, vertical = 12.dp)
-        when (timer) {
+        when (timer?.timerType) {
             CardTimerUiModel.ToHotTimer.Timer -> {
                 ToHotAnimateTimeProgressContainer(
                     modifier = timerModifier,
-                    initialDelay = 1000,
-                    completionDelay = 1000,
+                    maxTimer = remember(timer) {
+                        timer.maxTimer.toLong(DurationUnit.SECONDS).toInt()
+                    },
+                    initialDelay = remember(timer) {
+                        timer.initialDelay.toLong(DurationUnit.MILLISECONDS)
+                    },
+                    completionDelay = remember(timer) {
+                        timer.completionDelay.toLong(DurationUnit.MILLISECONDS)
+                    },
                     enable = enable && !isHoldCard,
-                    duration = maxTimeSec * 1000L,
+                    duration = remember(timer) {
+                        timer.duration.toLong(DurationUnit.MILLISECONDS)
+                    },
                     onEnd = onTimerEnd
                 )
             }
@@ -109,6 +117,12 @@ fun ToHotCard(
             }
 
             CardTimerUiModel.ToHotTimer.Dislike -> {
+                ToHotEmptyTimeProgressContainer(
+                    modifier = timerModifier
+                )
+            }
+
+            null -> {
                 ToHotEmptyTimeProgressContainer(
                     modifier = timerModifier
                 )
@@ -168,8 +182,13 @@ private fun ToHotCardPreview() {
         interests = ImmutableListWrapper(emptyList()),
         idealTypes = ImmutableListWrapper(emptyList()),
         introduce = "introduce",
-        timer = CardTimerUiModel.ToHotTimer.Timer,
-        maxTimeSec = 5,
+        timer = CardTimerUiModel(
+            maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
+            initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            duration = 6.toDuration(DurationUnit.NANOSECONDS),
+            startAble = true,
+        ),
         enable = true,
         isHoldCard = false,
         isShakingCard = false
@@ -194,8 +213,13 @@ private fun ToHotCardHoldCardPreview() {
         interests = ImmutableListWrapper(emptyList()),
         idealTypes = ImmutableListWrapper(emptyList()),
         introduce = "introduce",
-        timer = CardTimerUiModel.ToHotTimer.Timer,
-        maxTimeSec = 5,
+        timer = CardTimerUiModel(
+            maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
+            initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            duration = 6.toDuration(DurationUnit.NANOSECONDS),
+            startAble = true,
+        ),
         enable = true,
         isHoldCard = true,
         isShakingCard = false
@@ -220,8 +244,14 @@ private fun ToHotHeartCardPreview() {
         interests = ImmutableListWrapper(emptyList()),
         idealTypes = ImmutableListWrapper(emptyList()),
         introduce = "introduce",
-        timer = CardTimerUiModel.ToHotTimer.Heart,
-        maxTimeSec = 5,
+        timer = CardTimerUiModel(
+            maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
+            initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            duration = 6.toDuration(DurationUnit.NANOSECONDS),
+            startAble = true,
+            timerType = CardTimerUiModel.ToHotTimer.Heart
+        ),
         enable = true,
         isHoldCard = false,
         isShakingCard = false
@@ -246,8 +276,14 @@ private fun ToHotDislikeCardPreview() {
         interests = ImmutableListWrapper(emptyList()),
         idealTypes = ImmutableListWrapper(emptyList()),
         introduce = "introduce",
-        timer = CardTimerUiModel.ToHotTimer.Dislike,
-        maxTimeSec = 5,
+        timer = CardTimerUiModel(
+            maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
+            initialDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            completionDelay = 1.toDuration(DurationUnit.NANOSECONDS),
+            duration = 6.toDuration(DurationUnit.NANOSECONDS),
+            startAble = true,
+            timerType = CardTimerUiModel.ToHotTimer.Dislike
+        ),
         enable = true,
         isHoldCard = false,
         isShakingCard = false

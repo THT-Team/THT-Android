@@ -28,8 +28,9 @@ import kotlin.math.ceil
 
 @Composable
 fun ToHotAnimateTimeProgressContainer(
-    enable: Boolean,
+    maxTimer: Int,
     duration: Long,
+    enable: Boolean,
     onEnd: () -> Unit,
     modifier: Modifier = Modifier,
     initialDelay: Long = 0L,
@@ -45,15 +46,14 @@ fun ToHotAnimateTimeProgressContainer(
         }
     }
     if (progressState) {
-        val maxSec = remember(duration) { (duration / 1000).toInt() }
         val destinationSec = 0f
 
         ToHotAnimateTimeProgressContainerInternal(
             enable = enable,
             modifier = modifier,
-            maxTimeSec = maxSec,
+            maxTimeSec = maxTimer,
             destinationSec = destinationSec,
-            duration = (maxSec + 1) * 1000f, // 실제 duration 은 1초 추가
+            duration = duration,
             onTicChanged = {
                 coroutineScope.launch {
                     if (completionDelay > 0) {
@@ -77,13 +77,13 @@ private fun ToHotAnimateTimeProgressContainerInternal(
     enable: Boolean,
     maxTimeSec: Int,
     destinationSec: Float,
+    duration: Long,
     progressColor: ImmutableList<Color> = persistentListOf(
         Color(0xFFF9CC2E),
         Color(0xFFF98F2E),
         Color(0xFFF93A2E)
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
-    duration: Float = ((maxTimeSec - destinationSec) * 1000),
     onTicChanged: (Float) -> Unit = { },
     completionDelayMillis: Long = 0L,
 ) {
@@ -159,6 +159,7 @@ private fun ToHotAnimateTimeProgressContainerPreview() {
         modifier = Modifier.padding(horizontal = 13.dp, vertical = 12.dp),
         enable = true,
         onEnd = {},
-        duration = 1000
+        duration = 1000,
+        maxTimer = 5,
     )
 }
