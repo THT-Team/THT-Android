@@ -435,7 +435,7 @@ class ToHotViewModel @Inject constructor(
      * 중복 데이터 처리를 위해 passedCardIdSet 추가
      */
     fun userChangeEvent(userIdx: Int) {
-        Log.d("ToHot", "userChangeEvent => $userIdx")
+        Log.d(TAG, "userChangeEvent => $userIdx")
         if (userIdx !in currentUserListRange) return
         with(store.state.value) {
             if (!passedCardIdSet.contains(userList.list[userIdx].id)) {
@@ -467,9 +467,9 @@ class ToHotViewModel @Inject constructor(
             }
         }
     }
-
+    
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
-        Log.d("TAG", "userCardLoadFinishEvent => $idx, $result")
+        Log.d(TAG, "userCardLoadFinishEvent => $idx, $result")
         error?.printStackTrace()
         userCardLoadedIdxSet.add(idx)
         intent {
@@ -861,6 +861,8 @@ class ToHotViewModel @Inject constructor(
     }
 
     companion object {
+        private const val TAG = "TO_HOT"
+
         private const val MAX_TIMER_MILL = 5000L
 
         private const val TIMER_INITIAL_DELAY_MILL = 1000L
