@@ -487,24 +487,19 @@ class ToHotViewModel @Inject constructor(
         tryScrollToNext(userIdx)
     }
 
-    /**
-     * timer tic 이 변경될 때 호출
-     * - timer 가 0이면 다음 유저 스크롤
-     * - timer 가 0이 아니면 timer 를 1 감소
-     */
-    fun ticChangeEvent(tic: Float, userIdx: Int) = with(store.state.value) {
+    fun onTicChanged(tic: Float, userIdx: Int) = with(store.state.value) {
         Log.d("Timer", "ticChangeEvent => $tic from $userIdx => enableTimerIdx[$enableTimerIdx]")
-        if (userIdx != enableTimerIdx) return@with
+        if (userIdx != enableTimerIdx) return
+        if (userIdx !in userList.list.indices) return
         if (tic <= 0) {
-            tryScrollToNext(userIdx)
+            onTimerEnd(userIdx)
             return
         }
-        if (userIdx !in userList.list.indices) return
-        intent {
-            reduce {
-                it.copy(
-                    shakingCard = tic <= SHAKING_ANIMATION_START_TIC
-                )
+        if (tic <= SHAKING_ANIMATION_START_TIC) {
+            intent {
+                reduce {
+                    it.copy(shakingCard = true)
+                }
             }
         }
     }

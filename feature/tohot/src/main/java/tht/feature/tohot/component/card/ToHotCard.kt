@@ -47,6 +47,7 @@ fun ToHotCard(
     isHoldCard: Boolean,
     isShakingCard: Boolean,
     onFallingAnimationFinish: () -> Unit = { },
+    onTicChanged: (Float) -> Unit = { },
     onTimerEnd: () -> Unit = { },
     userCardClick: () -> Unit = { },
     onLikeClick: () -> Unit = { },
@@ -106,6 +107,7 @@ fun ToHotCard(
                     duration = remember(timer) {
                         timer.duration.toLong(DurationUnit.MILLISECONDS)
                     },
+                    onTicChanged = onTicChanged,
                     onEnd = onTimerEnd
                 )
             }

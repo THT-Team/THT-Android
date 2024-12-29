@@ -32,6 +32,7 @@ fun ToHotAnimateTimeProgressContainer(
     duration: Long,
     enable: Boolean,
     onEnd: () -> Unit,
+    onTicChanged: (Float) -> Unit,
     modifier: Modifier = Modifier,
     initialDelay: Long = 0L,
     completionDelay: Long = 0L
@@ -56,12 +57,14 @@ fun ToHotAnimateTimeProgressContainer(
             duration = duration,
             onTicChanged = {
                 coroutineScope.launch {
-                    if (completionDelay > 0) {
-                        progressState = false
-                    }
-                    delay(completionDelay)
                     if (it <= destinationSec) {
+                        if (completionDelay > 0) {
+                            progressState = false
+                        }
+                        delay(completionDelay)
                         onEnd()
+                    } else {
+                        onTicChanged(it)
                     }
                 }
             }
@@ -84,14 +87,15 @@ private fun ToHotAnimateTimeProgressContainerInternal(
         Color(0xFFF93A2E)
     ),
     progressBackgroundColor: Color = colorResource(id = tht.core.ui.R.color.black_353535),
-    onTicChanged: (Float) -> Unit = { },
-    completionDelayMillis: Long = 0L
+    onTicChanged: (Float) -> Unit = { }
 ) {
+    val progressAnimatable = remember { Animatable(1f) }
     var currentSec by remember { mutableIntStateOf(maxTimeSec) }
     val destinationProgress = destinationSec / maxTimeSec.toFloat()
     var color by remember(progressColor) {
         mutableStateOf(progressColor.firstOrNull() ?: Color.Yellow)
     }
+
     LaunchedEffect(currentSec) {
         for (i in progressColor.indices) {
             // currentSec로 하면 색상 변경이 좀 늦어져서, 1초 뒤 변경될 progress 기준으로 계산
@@ -109,8 +113,8 @@ private fun ToHotAnimateTimeProgressContainerInternal(
         label = "animateProgressColor"
     )
 
-    val progressAnimatable = remember { Animatable(1f) }
     LaunchedEffect(key1 = destinationSec, key2 = enable) {
+        var prevTic = 0
         if (enable) {
             // 현재 progressValue -> 0.0 까지 필요한 destination 계산
             val progressDuration = duration * (progressAnimatable.value / 1f)
@@ -122,9 +126,11 @@ private fun ToHotAnimateTimeProgressContainerInternal(
                 )
             ) {
                 currentSec = ceil((this.value * maxTimeSec)).toInt()
+                if (prevTic != currentSec) {
+                    prevTic = currentSec
+                    onTicChanged(prevTic.toFloat())
+                }
             }
-            delay(completionDelayMillis)
-            onTicChanged((progressAnimatable.value * maxTimeSec))
         }
     }
 
@@ -160,6 +166,7 @@ private fun ToHotAnimateTimeProgressContainerPreview() {
         enable = true,
         onEnd = {},
         duration = 1000,
-        maxTimer = 5
+        maxTimer = 5,
+        onTicChanged = {}
     )
 }
