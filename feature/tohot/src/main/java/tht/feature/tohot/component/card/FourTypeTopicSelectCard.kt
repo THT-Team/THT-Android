@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tht.feature.tohot.component.topic.FourTypeTopic
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.TopicSelectUiModel
 import tht.feature.tohot.model.dummyTopics
 import kotlin.time.DurationUnit
@@ -26,7 +25,7 @@ fun FourTypeTopicSelectCard(
     onClickConfirm: () -> Unit = { }
 ) {
     val hasSelectTopic by remember(topicSelectUiModel, selectTopicKey) {
-        mutableStateOf(topicSelectUiModel.topics.list.any { it.key == selectTopicKey })
+        mutableStateOf(topicSelectUiModel.topics.any { it.key == selectTopicKey })
     }
     TopicSelectTypeCardScreen(
         modifier = modifier,
@@ -37,7 +36,7 @@ fun FourTypeTopicSelectCard(
         isEvent = false
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        topicSelectUiModel.topics.list.take(4).forEach { topic ->
+        topicSelectUiModel.topics.take(4).forEach { topic ->
             FourTypeTopic(
                 iconUrl = topic.iconUrl,
                 iconRes = topic.iconRes,
@@ -61,9 +60,7 @@ private fun FourTypeTopicSelectCardPreview() {
         topicSelectUiModel = TopicSelectUiModel.FourTopic(
             introduce = "안녕하세요",
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
-            topics = ImmutableListWrapper(
-                list = dummyTopics
-            )
+            topics = dummyTopics
         ),
         selectTopicKey = 0,
         buttonEnabled = true
@@ -77,9 +74,7 @@ private fun FourTypeTopicSelectCardNoneSelectPreview() {
         topicSelectUiModel = TopicSelectUiModel.FourTopic(
             introduce = "안녕하세요",
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
-            topics = ImmutableListWrapper(
-                list = dummyTopics
-            )
+            topics = dummyTopics
         ),
         selectTopicKey = -1,
         buttonEnabled = true

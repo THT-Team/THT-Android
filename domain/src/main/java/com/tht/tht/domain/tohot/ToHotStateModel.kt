@@ -10,5 +10,7 @@ data class ToHotStateModel(
     val topicResetTimeMill: Long,
     val cards: List<DailyUserCardModel>,
 ) {
-    val needSelectTopic: Boolean get() = selectTopic == null
+    fun isAvailableTopic(now: Long = System.currentTimeMillis()): Boolean {
+        return selectTopic != null && now <= topicResetTimeMill
+    }
 }

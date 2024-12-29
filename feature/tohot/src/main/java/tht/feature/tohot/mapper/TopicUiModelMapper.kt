@@ -2,8 +2,8 @@ package tht.feature.tohot.mapper
 
 import com.tht.tht.domain.topic.DailyTopicListModel
 import com.tht.tht.domain.topic.DailyTopicModel
+import kotlinx.collections.immutable.toImmutableList
 import tht.feature.tohot.R
-import tht.feature.tohot.model.ImmutableListWrapper
 import tht.feature.tohot.model.TopicSelectUiModel
 import tht.feature.tohot.model.TopicUiModel
 import kotlin.time.DurationUnit
@@ -45,9 +45,7 @@ fun DailyTopicListModel.toUiModel(): TopicSelectUiModel {
         DailyTopicListModel.TopicSelectType.FOUR_CHOICE -> {
             if (topics.size < 4) throw Exception("TopicSizeException")
             TopicSelectUiModel.FourTopic(
-                topics = ImmutableListWrapper(
-                    list = topics.take(4).map { it.toUiModel() }
-                ),
+                topics = topics.take(4).map { it.toUiModel() }.toImmutableList(),
                 introduce = introduction,
                 topicExpiredDuration = topicExpiredDuration
             )

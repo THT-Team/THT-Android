@@ -1,7 +1,9 @@
 package tht.feature.tohot.mapper
 
+import com.tht.tht.domain.dailyusercard.DailyUserCardListModel
 import com.tht.tht.domain.dailyusercard.DailyUserCardModel
 import tht.feature.tohot.model.ImmutableListWrapper
+import tht.feature.tohot.model.ToHotCardUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 
 fun DailyUserCardModel.toUiModel(): ToHotUserUiModel {
@@ -17,4 +19,12 @@ fun DailyUserCardModel.toUiModel(): ToHotUserUiModel {
         profileImgUrl = ImmutableListWrapper(profileImgUrl),
         introduce = introduce
     )
+}
+
+fun List<DailyUserCardModel>.toCardUiModel(): List<ToHotCardUiModel> {
+    return this.map { ToHotCardUiModel.User(it.toUiModel()) }
+}
+
+fun DailyUserCardListModel.toCardUiModel(): List<ToHotCardUiModel> {
+    return this.cards.toCardUiModel()
 }

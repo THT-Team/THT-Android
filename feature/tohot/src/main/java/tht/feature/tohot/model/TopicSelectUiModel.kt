@@ -2,12 +2,14 @@ package tht.feature.tohot.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import tht.feature.tohot.R
 import kotlin.time.Duration
 
 @Immutable
 sealed interface TopicSelectUiModel {
+    val id: String
     val introduce: String
     val topicExpiredDuration: Duration
 
@@ -16,20 +18,26 @@ sealed interface TopicSelectUiModel {
         val topic: TopicUiModel,
         override val introduce: String,
         override val topicExpiredDuration: Duration
-    ) : TopicSelectUiModel
+    ) : TopicSelectUiModel {
+        override val id: String = topic.title
+    }
 
     data class TwoTopic(
         val topic1: TopicUiModel,
         val topic2: TopicUiModel,
         override val introduce: String,
         override val topicExpiredDuration: Duration
-    ) : TopicSelectUiModel
+    ) : TopicSelectUiModel {
+        override val id: String = topic1.title
+    }
 
     data class FourTopic(
-        val topics: ImmutableListWrapper<TopicUiModel>,
+        val topics: ImmutableList<TopicUiModel>,
         override val introduce: String,
         override val topicExpiredDuration: Duration
-    ) : TopicSelectUiModel
+    ) : TopicSelectUiModel {
+        override val id: String = topics.first().title
+    }
 }
 
 @Immutable

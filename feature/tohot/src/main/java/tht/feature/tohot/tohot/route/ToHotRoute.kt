@@ -1,18 +1,14 @@
 package tht.feature.tohot.tohot.route
 
 import android.view.MotionEvent
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -37,7 +33,6 @@ import tht.feature.tohot.component.dialog.ToHotUserBlockDialog
 import tht.feature.tohot.component.dialog.ToHotUserMatchingDialog
 import tht.feature.tohot.component.dialog.ToHotUserReportMenuDialog
 import tht.feature.tohot.tohot.screen.ToHotScreen
-import tht.feature.tohot.tohot.screen.TopicSelectModel
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotSideEffect
 import tht.feature.tohot.tohot.viewmodel.ToHotViewModel
@@ -52,7 +47,7 @@ internal fun ToHotRoute(
     val toHotState by toHotViewModel.store.state.collectAsState()
     val pagerState = rememberPagerState(
         pageCount = {
-            toHotState.userList.size
+            toHotState.cardList.size
         }
     )
     val context = LocalContext.current
@@ -154,92 +149,55 @@ internal fun ToHotRoute(
         onDismiss = toHotViewModel::reportDialogDismissEvent
     )
 
-    val modalBottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true,
-        confirmValueChange = { false }
-    )
-    LaunchedEffect(key1 = toHotState.topicModalShow) {
-        if (toHotState.topicModalShow) {
-            modalBottomSheetState.show()
-        } else {
-            modalBottomSheetState.hide()
-        }
-    }
-
-    LaunchedEffect(key1 = modalBottomSheetState) {
-        snapshotFlow { modalBottomSheetState.currentValue }
-            .collect {
-                when (it) {
-                    ModalBottomSheetValue.Expanded, ModalBottomSheetValue.HalfExpanded ->
-                        toHotViewModel.openTopicSelectEvent()
-
-                    ModalBottomSheetValue.Hidden ->
-                        toHotViewModel.closeTopicSelectEvent()
-                }
-            }
-    }
-
-    BackHandler {
-        toHotViewModel.backClickEvent(modalBottomSheetState.currentValue != ModalBottomSheetValue.Hidden)
-    }
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        TopicSelectModel(
-            modalBottomSheetState = modalBottomSheetState,
-            remainingTime = toHotState.topicResetRemainingTime,
-            topics = toHotState.topicList,
-            selectTopicKey = toHotState.selectTopicKey,
-            topicClickListener = toHotViewModel::topicSelectEvent,
-            selectFinishListener = toHotViewModel::topicSelectFinishEvent
-        ) {
-            when (toHotState.loginAvailable) {
-                true -> {
-                    ToHotScreen(
-                        modifier = Modifier
-                            .pointerInteropFilter {
-                                when (it.action) {
-                                    MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
-                                }
-                                false
-                            },
-                        cardList = toHotState.userList,
-                        toHotCardState = toHotState.userCardState,
-                        pagerState = pagerState,
-                        timer = toHotState.timer,
-                        currentUserIdx = toHotState.enableTimerIdx,
-                        cardMoveAllow = toHotState.cardMoveAllow,
-                        topicIconUrl = toHotState.currentTopic?.iconUrl,
-                        topicIconRes = toHotState.currentTopic?.iconRes,
-                        topicTitle = toHotState.currentTopic?.title,
-                        hasUnReadAlarm = toHotState.hasUnReadAlarm,
-                        fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
-                        isHoldCard = toHotState.holdCard,
-                        isShakingCard = toHotState.shakingCard,
-                        onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
-                        topicSelectListener = toHotViewModel::topicChangeClickEvent,
-                        alarmClickListener = toHotViewModel::alarmClickEvent,
-                        pageChanged = toHotViewModel::userChangeEvent,
-                        onTimerEnd = toHotViewModel::onTimerEnd,
-                        onTicChanged = toHotViewModel::onTicChanged,
-                        loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
-                        onLikeClick = toHotViewModel::userHeartEvent,
-                        onUnLikeClick = toHotViewModel::userDislikeEvent,
-                        onReportMenuClick = toHotViewModel::reportMenuEvent,
-                        onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
-                        onEnterClick = toHotViewModel::enterEvent,
-                        onRefreshClick = toHotViewModel::queryUserListEvent
-                    )
-                }
+        when (toHotState.loginAvailable) {
+            true -> {
+                ToHotScreen(
+                    modifier = Modifier
+                        .pointerInteropFilter {
+                            when (it.action) {
+                                MotionEvent.ACTION_DOWN -> toHotViewModel.screenTouchEvent()
+                            }
+                            false
+                        },
+                    cardList = toHotState.cardList,
+                    selectTopicKey = toHotState.selectTopicKey,
+                    toHotCardState = toHotState.userCardState,
+                    pagerState = pagerState,
+                    timer = toHotState.timer,
+                    currentUserIdx = toHotState.enableTimerIdx,
+                    cardMoveAllow = toHotState.cardMoveAllow,
+                    topicIconUrl = toHotState.currentTopic?.iconUrl,
+                    topicIconRes = toHotState.currentTopic?.iconRes,
+                    topicTitle = toHotState.currentTopic?.title,
+                    hasUnReadAlarm = toHotState.hasUnReadAlarm,
+                    fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+                    isHoldCard = toHotState.holdCard,
+                    isShakingCard = toHotState.shakingCard,
+                    onSelectTopic = toHotViewModel::onSelectTopic,
+                    onClickConfirm = toHotViewModel::onConfirmSelectTopic,
+                    onFallingAnimationFinish = toHotViewModel::fallingAnimationFinish,
+                    alarmClickListener = toHotViewModel::alarmClickEvent,
+                    onCardChange = toHotViewModel::onCardChange,
+                    onTimerEnd = toHotViewModel::onTimerEnd,
+                    onTicChanged = toHotViewModel::onTicChanged,
+                    loadFinishListener = toHotViewModel::userCardLoadFinishEvent,
+                    onLikeClick = toHotViewModel::userHeartEvent,
+                    onUnLikeClick = toHotViewModel::userDislikeEvent,
+                    onReportMenuClick = toHotViewModel::reportMenuEvent,
+                    onHoldDoubleTab = toHotViewModel::releaseHoldEvent,
+                    onEnterClick = toHotViewModel::enterEvent,
+                    onRefreshClick = toHotViewModel::queryUserListEvent
+                )
+            }
 
-                else -> {
-                    ToHotLoginExpiredCard(
-                        modifier = Modifier.fillMaxSize(),
-                        onClick = toHotViewModel::logoutEvent
-                    )
-                }
+            else -> {
+                ToHotLoginExpiredCard(
+                    modifier = Modifier.fillMaxSize(),
+                    onClick = toHotViewModel::logoutEvent
+                )
             }
         }
 
