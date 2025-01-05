@@ -92,10 +92,6 @@ internal fun ToHotScreen(
                 modifier = cardModifier,
                 onClick = onRefreshClick
             )
-            ToHotCardState.NoneNextUser -> ToHotNoneNextUserCard(
-                modifier = cardModifier,
-                onClick = onRefreshClick
-            )
             ToHotCardState.QuerySuccess -> ToHotQuerySuccessCard(
                 modifier = cardModifier,
                 onClick = onEnterClick
@@ -121,6 +117,12 @@ internal fun ToHotScreen(
                     }
                 ) { idx ->
                     when (val card = cardList[idx]) {
+                        is ToHotCardUiModel.NoneNextUser -> {
+                            ToHotNoneNextUserCard(
+                                modifier = cardModifier,
+                                onClick = onRefreshClick
+                            )
+                        }
                         is ToHotCardUiModel.User -> {
                             val isCurrentCard = currentUserIdx == pagerState.currentPage &&
                                 idx == currentUserIdx

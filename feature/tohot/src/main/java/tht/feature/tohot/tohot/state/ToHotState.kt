@@ -66,7 +66,6 @@ enum class ToHotCardState {
     NoneSelectTopic, // Topic 선택 이전
     Enter, // Topic 선택 후 앱 접속
     NoneInitializeUser, // Topic 선택 후, 유저가 없는 경우
-    NoneNextUser, // 페이징 중 다음 유저 없는 경우
     QuerySuccess, // 새로운 유저 조회 성공
     Running, // 정상 동작
     Error

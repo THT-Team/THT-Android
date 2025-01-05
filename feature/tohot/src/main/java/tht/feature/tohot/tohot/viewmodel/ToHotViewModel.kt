@@ -29,6 +29,7 @@ import tht.feature.tohot.model.ToHotCardUiModel
 import tht.feature.tohot.model.ToHotUserUiModel
 import tht.feature.tohot.model.TopicSelectUiModel
 import tht.feature.tohot.model.TopicUiModel
+import tht.feature.tohot.model.hasAnyUser
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotSideEffect
@@ -136,17 +137,20 @@ class ToHotViewModel @Inject constructor(
         prevState: ToHotState,
         runnable: Boolean
     ): ToHotState {
-        val cardList = this.cards.map { c -> c.toUiModel() }.toImmutableList()
+        val newCards = this.cards.map { c -> c.toUiModel() }.toMutableList()
+        if (prevState.cardList.hasAnyUser() && newCards.isEmpty()) {
+            newCards.add(ToHotCardUiModel.NoneNextUser)
+        }
 
         val cardState = parseToHotCardState(
             availableSelectTopic = this.topicInfo.isAvailableTopic(),
-            hasAnyUserCard = cardList.any { c -> c is ToHotCardUiModel.User },
+            newCards = newCards,
             runnable = runnable
         )
 
         return prevState.let {
             it.copy(
-                cardList = (it.cardList + cardList).toImmutableList(),
+                cardList = (it.cardList + newCards).toImmutableList(),
                 userCardState = cardState,
                 timer = createDefaultTimer(),
                 enableTimerIdx = it.enableTimerIdx, // 새로 초기화를 하는 시점이면 0 으로 되어있음
@@ -161,12 +165,12 @@ class ToHotViewModel @Inject constructor(
 
     private fun parseToHotCardState(
         availableSelectTopic: Boolean,
-        hasAnyUserCard: Boolean,
+        newCards: List<ToHotCardUiModel>,
         runnable: Boolean
     ): ToHotCardState {
         return if (!availableSelectTopic) {
             ToHotCardState.NoneSelectTopic
-        } else if (!hasAnyUserCard) {
+        } else if (!newCards.hasAnyUser() && !newCards.any { it is ToHotCardUiModel.NoneNextUser }) {
             ToHotCardState.NoneInitializeUser
         } else if (runnable) {
             ToHotCardState.Running
@@ -198,8 +202,7 @@ class ToHotViewModel @Inject constructor(
                     intent {
                         reduce {
                             it.copy(
-                                cardList = persistentListOf(),
-                                userCardState = ToHotCardState.NoneNextUser,
+                                cardList = (it.cardList + ToHotCardUiModel.NoneNextUser).toImmutableList(),
                                 enableTimerIdx = 0
                             )
                         }
