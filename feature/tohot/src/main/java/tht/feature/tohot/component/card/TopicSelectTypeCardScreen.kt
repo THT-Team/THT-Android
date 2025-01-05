@@ -67,8 +67,8 @@ fun TopicSelectTypeCardScreen(
                 width = 1.dp,
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        colorResource(R.color.gray_8d8d8d).copy(alpha = 0.3f),
-                        colorResource(R.color.black_414141).copy(alpha = 0.9f)
+                        colorResource(R.color.gray_414141).copy(alpha = 0.3f),
+                        colorResource(R.color.black_1A1A1A).copy(alpha = 0.9f)
                     )
                 ),
                 shape = RoundedCornerShape(12.dp)

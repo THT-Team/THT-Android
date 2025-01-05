@@ -152,9 +152,7 @@ internal fun ToHotScreen(
 
                         is ToHotCardUiModel.Topic -> {
                             TopicSelectCard(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                                modifier = cardModifier,
                                 topicCard = card.topic,
                                 selectTopicIdx = topicInfo.selectTopicIdx,
                                 onSelectTopic = onSelectTopic,
