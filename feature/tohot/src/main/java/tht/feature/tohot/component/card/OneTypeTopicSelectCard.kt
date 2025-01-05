@@ -62,7 +62,7 @@ private fun OneTypeTopic(
     topicUiModel: TopicUiModel,
     isSelect: Boolean,
     modifier: Modifier = Modifier,
-    onSelectTopic: (Int) -> Unit = { },
+    onSelectTopic: (Int) -> Unit = { }
 ) {
     Column(
         modifier = modifier

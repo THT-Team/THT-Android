@@ -46,10 +46,10 @@ fun TwoTypeTopicSelectCard(
     onClickConfirm: () -> Unit = { }
 ) {
     val hasSelectTopic by remember(selectTopicIdx, topicSelectUiModel) {
-         mutableStateOf(
-             topicSelectUiModel.topic1.idx == selectTopicIdx ||
-             topicSelectUiModel.topic2.idx == selectTopicIdx
-         )
+        mutableStateOf(
+            topicSelectUiModel.topic1.idx == selectTopicIdx ||
+                topicSelectUiModel.topic2.idx == selectTopicIdx
+        )
     }
     TopicSelectTypeCardScreen(
         modifier = modifier,
@@ -162,7 +162,7 @@ private fun TwoTypeTopicSelectCardPreview() {
             introduce = "안녕하세요",
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
             topic1 = dummyTopics[0],
-            topic2 = dummyTopics[1],
+            topic2 = dummyTopics[1]
         ),
         selectTopicIdx = 0,
         buttonEnabled = true
@@ -177,7 +177,7 @@ private fun TwoTypeTopicSelectCardNoneSelectPreview() {
             introduce = "안녕하세요",
             topicExpiredDuration = System.currentTimeMillis().toDuration(DurationUnit.MILLISECONDS),
             topic1 = dummyTopics[0],
-            topic2 = dummyTopics[1],
+            topic2 = dummyTopics[1]
         ),
         selectTopicIdx = -1,
         buttonEnabled = true

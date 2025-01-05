@@ -69,12 +69,12 @@ fun TopicSelectTypeCardScreen(
                     colors = listOf(
                         colorResource(R.color.gray_8d8d8d).copy(alpha = 0.3f),
                         colorResource(R.color.black_414141).copy(alpha = 0.9f)
-                    ),
+                    )
                 ),
                 shape = RoundedCornerShape(12.dp)
             )
             .clipToBounds()
-            .padding(horizontal = 16.dp, vertical = 17.dp),
+            .padding(horizontal = 16.dp, vertical = 17.dp)
     ) {
         Spacer(modifier = Modifier.height(15.dp))
         ThtP1(

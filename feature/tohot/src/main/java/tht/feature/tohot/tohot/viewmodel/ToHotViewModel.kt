@@ -353,7 +353,7 @@ class ToHotViewModel @Inject constructor(
                                 state.copy(
                                     topic = state.topic.copy(
                                         selectTopicIdx = -1,
-                                        currentTopic = selectTopic,
+                                        currentTopic = selectTopic
                                     ),
                                     loading = ToHotLoading.None,
                                     enableTimerIdx = 0
@@ -427,8 +427,8 @@ class ToHotViewModel @Inject constructor(
                     dialogState = ToHotState.DialogState(
                         reportMenuDialogShow = false,
                         reportDialogShow = false,
-                        blockDialogShow = false,
-                    ),
+                        blockDialogShow = false
+                    )
                 )
             }
         }
@@ -650,7 +650,7 @@ class ToHotViewModel @Inject constructor(
             reduce {
                 it.copy(
                     cardVisibleState = it.cardVisibleState.copy(
-                        cardMoveAllow = true,
+                        cardMoveAllow = true
                     ),
                     dialogState = it.dialogState.copy(
                         reportMenuDialogShow = false,
@@ -667,7 +667,7 @@ class ToHotViewModel @Inject constructor(
             reduce {
                 it.copy(
                     cardVisibleState = it.cardVisibleState.copy(
-                        cardMoveAllow = false,
+                        cardMoveAllow = false
                     ),
                     dialogState = it.dialogState.copy(
                         reportMenuDialogShow = true
@@ -731,7 +731,7 @@ class ToHotViewModel @Inject constructor(
                     reduce {
                         it.copy(
                             cardVisibleState = it.cardVisibleState.copy(
-                                fallingAnimationIdx = userIdx,
+                                fallingAnimationIdx = userIdx
                             ),
                             dialogState = it.dialogState.copy(
                                 reportMenuDialogShow = false,
@@ -779,7 +779,7 @@ class ToHotViewModel @Inject constructor(
                     reduce {
                         it.copy(
                             cardVisibleState = it.cardVisibleState.copy(
-                                fallingAnimationIdx = idx,
+                                fallingAnimationIdx = idx
                             ),
                             dialogState = it.dialogState.copy(
                                 reportMenuDialogShow = false,

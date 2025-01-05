@@ -21,7 +21,7 @@ fun DailyTopicModel.toUiModel(): TopicUiModel {
 
 fun DailyTopicListModel.toUiModel(): TopicSelectUiModel {
     val topicExpiredDuration = (topicResetTimeMill - System.currentTimeMillis()).toDuration(DurationUnit.MILLISECONDS)
-    return when(topicSelectType) {
+    return when (topicSelectType) {
         DailyTopicListModel.TopicSelectType.ONE_CHOICE -> {
             if (topics.isEmpty()) throw Exception("TopicSizeException")
             TopicSelectUiModel.OneTopic(

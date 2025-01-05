@@ -72,7 +72,6 @@ dependencies {
     implementation(libs.jetpack.compose.coil)
     implementation(libs.jetpack.coil.svg)
     implementation(libs.jetpack.compose.foundation)
-    
     implementation(libs.app.compat.theme.adpater)
 
     implementation(libs.lottie.compose)

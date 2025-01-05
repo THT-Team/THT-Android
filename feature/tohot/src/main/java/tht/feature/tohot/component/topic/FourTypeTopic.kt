@@ -61,7 +61,7 @@ fun FourTypeTopic(
                 shape = RoundedCornerShape(56.dp)
             )
             .padding(horizontal = 24.dp, vertical = 16.dp)
-            .alpha(if (isSelect || !hasSelectTopic) 100f else 0.4f),
+            .alpha(if (isSelect || !hasSelectTopic) 100f else 0.4f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -88,7 +88,6 @@ fun FourTypeTopic(
             color = colorResource(id = R.color.white_f9fafa),
             textAlign = TextAlign.Center
         )
-
     }
 }
 

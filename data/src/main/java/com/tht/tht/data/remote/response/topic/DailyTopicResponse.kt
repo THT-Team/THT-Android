@@ -28,8 +28,10 @@ data class DailyTopicResponse(
     enum class TopicSelectType {
         @SerializedName("oneChoice")
         ONE_CHOICE,
+
         @SerializedName("twoChoice")
         TWO_CHOICE,
+
         @SerializedName("fourChoice")
         FOUR_CHOICE
     }
