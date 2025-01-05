@@ -36,7 +36,6 @@ class FetchToHotStateUseCase(
                 lastUserDailyFallingCourserIdx = lastUserDailyFallingCourserIdx,
                 size = size
             ).getOrThrow()
-//                .copy(selectTopicIdx = -1) //TODO: Remove -> TestCode
 
             val topicInfo = ToHotStateModel.TopicInfo(
                 selectTopic = topic.topics.firstOrNull { it.idx == userCards.selectTopicIdx },
