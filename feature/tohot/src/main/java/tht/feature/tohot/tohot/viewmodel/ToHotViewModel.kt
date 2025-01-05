@@ -395,15 +395,7 @@ class ToHotViewModel @Inject constructor(
         Log.d(TAG, "userChangeEvent => $userIdx")
         if (userIdx !in currentUserListRange) return
         with(store.state.value) {
-            val user = when (val card = store.state.value.cardList[userIdx]) {
-                is ToHotCardUiModel.Topic -> {
-                    // TODO: InvalidState
-                    return
-                }
-                is ToHotCardUiModel.User -> {
-                    card.user
-                }
-            }
+            val user = getUserOrNull(userIdx) ?: return
             if (!passedCardIdSet.contains(user.id)) {
                 passedCardIdSet.add(user.id)
                 val passUser = passedUserCardStack.push(user)
@@ -485,15 +477,7 @@ class ToHotViewModel @Inject constructor(
             return
         }
         if (idx !in store.state.value.cardList.indices) return
-        val user = when (val card = store.state.value.cardList[idx]) {
-            is ToHotCardUiModel.Topic -> {
-                // TODO: InvalidState
-                return
-            }
-            is ToHotCardUiModel.User -> {
-                card.user
-            }
-        }
+        val user = getUserOrNull(idx) ?: return
         viewModelScope.launch {
             heartLoading = true
             sendHeartUseCase(
@@ -531,15 +515,7 @@ class ToHotViewModel @Inject constructor(
             return
         }
         if (idx !in store.state.value.cardList.indices) return
-        val user = when (val card = store.state.value.cardList[idx]) {
-            is ToHotCardUiModel.Topic -> {
-                // TODO: InvalidState
-                return
-            }
-            is ToHotCardUiModel.User -> {
-                card.user
-            }
-        }
+        val user = getUserOrNull(idx) ?: return
         viewModelScope.launch {
             heartLoading = true
             sendDislikeUseCase(
@@ -572,15 +548,7 @@ class ToHotViewModel @Inject constructor(
 
     fun userHeartAnimationFinishEvent(idx: Int) {
         if (idx !in store.state.value.cardList.indices) return
-        val user = when (val card = store.state.value.cardList[idx]) {
-            is ToHotCardUiModel.Topic -> {
-                // TODO: InvalidState
-                return
-            }
-            is ToHotCardUiModel.User -> {
-                card.user
-            }
-        }
+        val user = getUserOrNull(idx) ?: return
         intent {
             reduce { it.copy(loading = ToHotLoading.Heart) }
             val res = userHeartApiResultChanel.receive()
@@ -709,15 +677,7 @@ class ToHotViewModel @Inject constructor(
 
     fun cardReportEvent(userIdx: Int, reasonIdx: Int) {
         if (userIdx !in store.state.value.cardList.indices) return
-        val user = when (val card = store.state.value.cardList[userIdx]) {
-            is ToHotCardUiModel.Topic -> {
-                // TODO: InvalidState
-                return
-            }
-            is ToHotCardUiModel.User -> {
-                card.user
-            }
-        }
+        val user = getUserOrNull(userIdx) ?: return
         intent {
             reduce { it.copy(loading = ToHotLoading.Report) }
             reportUserUseCase(
@@ -759,15 +719,7 @@ class ToHotViewModel @Inject constructor(
 
     fun cardBlockEvent(idx: Int) {
         if (idx !in store.state.value.cardList.indices) return
-        val user = when (val card = store.state.value.cardList[idx]) {
-            is ToHotCardUiModel.Topic -> {
-                // TODO: InvalidState
-                return
-            }
-            is ToHotCardUiModel.User -> {
-                card.user
-            }
-        }
+        val user = getUserOrNull(idx) ?: return
         intent {
             reduce { it.copy(loading = ToHotLoading.Block) }
             blockUserUseCase(userUuid = user.id)
@@ -897,6 +849,18 @@ class ToHotViewModel @Inject constructor(
             startAble = startAble,
             timerType = timerType
         )
+    }
+
+    private fun getUserOrNull(idx: Int): ToHotUserUiModel? {
+        return when (val card = store.state.value.cardList[idx]) {
+            is ToHotCardUiModel.User -> {
+                card.user
+            }
+            else -> {
+                // TODO: InvalidState
+                null
+            }
+        }
     }
 
     companion object {
