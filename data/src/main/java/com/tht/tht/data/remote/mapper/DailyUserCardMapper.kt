@@ -10,7 +10,11 @@ fun DailyUserCardResponse.UserInfo.IdealTypeResponse.toModel(): IdealTypeModel {
     return IdealTypeModel(
         title = name,
         key = idx,
-        emojiCode = emojiCode
+        emojiCode = if (emojiCode.startsWith("U+")) {
+            emojiCode.removePrefix("U+")
+        } else {
+            emojiCode
+        }
     )
 }
 
@@ -18,7 +22,11 @@ fun DailyUserCardResponse.UserInfo.InterestResponse.toModel(): InterestModel {
     return InterestModel(
         title = name,
         key = idx,
-        emojiCode = emojiCode
+        emojiCode = if (emojiCode.startsWith("U+")) {
+            emojiCode.removePrefix("U+")
+        } else {
+            emojiCode
+        }
     )
 }
 
