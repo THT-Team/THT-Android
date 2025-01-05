@@ -21,8 +21,12 @@ class FetchToHotStateUseCase(
         size: Int = 10
     ): Result<ToHotStateModel> {
         return kotlin.runCatching {
-            val topicCachedFromLocal = topicRepository.fetchDailyTopicFromLocal()
-            val topic = if (now > topicCachedFromLocal.topicResetTimeMill) {
+            val topicCachedFromLocal = runCatching {
+                topicRepository.fetchDailyTopicFromLocal()
+            }.getOrNull()
+            val topic = if (
+                topicCachedFromLocal == null || now > topicCachedFromLocal.topicResetTimeMill
+            ) {
                 fetchDailyTopicListUseCase().getOrThrow()
             } else {
                 topicCachedFromLocal
