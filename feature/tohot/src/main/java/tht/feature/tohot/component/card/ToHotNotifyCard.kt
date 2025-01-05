@@ -2,6 +2,7 @@ package tht.feature.tohot.component.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -36,10 +38,25 @@ fun ToHotNotifyCard(
     Column(
         modifier = modifier
             .background(
-                colorResource(id = tht.core.ui.R.color.black_222222)
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        colorResource(tht.core.ui.R.color.black_1D1D1D),
+                        colorResource(tht.core.ui.R.color.black_161616),
+                        colorResource(tht.core.ui.R.color.black_1D1D1D)
+                    )
+                ),
+                shape = RoundedCornerShape(12.dp)
             )
-            .fillMaxSize()
-            .clip(RoundedCornerShape(12.dp))
+            .border(
+                width = 1.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        colorResource(tht.core.ui.R.color.gray_414141).copy(alpha = 0.3f),
+                        colorResource(tht.core.ui.R.color.black_1A1A1A).copy(alpha = 0.9f)
+                    )
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
     ) {
         ToHotEmptyTimeProgressContainer(
             modifier = Modifier
@@ -97,6 +114,10 @@ fun ToHotNotifyCard(
 @Preview
 private fun ToHotNotifyCardPreview() {
     ToHotNotifyCard(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp)
+            .clip(RoundedCornerShape(12.dp)),
         image = painterResource(id = R.drawable.ic_mudy_none_initial_user),
         title = "가나다라마바사",
         description = "preview",

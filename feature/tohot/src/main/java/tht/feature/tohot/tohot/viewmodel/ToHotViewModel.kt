@@ -8,9 +8,9 @@ import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
+import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.tohot.ToHotStateModel
 import com.tht.tht.domain.token.model.NeedLogoutException
-import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.SendDislikeUseCase
@@ -114,6 +114,11 @@ class ToHotViewModel @Inject constructor(
                 .onSuccess { toHotState ->
                     reduce {
                         toHotState.toUiState(it, autoRunToHot)
+                    }
+                    if (autoRunToHot) {
+                        tryScrollToNext(
+                            currentIdx = store.state.value.enableTimerIdx
+                        )
                     }
                 }.onFailure { e ->
                     e.printStackTrace()
@@ -341,10 +346,9 @@ class ToHotViewModel @Inject constructor(
             selectTopicIdx = store.state.value.topic.selectTopicIdx
         )
         if (selectTopic == null || selectTopic.idx < 0) return
-
         intent {
             reduce { it.copy(loading = ToHotLoading.TopicSelect) }
-            selectTopicUseCase(topicIdx = selectTopic.idx)
+            selectTopicUseCase.invoke(topicIdx = selectTopic.idx)
                 .unWrapTokenException()
                 .onSuccess {
                     when (it) {
@@ -352,7 +356,7 @@ class ToHotViewModel @Inject constructor(
                             reduce { state ->
                                 state.copy(
                                     topic = state.topic.copy(
-                                        selectTopicIdx = -1,
+                                        selectTopicIdx = selectTopic.idx,
                                         currentTopic = selectTopic
                                     ),
                                     loading = ToHotLoading.None,

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tht.tht.domain.signup.model.IdealTypeModel
@@ -72,9 +70,7 @@ fun ToHotCard(
     }
 
     FallingCard(
-        modifier = modifier
-            .fillMaxSize()
-            .clip(RoundedCornerShape(12.dp)),
+        modifier = modifier,
         fallingProgress = fallingAnimatedProgress.value
     ) {
         ToHotCardImagePager(
