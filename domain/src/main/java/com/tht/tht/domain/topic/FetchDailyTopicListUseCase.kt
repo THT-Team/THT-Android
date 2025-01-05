@@ -1,5 +1,7 @@
 package com.tht.tht.domain.topic
 
+import com.tht.tht.domain.tohot.DailyTopicListModel
+
 class FetchDailyTopicListUseCase(
     private val repository: DailyTopicRepository
 ) {

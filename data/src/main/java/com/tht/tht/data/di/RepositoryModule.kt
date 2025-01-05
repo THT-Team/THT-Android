@@ -13,7 +13,7 @@ import com.tht.tht.data.repository.SignupRepositoryImpl
 import com.tht.tht.data.repository.TokenRepositoryImpl
 import com.tht.tht.data.repository.UserSettingRepositoryImpl
 import com.tht.tht.domain.chat.repository.ChatRepository
-import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
+import com.tht.tht.domain.tohot.DailyUserCardRepository
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.image.ImageRepository
 import com.tht.tht.domain.login.repository.LoginRepository

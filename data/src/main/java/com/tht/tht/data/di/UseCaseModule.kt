@@ -2,8 +2,6 @@ package com.tht.tht.data.di
 
 import com.tht.tht.domain.chat.repository.ChatRepository
 import com.tht.tht.domain.chat.usecase.GetChatListUseCase
-import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
-import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
 import com.tht.tht.domain.image.ImageRepository
@@ -19,7 +17,24 @@ import com.tht.tht.domain.setting.usecase.FetchSettingManageItemsUseCase
 import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
-import com.tht.tht.domain.signup.usecase.*
+import com.tht.tht.domain.signup.usecase.CheckLoginEnableUseCase
+import com.tht.tht.domain.signup.usecase.CheckNicknameDuplicateUseCase
+import com.tht.tht.domain.signup.usecase.CreateSignupUserUseCase
+import com.tht.tht.domain.signup.usecase.FetchCurrentLocationUseCase
+import com.tht.tht.domain.signup.usecase.FetchIdealTypeUseCase
+import com.tht.tht.domain.signup.usecase.FetchInterestUseCase
+import com.tht.tht.domain.signup.usecase.FetchLocationByAddressUseCase
+import com.tht.tht.domain.signup.usecase.FetchRegionCodeUseCase
+import com.tht.tht.domain.signup.usecase.FetchSignupUserUseCase
+import com.tht.tht.domain.signup.usecase.FetchTermsUseCase
+import com.tht.tht.domain.signup.usecase.PatchLocationUseCase
+import com.tht.tht.domain.signup.usecase.PatchSignupDataUseCase
+import com.tht.tht.domain.signup.usecase.RemoveSignupUserUseCase
+import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
+import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
+import com.tht.tht.domain.signup.usecase.RequestSignupUseCase
+import com.tht.tht.domain.tohot.DailyUserCardRepository
+import com.tht.tht.domain.tohot.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
@@ -272,10 +287,10 @@ object UseCaseModule {
     @Provides
     fun provideFetchToHotStateUseCase(
         topicRepository: DailyTopicRepository,
-        userCardRepository: DailyUserCardRepository,
+        fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
         fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
     ): FetchToHotStateUseCase =
-        FetchToHotStateUseCase(topicRepository, userCardRepository, fetchDailyTopicListUseCase)
+        FetchToHotStateUseCase(topicRepository, fetchDailyUserCardUseCase, fetchDailyTopicListUseCase)
 
     @Provides
     fun provideReportUserUseCase(

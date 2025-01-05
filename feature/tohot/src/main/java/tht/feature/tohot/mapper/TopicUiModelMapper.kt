@@ -1,6 +1,6 @@
 package tht.feature.tohot.mapper
 
-import com.tht.tht.domain.topic.DailyTopicListModel
+import com.tht.tht.domain.tohot.DailyTopicListModel
 import com.tht.tht.domain.topic.DailyTopicModel
 import kotlinx.collections.immutable.toImmutableList
 import tht.feature.tohot.R
@@ -19,7 +19,6 @@ fun DailyTopicModel.toUiModel(): TopicUiModel {
     )
 }
 
-// TODO: 적용
 fun DailyTopicListModel.toUiModel(): TopicSelectUiModel {
     val topicExpiredDuration = (topicResetTimeMill - System.currentTimeMillis()).toDuration(DurationUnit.MILLISECONDS)
     return when(topicSelectType) {

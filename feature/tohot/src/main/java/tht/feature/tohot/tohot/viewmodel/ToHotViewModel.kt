@@ -7,10 +7,9 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
-import com.tht.tht.domain.dailyusercard.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
+import com.tht.tht.domain.tohot.ToHotStateModel
 import com.tht.tht.domain.token.model.NeedLogoutException
-import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 import com.tht.tht.domain.topic.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
@@ -23,7 +22,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tht.feature.tohot.StringProvider
-import tht.feature.tohot.mapper.toCardUiModel
 import tht.feature.tohot.mapper.toUiModel
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.MatchingUserUiModel
@@ -49,9 +47,7 @@ import kotlin.time.toDuration
 @HiltViewModel
 class ToHotViewModel @Inject constructor(
     private val fetchToHotStateUseCase: FetchToHotStateUseCase,
-    private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase,
     private val selectTopicUseCase: SelectTopicUseCase,
-    private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val reportUserUseCase: ReportUserUseCase,
     private val blockUserUseCase: BlockUserUseCase,
     private val sendHeartUseCase: SendHeartUseCase,
@@ -89,54 +85,35 @@ class ToHotViewModel @Inject constructor(
         get() = store.state.value.cardList.indices
 
     init {
-        fetchToHotState(autoRunToHot = false)
+        initializeToHotState(autoRunToHot = false)
+    }
+
+    private fun initializeToHotState(
+        autoRunToHot: Boolean
+    ) {
+        fetchToHotState(
+            autoRunToHot = autoRunToHot,
+            passedUserIdList = emptyList(),
+            lastUserDailyFallingCourserIdx = null
+        )
     }
 
     private fun fetchToHotState(
-        autoRunToHot: Boolean
+        autoRunToHot: Boolean,
+        passedUserIdList: List<String>,
+        lastUserDailyFallingCourserIdx: Int?,
+        size: Int = CARD_SIZE
     ) {
         intent {
             reduce { it.copy(loading = ToHotLoading.TopicList) }
-            fetchToHotStateUseCase(
-                currentTimeMill = System.currentTimeMillis(),
-                size = CARD_SIZE
+            fetchToHotStateUseCase.invoke(
+                passedUserIdList = passedUserIdList,
+                lastUserDailyFallingCourserIdx = lastUserDailyFallingCourserIdx,
+                size = size
             ).unWrapTokenException()
                 .onSuccess { toHotState ->
                     reduce {
-                        val userCardList = toHotState.cards.toCardUiModel()
-                        val cardState = if (!toHotState.isAvailableTopic()) {
-                            ToHotCardState.NoneSelectTopic
-                        } else if (userCardList.isEmpty()) {
-                            ToHotCardState.NoneInitializeUser
-                        } else if (autoRunToHot) {
-                            ToHotCardState.Running
-                        } else {
-                            ToHotCardState.Enter
-                        }
-
-                        val cardList = if (cardState == ToHotCardState.NoneSelectTopic) {
-                            persistentListOf(ToHotCardUiModel.Topic(toHotState.topic.toUiModel()))
-                        } else {
-                            userCardList.toImmutableList()
-                        }
-
-                        it.copy(
-                            cardList = cardList,
-                            userCardState = cardState,
-                            timer = createDefaultTimer(),
-                            enableTimerIdx = 0,
-                            topic = ToHotState.TopicInfo(
-                                currentTopic = if (toHotState.selectTopic != null) {
-                                    toHotState.topic.topics.find { t ->
-                                        t.idx == toHotState.selectTopic?.idx
-                                    }?.toUiModel()
-                                } else {
-                                    null
-                                },
-                                selectTopicIdx = toHotState.selectTopic?.idx ?: -1,
-                                topicResetTimeMill = toHotState.topicResetTimeMill
-                            )
-                        )
+                        toHotState.toUiState(it, autoRunToHot)
                     }
                 }.onFailure { e ->
                     e.printStackTrace()
@@ -147,6 +124,49 @@ class ToHotViewModel @Inject constructor(
                     }
                 }
             reduce { it.copy(loading = ToHotLoading.None) }
+        }
+    }
+
+    private fun ToHotStateModel.toUiState(
+        prevState: ToHotState,
+        runnable: Boolean
+    ): ToHotState {
+        val cardList = this.cards.map { c -> c.toUiModel() }.toImmutableList()
+
+        val cardState = parseToHotCardState(
+            availableSelectTopic = this.topicInfo.isAvailableTopic(),
+            hasAnyUserCard = cardList.any { c -> c is ToHotCardUiModel.User },
+            runnable = runnable
+        )
+
+        return prevState.let {
+            it.copy(
+                cardList = (it.cardList + cardList).toImmutableList(),
+                userCardState = cardState,
+                timer = createDefaultTimer(),
+                enableTimerIdx = it.enableTimerIdx, // 새로 초기화를 하는 시점이면 0 으로 되어있음
+                topic = ToHotState.TopicInfo(
+                    currentTopic = this.topicInfo.selectTopic?.toUiModel(),
+                    selectTopicIdx = this.topicInfo.selectTopic?.idx ?: -1,
+                    topicResetTimeMill = this.topicInfo.topicResetTimeMill
+                )
+            )
+        }
+    }
+
+    private fun parseToHotCardState(
+        availableSelectTopic: Boolean,
+        hasAnyUserCard: Boolean,
+        runnable: Boolean
+    ): ToHotCardState {
+        return if (!availableSelectTopic) {
+            ToHotCardState.NoneSelectTopic
+        } else if (!hasAnyUserCard) {
+            ToHotCardState.NoneInitializeUser
+        } else if (runnable) {
+            ToHotCardState.Running
+        } else {
+            ToHotCardState.Enter
         }
     }
 
@@ -222,20 +242,18 @@ class ToHotViewModel @Inject constructor(
      * 대기 하며 유저 조회
      */
     private suspend fun queryUserCard() {
-        //TODO: Topic Expire Check?
         val lastUserIdx = if (passedUserCardStack.empty()) null else passedUserCardStack.peek().idx
-        fetchDailyUserCardUseCase(
+        fetchToHotStateUseCase.invoke(
             passedUserIdList = passedUserCardStack.map { it.id }.toList(),
             lastUserDailyFallingCourserIdx = lastUserIdx,
             size = CARD_SIZE
         ).unWrapTokenException()
-            .onSuccess { dailyUserCardList ->
+            .onSuccess { toHotState ->
                 intent {
                     reduce {
-                        val cardList = store.state.value.cardList + dailyUserCardList.toCardUiModel()
-                        it.copy(
-                            cardList = cardList.toImmutableList(),
-                            timer = createDefaultTimer()
+                        toHotState.toUiState(
+                            prevState = it,
+                            runnable = true
                         )
                     }
                 }
@@ -247,42 +265,37 @@ class ToHotViewModel @Inject constructor(
     /**
      * 페이징 - 마지막 Index Card 에서 페이징 요청
      */
-    private suspend fun fetchNextUserCard(lastUserIdx: Int? = null) {
-        // TODO: Check Topic Expire
+    private fun fetchNextUserCard(lastUserIdx: Int? = null) {
         pagingLoading = lastUserIdx != null
-        if (!pagingLoading) intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
-        fetchDailyUserCardUseCase(
-            passedUserIdList = passedUserCardStack.map { it.id }.toList(),
-            lastUserDailyFallingCourserIdx = lastUserIdx,
-            size = CARD_SIZE
-        ).unWrapTokenException()
-            .onSuccess { dailyUserCardList ->
-                intent {
+        intent {
+            if (!pagingLoading) reduce { it.copy(loading = ToHotLoading.UserList) }
+
+            fetchToHotStateUseCase.invoke(
+                passedUserIdList = passedUserCardStack.map { it.id }.toList(),
+                lastUserDailyFallingCourserIdx = lastUserIdx,
+                size = CARD_SIZE
+            ).unWrapTokenException()
+                .onSuccess { toHotState ->
                     reduce {
-                        val cardList = store.state.value.cardList + dailyUserCardList.toCardUiModel()
+                        toHotState.toUiState(
+                            prevState = it,
+                            runnable = true
+                        )
+                    }
+                }.onFailure { e ->
+                    e.printStackTrace()
+                    reduce {
                         it.copy(
-                            cardList = cardList.toImmutableList(),
-                            userCardState = ToHotCardState.Running,
-                            enableTimerIdx = if (pagingLoading) it.enableTimerIdx else 0,
-                            loading = ToHotLoading.None
+                            userCardState = ToHotCardState.Error
                         )
                     }
                 }
-            }.onFailure { e ->
-                e.printStackTrace()
-                intent {
-                    reduce {
-                        it.copy(
-                            userCardState = ToHotCardState.Error,
-                            loading = ToHotLoading.None
-                        )
-                    }
-                }
+            reduce { it.copy(loading = ToHotLoading.None) }
+            if (pagingLoading) {
+                pagingLoading = false
+                delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
+                fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
             }
-        if (pagingLoading) {
-            pagingLoading = false
-            delay(100) // state update가 pagerState에 반영되기 이전이라, delay를 통해 pagerState 반영을 대기. 더 우아한 방법은?
-            fetchUserListPagingResultChannel.trySend(Unit) // receive 대기 중 이면 success, 아니면 fail
         }
     }
 
@@ -342,10 +355,11 @@ class ToHotViewModel @Inject constructor(
                                         selectTopicIdx = -1,
                                         currentTopic = selectTopic,
                                     ),
-                                    loading = ToHotLoading.None
+                                    loading = ToHotLoading.None,
+                                    enableTimerIdx = 0
                                 )
                             }
-                            fetchToHotState(autoRunToHot = true)
+                            initializeToHotState(autoRunToHot = true)
                         }
                         else -> postSideEffect(
                             ToHotSideEffect.ToastMessage(

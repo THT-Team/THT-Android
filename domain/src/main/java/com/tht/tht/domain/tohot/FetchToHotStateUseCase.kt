@@ -1,51 +1,57 @@
 package com.tht.tht.domain.tohot
 
-import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
 import com.tht.tht.domain.topic.DailyTopicRepository
 import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
 
 /**
- *  1. DailyUserCardRepository 조회
- *   - 금일 동일 토픽을 선택한 User 목록 조회
- *   - 금일 내가 선택한 주제어 idx 조회 -> 주제어 목록에서 selectTopicIdx로 금일 내가 선택한 주제어 정보 확인 가능
+ * 1. Topic 정보 조회 + 오늘 선택한 Topic 상태 확인
+ *  - FetchDailyUserCardUseCase 에서 selectTopicIdx 를 확인 가능
+ *  - FetchDailyTopicListUseCase 에서 DailyTopic 정보 확인 가능
  *
- *  2. Local에 캐싱한 주제어 목록 정보 조회
- *   - 만료되었다면 Remote에서 새로 불러옴
- *   - selectTopicIdx가 음수면 Remote에서 새로 불러옴
- *  3.
+ * 2. SelectTopicState 에 따라서 다음 Card 데이터 리턴
+ * - 유효 하다면 UserListCard
+ * - 유효 하지 않다면 TopicSelectCard
  */
 class FetchToHotStateUseCase(
     private val topicRepository: DailyTopicRepository,
-    private val userCardRepository: DailyUserCardRepository,
+    private val fetchDailyUserCardUseCase: FetchDailyUserCardUseCase,
     private val fetchDailyTopicListUseCase: FetchDailyTopicListUseCase
 ) {
     suspend operator fun invoke(
-        currentTimeMill: Long,
+        passedUserIdList: List<String>,
+        lastUserDailyFallingCourserIdx: Int?,
+        now: Long = System.currentTimeMillis(),
         size: Int = 10
     ): Result<ToHotStateModel> {
         return kotlin.runCatching {
-            val userCards = userCardRepository.fetchDailyUserCard(
-                passedUserIdList = emptyList(),
-                lastUserDailyFallingCourserIdx = null,
-                size = size
-            ).copy(
-                selectTopicIdx = -1 //TODO: Remove -> TestCode
-            )
-            val topic = kotlin.runCatching {
-                val localTopic = topicRepository.fetchDailyTopicFromLocal()
-                when {
-                    currentTimeMill > localTopic.topicResetTimeMill -> throw Exception("Topic Expired")
-                    userCards.selectTopicIdx < 0 -> throw Exception("None Select Topic")
-                }
-                localTopic
-            }.getOrNull() ?: kotlin.run {
+            val topicCachedFromLocal = topicRepository.fetchDailyTopicFromLocal()
+            val topic = if (now > topicCachedFromLocal.topicResetTimeMill) {
                 fetchDailyTopicListUseCase().getOrThrow()
+            } else {
+                topicCachedFromLocal
             }
-            ToHotStateModel(
-                topic = topic,
+
+            val userCards = fetchDailyUserCardUseCase.invoke(
+                passedUserIdList = passedUserIdList,
+                lastUserDailyFallingCourserIdx = lastUserDailyFallingCourserIdx,
+                size = size
+            ).getOrThrow()
+//                .copy(selectTopicIdx = -1) //TODO: Remove -> TestCode
+
+            val topicInfo = ToHotStateModel.TopicInfo(
                 selectTopic = topic.topics.firstOrNull { it.idx == userCards.selectTopicIdx },
                 topicResetTimeMill = userCards.topicResetTimeMill,
-                cards = userCards.cards
+            )
+
+            val cards: List<ToHotCardModel> = if (topicInfo.isAvailableTopic(now)) {
+                userCards.cards
+            } else {
+                listOf(topic)
+            }
+
+            ToHotStateModel(
+                topicInfo = topicInfo,
+                cards = cards
             )
         }
     }

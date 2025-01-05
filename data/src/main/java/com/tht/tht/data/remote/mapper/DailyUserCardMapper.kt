@@ -1,8 +1,8 @@
 package com.tht.tht.data.remote.mapper
 
 import com.tht.tht.data.remote.response.dailyusercard.DailyUserCardResponse
-import com.tht.tht.domain.dailyusercard.DailyUserCardListModel
-import com.tht.tht.domain.dailyusercard.DailyUserCardModel
+import com.tht.tht.domain.tohot.DailyUserCardListModel
+import com.tht.tht.domain.tohot.DailyUserCardModel
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
 

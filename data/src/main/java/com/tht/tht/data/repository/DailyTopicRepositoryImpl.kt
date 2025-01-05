@@ -3,7 +3,7 @@ package com.tht.tht.data.repository
 import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSource
 import com.tht.tht.data.remote.mapper.toEntity
 import com.tht.tht.data.remote.mapper.toModel
-import com.tht.tht.domain.topic.DailyTopicListModel
+import com.tht.tht.domain.tohot.DailyTopicListModel
 import com.tht.tht.domain.topic.DailyTopicRepository
 import javax.inject.Inject
 

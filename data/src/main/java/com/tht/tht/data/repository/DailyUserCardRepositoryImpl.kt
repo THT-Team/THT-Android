@@ -3,8 +3,8 @@ package com.tht.tht.data.repository
 import com.tht.tht.data.remote.datasource.dailyusercard.DailyUserCardDataSource
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.data.remote.request.dailyusercard.DailyUserCardRequest
-import com.tht.tht.domain.dailyusercard.DailyUserCardListModel
-import com.tht.tht.domain.dailyusercard.DailyUserCardRepository
+import com.tht.tht.domain.tohot.DailyUserCardListModel
+import com.tht.tht.domain.tohot.DailyUserCardRepository
 import javax.inject.Inject
 
 class DailyUserCardRepositoryImpl @Inject constructor(
