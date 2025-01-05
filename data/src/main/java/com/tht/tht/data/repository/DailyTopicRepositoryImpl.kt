@@ -4,7 +4,7 @@ import com.tht.tht.data.remote.datasource.topic.DailyTopicDataSource
 import com.tht.tht.data.remote.mapper.toEntity
 import com.tht.tht.data.remote.mapper.toModel
 import com.tht.tht.domain.tohot.DailyTopicListModel
-import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.tohot.DailyTopicRepository
 import javax.inject.Inject
 
 class DailyTopicRepositoryImpl @Inject constructor(

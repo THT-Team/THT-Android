@@ -10,7 +10,7 @@ import com.example.compose_ui.common.viewmodel.store
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
 import com.tht.tht.domain.tohot.ToHotStateModel
 import com.tht.tht.domain.token.model.NeedLogoutException
-import com.tht.tht.domain.topic.SelectTopicUseCase
+import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
 import com.tht.tht.domain.user.SendDislikeUseCase

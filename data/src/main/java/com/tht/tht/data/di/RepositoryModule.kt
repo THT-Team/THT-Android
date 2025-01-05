@@ -23,7 +23,7 @@ import com.tht.tht.domain.signup.repository.LocationRepository
 import com.tht.tht.domain.signup.repository.RegionCodeRepository
 import com.tht.tht.domain.signup.repository.SignupRepository
 import com.tht.tht.domain.token.repository.TokenRepository
-import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.tohot.DailyTopicRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

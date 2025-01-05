@@ -42,9 +42,9 @@ import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
 import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
 import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
 import com.tht.tht.domain.token.token.RefreshThtAccessTokenUseCase
-import com.tht.tht.domain.topic.DailyTopicRepository
-import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
-import com.tht.tht.domain.topic.SelectTopicUseCase
+import com.tht.tht.domain.tohot.DailyTopicRepository
+import com.tht.tht.domain.tohot.FetchDailyTopicListUseCase
+import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.LogoutUseCase
 import com.tht.tht.domain.user.ReportUserUseCase

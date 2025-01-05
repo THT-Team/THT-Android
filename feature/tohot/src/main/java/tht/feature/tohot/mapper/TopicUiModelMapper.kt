@@ -1,7 +1,7 @@
 package tht.feature.tohot.mapper
 
 import com.tht.tht.domain.tohot.DailyTopicListModel
-import com.tht.tht.domain.topic.DailyTopicModel
+import com.tht.tht.domain.tohot.DailyTopicModel
 import kotlinx.collections.immutable.toImmutableList
 import tht.feature.tohot.R
 import tht.feature.tohot.model.TopicSelectUiModel

@@ -2,7 +2,7 @@ package com.tht.tht.data.remote.mapper
 
 import com.tht.tht.data.remote.response.topic.DailyTopicResponse
 import com.tht.tht.domain.tohot.DailyTopicListModel
-import com.tht.tht.domain.topic.DailyTopicModel
+import com.tht.tht.domain.tohot.DailyTopicModel
 
 fun DailyTopicResponse.toModel(): DailyTopicListModel {
     return DailyTopicListModel(

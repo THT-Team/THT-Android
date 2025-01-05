@@ -1,4 +1,4 @@
-package com.tht.tht.domain.topic
+package com.tht.tht.domain.tohot
 
 /**
  * Topic 의 idx 값을 보내야 함(keywordIdx 가 아닌 그냥 idx)

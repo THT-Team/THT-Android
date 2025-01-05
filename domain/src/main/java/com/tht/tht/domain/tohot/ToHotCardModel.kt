@@ -2,7 +2,6 @@ package com.tht.tht.domain.tohot
 
 import com.tht.tht.domain.signup.model.IdealTypeModel
 import com.tht.tht.domain.signup.model.InterestModel
-import com.tht.tht.domain.topic.DailyTopicModel
 
 sealed interface ToHotCardModel
 

@@ -1,8 +1,5 @@
 package com.tht.tht.domain.tohot
 
-import com.tht.tht.domain.topic.DailyTopicRepository
-import com.tht.tht.domain.topic.FetchDailyTopicListUseCase
-
 /**
  * 1. Topic 정보 조회 + 오늘 선택한 Topic 상태 확인
  *  - FetchDailyUserCardUseCase 에서 selectTopicIdx 를 확인 가능

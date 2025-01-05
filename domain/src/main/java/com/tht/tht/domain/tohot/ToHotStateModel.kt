@@ -1,7 +1,5 @@
 package com.tht.tht.domain.tohot
 
-import com.tht.tht.domain.topic.DailyTopicModel
-
 data class ToHotStateModel(
     val topicInfo: TopicInfo,
     val cards: List<ToHotCardModel>,

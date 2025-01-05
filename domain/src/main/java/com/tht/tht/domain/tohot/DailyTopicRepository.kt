@@ -1,6 +1,4 @@
-package com.tht.tht.domain.topic
-
-import com.tht.tht.domain.tohot.DailyTopicListModel
+package com.tht.tht.domain.tohot
 
 interface DailyTopicRepository {
     suspend fun fetchDailyTopic(): DailyTopicListModel
