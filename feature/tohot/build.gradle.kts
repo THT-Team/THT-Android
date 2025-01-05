@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.jetpack.compose.activity)
     implementation(libs.jetpack.compose.viewmodel)
     implementation(libs.jetpack.compose.coil)
+    implementation(libs.jetpack.coil.svg)
     implementation(libs.jetpack.compose.foundation)
     implementation(libs.app.compat.theme.adpater)
 

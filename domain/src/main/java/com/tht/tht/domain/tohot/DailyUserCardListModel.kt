@@ -1,7 +1,7 @@
-package com.tht.tht.domain.dailyusercard
+package com.tht.tht.domain.tohot
 
 data class DailyUserCardListModel(
-    val selectTopicKey: Int,
+    val selectTopicIdx: Int,
     val topicResetTimeMill: Long,
     val cards: List<DailyUserCardModel>
 )

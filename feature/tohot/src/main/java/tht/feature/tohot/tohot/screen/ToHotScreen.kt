@@ -12,18 +12,20 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import tht.feature.tohot.component.card.ToHotCard
 import tht.feature.tohot.component.card.ToHotEnterCard
 import tht.feature.tohot.component.card.ToHotErrorCard
 import tht.feature.tohot.component.card.ToHotNoneInitialUserCard
 import tht.feature.tohot.component.card.ToHotNoneNextUserCard
 import tht.feature.tohot.component.card.ToHotQuerySuccessCard
+import tht.feature.tohot.component.card.TopicSelectCard
 import tht.feature.tohot.component.toolbar.ToHotToolBar
 import tht.feature.tohot.component.toolbar.ToHotToolBarContent
 import tht.feature.tohot.mockUserList
 import tht.feature.tohot.model.CardTimerUiModel
-import tht.feature.tohot.model.ImmutableListWrapper
-import tht.feature.tohot.model.ToHotUserUiModel
+import tht.feature.tohot.model.ToHotCardUiModel
 import tht.feature.tohot.tohot.state.ToHotCardState
 import tht.feature.tohot.tohot.state.ToHotLoading
 import tht.feature.tohot.tohot.state.ToHotState
@@ -34,22 +36,22 @@ import kotlin.time.toDuration
 internal fun ToHotScreen(
     modifier: Modifier = Modifier,
     toHotCardState: ToHotCardState,
+    topicInfo: ToHotState.TopicInfo,
     pagerState: PagerState,
-    cardList: ImmutableListWrapper<ToHotUserUiModel>,
+    cardList: ImmutableList<ToHotCardUiModel>,
     timer: CardTimerUiModel,
     currentUserIdx: Int,
     cardMoveAllow: Boolean,
-    topicIconUrl: String?,
-    topicIconRes: Int?,
-    topicTitle: String?,
     hasUnReadAlarm: Boolean,
     fallingAnimationTargetIdx: Int,
     isHoldCard: Boolean,
     isShakingCard: Boolean,
+    onSelectTopic: (Int) -> Unit = { },
+    onClickConfirm: () -> Unit = { },
     onFallingAnimationFinish: (Int) -> Unit = { },
     topicSelectListener: () -> Unit = { },
     alarmClickListener: () -> Unit = { },
-    pageChanged: (Int) -> Unit,
+    onCardChange: (Int) -> Unit,
     onTimerEnd: (Int) -> Unit,
     onTicChanged: (Float, Int) -> Unit,
     onLikeClick: (Int) -> Unit = { },
@@ -65,9 +67,9 @@ internal fun ToHotScreen(
     ) {
         ToHotToolBar {
             ToHotToolBarContent(
-                topicIconUrl = topicIconUrl,
-                topicIconRes = topicIconRes,
-                topicTitle = topicTitle,
+                topicIconUrl = topicInfo.currentTopic?.iconUrl,
+                topicIconRes = topicInfo.currentTopic?.iconRes,
+                topicTitle = topicInfo.currentTopic?.title,
                 hasUnReadAlarm = hasUnReadAlarm,
                 topicSelectListener = topicSelectListener,
                 alarmClickListener = alarmClickListener
@@ -75,13 +77,13 @@ internal fun ToHotScreen(
         }
 
         when (toHotCardState) {
-            ToHotCardState.NoneSelectTopic -> ToHotEnterCard()
             ToHotCardState.Enter -> ToHotEnterCard(onClick = onEnterClick)
             ToHotCardState.NoneInitializeUser -> ToHotNoneInitialUserCard(onClick = onRefreshClick)
             ToHotCardState.NoneNextUser -> ToHotNoneNextUserCard(onClick = onRefreshClick)
             ToHotCardState.QuerySuccess -> ToHotQuerySuccessCard(onClick = onEnterClick)
             ToHotCardState.Error -> ToHotErrorCard(onClick = onRefreshClick)
 
+            ToHotCardState.NoneSelectTopic,
             ToHotCardState.Running -> {
                 VerticalPager(
                     userScrollEnabled = false,
@@ -89,46 +91,60 @@ internal fun ToHotScreen(
                     key = {
                         // List 가 업데이트 되기 이전에 PagerState.pageCount 블록이 업데이트 된 ListSize를 리턴해서 IndexOutOfBoundsException 발생
                         // 원인 파악을 아직 하지 못해서 임시 방편 처리
-                        if (it in cardList.list.indices) {
-                            cardList.list[it].id
+                        if (it in cardList.indices) {
+                            cardList[it].id
                         } else {
                             it
                         }
                     }
                 ) { idx ->
-                    val card = cardList.list[idx]
-                    val isCurrentCard = currentUserIdx == pagerState.currentPage &&
-                        idx == currentUserIdx
-                    ToHotCard(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
-                        imageUrls = card.profileImgUrl,
-                        name = card.nickname,
-                        age = card.age,
-                        address = card.address,
-                        interests = card.interests,
-                        idealTypes = card.idealTypes,
-                        introduce = card.introduce,
-                        timer = if (isCurrentCard) timer else null,
-                        enable = isCurrentCard && timer.startAble && cardMoveAllow,
-                        fallingAnimationEnable = idx == fallingAnimationTargetIdx,
-                        isHoldCard = isHoldCard,
-                        isShakingCard = isShakingCard,
-                        onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
-                        userCardClick = { },
-                        onReportMenuClick = onReportMenuClick,
-                        onTicChanged = { onTicChanged(it, idx) },
-                        onTimerEnd = { onTimerEnd(idx) },
-                        onLikeClick = { onLikeClick(idx) },
-                        onUnLikeClick = { onUnLikeClick(idx) },
-                        loadFinishListener = { s, e -> loadFinishListener(idx, s, e) },
-                        onHoldDoubleTab = onHoldDoubleTab
-                    )
+                    when (val card = cardList[idx]) {
+                        is ToHotCardUiModel.User -> {
+                            val isCurrentCard = currentUserIdx == pagerState.currentPage &&
+                                idx == currentUserIdx
+                            ToHotCard(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                                imageUrls = card.user.profileImgUrl,
+                                name = card.user.nickname,
+                                age = card.user.age,
+                                address = card.user.address,
+                                interests = card.user.interests,
+                                idealTypes = card.user.idealTypes,
+                                introduce = card.user.introduce,
+                                timer = if (isCurrentCard) timer else null,
+                                enable = isCurrentCard && timer.startAble && cardMoveAllow,
+                                fallingAnimationEnable = idx == fallingAnimationTargetIdx,
+                                isHoldCard = isHoldCard,
+                                isShakingCard = isShakingCard,
+                                onFallingAnimationFinish = { onFallingAnimationFinish(idx) },
+                                userCardClick = { },
+                                onReportMenuClick = onReportMenuClick,
+                                onTicChanged = { onTicChanged(it, idx) },
+                                onTimerEnd = { onTimerEnd(idx) },
+                                onLikeClick = { onLikeClick(idx) },
+                                onUnLikeClick = { onUnLikeClick(idx) },
+                                loadFinishListener = { s, e -> loadFinishListener(idx, s, e) },
+                                onHoldDoubleTab = onHoldDoubleTab
+                            )
+                        }
+
+                        is ToHotCardUiModel.Topic -> {
+                            TopicSelectCard(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(start = 14.dp, end = 14.dp, top = 6.dp, bottom = 14.dp),
+                                topicCard = card.topic,
+                                selectTopicIdx = topicInfo.selectTopicIdx,
+                                onSelectTopic = onSelectTopic,
+                                onClickConfirm = onClickConfirm
+                            )
+                        }
+                    }
                 }
                 LaunchedEffect(key1 = pagerState) {
-                    snapshotFlow { pagerState.currentPage }
-                        .collect { pageChanged(it) }
+                    snapshotFlow { pagerState.currentPage }.collect { onCardChange(it) }
                 }
             }
         }
@@ -139,7 +155,7 @@ internal fun ToHotScreen(
 @Preview
 fun ToHotScreenPreview() {
     val toHotState = ToHotState(
-        userList = ImmutableListWrapper(mockUserList.toList()),
+        cardList = mockUserList.toList().map { ToHotCardUiModel.User(it) }.toImmutableList(),
         userCardState = ToHotCardState.Running,
         timer = CardTimerUiModel(
             maxTimer = 5.toDuration(DurationUnit.NANOSECONDS),
@@ -149,36 +165,36 @@ fun ToHotScreenPreview() {
             startAble = true
         ),
         enableTimerIdx = 0,
-        cardMoveAllow = true,
+        cardVisibleState = ToHotState.CardVisibleState(
+            cardMoveAllow = true
+        ),
+        dialogState = ToHotState.DialogState(),
         loading = ToHotLoading.None,
-        selectTopicKey = -1,
-        currentTopic = null,
-        topicModalShow = false,
-        topicList = ImmutableListWrapper(emptyList()),
-        topicResetRemainingTime = "00:00:00",
-        topicResetTimeMill = 0,
+        topic = ToHotState.TopicInfo(
+            selectTopicIdx = -1,
+            currentTopic = null,
+            topicResetTimeMill = 0
+        ),
         hasUnReadAlarm = false
     )
     ToHotScreen(
-        cardList = toHotState.userList,
+        cardList = toHotState.cardList,
         toHotCardState = toHotState.userCardState,
         pagerState = rememberPagerState(
-            pageCount = { toHotState.userList.list.size }
+            pageCount = { toHotState.cardList.size }
         ),
         timer = toHotState.timer,
         currentUserIdx = toHotState.enableTimerIdx,
-        cardMoveAllow = toHotState.cardMoveAllow,
-        topicIconUrl = toHotState.currentTopic?.iconUrl,
-        topicIconRes = toHotState.currentTopic?.iconRes,
-        topicTitle = toHotState.currentTopic?.title,
+        cardMoveAllow = toHotState.cardVisibleState.cardMoveAllow,
+        topicInfo = toHotState.topic,
         hasUnReadAlarm = toHotState.hasUnReadAlarm,
-        fallingAnimationTargetIdx = toHotState.fallingAnimationIdx,
+        fallingAnimationTargetIdx = toHotState.cardVisibleState.fallingAnimationIdx,
         isHoldCard = false,
         isShakingCard = false,
         onFallingAnimationFinish = { },
         topicSelectListener = { },
         alarmClickListener = { },
-        pageChanged = { },
+        onCardChange = { },
         onTimerEnd = { },
         onTicChanged = { _, _ -> },
         loadFinishListener = { _, _, _ -> },

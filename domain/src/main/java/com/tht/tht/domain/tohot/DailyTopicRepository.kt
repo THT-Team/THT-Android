@@ -1,4 +1,4 @@
-package com.tht.tht.domain.topic
+package com.tht.tht.domain.tohot
 
 interface DailyTopicRepository {
     suspend fun fetchDailyTopic(): DailyTopicListModel

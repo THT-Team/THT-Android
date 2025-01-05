@@ -1,4 +1,4 @@
-package com.tht.tht.domain.dailyusercard
+package com.tht.tht.domain.tohot
 
 class FetchDailyUserCardUseCase(
     private val repository: DailyUserCardRepository
