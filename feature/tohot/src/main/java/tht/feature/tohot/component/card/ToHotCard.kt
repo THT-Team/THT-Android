@@ -72,9 +72,7 @@ fun ToHotCard(
     }
 
     FallingCard(
-        modifier = modifier
-            .fillMaxSize()
-            .clip(RoundedCornerShape(12.dp)),
+        modifier = modifier,
         fallingProgress = fallingAnimatedProgress.value
     ) {
         ToHotCardImagePager(
