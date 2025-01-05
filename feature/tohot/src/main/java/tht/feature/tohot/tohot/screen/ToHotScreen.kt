@@ -173,7 +173,7 @@ fun ToHotScreenPreview() {
         topic = ToHotState.TopicInfo(
             selectTopicIdx = -1,
             currentTopic = null,
-            topicResetTimeMill = 0,
+            topicResetTimeMill = 0
         ),
         hasUnReadAlarm = false
     )
