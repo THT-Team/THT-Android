@@ -186,6 +186,7 @@ class ToHotViewModel @Inject constructor(
      * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
     private fun tryScrollToNext(currentIdx: Int, animate: Boolean = true) {
+        Log.d(TAG, "tryScrollToNext -> $currentIdx")
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
                 intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
@@ -395,7 +396,7 @@ class ToHotViewModel @Inject constructor(
      * 중복 데이터 처리를 위해 passedCardIdSet 추가
      */
     fun onCardChange(userIdx: Int) {
-        Log.d(TAG, "userChangeEvent => $userIdx")
+        Log.d(TAG, "userChangeEvent => $userIdx, startAble: ${userCardLoadedIdxSet.contains(userIdx)}")
         if (userIdx !in currentUserListRange) return
         with(store.state.value) {
             val user = getUserOrNull(userIdx) ?: return
@@ -433,6 +434,10 @@ class ToHotViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 1. UserImage가 load완료 되었을 때 Load시작
+     * 2. Scroll되기 이전에 Image가 Load 완료 될 수 있음 -> userCardLoadedIdxSet 에 저장
+     */
     fun userCardLoadFinishEvent(idx: Int, result: Boolean, error: Throwable?) {
         Log.d(TAG, "userCardLoadFinishEvent => $idx, $result")
         error?.printStackTrace()

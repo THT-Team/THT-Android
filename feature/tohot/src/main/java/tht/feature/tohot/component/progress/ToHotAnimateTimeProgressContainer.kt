@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose_ui.common.LogComposition
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
@@ -38,7 +37,6 @@ fun ToHotAnimateTimeProgressContainer(
     completionDelay: Long = 0L
 ) {
     val coroutineScope = rememberCoroutineScope()
-    LogComposition("cwj_debug", "ToHotAnimateTimeProgressContainer")
     var progressState by remember { mutableStateOf(false) } // disActive
     LaunchedEffect(initialDelay, enable) {
         if (enable) {
