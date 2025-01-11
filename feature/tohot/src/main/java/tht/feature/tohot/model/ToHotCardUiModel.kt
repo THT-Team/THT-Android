@@ -27,6 +27,18 @@ sealed interface ToHotCardUiModel {
     data object NoneNextUser : ToHotCardUiModel {
         override val id = "NoneNextUser_${UUID.randomUUID()}"
     }
+
+    @Immutable
+    data class Error(
+        val errorType: ErrorType
+    ) : ToHotCardUiModel {
+        override val id: String = "Error${UUID.randomUUID()}"
+
+        sealed interface ErrorType {
+            data class Custom(val error: Throwable) : ErrorType
+            data object NoneUserIndex : ErrorType
+        }
+    }
 }
 
 fun List<ToHotCardUiModel>.hasAnyUser(): Boolean {

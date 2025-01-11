@@ -123,6 +123,12 @@ internal fun ToHotScreen(
                                 onClick = onRefreshClick
                             )
                         }
+                        is ToHotCardUiModel.Error -> {
+                            ToHotErrorCard(
+                                modifier = cardModifier,
+                                onClick = onRefreshClick
+                            )
+                        }
                         is ToHotCardUiModel.User -> {
                             val isCurrentCard = currentUserIdx == pagerState.currentPage &&
                                 idx == currentUserIdx

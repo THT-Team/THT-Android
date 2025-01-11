@@ -121,9 +121,7 @@ class ToHotViewModel @Inject constructor(
                         )
                     }
                     if (autoRunToHot) {
-                        tryScrollToNext(
-                            currentIdx = store.state.value.enableTimerIdx
-                        )
+                        tryScrollToNext(currentIdx = store.state.value.currentIdx)
                     }
                 }.onFailure { e ->
                     e.printStackTrace()
@@ -191,7 +189,7 @@ class ToHotViewModel @Inject constructor(
      * -> 이때 passedUserStack 을 초기화 해서는 안됨
      */
     private fun tryScrollToNext(currentIdx: Int, animate: Boolean = true) {
-        Log.d(TAG, "tryScrollToNext -> $currentIdx")
+        Log.d(TAG, "tryScrollToNext => currentIdx: $currentIdx")
         viewModelScope.launch {
             if ((currentIdx + 1) !in currentUserListRange && pagingLoading) {
                 intent { reduce { it.copy(loading = ToHotLoading.UserList) } }
@@ -205,11 +203,13 @@ class ToHotViewModel @Inject constructor(
                     )
                 }
                 else -> {
+                    val errorCard = ToHotCardUiModel.Error(
+                        errorType = ToHotCardUiModel.Error.ErrorType.NoneUserIndex
+                    )
                     intent {
                         reduce {
                             it.copy(
-                                cardList = (it.cardList + ToHotCardUiModel.NoneNextUser).toImmutableList(),
-                                enableTimerIdx = 0
+                                cardList = (it.cardList + errorCard).toImmutableList()
                             )
                         }
                     }
@@ -219,12 +219,29 @@ class ToHotViewModel @Inject constructor(
     }
 
     fun enterEvent() {
+        val needScrollToNext = with (store.state.value) {
+            if (currentIdx in currentUserListRange) {
+                val currentCard = cardList[currentIdx]
+                Log.d(TAG, "current[$currentIdx] -> $currentCard")
+                when (currentCard) {
+                    is ToHotCardUiModel.User -> false
+                    is ToHotCardUiModel.Error -> true
+                    is ToHotCardUiModel.Topic -> false
+                    ToHotCardUiModel.NoneNextUser -> true
+                }
+            } else {
+                false
+            }
+        }
         intent {
             reduce {
                 it.copy(
                     userCardState = ToHotCardState.Running
                 )
             }
+        }
+        if (needScrollToNext) {
+            tryScrollToNext(currentIdx = store.state.value.currentIdx)
         }
     }
 
@@ -268,7 +285,7 @@ class ToHotViewModel @Inject constructor(
                         toHotState.toUiState(
                             prevState = it,
                             runnable = true,
-                            isRunning = false,
+                            isRunning = false
                         )
                     }
                 }
@@ -295,14 +312,17 @@ class ToHotViewModel @Inject constructor(
                         toHotState.toUiState(
                             prevState = it,
                             runnable = true,
-                            isRunning = true,
+                            isRunning = true
                         )
                     }
                 }.onFailure { e ->
                     e.printStackTrace()
                     reduce {
+                        val errorCard = ToHotCardUiModel.Error(
+                            errorType = ToHotCardUiModel.Error.ErrorType.NoneUserIndex
+                        )
                         it.copy(
-                            userCardState = ToHotCardState.Error
+                            cardList = (it.cardList + errorCard).toImmutableList()
                         )
                     }
                 }
@@ -405,8 +425,8 @@ class ToHotViewModel @Inject constructor(
     fun onCardChange(userIdx: Int) {
         Log.d(TAG, "userChangeEvent => $userIdx, startAble: ${userCardLoadedIdxSet.contains(userIdx)}")
         if (userIdx !in currentUserListRange) return
-        with(store.state.value) {
-            val user = getUserOrNull(userIdx) ?: return
+        val user = getUserOrNull(userIdx)
+        if (user != null) {
             if (!passedCardIdSet.contains(user.id)) {
                 passedCardIdSet.add(user.id)
                 val passUser = passedUserCardStack.push(user)
