@@ -2,6 +2,7 @@ package tht.feature.tohot.tohot.state
 
 import androidx.compose.runtime.Immutable
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import tht.feature.tohot.model.CardTimerUiModel
 import tht.feature.tohot.model.MatchingUserUiModel
 import tht.feature.tohot.model.ToHotCardUiModel
@@ -20,6 +21,11 @@ data class ToHotState(
     val hasUnReadAlarm: Boolean,
     val loginAvailable: Boolean = true // 로그인 유효성
 ) {
+    val currentIdx = enableTimerIdx
+
+    fun simpleLog(): String {
+        return this.copy(cardList = persistentListOf()).toString()
+    }
     @Immutable
     data class CardVisibleState(
         val cardMoveAllow: Boolean, // card suspend 기능. false 일 경우 Timer 중단. Dialog 등이 표시 될 때 사용
