@@ -114,7 +114,11 @@ class ToHotViewModel @Inject constructor(
             ).unWrapTokenException()
                 .onSuccess { toHotState ->
                     reduce {
-                        toHotState.toUiState(it, autoRunToHot)
+                        toHotState.toUiState(
+                            prevState = it,
+                            runnable = autoRunToHot,
+                            isRunning = false
+                        )
                     }
                     if (autoRunToHot) {
                         tryScrollToNext(
@@ -135,7 +139,8 @@ class ToHotViewModel @Inject constructor(
 
     private fun ToHotStateModel.toUiState(
         prevState: ToHotState,
-        runnable: Boolean
+        runnable: Boolean,
+        isRunning: Boolean,
     ): ToHotState {
         val newCards = this.cards.map { c -> c.toUiModel() }.toMutableList()
         if (prevState.cardList.hasAnyUser() && newCards.isEmpty()) {
@@ -152,7 +157,7 @@ class ToHotViewModel @Inject constructor(
             it.copy(
                 cardList = (it.cardList + newCards).toImmutableList(),
                 userCardState = cardState,
-                timer = createDefaultTimer(),
+                timer = createDefaultTimer(startAble = isRunning),
                 enableTimerIdx = it.enableTimerIdx, // 새로 초기화를 하는 시점이면 0 으로 되어있음
                 topic = ToHotState.TopicInfo(
                     currentTopic = this.topicInfo.selectTopic?.toUiModel(),
@@ -262,7 +267,8 @@ class ToHotViewModel @Inject constructor(
                     reduce {
                         toHotState.toUiState(
                             prevState = it,
-                            runnable = true
+                            runnable = true,
+                            isRunning = false,
                         )
                     }
                 }
@@ -288,7 +294,8 @@ class ToHotViewModel @Inject constructor(
                     reduce {
                         toHotState.toUiState(
                             prevState = it,
-                            runnable = true
+                            runnable = true,
+                            isRunning = true,
                         )
                     }
                 }.onFailure { e ->
