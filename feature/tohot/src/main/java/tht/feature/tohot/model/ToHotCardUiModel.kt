@@ -1,7 +1,6 @@
 package tht.feature.tohot.model
 
 import androidx.compose.runtime.Immutable
-import com.tht.tht.domain.tohot.ToHotCardModel
 import java.util.UUID
 
 @Immutable
@@ -24,8 +23,10 @@ sealed interface ToHotCardUiModel {
 
     // 페이징 중 다음 유저 없는 경우
     @Immutable
-    data object NoneNextUser : ToHotCardUiModel {
-        override val id = "NoneNextUser_${UUID.randomUUID()}"
+    data class NoneNextUser(
+        val key: String = UUID.randomUUID().toString()
+    ) : ToHotCardUiModel {
+        override val id = "NoneNextUser_$key"
     }
 
     @Immutable

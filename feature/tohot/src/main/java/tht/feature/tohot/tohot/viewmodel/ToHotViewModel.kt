@@ -142,7 +142,7 @@ class ToHotViewModel @Inject constructor(
     ): ToHotState {
         val newCards = this.cards.map { c -> c.toUiModel() }.toMutableList()
         if (prevState.cardList.hasAnyUser() && newCards.isEmpty()) {
-            newCards.add(ToHotCardUiModel.NoneNextUser)
+            newCards.add(ToHotCardUiModel.NoneNextUser())
         }
 
         val cardState = parseToHotCardState(
@@ -227,7 +227,7 @@ class ToHotViewModel @Inject constructor(
                     is ToHotCardUiModel.User -> false
                     is ToHotCardUiModel.Error -> true
                     is ToHotCardUiModel.Topic -> false
-                    ToHotCardUiModel.NoneNextUser -> true
+                    is ToHotCardUiModel.NoneNextUser -> true
                 }
             } else {
                 false
