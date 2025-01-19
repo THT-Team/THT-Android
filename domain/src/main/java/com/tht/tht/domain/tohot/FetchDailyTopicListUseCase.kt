@@ -1,4 +1,4 @@
-package com.tht.tht.domain.topic
+package com.tht.tht.domain.tohot
 
 class FetchDailyTopicListUseCase(
     private val repository: DailyTopicRepository

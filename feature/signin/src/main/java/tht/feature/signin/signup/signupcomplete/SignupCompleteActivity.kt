@@ -38,7 +38,6 @@ class SignupCompleteActivity : AppCompatActivity() {
             val state by viewModel.uiStateFlow.collectAsState()
             SignupCompleteScreen(
                 loading = state.loading,
-                btnEnable = !state.profileImage.isNullOrBlank() && state.error != null && !state.loading,
                 profileImage = state.profileImage,
                 onComplete = viewModel::onCompleteEvent
             )

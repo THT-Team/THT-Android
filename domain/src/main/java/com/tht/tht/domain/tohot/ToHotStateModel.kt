@@ -1,12 +1,15 @@
 package com.tht.tht.domain.tohot
 
-import com.tht.tht.domain.dailyusercard.DailyUserCardModel
-import com.tht.tht.domain.topic.DailyTopicListModel
-
 data class ToHotStateModel(
-    val topic: DailyTopicListModel,
-    val topicResetTimeMill: Long,
-    val selectTopicKey: Int,
-    val cards: List<DailyUserCardModel>,
-    val needSelectTopic: Boolean
-)
+    val topicInfo: TopicInfo,
+    val cards: List<ToHotCardModel>,
+) {
+    data class TopicInfo(
+        val selectTopic: DailyTopicModel?,
+        val topicResetTimeMill: Long,
+    ) {
+        fun isAvailableTopic(now: Long = System.currentTimeMillis()): Boolean {
+            return selectTopic != null && now <= topicResetTimeMill
+        }
+    }
+}

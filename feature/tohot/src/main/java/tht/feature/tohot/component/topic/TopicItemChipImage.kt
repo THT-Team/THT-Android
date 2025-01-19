@@ -2,13 +2,16 @@ package tht.feature.tohot.component.topic
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import tht.feature.tohot.R
@@ -28,17 +31,28 @@ fun <T> TopicItemChipImage(
             contentDescription = "topic_item"
         )
     } else {
-        val model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .size(Size.ORIGINAL)
-            .crossfade(true)
-            .build()
+        val context = LocalContext.current
+        val imageLoader = remember {
+            ImageLoader.Builder(context)
+                .components {
+                    add(SvgDecoder.Factory())
+                }
+                .build()
+        }
+        val model = remember(imageUrl) {
+            ImageRequest.Builder(context)
+                .data(imageUrl)
+                .size(Size.ORIGINAL)
+                .crossfade(true)
+                .build()
+        }
         AsyncImage(
             modifier = modifier,
             model = model,
             contentDescription = "topic_image",
             placeholder = placeholder,
             error = error,
+            imageLoader = imageLoader,
             contentScale = ContentScale.Crop,
             onSuccess = { loadFinishListener(true, null) },
             onError = { loadFinishListener(null, it.result.throwable) }

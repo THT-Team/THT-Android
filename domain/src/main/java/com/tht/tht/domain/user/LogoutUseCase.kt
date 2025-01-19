@@ -1,7 +1,7 @@
 package com.tht.tht.domain.user
 
 import com.tht.tht.domain.token.repository.TokenRepository
-import com.tht.tht.domain.topic.DailyTopicRepository
+import com.tht.tht.domain.tohot.DailyTopicRepository
 
 /**
  * SP.Editor().clear() 로 한번에 싹 clear?
