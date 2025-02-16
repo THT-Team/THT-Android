@@ -83,15 +83,14 @@ dependencies {
 //    testImplementation("com.squareup.okhttp:mockwebserver:2.7.5")
 //    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.8.22")
 //    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-//
+
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.converter)
     implementation(libs.krossbow.stomp.core)
     implementation(libs.krossbow.websocket.okhttp)
     implementation(libs.krossbow.stomp.moshi)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
-    implementation("org.hildan.krossbow:krossbow-stomp-kxserialization:7.0.0")
-    implementation("org.hildan.krossbow:krossbow-stomp-kxserialization-json:7.0.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+//    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 
 }

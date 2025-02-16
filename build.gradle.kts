@@ -58,9 +58,9 @@ subprojects {
     }
 }
 
-configurations.all {
-    resolutionStrategy {
-        force("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
-        force ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
-    }
-}
+//configurations.all {
+//    resolutionStrategy {
+//        force("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
+//        force ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
+//    }
+//}

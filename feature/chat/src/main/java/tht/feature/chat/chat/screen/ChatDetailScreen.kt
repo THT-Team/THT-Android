@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -26,13 +27,20 @@ internal fun ChatDetailScreen(
 ) {
 
     LaunchedEffect(Unit) {
-        viewModel.connectionWebSocket(roomIdx)
         viewModel.getChatDetailInformation(roomIdx)
         viewModel.getUserUuid()
     }
 
     val state = viewModel.collectAsState().value
     val currentText = viewModel.currentText.collectAsState().value
+
+    DisposableEffect(key1 = Unit) {
+        viewModel.initStomp(roomIdx)
+        onDispose {
+            viewModel.cancelStomp()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             ChatDetailTopAppBar(
@@ -58,7 +66,7 @@ internal fun ChatDetailScreen(
             modifier = Modifier.align(Alignment.BottomCenter),
             text = currentText,
             onChangedText = viewModel::updateCurrentText,
-            onClickSend = {viewModel.onClickSent(roomIdx)}
+            onClickSend = { viewModel.onClickSent(roomIdx) }
         )
     }
 }

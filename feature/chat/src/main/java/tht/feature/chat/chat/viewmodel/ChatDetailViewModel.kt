@@ -8,6 +8,8 @@ import com.example.compose_ui.common.viewmodel.Container
 import com.example.compose_ui.common.viewmodel.Store
 import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tht.tht.domain.chat.usecase.GetChatDetailInformationUseCase
 import com.tht.tht.domain.chat.usecase.GetChatHistoryUseCase
 import com.tht.tht.domain.setting.usecase.FetchMyPageUserInfoUseCase
@@ -18,31 +20,23 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.builtins.serializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.StompSession
-import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
-import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
-import org.hildan.krossbow.stomp.use
+import org.hildan.krossbow.stomp.conversions.convertAndSend
+import org.hildan.krossbow.stomp.conversions.moshi.withMoshi
+import org.hildan.krossbow.stomp.frame.StompFrame
+import org.hildan.krossbow.stomp.headers.StompSendHeaders
+import org.hildan.krossbow.stomp.headers.StompSubscribeHeaders
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
-//import kotlinx.serialization.Serializable
-//import okhttp3.OkHttpClient
-//import okhttp3.logging.HttpLoggingInterceptor
-//import org.hildan.krossbow.stomp.StompClient
-//import org.hildan.krossbow.stomp.StompSession
-//import org.hildan.krossbow.stomp.conversions.kxserialization.StompSessionWithKxSerialization
-//import org.hildan.krossbow.stomp.conversions.kxserialization.convertAndSend
-//import org.hildan.krossbow.stomp.conversions.kxserialization.json.withJsonConversions
-//import org.hildan.krossbow.stomp.conversions.kxserialization.subscribe
-//import org.hildan.krossbow.stomp.use
-//import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
 import tht.feature.chat.chat.state.ChatDetailSideEffect
 import tht.feature.chat.chat.state.ChatDetailState
 import tht.feature.chat.mapper.toModel
+import tht.feature.chat.model.ChatHistoryUiModel
 import tht.feature.setting.uimodel.mapper.toUiModel
 import javax.inject.Inject
 
@@ -86,134 +80,175 @@ internal class ChatDetailViewModel @Inject constructor(
      * }
      */
     private lateinit var stompSession: StompSession
-    private lateinit var jsonStompSession: StompSessionWithKxSerialization
-    private lateinit var newChatMessage: Flow<String>
+    private val moshi: Moshi = Moshi.Builder()
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+    private lateinit var newChatMessage: Flow<StompFrame.Message>
+    private var _currentText: MutableStateFlow<String> = MutableStateFlow("")
+    val currentText = _currentText.asStateFlow()
 
-
-    fun connectionWebSocket(roomIdx: Long) {
+    fun initStomp(roomIdx: Long) {
         viewModelScope.launch {
-            (store.state as? ChatDetailState.ChatList)?.let { user ->
-                fetchThtAccessTokenUseCase.invoke().getOrNull()?.let { token ->
-
-                    val okHttpClient = OkHttpClient.Builder()
-                        .addInterceptor(
-                            HttpLoggingInterceptor().apply {
-                                level = HttpLoggingInterceptor.Level.BODY
-                            }
-                        )
-                        .build()
-
-                    val client = StompClient(
-                        OkHttpWebSocketClient(okHttpClient)
-                    )
-
-                    stompSession = client.connect(
-                        "ws://3.34.157.62/websocket-endpoint",
-                        customStompConnectHeaders = mapOf("Authorization" to token)
-                    )
-                    jsonStompSession = stompSession.withJsonConversions()
-                    Log.d("chatting", "connectionWebSocket: ${jsonStompSession}")
-//                    jsonStompSession.use { s ->
-//                        s.subscribe(
-//                            "/sub/chat/${roomIdx}",
-//                            ChatMessage.serializer()
-//                        ).collect {
-//                            Log.d("chatting", "newChatMessage: $it")
-//                        }
-                    }
-                }
+            fetchThtAccessTokenUseCase.invoke().getOrNull()?.let { token ->
+                connectStomp(token, roomIdx)
             }
         }
-
-        private var _currentText: MutableStateFlow<String> = MutableStateFlow("")
-        val currentText = _currentText.asStateFlow()
-
-        fun getChatDetailInformation(roomIdx: Long) {
-            viewModelScope.launch {
-                val chatDetailInformation = getChatDetailInformationUseCase(roomIdx).getOrNull()
-                intent {
-                    reduce { state ->
-                        (state as ChatDetailState.ChatList).copy(
-                            isLoading = false,
-                            chatDetailInformation = chatDetailInformation?.toModel(),
-                        )
-                    }
-                }
-            }
-        }
-
-        fun getChatHistory(roomIdx: Long, chatIdx: String? = null, size: String = "100") {
-            if ((store.state.value as? ChatDetailState.ChatList)?.chatIdx == "-1") return
-            viewModelScope.launch {
-                val history = getChatHistoryUseCase(
-                    roomIdx = roomIdx,
-                    chatIdx = (store.state.value as? ChatDetailState.ChatList)?.chatIdx ?: chatIdx,
-                    size = size
-                ).getOrNull() ?: emptyList()
-                Log.d("test", "getChatHistory: ${history}")
-                intent {
-                    reduce { state ->
-                        (state as ChatDetailState.ChatList).copy(
-                            isLoading = false,
-                            chatList = state.chatList.toMutableList().apply {
-                                addAll(0, history.map { it.toModel() }.reversed())
-                            },
-                            chatIdx = if (history.isEmpty()) "-1"
-                            else history.map { it.toModel() }.reversed().firstOrNull()?.chatIdx
-                        )
-                    }
-                }
-            }
-        }
-
-        fun getUserUuid() {
-            viewModelScope.launch {
-                val userUuid = fetchThtUserUuidUseCase().getOrNull()
-                fetchMyPageUserInfoUseCase()
-                    .onSuccess { userInformation ->
-                        intent {
-                            reduce { state ->
-                                (state as ChatDetailState.ChatList).copy(
-                                    userUuid = userUuid,
-                                    userInformation = userInformation.toUiModel()
-                                )
-                            }
-                        }
-                    }
-            }
-        }
-
-        fun updateCurrentText(text: String) {
-            _currentText.update { text }
-        }
-
-        fun onClickSent(roomIdx: Long) {
-            if (_currentText.value.isEmpty() || _currentText.value.isBlank()) return
-            viewModelScope.launch {
-                (store.state.value as? ChatDetailState.ChatList)?.let { state ->
-                    state.userInformation?.let { user ->
-//                    jsonStompSession.use { s ->
-//                        s.convertAndSend(
-//                            "/pub/chat/${roomIdx}", ChatMessage(
-//                                user.username,
-//                                user.userUuid,
-//                                user.userProfilePhotos.firstOrNull()?.url ?: "",
-//                                msg = currentText.value,
-//                            ), ChatMessage.serializer()
-//                        )
-//                    }
-                    }
-                }
-            }
-        }
-
-        fun onClickGallery() {}
     }
 
-    //@Serializable
-    data class ChatMessage(
-        val sender: String,
-        val senderUuid: String,
-        val imgUrl: String,
-        val msg: String
-    )
+    fun connectStomp(token: String, roomIdx: Long) {
+        viewModelScope.launch {
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(
+                    HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.BODY
+                    }
+                )
+                .build()
+
+            val client = StompClient(
+                OkHttpWebSocketClient(okHttpClient)
+            )
+
+            stompSession =
+                client.connect(STOMP_ENDPOINT, customStompConnectHeaders = mapOf(HEADER_AUTHORIZATION to token))
+                    .withMoshi(moshi)
+
+            newChatMessage = stompSession.subscribe(
+                StompSubscribeHeaders(
+                    destination = "${SUBSCRIBE_URL}${roomIdx}",
+                    customHeaders = mapOf(HEADER_AUTHORIZATION to token)
+                )
+            )
+
+            newChatMessage.collectLatest {
+                val chatMessage = moshi.adapter(ChatMessage::class.java).fromJson(it.bodyAsText)
+                chatMessage?.let { message ->
+                    intent {
+                        reduce { state ->
+                            (state as ChatDetailState.ChatList).copy(
+                                chatList = state.chatList + ChatHistoryUiModel(
+                                    message.chatIdx,
+                                    message.sender,
+                                    message.senderUuid,
+                                    message.msg,
+                                    message.imgUrl,
+                                    message.dateTime
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getChatDetailInformation(roomIdx: Long) {
+        viewModelScope.launch {
+            val chatDetailInformation = getChatDetailInformationUseCase(roomIdx).getOrNull()
+            intent {
+                reduce { state ->
+                    (state as ChatDetailState.ChatList).copy(
+                        isLoading = false,
+                        chatDetailInformation = chatDetailInformation?.toModel(),
+                    )
+                }
+            }
+        }
+    }
+
+    fun getChatHistory(roomIdx: Long, chatIdx: String? = null, size: String = "100") {
+        if ((store.state.value as? ChatDetailState.ChatList)?.chatIdx == "-1") return
+        viewModelScope.launch {
+            val history = getChatHistoryUseCase(
+                roomIdx = roomIdx,
+                chatIdx = (store.state.value as? ChatDetailState.ChatList)?.chatIdx ?: chatIdx,
+                size = size
+            ).getOrNull() ?: emptyList()
+            intent {
+                reduce { state ->
+                    (state as ChatDetailState.ChatList).copy(
+                        isLoading = false,
+                        chatList = state.chatList.toMutableList().apply {
+                            addAll(0, history.map { it.toModel() }.reversed())
+                        },
+                        chatIdx = if (history.isEmpty()) "-1"
+                        else history.map { it.toModel() }.reversed().firstOrNull()?.chatIdx
+                    )
+                }
+            }
+        }
+    }
+
+    fun getUserUuid() {
+        viewModelScope.launch {
+            val userUuid = fetchThtUserUuidUseCase().getOrNull()
+            fetchMyPageUserInfoUseCase()
+                .onSuccess { userInformation ->
+                    intent {
+                        reduce { state ->
+                            (state as ChatDetailState.ChatList).copy(
+                                userUuid = userUuid,
+                                userInformation = userInformation.toUiModel()
+                            )
+                        }
+                    }
+                }
+        }
+    }
+
+    fun updateCurrentText(text: String) {
+        _currentText.update { text }
+    }
+
+    fun onClickSent(roomIdx: Long) {
+        if (_currentText.value.isEmpty() || _currentText.value.isBlank()) return
+        viewModelScope.launch {
+            (store.state.value as? ChatDetailState.ChatList)?.let { state ->
+                state.userInformation?.let { user ->
+                    fetchThtAccessTokenUseCase.invoke().getOrNull()?.let { token ->
+                        stompSession.withMoshi(moshi).convertAndSend(
+                            StompSendHeaders(
+                                destination = "${SEND_URL}${roomIdx}",
+                                customHeaders = mapOf(HEADER_AUTHORIZATION to token)
+                            ),
+                            ChatMessage(
+                                sender = user.username,
+                                senderUuid = user.userUuid,
+                                msg = currentText.value,
+                                imgUrl = user.userProfilePhotos.firstOrNull()?.url ?: "",
+                            )
+                        )
+                    }
+                    _currentText.value = ""
+                }
+            }
+        }
+    }
+
+    fun cancelStomp() {
+        try {
+            viewModelScope.launch {
+                stompSession.disconnect()
+            }
+        } catch (e: Exception) {
+            Log.d("test", "cancelStomp: ${e.message}")
+
+        }
+    }
+
+    companion object {
+        const val HEADER_AUTHORIZATION = "Authorization"
+        const val SEND_URL = "/pub/chat/"
+        const val SUBSCRIBE_URL = "/sub/chat/"
+        const val STOMP_ENDPOINT = "ws://3.34.157.62/websocket-endpoint"
+    }
+}
+
+data class ChatMessage(
+    val chatIdx: String = "",
+    val sender: String,
+    val senderUuid: String,
+    val msg: String,
+    val imgUrl: String,
+    val dateTime: String = "",
+)

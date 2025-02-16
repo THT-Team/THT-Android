@@ -189,6 +189,8 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 #compose-blur
 renderscript-intrinsics-replacement-toolkit = { module = "com.github.android:renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript-intrinsics-replacement-toolkit" }
 
+#Krossbow
 krossbow-stomp-core = { group = "org.hildan.krossbow", name = "krossbow-stomp-core", version.ref = "krossbow" }
 krossbow-websocket-okhttp = { group = "org.hildan.krossbow", name = "krossbow-websocket-okhttp", version.ref = "krossbow" }
 krossbow-stomp-moshi = { group = "org.hildan.krossbow", name = "krossbow-stomp-moshi", version.ref = "krossbow" }
+
