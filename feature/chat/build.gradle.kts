@@ -4,8 +4,10 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("org.jlleitschuh.gradle.ktlint")
     id("dagger.hilt.android.plugin")
+    id("org.jlleitschuh.gradle.ktlint")
+    id("io.gitlab.arturbosch.detekt")
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 android {
@@ -50,6 +52,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:compose-ui"))
     implementation(project(":domain"))
+    implementation(project(":feature:setting"))
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
@@ -73,4 +76,22 @@ dependencies {
     kaptTest(libs.hilt.android.compiler)
     kapt(libs.hilt.compiler)
     implementation(libs.jetpack.compose.hilt.navigation)
+
+//    implementation("com.beust:klaxon:5.6")
+//    implementation("com.squareup.okhttp:okhttp-ws:2.7.5")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+//    testImplementation("com.squareup.okhttp:mockwebserver:2.7.5")
+//    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.8.22")
+//    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+//
+    implementation(libs.krossbow.stomp.core)
+    implementation(libs.krossbow.websocket.okhttp)
+    implementation(libs.krossbow.stomp.moshi)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation("org.hildan.krossbow:krossbow-stomp-core:7.0.0")
+    implementation("org.hildan.krossbow:krossbow-stomp-kxserialization:7.0.0")
+    implementation("org.hildan.krossbow:krossbow-stomp-kxserialization-json:7.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+
 }

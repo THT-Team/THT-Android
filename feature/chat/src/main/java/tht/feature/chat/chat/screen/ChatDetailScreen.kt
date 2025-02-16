@@ -26,6 +26,7 @@ internal fun ChatDetailScreen(
 ) {
 
     LaunchedEffect(Unit) {
+        viewModel.connectionWebSocket(roomIdx)
         viewModel.getChatDetailInformation(roomIdx)
         viewModel.getUserUuid()
     }
@@ -56,7 +57,8 @@ internal fun ChatDetailScreen(
         ChatEditTextContainer(
             modifier = Modifier.align(Alignment.BottomCenter),
             text = currentText,
-            onChangedText = viewModel::updateCurrentText
+            onChangedText = viewModel::updateCurrentText,
+            onClickSend = {viewModel.onClickSent(roomIdx)}
         )
     }
 }

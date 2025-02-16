@@ -76,6 +76,11 @@ renderscript-intrinsics-replacement-toolkit = "b6363490c3"
 
 serialization = "1.8.10"
 
+# Krossbow
+krossbow = "7.0.0"
+moshi-converter = "2.9.0"
+moshi-kotlin = "1.14.0"
+
 [plugins]
 #android
 application = { id = "com.android.application", version.ref = "android.gradle" }
@@ -145,6 +150,8 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 mock-webserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi-converter" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi-kotlin" }
 
 #firebase
 gms-google-services = { module = "com.google.gms:google-services", version.ref = "gms-google-services" }
@@ -181,3 +188,7 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 
 #compose-blur
 renderscript-intrinsics-replacement-toolkit = { module = "com.github.android:renderscript-intrinsics-replacement-toolkit", version.ref = "renderscript-intrinsics-replacement-toolkit" }
+
+krossbow-stomp-core = { group = "org.hildan.krossbow", name = "krossbow-stomp-core", version.ref = "krossbow" }
+krossbow-websocket-okhttp = { group = "org.hildan.krossbow", name = "krossbow-websocket-okhttp", version.ref = "krossbow" }
+krossbow-stomp-moshi = { group = "org.hildan.krossbow", name = "krossbow-stomp-moshi", version.ref = "krossbow" }

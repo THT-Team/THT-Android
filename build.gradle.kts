@@ -43,6 +43,7 @@ subprojects {
     // run use ./gradlew assembleRelease -PcomposeCompilerReports=true  --rerun-tasks
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach  {
         kotlinOptions {
+            jvmTarget = "17"
             if (project.findProperty("composeCompilerReports") == "true") {
                 val metricsOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-metrics"
                 val reportOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-reports"
@@ -54,5 +55,12 @@ subprojects {
                 )
             }
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
+        force ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
     }
 }

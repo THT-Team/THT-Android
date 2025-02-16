@@ -29,7 +29,8 @@ import tht.feature.chat.R
 fun ChatEditTextContainer(
     modifier: Modifier,
     text: String,
-    onChangedText: (String) -> Unit
+    onChangedText: (String) -> Unit,
+    onClickSend: () -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -64,7 +65,7 @@ fun ChatEditTextContainer(
         Spacer(space = 10.dp)
         Image(
             modifier = Modifier
-                .noRippleClickable { },
+                .noRippleClickable { onClickSend() },
             painter = painterResource(id = R.drawable.ic_sent),
             contentDescription = "보내기 버튼"
         )
@@ -96,6 +97,7 @@ fun ChatEditTextContainer() {
     ChatEditTextContainer(
         modifier = Modifier,
         text = "테스트",
-        onChangedText = {}
+        onChangedText = {},
+        onClickSend = {},
     )
 }
