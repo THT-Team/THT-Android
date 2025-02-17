@@ -63,7 +63,7 @@ fun ChatDetailList(
         onLoadMore()
     }
 
-    LaunchedEffect(chatList.isNotEmpty(), !isScrolling) {
+    LaunchedEffect(chatList, !isScrolling) {
         if (chatList.isNotEmpty()) {
             listState.scrollToItem(chatList.lastIndex)
         }
