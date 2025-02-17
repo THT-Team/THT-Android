@@ -1,15 +1,18 @@
 package tht.feature.chat.chat.screen
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose_ui.common.viewmodel.collectAsState
 import tht.feature.chat.chat.state.ChatDetailState
@@ -18,6 +21,7 @@ import tht.feature.chat.component.detail.ChatDetailList
 import tht.feature.chat.component.detail.ChatDetailTopAppBar
 import tht.feature.chat.component.detail.ChatEditTextContainer
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ChatDetailScreen(
     viewModel: ChatDetailViewModel = hiltViewModel(),
@@ -41,7 +45,11 @@ internal fun ChatDetailScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
         Column(modifier = Modifier.fillMaxSize()) {
             ChatDetailTopAppBar(
                 title = partnerName,
@@ -51,14 +59,16 @@ internal fun ChatDetailScreen(
             )
             Box(modifier = Modifier.weight(1f)) {
                 when (state) {
-                    is ChatDetailState.ChatList -> ChatDetailList(
-                        userUuid = state.userUuid,
-                        chatDetailInformation = state.chatDetailInformation,
-                        chatList = state.chatList,
-                        onLoadMore = {
-                            viewModel.getChatHistory(roomIdx)
-                        }
-                    )
+                    is ChatDetailState.ChatList -> {
+                        ChatDetailList(
+                            userUuid = state.userUuid,
+                            chatDetailInformation = state.chatDetailInformation,
+                            chatList = state.chatList,
+                            onLoadMore = {
+                                viewModel.getChatHistory(roomIdx)
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -69,10 +79,4 @@ internal fun ChatDetailScreen(
             onClickSend = { viewModel.onClickSent(roomIdx) }
         )
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ChatDetailScreenPreview() {
-    ChatDetailScreen(roomIdx = 0, onBack = {}, partnerName = "")
 }
