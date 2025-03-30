@@ -1,5 +1,6 @@
 package tht.feature.chat.chat.screen
 
+import android.content.Context
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.example.compose_ui.common.viewmodel.collectAsState
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.p.ThtP1
@@ -37,8 +39,14 @@ import tht.feature.chat.component.ChatTopAppBar
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
+    context: Context,
     navigateChatDetail: (Long, String) -> Unit = { _, _ -> }
 ) {
+    OnLifecycleEvent { _, event ->
+        if (event == Lifecycle.Event.ON_START) {
+            viewModel.showBottomNavigation(context)
+        }
+    }
     val state = viewModel.collectAsState().value
     ChatScreen(
         state = state,

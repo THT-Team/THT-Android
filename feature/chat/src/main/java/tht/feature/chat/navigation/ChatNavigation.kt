@@ -33,6 +33,7 @@ private fun NavGraphBuilder.addChatNavGraph(
         route = Chat.route
     ) {
         ChatScreen(
+            context = context,
             navigateChatDetail = { roomIdx, partnerName ->
                 navController.navigate("${ChatDetail.route}/${roomIdx}/${partnerName}")
             }
