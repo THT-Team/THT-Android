@@ -50,13 +50,6 @@ fun ChatEditTextContainer(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Image(
-            modifier = Modifier
-                .noRippleClickable { },
-            painter = painterResource(id = R.drawable.ic_attachment),
-            contentDescription = "파일 첨부 버튼"
-        )
-        Spacer(space = 10.dp)
         ChatEditText(
             modifier = Modifier.weight(1f),
             text = text,
@@ -67,7 +60,11 @@ fun ChatEditTextContainer(
             modifier = Modifier
                 .noRippleClickable { onClickSend() },
             painter = painterResource(id = R.drawable.ic_sent),
-            contentDescription = "보내기 버튼"
+            contentDescription = "보내기 버튼",
+            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                if (text.isEmpty()) Color(0xFF8D8D8D)
+                else Color(0xFFF9CC2E)
+            )
         )
     }
 }

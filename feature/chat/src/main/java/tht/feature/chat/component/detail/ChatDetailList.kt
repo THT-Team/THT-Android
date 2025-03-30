@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -72,6 +73,7 @@ fun ChatDetailList(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .imePadding()
             .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
         state = listState,
     ) {
