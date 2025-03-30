@@ -1,7 +1,7 @@
 package tht.feature.chat.component.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,48 +13,96 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.image.ThtImage
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.caption.ThtCaption2
-import com.example.compose_ui.component.text.p.ThtP1
 import com.example.compose_ui.component.text.p.ThtP2
-import kotlinx.collections.immutable.ImmutableList
-import tht.feature.chat.model.ChatListUiModel
+import tht.feature.chat.model.ChatDetailInformationUiModel
+import tht.feature.chat.model.ChatHistoryUiModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
+fun ChatDetailList(
+    userUuid: String?,
+    chatDetailInformation: ChatDetailInformationUiModel?,
+    chatList: List<ChatHistoryUiModel>,
+    onLoadMore: () -> Unit
+) {
+    val listState = rememberLazyListState()
+    var previousPosition: Int? by remember {
+        mutableStateOf(null)
+    }
+    var isScrolling by remember {
+        mutableStateOf(false)
+    }
+
+    listState.OnTopReached(buffer = 10) {
+        previousPosition = chatList.size
+        onLoadMore()
+    }
+
+    LaunchedEffect(chatList, !isScrolling) {
+        if (chatList.isNotEmpty()) {
+            listState.scrollToItem(chatList.lastIndex)
+        }
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
+        state = listState,
     ) {
-        item {
+        stickyHeader {
             Spacer(modifier = Modifier.height(16.dp))
-            ChatRandomTitle(title = "마음이 답답할 때 무엇을 하나요?")
+            ChatBubbleTitle(chatDetailInformation = chatDetailInformation)
             Spacer(modifier = Modifier.height(8.dp))
         }
-        itemsIndexed(items) { index, item ->
-            if (index % 2 == 0) {
-                Sender(text = item.currentMessage, updateTime = "3:13 PM")
+        item {
+            chatDetailInformation?.let {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(space = 8.dp)
+                    ThtP2(text = it.startDate, fontWeight = FontWeight.W400, color = Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+        var lastDate: String? = null
+        itemsIndexed(chatList) { index, item ->
+            val currentDate = item.dateTime.split("T")[0]  // 날짜 부분만 가져오기 (yyyy-MM-dd)
+            val isSameUser =
+                if (index != 0 && chatList[index - 1].senderUuid != userUuid) true else if (index == 0) null else false
+            val shouldShowTime =
+                (index == chatList.lastIndex) || (chatList.getOrNull(index + 1)?.dateTime != item.dateTime)
+            if (item.senderUuid == userUuid) {
+                MyChat(item, shouldShowTime)
             } else {
-                Receiver(
-                    text = item.currentMessage,
-                    updateTime = "3:12 PM",
-                    isShowProfile = true,
-                    userName = "Stitch"
-                )
+                OtherChat(item, isSameUser = isSameUser, isShowProfile = true, shouldShowTime = shouldShowTime)
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -62,141 +110,131 @@ fun ChatDetailList(items: ImmutableList<ChatListUiModel>) {
 }
 
 @Composable
-fun ChatRandomTitle(title: String) {
-    ThtP1(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(6.dp))
-            .border(color = Color(0xFFF9CC2E), width = 1.dp, shape = RoundedCornerShape(6.dp))
-            .background(Color(0xFF222222))
-            .padding(vertical = 12.dp),
-        text = title,
-        fontWeight = FontWeight.Normal,
-        color = Color.White,
-        textAlign = TextAlign.Center
-    )
-}
-
-@Composable
-fun Sender(text: String, updateTime: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.End
-    ) {
-        ThtCaption2(
-            text = updateTime,
-            fontWeight = FontWeight.Normal,
-            color = Color(0xFFF9FAFA),
-            textAlign = TextAlign.End
-        )
-        Spacer(space = 8.dp)
-        ThtP2(
-            modifier = Modifier
-                .widthIn(min = 0.dp, max = 226.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color(0xFFF9CC2E))
-                .padding(horizontal = 10.dp, vertical = (6.5).dp),
-            text = text,
-            fontWeight = FontWeight.Normal,
-            color = Color.Black,
-            textAlign = TextAlign.Start
-        )
+fun LazyListState.OnTopReached(
+    buffer: Int = 0,
+    onLoadMore: () -> Unit,
+) {
+    require(buffer >= 0) { "buffer가 0보다 작습니다 - $buffer" }
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val firstVisibleItem =
+                layoutInfo.visibleItemsInfo.firstOrNull() ?: return@derivedStateOf false
+            firstVisibleItem.index == 0
+        }
+    }
+    LaunchedEffect(shouldLoadMore) {
+        snapshotFlow { shouldLoadMore.value }.collect {
+            if (it) onLoadMore()
+        }
     }
 }
 
+
 @Composable
-fun Receiver(
+fun OtherChat(
+    chat: ChatHistoryUiModel,
     isShowProfile: Boolean,
-    userName: String,
-    text: String,
-    updateTime: String
+    isSameUser: Boolean?,
+    shouldShowTime: Boolean,
 ) {
+    val screenWidthDp = with(LocalDensity.current) {
+        LocalContext.current.resources.displayMetrics.widthPixels.toDp()
+    }
+    val maxWidthDp = screenWidthDp * 0.6f
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.Start
     ) {
-        if (isShowProfile) {
-            ThtImage(
-                modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
-                src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEyMjJfMjYz%2FMDAxNjQwMTA3ODUyNzgy.2vrUEWwtR7K3P-TtNzfIsdCoM73Af9YPfpDLwq_iwMUg.D5PI3qGu_Q1tGN1HaZvFJX0dWqocJEk0AsnQ5zz1RGsg.JPEG.eeducator%2Fpexels-cottonbro-3663069.jpg&type=sc960_832", // ktlint-disable max-line-length
-                size = DpSize(34.dp, 34.dp)
-            )
-            Spacer(space = 10.dp)
+        if (isSameUser == false || isSameUser == null) {
+            if (isShowProfile) {
+                ThtImage(
+                    modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
+                    src = chat.imgUrl,
+                    size = DpSize(34.dp, 34.dp)
+                )
+                Spacer(space = 10.dp)
+            }
         }
+        if (isSameUser == true && isShowProfile) Spacer(space = 44.dp)
         Column {
-            ThtP2(
-                modifier = Modifier,
-                text = userName,
-                fontWeight = FontWeight.Normal,
-                color = Color(0xFF8D8D8D),
-                textAlign = TextAlign.Start
-            )
-            Spacer(space = 8.dp)
+            if (isSameUser == false || isSameUser == null) {
+                ThtP2(
+                    modifier = Modifier,
+                    text = chat.sender,
+                    fontWeight = FontWeight.Normal,
+                    color = Color(0xFF8D8D8D),
+                    textAlign = TextAlign.Start
+                )
+                Spacer(space = 8.dp)
+            }
+
             Row(
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.End
             ) {
                 ThtP2(
                     modifier = Modifier
-                        .widthIn(min = 0.dp, max = 226.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color(0xFF222222))
-                        .padding(horizontal = 10.dp, vertical = (6.5).dp),
-                    text = text,
+                        .background(Color(0xFF222222), shape = RoundedCornerShape(20.dp))
+                        .padding(horizontal = 10.dp, vertical = (6.5).dp)
+                        .widthIn(max = maxWidthDp)
+                        .wrapContentWidth(),
+                    text = chat.msg,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFF9FAFA),
                     textAlign = TextAlign.Start
                 )
                 Spacer(space = 8.dp)
-                ThtCaption2(
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(align = Alignment.Start),
-                    text = updateTime,
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xFFF9FAFA),
-                    textAlign = TextAlign.Start
-                )
+                if (shouldShowTime) {
+                    ThtCaption2(
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(align = Alignment.Start),
+                        text = chat.dateTime,
+                        fontWeight = FontWeight.Normal,
+                        color = Color(0xFFF9FAFA),
+                        textAlign = TextAlign.Start
+                    )
+                }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ReceiverPreview() {
-    Receiver(
-        text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-        updateTime = "3:12 PM",
-        isShowProfile = false,
-        userName = "stitch"
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ReceiverPreview2() {
-    Receiver(
-        text = "긴 텍스트",
-        updateTime = "3:12 PM",
-        isShowProfile = false,
-        userName = "stitch"
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SenderPreview() {
-    Sender(text = "안녕하세요!", updateTime = "3:12 PM")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SenderPreview2() {
-    Sender(
-        text = "긴 텍스트 세줄 이상 문장은 이렇게씁니다아아아아아아아아아아아아아아아아아아아아아긴 텍스트 세줄 이상 문장은 이렇게씁니다아",
-        updateTime = "3:12 PM"
-    )
+fun MyChat(
+    chat: ChatHistoryUiModel,
+    shouldShowTime: Boolean,
+) {
+    val screenWidthDp = with(LocalDensity.current) {
+        LocalContext.current.resources.displayMetrics.widthPixels.toDp()
+    }
+    val maxWidthDp = screenWidthDp * 0.6f
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(6.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        if (shouldShowTime) {
+            ThtCaption2(
+                text = chat.dateTime,
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFFF9FAFA),
+                textAlign = TextAlign.End
+            )
+            Spacer(space = 8.dp)
+        }
+        ThtP2(
+            modifier = Modifier
+                .background(Color(0xFFF9CC2E), RoundedCornerShape(20.dp))
+                .padding(horizontal = 10.dp, vertical = (6.5).dp)
+                .widthIn(max = maxWidthDp),
+            text = chat.msg,
+            fontWeight = FontWeight.Normal,
+            color = Color.Black,
+            textAlign = TextAlign.Start
+        )
+    }
 }

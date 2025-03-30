@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.button.ThtButton
 import com.example.compose_ui.component.text.headline.ThtHeadline4
@@ -72,4 +73,12 @@ internal fun ChatEmptyScreen(
         )
         Spacer(modifier = Modifier.height(56.dp))
     }
+}
+
+@Preview
+@Composable
+private fun EmptyChatListPreview() {
+    ChatEmptyScreen(
+        onClickChangeTitle = {},
+    )
 }

@@ -6,5 +6,7 @@ data class FcmTokenLoginResponse(
     @SerializedName("accessToken")
     val accessToken: String,
     @SerializedName("accessTokenExpiresIn")
-    val accessTokenExpiresIn: Long
+    val accessTokenExpiresIn: Long,
+    @SerializedName("userUuid")
+    val userUuid: String
 )

@@ -8,11 +8,13 @@ interface TokenDao {
 
     fun updateFcmToken(token: String)
 
-    fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String)
+    fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String, userUuid: String?)
 
     fun fetchThtToken(): AccessTokenEntity
 
     fun fetchPhone(): String?
+
+    fun fetchUserUuid(): String?
 
     fun clear()
 }

@@ -21,7 +21,8 @@ class RefreshFcmTokenUseCase(
                 tokenRepository.updateThtToken(
                     it.accessToken,
                     it.accessTokenExpiresIn,
-                    phone
+                    phone,
+                    it.userUuid,
                 )
                 it
             }

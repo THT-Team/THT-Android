@@ -1,7 +1,5 @@
 package tht.feature.chat.chat.screen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
@@ -11,8 +9,9 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun OnLifecycleEvent(
@@ -37,10 +36,15 @@ fun OnLifecycleEvent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun format(milliseconds: Long): String {
-    return LocalDateTime.ofInstant(
-        Instant.ofEpochMilli(milliseconds),
-        ZoneOffset.systemDefault()
-    ).format(DateTimeFormatter.ISO_DATE)
+fun String.formatToAmPm(): String {
+    val instant = try {
+        Instant.parse(this)
+    } catch (e: Exception) {
+        LocalDateTime.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS"))
+            .atZone(ZoneId.systemDefault()).toInstant()
+    }
+
+    val formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH)
+        .withZone(ZoneId.systemDefault())
+    return formatter.format(instant)
 }

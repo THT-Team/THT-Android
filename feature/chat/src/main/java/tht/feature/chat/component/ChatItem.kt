@@ -1,8 +1,10 @@
 package tht.feature.chat.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,12 +28,14 @@ import tht.feature.chat.model.ChatListUiModel
 internal fun ChatItem(
     item: ChatListUiModel,
     isLoading: Boolean,
-    onClickItem: () -> Unit
+    onClickItem: (Long, String) -> Unit
 ) {
     Row(
         modifier = Modifier
-            .noRippleClickable { onClickItem() }
+            .noRippleClickable { onClickItem(item.chatRoomIdx, item.partnerName) }
             .fillMaxWidth()
+            .background(Color.Black)
+            .height(76.dp)
             .padding(horizontal = 15.dp, vertical = (16.5).dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -78,10 +82,10 @@ internal fun ChatItemPreivew() {
             chatRoomIdx = 1L,
             partnerProfileUrl = "",
             partnerName = "스티치",
-            messageTime = "",
+            messageTime = "08:24 PM",
             currentMessage = "안녕"
         ),
         isLoading = false,
-        onClickItem = {}
+        onClickItem = { _, _ -> }
     )
 }

@@ -131,6 +131,7 @@ fun RegionCodeResponse.toModel(): RegionCodeModel {
 fun AccessTokenEntity.toModel(): AccessTokenModel {
     return AccessTokenModel(
         accessToken = accessToken,
-        expiredTime = expiredTime
+        expiredTime = expiredTime,
+        userUuid = userUuid,
     )
 }

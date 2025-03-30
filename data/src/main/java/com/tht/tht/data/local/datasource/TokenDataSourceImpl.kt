@@ -24,9 +24,9 @@ class TokenDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String) {
+    override suspend fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String, userUuid: String?) {
         withContext(dispatcher) {
-            tokenDao.updateThtToken(token, accessTokenExpiresIn, phone)
+            tokenDao.updateThtToken(token, accessTokenExpiresIn, phone, userUuid)
         }
     }
 
@@ -38,6 +38,10 @@ class TokenDataSourceImpl @Inject constructor(
 
     override suspend fun fetchPhone(): String? {
         return tokenDao.fetchPhone()
+    }
+
+    override suspend fun fetchUserUuid(): String? {
+        return tokenDao.fetchUserUuid()
     }
 
     override suspend fun clear() {

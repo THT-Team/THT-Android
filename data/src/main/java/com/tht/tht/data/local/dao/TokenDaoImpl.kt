@@ -38,21 +38,27 @@ class TokenDaoImpl @Inject constructor(
         sp.edit { putString(FCM_TOKEN_KEY, token) }
     }
 
-    override fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String) {
+    override fun updateThtToken(token: String, accessTokenExpiresIn: Long, phone: String, userUuid: String?) {
         sp.edit { putString(THT_TOKEN_KEY, token) }
         sp.edit { putLong(THT_TOKEN_EXPIRES_KEY, accessTokenExpiresIn) }
         sp.edit { putString(THT_PHONE_KEY, phone) }
+        sp.edit { putString(THT_USER_UUID, userUuid) }
     }
 
     override fun fetchThtToken(): AccessTokenEntity {
         return AccessTokenEntity(
             accessToken = sp.getString(THT_TOKEN_KEY, null),
-            expiredTime = sp.getLong(THT_TOKEN_EXPIRES_KEY, 0L)
+            expiredTime = sp.getLong(THT_TOKEN_EXPIRES_KEY, 0L),
+            userUuid = sp.getString(THT_USER_UUID, null),
         )
     }
 
     override fun fetchPhone(): String? {
         return sp.getString(THT_PHONE_KEY, null)
+    }
+
+    override fun fetchUserUuid(): String? {
+        return sp.getString(THT_USER_UUID, null)
     }
 
     override fun clear() {
@@ -72,5 +78,7 @@ class TokenDaoImpl @Inject constructor(
         private const val THT_TOKEN_EXPIRES_KEY = "tht_token_expires_key"
 
         private const val THT_PHONE_KEY = "tht_phone_key"
+
+        private const val THT_USER_UUID = "tht_user_uuid"
     }
 }

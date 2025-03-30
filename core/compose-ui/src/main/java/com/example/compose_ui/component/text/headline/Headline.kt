@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import com.example.compose_ui.component.font.rememberPretendardFontStyle
 import com.example.compose_ui.extensions.dpTextUnit
@@ -104,7 +105,9 @@ fun ThtHeadline4(
     fontWeight: FontWeight,
     color: Color,
     textAlign: TextAlign = TextAlign.Center,
-    shadow: Shadow? = null
+    shadow: Shadow? = null,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Ellipsis
 ) {
     Text(
         modifier = modifier,
@@ -116,6 +119,8 @@ fun ThtHeadline4(
             shadow = shadow
         ),
         color = color,
+        overflow = overflow,
+        maxLines = maxLines,
     )
 }
 

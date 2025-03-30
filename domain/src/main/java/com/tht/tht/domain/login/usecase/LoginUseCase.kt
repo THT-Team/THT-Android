@@ -21,7 +21,8 @@ class LoginUseCase(
                 tokenRepository.updateThtToken(
                     tokenInfo.accessToken,
                     tokenInfo.accessTokenExpiresIn,
-                    phone
+                    phone,
+                    tokenInfo.userUuid,
                 )
             }
         }

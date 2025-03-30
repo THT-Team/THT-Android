@@ -29,7 +29,7 @@ data class SignupUserModel(
         SOMETIMES,
         FREQUENTLY;
         companion object {
-            fun from(smoke: String): Smoke? {
+            fun from(smoke: String?): Smoke? {
                 return when (smoke) {
                     NONE.name -> NONE
                     SOMETIMES.name -> SOMETIMES
@@ -44,7 +44,7 @@ data class SignupUserModel(
         SOMETIMES,
         FREQUENTLY;
         companion object {
-            fun from(drink: String): Drink? {
+            fun from(drink: String?): Drink? {
                 return when (drink) {
                     NONE.name -> NONE
                     SOMETIMES.name -> SOMETIMES
@@ -62,7 +62,7 @@ data class SignupUserModel(
         WON_BUDDHISM,
         OTHER;
         companion object {
-            fun from(religion: String): Religion? {
+            fun from(religion: String?): Religion? {
                 return when (religion) {
                     NONE.name -> NONE
                     CHRISTIAN.name -> CHRISTIAN

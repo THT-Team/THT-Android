@@ -24,7 +24,9 @@ class ChatFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ChatNavigation()
+                ChatNavigation(
+                    context = requireActivity()
+                )
             }
         }
     }

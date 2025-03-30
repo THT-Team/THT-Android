@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,10 +31,12 @@ import tht.feature.chat.R
 fun ChatEditTextContainer(
     modifier: Modifier,
     text: String,
-    onChangedText: (String) -> Unit
+    onChangedText: (String) -> Unit,
+    onClickSend: () -> Unit,
 ) {
     Row(
         modifier = Modifier
+            .imePadding()
             .fillMaxWidth()
             .height(59.dp)
             .background(Color(0xFF161616))
@@ -49,13 +53,6 @@ fun ChatEditTextContainer(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Image(
-            modifier = Modifier
-                .noRippleClickable { },
-            painter = painterResource(id = R.drawable.ic_attachment),
-            contentDescription = "파일 첨부 버튼"
-        )
-        Spacer(space = 10.dp)
         ChatEditText(
             modifier = Modifier.weight(1f),
             text = text,
@@ -64,9 +61,13 @@ fun ChatEditTextContainer(
         Spacer(space = 10.dp)
         Image(
             modifier = Modifier
-                .noRippleClickable { },
+                .noRippleClickable { onClickSend() },
             painter = painterResource(id = R.drawable.ic_sent),
-            contentDescription = "보내기 버튼"
+            contentDescription = "보내기 버튼",
+            colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(
+                if (text.isEmpty()) Color(0xFF8D8D8D)
+                else Color(0xFFF9CC2E)
+            )
         )
     }
 }
@@ -86,7 +87,8 @@ fun ChatEditText(
             .then(modifier),
         value = text,
         onValueChange = onChangedText,
-        textStyle = TextStyle(color = Color.White)
+        textStyle = TextStyle(color = Color.White),
+        cursorBrush = SolidColor(Color(0xFFF9CC2E)) // 커서 색상 설정 (예: 녹색)
     )
 }
 
@@ -96,6 +98,7 @@ fun ChatEditTextContainer() {
     ChatEditTextContainer(
         modifier = Modifier,
         text = "테스트",
-        onChangedText = {}
+        onChangedText = {},
+        onClickSend = {},
     )
 }

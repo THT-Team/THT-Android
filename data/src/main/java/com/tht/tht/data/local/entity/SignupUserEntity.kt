@@ -22,7 +22,7 @@ data class SignupUserEntity(
     val snsType: String,
     val snsUniqueId: String,
     val height: Int,
-    val smoke: String,
-    val drink: String,
-    val religion: String
+    val smoke: String?,
+    val drink: String?,
+    val religion: String?
 ) : java.io.Serializable

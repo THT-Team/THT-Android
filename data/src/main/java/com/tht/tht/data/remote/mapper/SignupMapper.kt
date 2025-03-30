@@ -82,7 +82,8 @@ fun SignupUserModel.toRemoteRequest(): SignupRequest {
 fun SignupResponse.toModel(): SignupResponseModel {
     return SignupResponseModel(
         accessToken = accessToken,
-        accessTokenExpiresIn = accessTokenExpiresIn
+        accessTokenExpiresIn = accessTokenExpiresIn,
+        userUuid = userUuid,
     )
 }
 

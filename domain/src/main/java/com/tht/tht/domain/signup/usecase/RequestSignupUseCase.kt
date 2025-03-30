@@ -28,7 +28,9 @@ class RequestSignupUseCase(
 
                     user.birthday.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("birthday")
 
-                    user.interestKeys.size < SignupConstant.INTEREST_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("interest")
+                    user.interestKeys.size < SignupConstant.INTEREST_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException(
+                        "interest"
+                    )
 
                     user.lat < 0 -> throw SignupException.SignupUserInfoInvalidateException("lat")
 
@@ -40,11 +42,15 @@ class RequestSignupUseCase(
 
                     user.preferredGender.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("preferred gender")
 
-                    user.profileImgUrl.size < SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("profile image")
+                    user.profileImgUrl.size < SignupConstant.PROFILE_IMAGE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException(
+                        "profile image"
+                    )
 
                     user.introduce.isBlank() -> throw SignupException.SignupUserInfoInvalidateException("introduce")
 
-                    user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException("ideal")
+                    user.idealTypeKeys.size < SignupConstant.IDEAL_TYPE_REQUIRE_SIZE -> throw SignupException.SignupUserInfoInvalidateException(
+                        "ideal"
+                    )
 
                     user.height < 0 -> throw SignupException.SignupUserInfoInvalidateException("height")
 
@@ -58,7 +64,7 @@ class RequestSignupUseCase(
                 signupRepository.requestSignup(
                     user.copy(fcmToken = fcmToken)
                 ).let {
-                    tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone)
+                    tokenRepository.updateThtToken(it.accessToken, it.accessTokenExpiresIn, phone, it.userUuid)
                     it.accessToken.isNotBlank()
                 }
             }

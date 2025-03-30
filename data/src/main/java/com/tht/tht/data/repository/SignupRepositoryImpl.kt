@@ -16,6 +16,7 @@ import com.tht.tht.domain.signup.model.TermsModel
 import com.tht.tht.domain.signup.repository.SignupRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 class SignupRepositoryImpl @Inject constructor(

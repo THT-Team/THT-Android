@@ -1,6 +1,8 @@
 package com.tht.tht.data.di
 
 import com.tht.tht.domain.chat.repository.ChatRepository
+import com.tht.tht.domain.chat.usecase.GetChatDetailInformationUseCase
+import com.tht.tht.domain.chat.usecase.GetChatHistoryUseCase
 import com.tht.tht.domain.chat.usecase.GetChatListUseCase
 import com.tht.tht.domain.email.repository.EmailRepository
 import com.tht.tht.domain.email.usecase.SendInquiryEmailUseCase
@@ -33,18 +35,19 @@ import com.tht.tht.domain.signup.usecase.RemoveSignupUserUseCase
 import com.tht.tht.domain.signup.usecase.RequestAuthenticationUseCase
 import com.tht.tht.domain.signup.usecase.RequestPhoneVerifyUseCase
 import com.tht.tht.domain.signup.usecase.RequestSignupUseCase
+import com.tht.tht.domain.tohot.DailyTopicRepository
 import com.tht.tht.domain.tohot.DailyUserCardRepository
+import com.tht.tht.domain.tohot.FetchDailyTopicListUseCase
 import com.tht.tht.domain.tohot.FetchDailyUserCardUseCase
 import com.tht.tht.domain.tohot.FetchToHotStateUseCase
+import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.token.repository.TokenRepository
 import com.tht.tht.domain.token.token.CheckAndRefreshThtAccessTokenUseCase
 import com.tht.tht.domain.token.token.CheckThtAccessTokenExpiredUseCase
 import com.tht.tht.domain.token.token.FetchThtAccessTokenUseCase
+import com.tht.tht.domain.token.token.FetchThtUserUuidUseCase
 import com.tht.tht.domain.token.token.RefreshFcmTokenUseCase
 import com.tht.tht.domain.token.token.RefreshThtAccessTokenUseCase
-import com.tht.tht.domain.tohot.DailyTopicRepository
-import com.tht.tht.domain.tohot.FetchDailyTopicListUseCase
-import com.tht.tht.domain.tohot.SelectTopicUseCase
 import com.tht.tht.domain.user.BlockUserUseCase
 import com.tht.tht.domain.user.LogoutUseCase
 import com.tht.tht.domain.user.ReportUserUseCase
@@ -96,6 +99,13 @@ object UseCaseModule {
     ): FetchSignupUserUseCase = FetchSignupUserUseCase(
         repository,
         dispatcher
+    )
+
+    @Provides
+    fun provideFetchUserUuidUseCase(
+        repository: TokenRepository,
+    ): FetchThtUserUuidUseCase = FetchThtUserUuidUseCase(
+        repository,
     )
 
     @Provides
@@ -245,6 +255,18 @@ object UseCaseModule {
         repository: ChatRepository
     ): GetChatListUseCase =
         GetChatListUseCase(repository)
+
+    @Provides
+    fun provideGetChatDetailInformationUseCase(
+        repository: ChatRepository
+    ): GetChatDetailInformationUseCase =
+        GetChatDetailInformationUseCase(repository)
+
+    @Provides
+    fun provideGetChatHistoryUseCase(
+        repository: ChatRepository
+    ): GetChatHistoryUseCase =
+        GetChatHistoryUseCase(repository)
 
     @Provides
     fun provideFetchThtAccessTokenUseCase(
