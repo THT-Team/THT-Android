@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -73,7 +72,6 @@ fun ChatDetailList(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .imePadding()
             .padding(start = 16.dp, end = 16.dp, bottom = 69.dp),
         state = listState,
     ) {
@@ -101,12 +99,6 @@ fun ChatDetailList(
                 if (index != 0 && chatList[index - 1].senderUuid != userUuid) true else if (index == 0) null else false
             val shouldShowTime =
                 (index == chatList.lastIndex) || (chatList.getOrNull(index + 1)?.dateTime != item.dateTime)
-//            if (lastDate != currentDate) {
-//                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-//                    ThtP2(text = currentDate, fontWeight = FontWeight.W400, color = Color.White)
-//                    lastDate = currentDate
-//                }
-//            }
             if (item.senderUuid == userUuid) {
                 MyChat(item, shouldShowTime)
             } else {
