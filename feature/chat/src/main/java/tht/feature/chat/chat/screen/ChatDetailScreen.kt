@@ -1,5 +1,6 @@
 package tht.feature.chat.chat.screen
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +29,8 @@ internal fun ChatDetailScreen(
     onBack: () -> Unit,
     roomIdx: Long,
     partnerName: String,
+    context: Context,
 ) {
-
     LaunchedEffect(Unit) {
         viewModel.getChatDetailInformation(roomIdx)
         viewModel.getUserUuid()
@@ -40,7 +41,9 @@ internal fun ChatDetailScreen(
 
     DisposableEffect(key1 = Unit) {
         viewModel.initStomp(roomIdx)
+        viewModel.hideBottomNavigation(context)
         onDispose {
+            viewModel.showBottomNavigation(context)
             viewModel.cancelStomp()
         }
     }

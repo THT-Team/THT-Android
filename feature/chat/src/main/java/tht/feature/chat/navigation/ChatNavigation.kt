@@ -1,5 +1,6 @@
 package tht.feature.chat.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -12,18 +13,21 @@ import tht.feature.chat.chat.screen.ChatDetailScreen
 import tht.feature.chat.chat.screen.ChatScreen
 
 @Composable
-fun ChatNavigation() {
+fun ChatNavigation(
+    context: Context,
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
         startDestination = Chat.route
     ) {
-        addChatNavGraph(navController)
+        addChatNavGraph(navController, context)
     }
 }
 
 private fun NavGraphBuilder.addChatNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    context: Context,
 ) {
     composable(
         route = Chat.route
@@ -49,7 +53,8 @@ private fun NavGraphBuilder.addChatNavGraph(
         ChatDetailScreen(
             roomIdx = roomIdx,
             partnerName = partnerName,
-            onBack = { navController.navigateUp() }
+            onBack = { navController.navigateUp() },
+            context = context,
         )
     }
 }

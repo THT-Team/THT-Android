@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -104,6 +105,15 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             }
         }
     }
+
+    fun showBottomNav() {
+        binding.bnvHome.visibility = View.VISIBLE
+    }
+
+    fun hideBottomNav() {
+        binding.bnvHome.visibility = View.GONE
+    }
+
 
     override fun addFragmentBackStack(tag: String, bundle: Bundle?) {
         binding.root.hideSoftInput()
