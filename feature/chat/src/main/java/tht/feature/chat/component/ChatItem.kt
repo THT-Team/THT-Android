@@ -1,8 +1,10 @@
 package tht.feature.chat.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +34,8 @@ internal fun ChatItem(
         modifier = Modifier
             .noRippleClickable { onClickItem(item.chatRoomIdx, item.partnerName) }
             .fillMaxWidth()
+            .background(Color.Black)
+            .height(76.dp)
             .padding(horizontal = 15.dp, vertical = (16.5).dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -65,7 +69,7 @@ internal fun ChatItem(
                 color = Color(0xFF8D8D8D)
             )
             Spacer(space = 10.dp)
-//            ChatAlert(number = 1)
+            ChatAlert(number = 1)
         }
     }
 }
@@ -78,7 +82,7 @@ internal fun ChatItemPreivew() {
             chatRoomIdx = 1L,
             partnerProfileUrl = "",
             partnerName = "스티치",
-            messageTime = "",
+            messageTime = "08:24 PM",
             currentMessage = "안녕"
         ),
         isLoading = false,

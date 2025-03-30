@@ -80,13 +80,35 @@ fun ChatDetailList(
             ChatBubbleTitle(chatDetailInformation = chatDetailInformation)
             Spacer(modifier = Modifier.height(8.dp))
         }
+        item {
+            chatDetailInformation?.let {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(space = 8.dp)
+                    ThtP2(text = it.startDate, fontWeight = FontWeight.W400, color = Color.White)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+        var lastDate: String? = null
         itemsIndexed(chatList) { index, item ->
+            val currentDate = item.dateTime.split("T")[0]  // 날짜 부분만 가져오기 (yyyy-MM-dd)
             val isSameUser =
                 if (index != 0 && chatList[index - 1].senderUuid != userUuid) true else if (index == 0) null else false
+            val shouldShowTime =
+                (index == chatList.lastIndex) || (chatList.getOrNull(index + 1)?.dateTime != item.dateTime)
+//            if (lastDate != currentDate) {
+//                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+//                    ThtP2(text = currentDate, fontWeight = FontWeight.W400, color = Color.White)
+//                    lastDate = currentDate
+//                }
+//            }
             if (item.senderUuid == userUuid) {
-                MyChat(item)
+                MyChat(item, shouldShowTime)
             } else {
-                OtherChat(item, isSameUser = isSameUser, isShowProfile = true)
+                OtherChat(item, isSameUser = isSameUser, isShowProfile = true, shouldShowTime = shouldShowTime)
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -119,6 +141,7 @@ fun OtherChat(
     chat: ChatHistoryUiModel,
     isShowProfile: Boolean,
     isSameUser: Boolean?,
+    shouldShowTime: Boolean,
 ) {
     val screenWidthDp = with(LocalDensity.current) {
         LocalContext.current.resources.displayMetrics.widthPixels.toDp()
@@ -168,15 +191,17 @@ fun OtherChat(
                     textAlign = TextAlign.Start
                 )
                 Spacer(space = 8.dp)
-                ThtCaption2(
-                    modifier = Modifier
-                        .weight(1f)
-                        .wrapContentWidth(align = Alignment.Start),
-                    text = chat.dateTime,
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xFFF9FAFA),
-                    textAlign = TextAlign.Start
-                )
+                if (shouldShowTime) {
+                    ThtCaption2(
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(align = Alignment.Start),
+                        text = chat.dateTime,
+                        fontWeight = FontWeight.Normal,
+                        color = Color(0xFFF9FAFA),
+                        textAlign = TextAlign.Start
+                    )
+                }
             }
         }
     }
@@ -184,7 +209,8 @@ fun OtherChat(
 
 @Composable
 fun MyChat(
-    chat: ChatHistoryUiModel
+    chat: ChatHistoryUiModel,
+    shouldShowTime: Boolean,
 ) {
     val screenWidthDp = with(LocalDensity.current) {
         LocalContext.current.resources.displayMetrics.widthPixels.toDp()
@@ -197,13 +223,15 @@ fun MyChat(
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.Bottom
     ) {
-        ThtCaption2(
-            text = chat.dateTime,
-            fontWeight = FontWeight.Normal,
-            color = Color(0xFFF9FAFA),
-            textAlign = TextAlign.End
-        )
-        Spacer(space = 8.dp)
+        if (shouldShowTime) {
+            ThtCaption2(
+                text = chat.dateTime,
+                fontWeight = FontWeight.Normal,
+                color = Color(0xFFF9FAFA),
+                textAlign = TextAlign.End
+            )
+            Spacer(space = 8.dp)
+        }
         ThtP2(
             modifier = Modifier
                 .background(Color(0xFFF9CC2E), RoundedCornerShape(20.dp))

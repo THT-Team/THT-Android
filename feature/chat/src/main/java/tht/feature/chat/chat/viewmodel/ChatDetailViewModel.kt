@@ -33,6 +33,7 @@ import org.hildan.krossbow.stomp.frame.StompFrame
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
 import org.hildan.krossbow.stomp.headers.StompSubscribeHeaders
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
+import tht.feature.chat.chat.screen.formatToAmPm
 import tht.feature.chat.chat.state.ChatDetailSideEffect
 import tht.feature.chat.chat.state.ChatDetailState
 import tht.feature.chat.mapper.toModel
@@ -132,7 +133,7 @@ internal class ChatDetailViewModel @Inject constructor(
                                     message.senderUuid,
                                     message.msg,
                                     message.imgUrl,
-                                    message.dateTime
+                                    message.dateTime.formatToAmPm()
                                 )
                             )
                         }

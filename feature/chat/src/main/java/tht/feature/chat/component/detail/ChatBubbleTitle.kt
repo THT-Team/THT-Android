@@ -13,11 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_ui.component.spacer.Spacer
-import com.example.compose_ui.component.text.p.ThtP2
 import tht.feature.chat.component.detail.bubble.ArrowAlignment
 import tht.feature.chat.component.detail.bubble.ArrowShape
 import tht.feature.chat.component.detail.bubble.BubbleLayout
@@ -71,8 +69,6 @@ fun ChatBubbleTitle(chatDetailInformation: ChatDetailInformationUiModel?) {
                 )
             }
         }
-        Spacer(space = 8.dp)
-        ThtP2(text = chatDetailInformation.startDate, fontWeight = FontWeight.W400, color = Color.White)
     }
 }
 
