@@ -34,6 +34,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".renewal.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
             android:name=".HomeActivity"
             android:exported="false"
             android:screenOrientation="portrait"

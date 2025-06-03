@@ -1,48 +1,30 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
+    id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("androidx.navigation.safeargs.kotlin")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "tht.feature.signin"
     compileSdk = rootProject.ext.get("compileSdk") as Int
-
-    defaultConfig {
-        minSdk = rootProject.ext.get("minSdkVersion") as Int
-        targetSdk = rootProject.ext.get("targetSdk") as Int
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
-        buildConfig = true
         viewBinding = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+        buildConfig = true
     }
 }
 
@@ -79,14 +61,19 @@ dependencies {
     implementation("com.kakao.sdk:v2-user:2.12.1")
     implementation("com.navercorp.nid:oauth-jdk8:5.4.0")
 
-    implementation(libs.jetpack.compose.material)
+    implementation(platform(libs.composeBom))
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.composeUi)
+    implementation(libs.composeMaterial)
+    implementation(libs.composeMaterial3)
+    implementation(libs.composeUiToolingPreview)
     implementation(libs.jetpack.compose.animation)
     implementation(libs.jetpack.compose.ui.tooling)
-    testImplementation(libs.jetpack.compose.ui.tooling.test)
-    implementation(libs.jetpack.compose.navigation)
-    implementation(libs.jetpack.compose.hilt.navigation)
-    implementation(libs.jetpack.compose.activity)
     implementation(libs.jetpack.compose.viewmodel)
+    androidTestImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
+
+    implementation(libs.jetpack.compose.hilt.navigation)
     implementation(libs.jetpack.compose.coil)
     implementation(libs.jetpack.compose.foundation)
 

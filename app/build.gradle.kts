@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -5,16 +7,17 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jlleitschuh.gradle.ktlint")
-    id("io.gitlab.arturbosch.detekt")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "com.tht.tht"
     compileSdk = rootProject.ext.get("compileSdk") as Int
+    buildFeatures.compose = true
 
     defaultConfig {
         applicationId = "com.tht.tht"
@@ -44,12 +47,17 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
-        buildConfig = true
         viewBinding = true
+        buildConfig = true
+    }
+    composeCompiler {
+        enableStrongSkippingMode.set(true)
     }
 }
 
@@ -101,4 +109,16 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
 
     implementation(libs.lottie)
+
+    implementation(platform(libs.composeBom))
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.composeUi)
+    implementation(libs.composeMaterial)
+    implementation(libs.composeMaterial3)
+    implementation(libs.composeUiToolingPreview)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    implementation(libs.jetpack.compose.viewmodel)
+    androidTestImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
 }

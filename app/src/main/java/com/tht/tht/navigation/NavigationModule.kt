@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import tht.core.navigation.HomeNavigation
+import tht.core.navigation.MainNavigation
 import tht.core.navigation.SignupNavigation
 import tht.core.navigation.ToHotNavigation
 import tht.feature.signin.navigation.SignupNavigationImpl
@@ -13,6 +14,9 @@ import tht.feature.tohot.navigation.ToHotNavigationImpl
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class NavigationModule {
+
+    @Binds
+    abstract fun bindMainNavigation(impl: MainNavigationImpl): MainNavigation
 
     @Binds
     abstract fun bindHomeNavigation(impl: HomeNavigationImpl): HomeNavigation

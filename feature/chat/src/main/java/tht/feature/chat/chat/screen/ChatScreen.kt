@@ -1,12 +1,11 @@
 package tht.feature.chat.chat.screen
 
-import android.content.Context
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import com.example.compose_ui.common.viewmodel.collectAsState
 import com.example.compose_ui.component.spacer.Spacer
 import com.example.compose_ui.component.text.p.ThtP1
@@ -39,68 +38,67 @@ import tht.feature.chat.component.ChatTopAppBar
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
-    context: Context,
-    navigateChatDetail: (Long, String) -> Unit = { _, _ -> }
+    navigateChatDetail: (Long, String) -> Unit = { _, _ -> },
+    navigateMain: () -> Unit = {},
 ) {
-    OnLifecycleEvent { _, event ->
-        if (event == Lifecycle.Event.ON_START) {
-            viewModel.showBottomNavigation(context)
-        }
-    }
     val state = viewModel.collectAsState().value
     ChatScreen(
         state = state,
         navigateChatDetail = navigateChatDetail,
+        navigateMain = navigateMain
     )
 }
 
 @Composable
 internal fun ChatScreen(
     state: ChatState,
-    navigateChatDetail: (Long, String) -> Unit = { _, _ -> }
+    navigateChatDetail: (Long, String) -> Unit = { _, _ -> },
+    navigateMain: () -> Unit,
 ) {
     Box {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.systemBars)
+        Scaffold(
+            containerColor = Color(0xFF161616),
+            topBar = {
+                ChatTopAppBar(
+                    title = "채팅",
+                    rightIcons = {
+                        Image(
+                            painter = painterResource(id = tht.feature.chat.R.drawable.ic_bling),
+                            contentDescription = null
+                        )
+                    }
+                )
+            }
         ) {
-            ChatTopAppBar(
-                title = "채팅",
-                rightIcons = {
-                    Image(
-                        painter = painterResource(id = tht.feature.chat.R.drawable.ic_bling),
-                        contentDescription = null
-                    )
+            Box(modifier = Modifier.padding(it)) {
+                Crossfade(
+                    modifier = Modifier.fillMaxSize(),
+                    targetState = state,
+                    animationSpec = tween(400),
+                    label = ""
+                ) { state ->
+                    when (state) {
+                        is ChatState.Empty -> ChatEmptyScreen(onClickChangeTitle = navigateMain)
+                        is ChatState.ChatList -> ChatListScreen(items = state, navigateChatDetail = navigateChatDetail)
+                    }
                 }
-            )
 
-            Crossfade(
-                modifier = Modifier.fillMaxSize(),
-                targetState = state,
-                animationSpec = tween(400),
-                label = ""
-            ) { state ->
-                when (state) {
-                    is ChatState.Empty -> ChatEmptyScreen(onClickChangeTitle = {})
-                    is ChatState.ChatList -> ChatListScreen(items = state, navigateChatDetail = navigateChatDetail)
-                }
             }
         }
         NewTopicTip(
             modifier = Modifier
-                .graphicsLayer {
-                    translationY = 32f
-                }
-                .align(Alignment.TopCenter)
+                .graphicsLayer { translationY = -24f }
+                .align(Alignment.TopCenter),
+            navigateMain = navigateMain
         )
     }
 }
 
 @Composable
 @Preview
-private fun BoxScope.NewTopicTip(
+private fun NewTopicTip(
     modifier: Modifier = Modifier,
+    navigateMain: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -108,6 +106,7 @@ private fun BoxScope.NewTopicTip(
             .clip(RoundedCornerShape(30.dp))
             .background(Color(0xFF222222))
             .padding(horizontal = 17.dp, vertical = 14.dp)
+            .clickable { navigateMain() }
     ) {
         ThtP1(
             text = "새로운 주제어가 오픈되었어요!",
@@ -121,12 +120,4 @@ private fun BoxScope.NewTopicTip(
             color = Color(0xFFF9CC2E),
         )
     }
-}
-
-@Preview
-@Composable
-private fun ChatScreenPreview() {
-    ChatScreen(
-        state = ChatState.Empty
-    )
 }

@@ -2,6 +2,7 @@ package com.tht.tht
 
 import android.animation.Animator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import com.tht.tht.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tht.core.navigation.HomeNavigation
+import tht.core.navigation.MainNavigation
 import tht.core.navigation.SignupNavigation
 import tht.core.ui.delegate.viewBinding
 import javax.inject.Inject
@@ -27,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
     lateinit var signupNavigation: SignupNavigation
 
     @Inject
-    lateinit var homeNavigation: HomeNavigation
+    lateinit var mainNavigation: MainNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -68,7 +70,7 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         is SplashSideEffect.Home -> {
-                            homeNavigation.navigateHome(this@SplashActivity)
+                            mainNavigation.navigateMain(this@SplashActivity)
                             finish()
                         }
                     }

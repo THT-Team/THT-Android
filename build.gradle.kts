@@ -28,39 +28,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply (false)
     alias(libs.plugins.library) apply (false)
     alias(libs.plugins.ktlint) apply (false)
-    alias(libs.plugins.detekt) apply (true)
+    alias(libs.plugins.composeCompiler) apply (true)
+    alias(libs.plugins.serialization) apply false
+//    alias(libs.plugins.jetbrainsKotlinJvm) apply (true)
 }
-
-
-subprojects {
-    apply (plugin = "io.gitlab.arturbosch.detekt")
-
-    detekt {
-        config.setFrom(files("$rootDir/detekt-config.yml"))
-        parallel = true
-    }
-
-    // run use ./gradlew assembleRelease -PcomposeCompilerReports=true  --rerun-tasks
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach  {
-        kotlinOptions {
-            jvmTarget = "17"
-            if (project.findProperty("composeCompilerReports") == "true") {
-                val metricsOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-metrics"
-                val reportOutputDir = "${rootProject.file(".").absolutePath}/compose-report/compose-reports"
-                freeCompilerArgs = freeCompilerArgs + listOf(
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$reportOutputDir",
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$metricsOutputDir"
-                )
-            }
-        }
-    }
-}
-
-//configurations.all {
-//    resolutionStrategy {
-//        force("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
-//        force ("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
-//    }
-//}

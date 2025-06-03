@@ -33,7 +33,6 @@ import org.hildan.krossbow.stomp.frame.StompFrame
 import org.hildan.krossbow.stomp.headers.StompSendHeaders
 import org.hildan.krossbow.stomp.headers.StompSubscribeHeaders
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
-import tht.core.navigation.BottomNavigationProvider
 import tht.feature.chat.chat.screen.formatToAmPm
 import tht.feature.chat.chat.state.ChatDetailSideEffect
 import tht.feature.chat.chat.state.ChatDetailState
@@ -50,7 +49,6 @@ internal class ChatDetailViewModel @Inject constructor(
     private val fetchThtUserUuidUseCase: FetchThtUserUuidUseCase,
     private val fetchThtAccessTokenUseCase: FetchThtAccessTokenUseCase,
     private val fetchMyPageUserInfoUseCase: FetchMyPageUserInfoUseCase,
-    private val bottomNavigationProvider: BottomNavigationProvider,
 ) : ViewModel(), Container<ChatDetailState, ChatDetailSideEffect> {
     override val store: Store<ChatDetailState, ChatDetailSideEffect> =
         store(
@@ -98,15 +96,7 @@ internal class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun hideBottomNavigation(context: Context) {
-        bottomNavigationProvider.hide(context)
-    }
-
-    fun showBottomNavigation(context: Context) {
-        bottomNavigationProvider.show(context)
-    }
-
-    fun connectStomp(token: String, roomIdx: Long) {
+    private fun connectStomp(token: String, roomIdx: Long) {
         viewModelScope.launch {
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(

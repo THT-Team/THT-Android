@@ -1,41 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "com.example.compose_ui"
     compileSdk = rootProject.ext.get("compileSdk") as Int
-
-    defaultConfig {
-        minSdk = rootProject.ext.get("minSdkVersion") as Int
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        buildConfig = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 }
 
@@ -52,13 +34,6 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso)
 
-    implementation(libs.jetpack.compose.material)
-    implementation(libs.jetpack.compose.animation)
-    implementation(libs.jetpack.compose.ui.tooling)
-    testImplementation(libs.jetpack.compose.ui.tooling.test)
-    implementation(libs.jetpack.compose.navigation)
-    implementation(libs.jetpack.compose.activity)
-    implementation(libs.jetpack.compose.viewmodel)
     implementation(libs.jetpack.compose.coil)
     implementation(libs.jetpack.compose.foundation)
     implementation(libs.app.compat.theme.adpater)
@@ -66,4 +41,16 @@ dependencies {
     implementation(libs.lottie.compose)
 
     implementation(libs.renderscript.intrinsics.replacement.toolkit)
+    implementation(platform(libs.composeBom))
+    implementation(libs.jetpack.compose.activity)
+    implementation(libs.composeUi)
+    implementation(libs.composeMaterial)
+    implementation(libs.composeMaterial3)
+    implementation(libs.composeUiToolingPreview)
+    implementation(libs.jetpack.compose.animation)
+    implementation(libs.jetpack.compose.ui.tooling)
+    implementation(libs.jetpack.compose.viewmodel)
+    androidTestImplementation(libs.jetpack.compose.ui.tooling.test)
+    implementation(libs.jetpack.compose.navigation)
+
 }

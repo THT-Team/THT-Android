@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ internal fun ChatItem(
         modifier = Modifier
             .noRippleClickable { onClickItem(item.chatRoomIdx, item.partnerName) }
             .fillMaxWidth()
-            .background(Color.Black)
+            .background(Color(0xFF161616))
             .height(76.dp)
             .padding(horizontal = 15.dp, vertical = (16.5).dp),
         verticalAlignment = Alignment.CenterVertically
@@ -58,7 +59,9 @@ internal fun ChatItem(
                 text = item.currentMessage,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Normal,
-                color = Color(0xFF8D8D8D)
+                color = Color(0xFF8D8D8D),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
         Column(horizontalAlignment = Alignment.End) {

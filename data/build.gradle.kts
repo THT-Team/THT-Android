@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 import java.io.File
 import java.io.FileInputStream
@@ -13,7 +14,15 @@ plugins {
 android {
     namespace = "com.tht.tht.data"
     compileSdk = rootProject.ext.get("compileSdk") as Int
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
     defaultConfig {
         minSdk = rootProject.ext.get("minSdkVersion") as Int
         targetSdk = rootProject.ext.get("targetSdk") as Int
@@ -29,32 +38,8 @@ android {
         buildConfigField("String", "APP_EMAIL_PASSWORD", prop.getProperty("APP_EMAIL_PASSWORD"))
         buildConfigField("String", "CEO_EMAIL", prop.getProperty("CEO_EMAIL"))
     }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         buildConfig = true
-        viewBinding = true
-        dataBinding = true
-    }
-
-    packagingOptions {
-        resources.excludes.add("META-INF/*")
     }
 }
 
