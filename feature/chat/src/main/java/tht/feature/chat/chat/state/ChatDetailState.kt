@@ -16,5 +16,6 @@ sealed class ChatDetailState {
         val showReportDialog: Boolean = false,
         val showBlockDialog: Boolean = false,
         val showExitDialog: Boolean = false,
+        val showProfileDetailDialog: Boolean = false,
     ) : ChatDetailState()
 }

@@ -2,6 +2,7 @@ package tht.feature.chat.component.detail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,7 +49,8 @@ fun ChatDetailList(
     userUuid: String?,
     chatDetailInformation: ChatDetailInformationUiModel?,
     chatList: List<ChatHistoryUiModel>,
-    onLoadMore: () -> Unit
+    onLoadMore: () -> Unit,
+    onClickProfile: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
     var previousPosition: Int? by remember {
@@ -102,7 +104,7 @@ fun ChatDetailList(
             if (item.senderUuid == userUuid) {
                 MyChat(item, shouldShowTime)
             } else {
-                OtherChat(item, isSameUser = isSameUser, isShowProfile = true, shouldShowTime = shouldShowTime)
+                OtherChat(item, isSameUser = isSameUser, isShowProfile = true, shouldShowTime = shouldShowTime, onClickProfile = onClickProfile)
             }
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -136,6 +138,7 @@ fun OtherChat(
     isShowProfile: Boolean,
     isSameUser: Boolean?,
     shouldShowTime: Boolean,
+    onClickProfile: () -> Unit = {}
 ) {
     val screenWidthDp = with(LocalDensity.current) {
         LocalContext.current.resources.displayMetrics.widthPixels.toDp()
@@ -149,7 +152,7 @@ fun OtherChat(
         if (isSameUser == false || isSameUser == null) {
             if (isShowProfile) {
                 ThtImage(
-                    modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)),
+                    modifier = Modifier.clip(shape = RoundedCornerShape(6.dp)).clickable { onClickProfile() },
                     src = chat.imgUrl,
                     size = DpSize(34.dp, 34.dp)
                 )

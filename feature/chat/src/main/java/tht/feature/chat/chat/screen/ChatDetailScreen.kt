@@ -1,5 +1,6 @@
 package tht.feature.chat.chat.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,13 +23,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.compose_ui.common.viewmodel.collectAsState
 import com.example.compose_ui.component.dialog.ThtDialog
+import com.example.compose_ui.component.image.ThtImage
 import com.example.compose_ui.component.text.subtitle.ThtSubtitle1
 import tht.feature.chat.chat.state.ChatDetailState
 import tht.feature.chat.chat.viewmodel.ChatDetailViewModel
@@ -68,7 +79,7 @@ internal fun ChatDetailScreen(
         ) {
             ChatDetailTopAppBar(
                 title = partnerName,
-                onClickBack = {onBack(null)},
+                onClickBack = { onBack(null) },
                 onClickReport = { viewModel.updateOptionDialogState(true) },
                 onClickLogout = { viewModel.updateChatExitDialogState(true) }
             )
@@ -81,7 +92,8 @@ internal fun ChatDetailScreen(
                             chatList = state.chatList,
                             onLoadMore = {
                                 viewModel.getChatHistory(roomIdx)
-                            }
+                            },
+                            onClickProfile = { viewModel.updateProfileDetailDialogState(true) },
                         )
                     }
                 }
@@ -230,6 +242,15 @@ internal fun ChatDetailScreen(
                 }
             )
         }
+
+        if (state.showProfileDetailDialog) {
+            state.userInformation?.userProfilePhotos?.firstOrNull()?.url?.let { url ->
+                ProfileDetailDialog(
+                    url = url,
+                    onDismissRequest = { viewModel.updateProfileDetailDialogState(false) }
+                )
+            }
+        }
     }
 }
 
@@ -264,5 +285,30 @@ fun OptionDialog(
         color = Color(0xFFF9FAFA),
         maxLines = 1,
         textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+@Preview
+fun ProfileDetailDialog(
+    url: String = "",
+    onDismissRequest: () -> Unit = {},
+) {
+    ThtDialog(
+        onDismissRequest = onDismissRequest,
+        buttonBuilder = {
+            val painter = rememberAsyncImagePainter(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(url)
+                    .build(),
+            )
+            Image(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp)),
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+            )
+        }
     )
 }

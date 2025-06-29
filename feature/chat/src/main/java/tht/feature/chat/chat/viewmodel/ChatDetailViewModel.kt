@@ -271,6 +271,16 @@ internal class ChatDetailViewModel @Inject constructor(
         }
     }
 
+    fun updateProfileDetailDialogState(profileDetailState: Boolean) {
+        intent {
+            reduce { state ->
+                (state as ChatDetailState.ChatList).copy(
+                    showProfileDetailDialog = profileDetailState
+                )
+            }
+        }
+    }
+
     fun exitChattingRoom(
         roomIdx: Long,
         onSuccess: () -> Unit = {},

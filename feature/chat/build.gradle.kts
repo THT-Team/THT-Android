@@ -66,6 +66,8 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.jetpack.compose.hilt.navigation)
 
+    implementation(libs.jetpack.compose.coil)
+
 //    implementation("com.beust:klaxon:5.6")
 //    implementation("com.squareup.okhttp:okhttp-ws:2.7.5")
 //    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
