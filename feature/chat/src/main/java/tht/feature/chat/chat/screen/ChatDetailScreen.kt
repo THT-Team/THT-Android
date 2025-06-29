@@ -190,15 +190,20 @@ internal fun ChatDetailScreen(
             )
         }
 
-        if(state.showExitDialog) {
+        if (state.showExitDialog) {
             ThtDialog(
                 onDismissRequest = { viewModel.updateChatExitDialogState(false) },
                 title = { Text(text = "채팅을 종료할까요?") },
-                description = { Text(text = "종료 후 채팅을 이어갈 수 없어요.")},
+                description = { Text(text = "종료 후 채팅을 이어갈 수 없어요.") },
                 buttonBuilder = {
                     ThtSubtitle1(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clickable {
+                                viewModel.exitChattingRoom(roomIdx) {
+                                    onBack()
+                                }
+                            }
                             .padding(vertical = 16.dp),
                         text = "나가기",
                         fontWeight = FontWeight.SemiBold,

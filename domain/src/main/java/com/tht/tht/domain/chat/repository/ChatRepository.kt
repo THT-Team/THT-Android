@@ -11,4 +11,6 @@ interface ChatRepository {
     suspend fun getChatDetailInformation(roomIdx: Long): ChatDetailInformationModel
 
     suspend fun getChatHistory(roomIdx: Long, chatIdx: String?, size: String): List<ChatHistoryModel>
+
+    suspend fun exitChattingRoom(roomIdx: Long)
 }

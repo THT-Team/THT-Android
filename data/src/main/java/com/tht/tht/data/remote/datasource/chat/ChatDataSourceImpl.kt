@@ -22,4 +22,8 @@ class ChatDataSourceImpl @Inject constructor(
     override suspend fun getChatHistory(roomIdx: Long, chatIdx: String?, size: String): List<ChatHistoryResponse> {
         return chatService.getChatHistory(roomIdx.toString(), chatIdx, size = size).toUnwrap { it }
     }
+
+    override suspend fun exitChattingRoom(roomIdx: Long) {
+        return chatService.exitChattingRoom(roomIdx)
+    }
 }

@@ -53,6 +53,8 @@ object THTApiConstant {
         const val CHAT_DETAIL_INFORMATION = "/chat/room/{chat-room-idx}"
 
         const val CHAT_DETAIL_HISTORY = "/chat/history"
+
+        const val CHAT_DETAIL_EXIT = "/chat/out/room/{chat-room-idx}"
     }
 
     object Setting {

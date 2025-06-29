@@ -11,4 +11,6 @@ interface ChatDataSource {
     suspend fun getChatDetailInformation(roomIdx: Long): ChatDetailInformationResponse
 
     suspend fun getChatHistory(roomIdx: Long, chatIdx: String?, size: String): List<ChatHistoryResponse>
+
+    suspend fun exitChattingRoom(roomIdx: Long)
 }

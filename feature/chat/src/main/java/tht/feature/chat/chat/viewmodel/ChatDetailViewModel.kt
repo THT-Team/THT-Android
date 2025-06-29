@@ -10,6 +10,7 @@ import com.example.compose_ui.common.viewmodel.intent
 import com.example.compose_ui.common.viewmodel.store
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.tht.tht.domain.chat.usecase.ExitChattingRoomUseCase
 import com.tht.tht.domain.chat.usecase.GetChatDetailInformationUseCase
 import com.tht.tht.domain.chat.usecase.GetChatHistoryUseCase
 import com.tht.tht.domain.setting.usecase.FetchMyPageUserInfoUseCase
@@ -49,6 +50,7 @@ internal class ChatDetailViewModel @Inject constructor(
     private val fetchThtUserUuidUseCase: FetchThtUserUuidUseCase,
     private val fetchThtAccessTokenUseCase: FetchThtAccessTokenUseCase,
     private val fetchMyPageUserInfoUseCase: FetchMyPageUserInfoUseCase,
+    private val exitChattingRoomUseCase: ExitChattingRoomUseCase,
 ) : ViewModel(), Container<ChatDetailState, ChatDetailSideEffect> {
     override val store: Store<ChatDetailState, ChatDetailSideEffect> =
         store(
@@ -266,6 +268,17 @@ internal class ChatDetailViewModel @Inject constructor(
                     showExitDialog = exitState
                 )
             }
+        }
+    }
+
+    fun exitChattingRoom(
+        roomIdx: Long,
+        onSuccess: () -> Unit = {},
+    ) {
+        viewModelScope.launch {
+            exitChattingRoomUseCase.invoke(roomIdx)
+                .onSuccess { onSuccess() }
+                .onFailure { updateChatExitDialogState(false) }
         }
     }
 

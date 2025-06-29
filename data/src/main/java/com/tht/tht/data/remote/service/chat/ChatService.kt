@@ -1,11 +1,13 @@
 package com.tht.tht.data.remote.service.chat
 
 import com.tht.tht.data.constant.THTApiConstant
+import com.tht.tht.data.constant.THTApiConstant.Chat.CHAT_DETAIL_EXIT
 import com.tht.tht.data.remote.response.base.ThtResponse
 import com.tht.tht.data.remote.response.chat.ChatDetailInformationResponse
 import com.tht.tht.data.remote.response.chat.ChatHistoryResponse
 import com.tht.tht.data.remote.response.chat.ChatListResponse
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -24,4 +26,9 @@ interface ChatService {
         @Query(value = "chatIdx") chatIdx:String?,
         @Query(value = "size") size: String,
     ): ThtResponse<List<ChatHistoryResponse>>
+
+    @POST(CHAT_DETAIL_EXIT)
+    suspend fun exitChattingRoom(
+        @Path(value = "chat-room-idx") roomIdx: Long
+    )
 }
