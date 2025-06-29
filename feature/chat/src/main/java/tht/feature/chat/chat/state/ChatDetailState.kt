@@ -11,6 +11,10 @@ sealed class ChatDetailState {
         val chatList: List<ChatHistoryUiModel> = emptyList(),
         val chatIdx: String? = null,
         val userUuid: String? = null,
-        val userInformation: MyPageUserInfoUiModel? = null
+        val userInformation: MyPageUserInfoUiModel? = null,
+        val showOptionDialog: Boolean = false,
+        val showReportDialog: Boolean = false,
+        val showBlockDialog: Boolean = false,
+        val showExitDialog: Boolean = false,
     ) : ChatDetailState()
 }

@@ -226,6 +226,49 @@ internal class ChatDetailViewModel @Inject constructor(
         }
     }
 
+    fun updateOptionDialogState(optionState: Boolean) {
+        intent {
+            reduce { state ->
+                (state as ChatDetailState.ChatList).copy(
+                    showOptionDialog = optionState
+                )
+            }
+        }
+    }
+
+
+    fun updateReportDialogState(reportState: Boolean) {
+        intent {
+            reduce { state ->
+                (state as ChatDetailState.ChatList).copy(
+                    showOptionDialog = false,
+                    showReportDialog = reportState
+                )
+            }
+        }
+    }
+
+    fun updateBlockDialogState(blockState: Boolean) {
+        intent {
+            reduce { state ->
+                (state as ChatDetailState.ChatList).copy(
+                    showOptionDialog = false,
+                    showBlockDialog = blockState
+                )
+            }
+        }
+    }
+
+    fun updateChatExitDialogState(exitState: Boolean) {
+        intent {
+            reduce { state ->
+                (state as ChatDetailState.ChatList).copy(
+                    showExitDialog = exitState
+                )
+            }
+        }
+    }
+
     fun cancelStomp() {
         try {
             viewModelScope.launch {
