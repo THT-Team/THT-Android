@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Text
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -37,7 +37,7 @@ import tht.feature.chat.component.detail.ChatEditTextContainer
 @Composable
 internal fun ChatDetailScreen(
     viewModel: ChatDetailViewModel = hiltViewModel(),
-    onBack: () -> Unit,
+    onBack: (Long?) -> Unit,
     roomIdx: Long,
     partnerName: String,
 ) {
@@ -68,7 +68,7 @@ internal fun ChatDetailScreen(
         ) {
             ChatDetailTopAppBar(
                 title = partnerName,
-                onClickBack = onBack,
+                onClickBack = {onBack(null)},
                 onClickReport = { viewModel.updateOptionDialogState(true) },
                 onClickLogout = { viewModel.updateChatExitDialogState(true) }
             )
@@ -201,7 +201,7 @@ internal fun ChatDetailScreen(
                             .fillMaxWidth()
                             .clickable {
                                 viewModel.exitChattingRoom(roomIdx) {
-                                    onBack()
+                                    onBack(roomIdx)
                                 }
                             }
                             .padding(vertical = 16.dp),

@@ -17,6 +17,7 @@ internal fun LazyColumnChatItem(
     items: ImmutableList<ChatListUiModel>,
     isLoading: Boolean,
     onClickItem: (Long, String) -> Unit,
+    onClickDeleteItem: (Long) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -27,7 +28,7 @@ internal fun LazyColumnChatItem(
                 chatItem = item,
                 isLoading = isLoading,
                 onClickItem = onClickItem,
-                onClickDelete = {},
+                onClickDelete = { onClickDeleteItem(item.chatRoomIdx)},
             )
         }
     }
@@ -47,6 +48,7 @@ internal fun LazyColumnChatItemPreview() {
             )
         ).toImmutableList(),
         isLoading = false,
-        onClickItem = { _, _ -> }
+        onClickItem = { _, _ -> },
+        onClickDeleteItem = {}
     )
 }

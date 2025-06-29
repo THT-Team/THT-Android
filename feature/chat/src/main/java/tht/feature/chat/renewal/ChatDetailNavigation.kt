@@ -1,6 +1,5 @@
 package tht.feature.chat.renewal
 
-import android.content.Context
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,7 +12,7 @@ import tht.feature.chat.chat.screen.ChatDetailScreen
 fun NavController.navigateToChatDetail(navOptions: NavOptions) = navigate(MainTabRoute.Chat, navOptions)
 
 fun NavGraphBuilder.chatDetailScreen(
-    onBack: () -> Unit,
+    onBack: (Long?) -> Unit,
 ) {
     composable<Route.ChatDetail> { navBackStackEntry ->
         val (roomIdx, partnerName) = navBackStackEntry.toRoute<Route.ChatDetail>()

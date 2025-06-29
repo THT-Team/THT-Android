@@ -14,6 +14,7 @@ import tht.feature.chat.model.ChatListUiModel
 @Composable
 internal fun ChatListScreen(
     navigateChatDetail: (Long, String) -> Unit = { _, _ -> },
+    onClickDeleteItem: (Long) -> Unit = {},
     items: ChatState.ChatList,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -21,6 +22,7 @@ internal fun ChatListScreen(
             items = items.chatList,
             isLoading = items.isLoading,
             onClickItem = navigateChatDetail,
+            onClickDeleteItem = onClickDeleteItem,
         )
     }
 }
